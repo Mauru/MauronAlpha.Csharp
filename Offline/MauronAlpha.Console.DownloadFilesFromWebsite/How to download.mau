@@ -1,0 +1,40 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace MauronAlpha.Console.DownloadFilesFromWebsite {
+	private static void DownloadXlsFiles(string filePath) {  
+	   WebClient wc = new WebClient();  
+	   var sourceCode = wc.DownloadString("www.testblog.com");  
+	   HtmlDocument doc = new HtmlDocument();  
+	   doc.LoadHtml(sourceCode);  
+	   var node = doc.DocumentNode;  
+	   var nodes = node.SelectNodes("//a");  
+	   List<string> links = new List<string>();  
+	   foreach (var item in nodes)  
+	   {  
+		 var link = item.Attributes["href"].Value;  
+		 links.Add(link.Contains("http") ? link : "www.testblog.com" + link);  
+	   }  
+	   List<string> xlsLinks = new List<string>();  
+	   foreach (string s in links)  
+	   {  
+		 if (s.LastIndexOf(".xls") != -1)  
+		 {  
+		   xlsLinks.Add(s.ToString());  
+		 }  
+	   }  
+	   foreach (string file in xlsLinks)  
+	   {  
+		 string[] fileName = file.Split('/');  
+		 if (fileName.Length > 0)  
+		 {  
+		   WebClient webClient = new WebClient();  
+		   webClient.DownloadFile(file, filePath + fileName[fileName.Length - 1].ToString());  
+		   Console.WriteLine(fileName[fileName.Length - 1].ToString() + " download successfully");  
+		 }  
+	   }  
+	   Console.WriteLine("All files download successfully");  
+	}
+}

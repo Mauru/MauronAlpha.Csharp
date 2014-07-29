@@ -1,0 +1,104 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{6A046817-9F14-4781-97C9-F89FEBC2097B}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>MauronAlpha</RootNamespace>
+    <AssemblyName>MauronAlpha</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'DontCompile|AnyCPU'">
+    <OutputPath>bin\DontCompile\</OutputPath>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Events\I_eventCaller.cs" />
+    <Compile Include="Events\I_eventReceiver.cs" />
+    <Compile Include="Events\MauronCode_event.cs" />
+    <Compile Include="Events\MauronCode_eventclock.cs" />
+    <Compile Include="Events\MauronCode_eventShedule.cs" />
+    <Compile Include="Events\MauronCode_eventShedule_defaults.cs" />
+    <Compile Include="Events\MauronCode_timeUnit.cs" />
+    <Compile Include="ExplainingCode\I_instantiable.cs" />
+    <Compile Include="ExplainingCode\I_Singleton.cs" />
+    <Compile Include="Files\MauronCode_file.cs" />
+    <Compile Include="Files\MauronCode_filehandler.cs" />
+    <Compile Include="Files\MauronCode_filereference.cs" />
+    <Compile Include="HandlingData\I_data.cs" />
+    <Compile Include="HandlingData\I_dataObject.cs" />
+    <Compile Include="HandlingData\I_dataSet.cs" />
+    <Compile Include="Settings\I_hasDefaultSettings.cs" />
+    <Compile Include="HandlingData\MauronCode_data.cs" />
+    <Compile Include="HandlingData\Mauroncode_dataSet.cs" />
+    <Compile Include="ErrorHandling\MauronCode_error.cs" />
+    <Compile Include="ExplainingCode\MauronCode.cs" />
+    <Compile Include="ExplainingCode\CodeStyle.cs" />
+    <Compile Include="ExplainingCode\CodeStyles\CodeStyle_MauronAlpha_CSharp.cs" />
+    <Compile Include="ExplainingCode\CodeType.cs" />
+    <Compile Include="Devices\Hardware.cs" />
+    <Compile Include="ExplainingCode\Definition.cs" />
+    <Compile Include="Devices\Device.cs" />
+    <Compile Include="Devices\PC.cs" />
+    <Compile Include="Files\FileReference.cs" />
+    <Compile Include="Files\FileType.cs" />
+    <Compile Include="Files\FileTypes\FileType_mau.cs" />
+    <Compile Include="ExplainingCode\LanguageComponent.cs" />
+    <Compile Include="ExplainingCode\MauronAlphaCode.cs" />
+    <Compile Include="ErrorHandling\MauronCode_exception.cs" />
+    <Compile Include="HandlingData\MauronCode_dataObject.cs" />
+    <Compile Include="ExplainingCode\MauronCode_singleton.cs" />
+    <Compile Include="ExplainingCode\MauronCode_subtype.cs" />
+    <Compile Include="ExplainingCode\MauronCode_utility.cs" />
+    <Compile Include="Devices\OS.cs" />
+    <Compile Include="Math\I_mathComponent.cs" />
+    <Compile Include="Projects\I_project.cs" />
+    <Compile Include="Projects\MauronCode_project.cs" />
+    <Compile Include="Projects\ProjectType.cs" />
+    <Compile Include="ProjectTypes\Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Settings\MauronCode_defaultSettingsObject.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram.cd" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

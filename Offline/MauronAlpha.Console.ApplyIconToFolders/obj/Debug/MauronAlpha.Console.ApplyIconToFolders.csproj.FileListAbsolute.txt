@@ -1,0 +1,4 @@
+C:\Projects\C#\Building a Usable Code-Tree\Attempt 1\Mauron\MauronAlpha.Console.ApplyIconToFolders\bin\Debug\MauronAlpha.Console.ApplyIconToFolders.dll
+C:\Projects\C#\Building a Usable Code-Tree\Attempt 1\Mauron\MauronAlpha.Console.ApplyIconToFolders\bin\Debug\MauronAlpha.Console.ApplyIconToFolders.pdb
+C:\Projects\C#\Building a Usable Code-Tree\Attempt 1\Mauron\MauronAlpha.Console.ApplyIconToFolders\obj\Debug\MauronAlpha.Console.ApplyIconToFolders.dll
+C:\Projects\C#\Building a Usable Code-Tree\Attempt 1\Mauron\MauronAlpha.Console.ApplyIconToFolders\obj\Debug\MauronAlpha.Console.ApplyIconToFolders.pdb

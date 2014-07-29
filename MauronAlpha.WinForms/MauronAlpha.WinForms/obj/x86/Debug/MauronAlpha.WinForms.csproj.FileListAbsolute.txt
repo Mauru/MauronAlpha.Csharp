@@ -1,0 +1,7 @@
+C:\Projects\C#\Building a Usable Code-Tree\Attempt 1\Mauron\MauronAlpha.WinForms\MauronAlpha.WinForms\bin\Debug\MauronAlpha.WinForms.exe
+C:\Projects\C#\Building a Usable Code-Tree\Attempt 1\Mauron\MauronAlpha.WinForms\MauronAlpha.WinForms\bin\Debug\MauronAlpha.WinForms.pdb
+C:\Projects\C#\Building a Usable Code-Tree\Attempt 1\Mauron\MauronAlpha.WinForms\MauronAlpha.WinForms\obj\x86\Debug\MauronAlpha.WinForms.Properties.Resources.resources
+C:\Projects\C#\Building a Usable Code-Tree\Attempt 1\Mauron\MauronAlpha.WinForms\MauronAlpha.WinForms\obj\x86\Debug\MauronAlpha.WinForms.csproj.GenerateResource.Cache
+C:\Projects\C#\Building a Usable Code-Tree\Attempt 1\Mauron\MauronAlpha.WinForms\MauronAlpha.WinForms\obj\x86\Debug\MauronAlpha.WinForms.exe
+C:\Projects\C#\Building a Usable Code-Tree\Attempt 1\Mauron\MauronAlpha.WinForms\MauronAlpha.WinForms\obj\x86\Debug\MauronAlpha.WinForms.pdb
+C:\Projects\C#\Building a Usable Code-Tree\Attempt 1\Mauron\MauronAlpha.WinForms\MauronAlpha.WinForms\obj\x86\Debug\MauronAlpha.WinForms.MauronAlphaWindow.resources

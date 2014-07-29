@@ -1,0 +1,104 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{5AB56246-8250-4C54-AD3C-F86385091C04}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>MauronAlpha.GameEngine.MonoGame.PixelRPG</RootNamespace>
+    <AssemblyName>MauronAlpha.GameEngine.MonoGame.PixelRPG</AssemblyName>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\WindowsGL\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;WINDOWS</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\WindowsGL\Release\</OutputPath>
+    <DefineConstants>TRACE;WINDOWS</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Icon.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'DontCompile|x86'">
+    <OutputPath>bin\x86\DontCompile\</OutputPath>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="PixelRPG_MonoGame.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="OpenTK">
+      <HintPath>$(MSBuildProgramFiles32)\MonoGame\v3.0\Assemblies\WindowsGL\OpenTK.dll</HintPath>
+    </Reference>
+    <Reference Include="MonoGame.Framework">
+      <HintPath>$(MSBuildProgramFiles32)\MonoGame\v3.0\Assemblies\WindowsGL\MonoGame.Framework.dll</HintPath>
+    </Reference>
+    <Reference Include="Tao.Sdl">
+      <HintPath>$(MSBuildProgramFiles32)\MonoGame\v3.0\Assemblies\WindowsGL\Tao.Sdl.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Content\hex_outline.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <Content Include="Content\anonymouspro_0.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Icon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MauronAlpha.GameEngine.MonoGame\MauronAlpha.GameEngine.MonoGame.csproj">
+      <Project>{8A46F9FC-8FF6-4A28-856E-8CC664685F50}</Project>
+      <Name>MauronAlpha.GameEngine.MonoGame</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MauronAlpha.GameEngine\MauronAlpha.GameEngine.csproj">
+      <Project>{428B1C40-D114-495D-8C3F-D2E437487572}</Project>
+      <Name>MauronAlpha.GameEngine</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MauronAlpha.Games.PixelRPG\MauronAlpha.Games.PixelRPG.csproj">
+      <Project>{6BEAF4E3-A7E3-4556-A204-91E89D1BE578}</Project>
+      <Name>MauronAlpha.Games.PixelRPG</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MauronAlpha\MauronAlpha.csproj">
+      <Project>{6A046817-9F14-4781-97C9-F89FEBC2097B}</Project>
+      <Name>MauronAlpha</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\anonymouspro.fnt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <!-- Specify the search path explicitly so the ResolveAssemblyReferences task picks the right ones -->
+  <Target Name="BeforeResolveReferences">
+    <CreateProperty Value="$(MSBuildProgramFiles32)\MonoGame\v3.0\Assemblies\Windows;$(AssemblySearchPaths)">
+      <Output TaskParameter="Value" PropertyName="AssemblySearchPaths" />
+    </CreateProperty>
+  </Target>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

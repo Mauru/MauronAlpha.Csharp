@@ -1,0 +1,14 @@
+C:\Projects\C#\Building a Usable Code-Tree\Attempt 1\Mauron\MauronAlpha.GameEngine.MonoGame\obj\Debug\MauronAlpha.GameEngine.MonoGame.csprojResolveAssemblyReference.cache
+C:\Projects\C#\Building a Usable Code-Tree\Attempt 1\Mauron\MauronAlpha.GameEngine.MonoGame\bin\Debug\MauronAlpha.GameEngine.MonoGame.dll
+C:\Projects\C#\Building a Usable Code-Tree\Attempt 1\Mauron\MauronAlpha.GameEngine.MonoGame\bin\Debug\MauronAlpha.GameEngine.MonoGame.pdb
+C:\Projects\C#\Building a Usable Code-Tree\Attempt 1\Mauron\MauronAlpha.GameEngine.MonoGame\bin\Debug\MauronAlpha.dll
+C:\Projects\C#\Building a Usable Code-Tree\Attempt 1\Mauron\MauronAlpha.GameEngine.MonoGame\bin\Debug\MonoGame.Framework.dll
+C:\Projects\C#\Building a Usable Code-Tree\Attempt 1\Mauron\MauronAlpha.GameEngine.MonoGame\bin\Debug\OpenTK.dll
+C:\Projects\C#\Building a Usable Code-Tree\Attempt 1\Mauron\MauronAlpha.GameEngine.MonoGame\bin\Debug\Tao.Sdl.dll
+C:\Projects\C#\Building a Usable Code-Tree\Attempt 1\Mauron\MauronAlpha.GameEngine.MonoGame\bin\Debug\MauronAlpha.pdb
+C:\Projects\C#\Building a Usable Code-Tree\Attempt 1\Mauron\MauronAlpha.GameEngine.MonoGame\obj\Debug\MauronAlpha.GameEngine.MonoGame.dll
+C:\Projects\C#\Building a Usable Code-Tree\Attempt 1\Mauron\MauronAlpha.GameEngine.MonoGame\obj\Debug\MauronAlpha.GameEngine.MonoGame.pdb
+C:\Projects\C#\Building a Usable Code-Tree\Attempt 1\Mauron\MauronAlpha.GameEngine.MonoGame\bin\Debug\MauronAlpha.GameEngine.dll
+C:\Projects\C#\Building a Usable Code-Tree\Attempt 1\Mauron\MauronAlpha.GameEngine.MonoGame\bin\Debug\MauronAlpha.Geometry.dll
+C:\Projects\C#\Building a Usable Code-Tree\Attempt 1\Mauron\MauronAlpha.GameEngine.MonoGame\bin\Debug\MauronAlpha.GameEngine.pdb
+C:\Projects\C#\Building a Usable Code-Tree\Attempt 1\Mauron\MauronAlpha.GameEngine.MonoGame\bin\Debug\MauronAlpha.Geometry.pdb

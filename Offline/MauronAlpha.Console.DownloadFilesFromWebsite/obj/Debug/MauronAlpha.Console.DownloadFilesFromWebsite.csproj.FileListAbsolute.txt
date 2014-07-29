@@ -1,0 +1,4 @@
+C:\Projects\C#\Building a Usable Code-Tree\Attempt 1\Mauron\MauronAlpha.Console.DownloadFilesFromWebsite\bin\Debug\MauronAlpha.Console.DownloadFilesFromWebsite.dll
+C:\Projects\C#\Building a Usable Code-Tree\Attempt 1\Mauron\MauronAlpha.Console.DownloadFilesFromWebsite\bin\Debug\MauronAlpha.Console.DownloadFilesFromWebsite.pdb
+C:\Projects\C#\Building a Usable Code-Tree\Attempt 1\Mauron\MauronAlpha.Console.DownloadFilesFromWebsite\obj\Debug\MauronAlpha.Console.DownloadFilesFromWebsite.dll
+C:\Projects\C#\Building a Usable Code-Tree\Attempt 1\Mauron\MauronAlpha.Console.DownloadFilesFromWebsite\obj\Debug\MauronAlpha.Console.DownloadFilesFromWebsite.pdb

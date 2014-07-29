@@ -1,0 +1,417 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="MauronAlpha.GameEngine.Drawable" Collapsed="true">
+    <Position X="10.5" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgEACAAEBAQQUgBgRAiMQEQAAAIAAAAIQAABAQAAAAA=</HashCode>
+      <FileName>Drawable.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MauronAlpha.GameEngine.DrawableType" Collapsed="true">
+    <Position X="6.5" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Drawable.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MauronAlpha.GameEngine.DrawableType_static" Collapsed="true">
+    <Position X="2" Y="9" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAQAAAAAAQAAABAAAAAQAAAAAAAAAA=</HashCode>
+      <FileName>Drawable.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MauronAlpha.GameEngine.DrawableType_animated" Collapsed="true">
+    <Position X="3.75" Y="9" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAQAAAAAAQAAABAAAAAQAAAAAAAAAA=</HashCode>
+      <FileName>Drawable.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MauronAlpha.GameEngine.DrawableType_layer" Collapsed="true">
+    <Position X="5.5" Y="9" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAQAAAAAAQAAABAAAAAQAAAAAAAAAA=</HashCode>
+      <FileName>Drawable.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MauronAlpha.GameEngine.DrawableType_container" Collapsed="true">
+    <Position X="11.25" Y="9" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAQAAAAAAQAAABAAAAAQAAAAAAAAAA=</HashCode>
+      <FileName>Drawable.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MauronAlpha.GameEngine.DrawableType_dynamic" Collapsed="true">
+    <Position X="9.5" Y="9" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAQAAAAAAQAAABAAAAAQAAAAAAAAAA=</HashCode>
+      <FileName>Drawable.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MauronAlpha.GameEngine.DrawableType_texture" Collapsed="true">
+    <Position X="7.25" Y="9" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAQAAAAAAQAAABAAAAAQAAAAAAAAAA=</HashCode>
+      <FileName>Drawable.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MauronAlpha.GameEngine.Drawable_layer" Collapsed="true">
+    <Position X="2.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAABAAAAgAAAAAAAEAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Drawable.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MauronAlpha.GameEngine.Drawable_texture" Collapsed="true">
+    <Position X="7" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAABAAAAgAAAAAAAEAAAAAAAAAAAAAAABAAAAA=</HashCode>
+      <FileName>Drawable.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MauronAlpha.GameEngine.DrawBuffer" Collapsed="true">
+    <Position X="20.5" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAAAAQAQAAAAAAAAAABAAAAAQAAAAAAAQAA=</HashCode>
+      <FileName>DrawBuffer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MauronAlpha.GameEngine.DrawCall" Collapsed="true">
+    <Position X="25" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DrawCall.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MauronAlpha.GameEngine.GameResource" Collapsed="true">
+    <Position X="30.75" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>GameAsset.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MauronAlpha.GameEngine.DataResource" Collapsed="true">
+    <Position X="29.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAggAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAA=</HashCode>
+      <FileName>GameAsset.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MauronAlpha.GameEngine.GameAsset" Collapsed="true">
+    <Position X="29.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAEIQAAAAAAAAAQAABAAAAAAAAAAAABAAAA=</HashCode>
+      <FileName>GameAsset.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MauronAlpha.GameEngine.GameAssetType" Collapsed="true">
+    <Position X="42" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>GameAsset.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MauronAlpha.GameEngine.GameAssetType_image" Collapsed="true">
+    <Position X="40.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAQAAAAAAQAAABAAAAAQAAAAAAAAAA=</HashCode>
+      <FileName>GameAsset.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MauronAlpha.GameEngine.GameAssetType_data" Collapsed="true">
+    <Position X="43" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAQAAAAAAQAAABAAAAAQAAAAAAAAAA=</HashCode>
+      <FileName>GameAsset.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MauronAlpha.GameEngine.GameAssetList" Collapsed="true">
+    <Position X="22.75" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAI=</HashCode>
+      <FileName>GameAsset.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MauronAlpha.GameEngine.GameAssetLoader" Collapsed="true">
+    <Position X="27.25" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgAAQAEEAAAAAAAAAACAAAAAAAAAAQAAgAAAAQAA=</HashCode>
+      <FileName>GameAssetLoader.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MauronAlpha.GameEngine.GameAssetManager" Collapsed="true">
+    <Position X="34" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAEgAAABAEAAQAQgAACAAAgAABAQAAAQAAgAEAAQAA=</HashCode>
+      <FileName>GameAssetManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MauronAlpha.GameEngine.GameCodeError" Collapsed="true">
+    <Position X="36.5" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>GameCodeException.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MauronAlpha.GameEngine.GameObject" Collapsed="true">
+    <Position X="38.5" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>GameComponent.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MauronAlpha.GameEngine.GameComponent" Collapsed="true">
+    <Position X="24" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>GameComponent.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MauronAlpha.GameEngine.GameDrawStyle" Collapsed="true">
+    <Position X="33" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAAEBABAAACBQBAAAAAAAQCAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>GameDrawData.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MauronAlpha.GameEngine.GameDrawData" Collapsed="true">
+    <Position X="38.25" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAIAAAAAAAAAAQQAQAAAAQAAABAAAAAAAAAAAAA=</HashCode>
+      <FileName>GameDrawData.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MauronAlpha.GameEngine.Game" Collapsed="true">
+    <Position X="34.75" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAQACAAAAAABCAAAAUAAAAAAAAAAAAAAAAAQAA=</HashCode>
+      <FileName>GameEngine.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MauronAlpha.GameEngine.GameInstance" Collapsed="true">
+    <Position X="34.75" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>GameInstance.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MauronAlpha.GameEngine.GameLogic" Collapsed="true">
+    <Position X="36.25" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAQQAAAAAAAAAAAAgAAAAAAAAAAAAAQAA=</HashCode>
+      <FileName>GameLogic.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MauronAlpha.GameEngine.GameType" Collapsed="true">
+    <Position X="11" Y="13.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>GameType.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MauronAlpha.GameEngine.GameType_generic" Collapsed="true">
+    <Position X="11" Y="15" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAQAAAAAAQAAABAAAAAQAAAAAAAAAA=</HashCode>
+      <FileName>GameType.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MauronAlpha.GameEngine.TextureManager" Collapsed="true">
+    <Position X="45.25" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAACAAAAAQBQAAAAAAAgEABAAAAAQAAAAAAAAAA=</HashCode>
+      <FileName>Textures.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MauronAlpha.GameEngine.GameTexture" Collapsed="true">
+    <Position X="7" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>Textures.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MauronAlpha.GameEngine.GameTexture_generic" Collapsed="true">
+    <Position X="4.75" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Textures.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MauronAlpha.GameEngine.GameTexture_combine" Collapsed="true">
+    <Position X="7" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAA=</HashCode>
+      <FileName>Textures.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MauronAlpha.GameEngine.GameTexture_selective" Collapsed="true">
+    <Position X="9.25" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAA=</HashCode>
+      <FileName>Textures.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MauronAlpha.GameEngine.TextureType" Collapsed="true">
+    <Position X="11" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAQAAAAA=</HashCode>
+      <FileName>Textures.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MauronAlpha.GameEngine.TextureType_generic" Collapsed="true">
+    <Position X="8.75" Y="12" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAQAAAAAAQAAABAAAAAQAAAAQAAAAA=</HashCode>
+      <FileName>Textures.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MauronAlpha.GameEngine.TextureType_combine" Collapsed="true">
+    <Position X="10.5" Y="12" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAQAAAAAAQAAABAAAAAQAAAAQAAAAA=</HashCode>
+      <FileName>Textures.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MauronAlpha.GameEngine.TextureType_selective" Collapsed="true">
+    <Position X="13.25" Y="12" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAQAAAAAAQAAABAAAAAQAAAAQAAAAA=</HashCode>
+      <FileName>Textures.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MauronAlpha.GameEngine.Text.Fonts.FontFile" Collapsed="true">
+    <Position X="29.5" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIgAAAAAAAAAEAwAAAAAAAAAAAAAAAAQAAAAEAgAAA=</HashCode>
+      <FileName>SpriteFont.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MauronAlpha.GameEngine.Text.Fonts.FontInfo">
+    <Position X="40" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAAAQAAAgAEBgCAAAAQABAAAQAAAAAAAAAIAAACAAEE=</HashCode>
+      <FileName>SpriteFont.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MauronAlpha.GameEngine.Text.Fonts.FontCommon" Collapsed="true">
+    <Position X="34.75" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAgAAIAAABAAABAAAAAAAAAAAFAUCA=</HashCode>
+      <FileName>SpriteFont.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MauronAlpha.GameEngine.Text.Fonts.FontPage">
+    <Position X="31.5" Y="7.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAgAAAAAAAAAAAAAAEAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>SpriteFont.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MauronAlpha.GameEngine.Text.Fonts.FontChar" Collapsed="true">
+    <Position X="33" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAgBAAQgAAAAAAAAEAAAAAAADAAAAAAAAABYAA=</HashCode>
+      <FileName>SpriteFont.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MauronAlpha.GameEngine.Text.Fonts.FontKerning" Collapsed="true">
+    <Position X="38.25" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAQAAAAAAAAKAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>SpriteFont.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MauronAlpha.GameEngine.Text.Fonts.SpriteFont" Collapsed="true">
+    <Position X="31.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAgAAgAAAAAAAAQAAAQAQAAAAAAAAAIAAAAAAAA=</HashCode>
+      <FileName>SpriteFont.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MauronAlpha.GameEngine.Text.TextAlignment" Collapsed="true">
+    <Position X="3" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>TextAlignment.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MauronAlpha.GameEngine.Text.TextAlignment_Left" Collapsed="true">
+    <Position X="0.75" Y="12" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>TextAlignment.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MauronAlpha.GameEngine.Text.TextAlignment_Center" Collapsed="true">
+    <Position X="3" Y="12" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>TextAlignment.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MauronAlpha.GameEngine.Text.TextAlignment_Right" Collapsed="true">
+    <Position X="5.25" Y="12" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>TextAlignment.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MauronAlpha.GameEngine.Text.TextDisplay" Collapsed="true">
+    <Position X="11.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAABAAAAgAAACAAAEAAAAAAAAAAAjAADQEAAAA=</HashCode>
+      <FileName>TextDisplay.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MauronAlpha.GameEngine.Text.TextComponent" Collapsed="true">
+    <Position X="16" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAgAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>TextDisplay.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MauronAlpha.GameEngine.Text.TextComponent_text" Collapsed="true">
+    <Position X="13.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAABAAAAggAAAAAAEAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>TextDisplay.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MauronAlpha.GameEngine.Text.TextComponent_word" Collapsed="true">
+    <Position X="16" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAABAAAAggAAAAAAEAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>TextDisplay.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MauronAlpha.GameEngine.Text.TextComponent_char" Collapsed="true">
+    <Position X="18.25" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAABAQAAggAAAAAAEAAAAAAAAAAAAAAAAAACAA=</HashCode>
+      <FileName>TextDisplay.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MauronAlpha.GameEngine.Text.TextConvert" Collapsed="true">
+    <Position X="36.5" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAgAAAIAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>TextDisplay.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MauronAlpha.GameEngine.Text.TextMarkup" Collapsed="true">
+    <Position X="0.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>TextMarkup.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MauronAlpha.GameEngine.Text.TextMarkup_default" Collapsed="true">
+    <Position X="0.5" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAQAAAAAAQAAABAAAAAQAAAAAAAAAA=</HashCode>
+      <FileName>TextMarkup.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

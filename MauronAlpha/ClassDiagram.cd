@@ -1,0 +1,158 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="MauronAlpha.CodeType" Collapsed="true">
+    <Position X="3" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>CodeType.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MauronAlpha.CodeType_generic" Collapsed="true">
+    <Position X="0.75" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAQAAAAAAQAAABAAAAAQAAAAAAAAAA=</HashCode>
+      <FileName>CodeType.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MauronAlpha.CodeType_singleton" Collapsed="true">
+    <Position X="3" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAQAAAAAAQAAABAAAAAQAAAAAAAAAA=</HashCode>
+      <FileName>CodeType.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MauronAlpha.CodeType_utility" Collapsed="true">
+    <Position X="5.25" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAQAAAAAAQAAABAAAAAQAAAAAAAAAA=</HashCode>
+      <FileName>CodeType.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MauronAlpha.Computer" Collapsed="true">
+    <Position X="7.5" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Computer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MauronAlpha.DataObject" Collapsed="true">
+    <Position X="12" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DataObject.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MauronAlpha.Definition" Collapsed="true">
+    <Position X="11" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Definition.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MauronAlpha.Device" Collapsed="true">
+    <Position X="7.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Device.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MauronAlpha.FileReference" Collapsed="true">
+    <Position X="12" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAggiAAgEAAABAAAIAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>FileReference.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MauronAlpha.FileType" Collapsed="true">
+    <Position X="9.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>FileType.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MauronAlpha.LanguageComponent" Collapsed="true">
+    <Position X="11" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>LanguageComponent.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MauronAlpha.MauronAlphaCode" Collapsed="true">
+    <Position X="7.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>MauronAlphaCode.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MauronAlpha.MauronCode" Collapsed="true">
+    <Position X="2.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAA=</HashCode>
+      <FileName>MauronCode.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MauronAlpha.OS" Collapsed="true">
+    <Position X="14.25" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAAAAAAAEAAAAAAAAAAAAAIAAAAAAA=</HashCode>
+      <FileName>OS.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MauronAlpha.Project" Collapsed="true">
+    <Position X="2.75" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Project.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MauronAlpha.ProjectType" Collapsed="true">
+    <Position X="2.75" Y="7.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ProjectType.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MauronAlpha.Definitions.CodeStyle" Collapsed="true">
+    <Position X="5" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>CodeStyle.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MauronAlpha.Definitions.CodeStyles.CodeStyle_MauronAlpha_CSharp" Collapsed="true">
+    <Position X="5" Y="7.25" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>CodeStyles\CodeStyle_MauronAlpha_CSharp.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MauronAlpha.Devices.PC" Collapsed="true">
+    <Position X="7.5" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Devices\PC.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MauronAlpha.FileTypes.MauFile" Collapsed="true">
+    <Position X="9.75" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>FileTypes\MauFile.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MauronAlpha.ProjectTypes.Program" Collapsed="true">
+    <Position X="2.75" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAgAAAAABAAAAAAAAAQAAAAAAAAAAAAA=</HashCode>
+      <FileName>ProjectTypes\Program.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MauronAlpha.ProjectTypes.ProgramInstance" Collapsed="true">
+    <Position X="2.75" Y="10.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ProjectTypes\Program.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

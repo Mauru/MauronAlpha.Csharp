@@ -1,0 +1,7 @@
+C:\Projects\C#\Building a Usable Code-Tree\Attempt 1\Mauron\MauronAlpha.Geometry\bin\Debug\MauronAlpha.Geometry.dll
+C:\Projects\C#\Building a Usable Code-Tree\Attempt 1\Mauron\MauronAlpha.Geometry\bin\Debug\MauronAlpha.Geometry.pdb
+C:\Projects\C#\Building a Usable Code-Tree\Attempt 1\Mauron\MauronAlpha.Geometry\bin\Debug\MauronAlpha.dll
+C:\Projects\C#\Building a Usable Code-Tree\Attempt 1\Mauron\MauronAlpha.Geometry\bin\Debug\MauronAlpha.pdb
+C:\Projects\C#\Building a Usable Code-Tree\Attempt 1\Mauron\MauronAlpha.Geometry\obj\Debug\MauronAlpha.Geometry.csprojResolveAssemblyReference.cache
+C:\Projects\C#\Building a Usable Code-Tree\Attempt 1\Mauron\MauronAlpha.Geometry\obj\Debug\MauronAlpha.Geometry.dll
+C:\Projects\C#\Building a Usable Code-Tree\Attempt 1\Mauron\MauronAlpha.Geometry\obj\Debug\MauronAlpha.Geometry.pdb

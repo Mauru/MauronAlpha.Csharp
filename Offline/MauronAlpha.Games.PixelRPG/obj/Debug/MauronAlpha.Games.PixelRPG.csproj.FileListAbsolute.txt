@@ -1,0 +1,11 @@
+C:\Projects\C#\Building a Usable Code-Tree\Attempt 1\Mauron\MauronAlpha.Games.PixelRPG\obj\Debug\MauronAlpha.Games.PixelRPG.csprojResolveAssemblyReference.cache
+C:\Projects\C#\Building a Usable Code-Tree\Attempt 1\Mauron\MauronAlpha.Games.PixelRPG\bin\Debug\MauronAlpha.Games.PixelRPG.dll
+C:\Projects\C#\Building a Usable Code-Tree\Attempt 1\Mauron\MauronAlpha.Games.PixelRPG\bin\Debug\MauronAlpha.Games.PixelRPG.pdb
+C:\Projects\C#\Building a Usable Code-Tree\Attempt 1\Mauron\MauronAlpha.Games.PixelRPG\bin\Debug\MauronAlpha.dll
+C:\Projects\C#\Building a Usable Code-Tree\Attempt 1\Mauron\MauronAlpha.Games.PixelRPG\bin\Debug\MauronAlpha.GameEngine.dll
+C:\Projects\C#\Building a Usable Code-Tree\Attempt 1\Mauron\MauronAlpha.Games.PixelRPG\bin\Debug\MauronAlpha.Geometry.dll
+C:\Projects\C#\Building a Usable Code-Tree\Attempt 1\Mauron\MauronAlpha.Games.PixelRPG\bin\Debug\MauronAlpha.GameEngine.pdb
+C:\Projects\C#\Building a Usable Code-Tree\Attempt 1\Mauron\MauronAlpha.Games.PixelRPG\bin\Debug\MauronAlpha.Geometry.pdb
+C:\Projects\C#\Building a Usable Code-Tree\Attempt 1\Mauron\MauronAlpha.Games.PixelRPG\bin\Debug\MauronAlpha.pdb
+C:\Projects\C#\Building a Usable Code-Tree\Attempt 1\Mauron\MauronAlpha.Games.PixelRPG\obj\Debug\MauronAlpha.Games.PixelRPG.dll
+C:\Projects\C#\Building a Usable Code-Tree\Attempt 1\Mauron\MauronAlpha.Games.PixelRPG\obj\Debug\MauronAlpha.Games.PixelRPG.pdb

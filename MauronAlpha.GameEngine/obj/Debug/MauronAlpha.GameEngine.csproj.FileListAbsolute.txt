@@ -1,0 +1,9 @@
+C:\Projects\C#\Building a Usable Code-Tree\Attempt 1\Mauron\MauronAlpha.GameEngine\obj\Debug\MauronAlpha.GameEngine.csprojResolveAssemblyReference.cache
+C:\Projects\C#\Building a Usable Code-Tree\Attempt 1\Mauron\MauronAlpha.GameEngine\bin\Debug\MauronAlpha.GameEngine.dll
+C:\Projects\C#\Building a Usable Code-Tree\Attempt 1\Mauron\MauronAlpha.GameEngine\bin\Debug\MauronAlpha.GameEngine.pdb
+C:\Projects\C#\Building a Usable Code-Tree\Attempt 1\Mauron\MauronAlpha.GameEngine\bin\Debug\MauronAlpha.dll
+C:\Projects\C#\Building a Usable Code-Tree\Attempt 1\Mauron\MauronAlpha.GameEngine\bin\Debug\MauronAlpha.Geometry.dll
+C:\Projects\C#\Building a Usable Code-Tree\Attempt 1\Mauron\MauronAlpha.GameEngine\bin\Debug\MauronAlpha.Geometry.pdb
+C:\Projects\C#\Building a Usable Code-Tree\Attempt 1\Mauron\MauronAlpha.GameEngine\bin\Debug\MauronAlpha.pdb
+C:\Projects\C#\Building a Usable Code-Tree\Attempt 1\Mauron\MauronAlpha.GameEngine\obj\Debug\MauronAlpha.GameEngine.dll
+C:\Projects\C#\Building a Usable Code-Tree\Attempt 1\Mauron\MauronAlpha.GameEngine\obj\Debug\MauronAlpha.GameEngine.pdb

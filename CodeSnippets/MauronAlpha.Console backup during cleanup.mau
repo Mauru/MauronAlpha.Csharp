@@ -1,0 +1,115 @@
+public Stack<string>Buffer=new Stack<string>();
+		public bool Busy=true;
+		public string Line="#";
+		public string Status=">";
+		public string LastMessage="";
+		public string MessageExecuting="";
+		public string ClientName="M";
+
+		public bool CheckStatus() {
+			return Busy;
+		}
+		
+		public bool Parse(string cmd){
+			bool write=true;
+			if(cmd.Length>0&&cmd.ElementAt<char>(0)=='#'){
+				KeyValuePair<string,bool>result=ParseCommand(cmd);
+				cmd=result.Key;
+				write=result.Value;
+			}
+			if(write){
+				Buffer.Push(cmd);
+			}
+			return Busy;
+		}
+
+		private KeyValuePair<string,bool> ParseCommand(string cmd){
+			if(cmd=="#exit;"||cmd=="#quit;"){
+				Busy=false;
+			}else if(cmd=="#clear;"){
+				Buffer=new Stack<String>();
+				WriteStatus();
+			}else if(Regex.IsMatch(cmd,"#[0-9]+:.*")){
+				//rewrite a line in the buffer
+				int line;
+				MatchCollection matches = Regex.Matches(cmd,"^#([0-9]+):(.*)");
+				if(matches.Count==2){
+					Int32.TryParse(matches[0].Value,out line);
+					string[] b=Buffer.ToArray();
+					if(line<=b.Length&&line>=0){
+						b[line]=cmd.Substring(matches[0].Length);
+					}
+
+					Buffer = new Stack<string>(b);
+					Buffer.Push(cmd);
+					WriteStatus();
+				}
+				Console.Beep();
+				//TODO: replace the line in the Buffer
+			}
+			return new KeyValuePair<string,bool>(cmd,false);
+		}
+		
+		//Display the buffer
+		public bool WriteBuffer(){
+			string[] buffer=Buffer.ToArray().Reverse<string>().ToArray<string>();
+
+			//Determine minimum length for the line parameter
+			int strlen = (""+buffer.Length).Length;
+
+			for(int i=0;i<Buffer.Count;i++){
+				string line = buffer[i];
+				Line= WriteLineCount(i,strlen);
+				Status=":";
+				MessageExecuting=line;
+				ClientName="#";
+				WriteStatus(true);
+			}
+			return Reset();
+		}
+		private string WriteLineCount(int linenum, int minlength){
+			int islength = minlength-(""+linenum).Length;
+			string ret="";
+			for(int i=0; i<islength;i++){
+				ret+=" ";
+			}
+			ret+=linenum;
+			return ret;
+		}
+
+		//Reset the Linepointer
+		public bool Reset(){
+			Line="#";
+			Status=">";
+			ClientName="M";
+			MessageExecuting="";
+			return Busy;
+		}
+
+		//Clear the screen, then write the buffer and the status		
+		public bool WriteStatus(){
+			Console.Clear();
+			WriteBuffer();
+			WriteStatus(false);
+			return Busy;
+		}
+
+		//Write The commandlineinput  (on a  new line?)
+		public bool WriteStatus(bool newline){
+			string str_msg=Line+ClientName+Status+MessageExecuting;
+			if(newline){
+				Console.WriteLine(str_msg);
+			}else{
+				Console.Write(str_msg);
+			}
+			return Busy;
+		}
+		
+		//Redraw the screen
+		public bool Cycle(){
+			CheckStatus();
+			WriteStatus();
+			string cmd=Console.ReadLine();
+			Parse(cmd);
+			return true;
+		}
