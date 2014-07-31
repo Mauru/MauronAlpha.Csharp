@@ -1,5 +1,5 @@
 ﻿using System;
-using MauronAlpha.Math;
+using MauronAlpha.Mathematics;
 
 namespace MauronAlpha.Events {
 	
@@ -12,12 +12,12 @@ namespace MauronAlpha.Events {
 		I_mathComponent
 	{
 		
-		/* constructors, invalid
-		public MauronCode_timeUnit():base(CodeType_timeUnit.Instance) {}
-		public MauronCode_timeUnit (long ticks) : base(CodeType_timeUnit.Instance) { 
-			SetTicks(ticks);
-		}
-*/
+		#region invalid constructors, kept for explanatory sake
+			/*public MauronCode_timeUnit():base(CodeType_timeUnit.Instance) {}
+			public MauronCode_timeUnit (long ticks) : base(CodeType_timeUnit.Instance) { 
+				SetTicks(ticks);
+			}*/
+		#endregion
 		
 		//Feature Complete constructors
 		public MauronCode_timeUnit(long ticks, MauronCode_eventClock clock):base(CodeType_timeUnit.Instance){

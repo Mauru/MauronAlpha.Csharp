@@ -5,15 +5,6 @@ namespace MauronAlpha.HandlingData {
 	//A class that contains data and datamethods
 	public abstract class MauronCode_dataObject : MauronCode, I_dataObject {
 		public MauronCode_dataObject():base(CodeType_dataObject.Instance) {}
-		
-		#region I_dataObject
-		public abstract string[] ProperyKeys { get; }
-		#endregion
-
-		internal abstract string[] STR_propertyKeys { get; }
-		public string[] PropertyKeys {
-			get { return STR_propertyKeys; }
-		}
 	}
 
 	//Functionality

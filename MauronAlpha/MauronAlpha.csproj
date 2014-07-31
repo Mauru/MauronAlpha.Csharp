@@ -50,7 +50,7 @@
     <Compile Include="Events\MauronCode_eventShedule.cs" />
     <Compile Include="Events\MauronCode_eventShedule_defaults.cs" />
     <Compile Include="Events\MauronCode_timeUnit.cs" />
-    <Compile Include="ExplainingCode\I_instantiable.cs" />
+    <Compile Include="HandlingData\I_instantiable.cs" />
     <Compile Include="ExplainingCode\I_Singleton.cs" />
     <Compile Include="Files\MauronCode_file.cs" />
     <Compile Include="Files\MauronCode_filehandler.cs" />
@@ -58,9 +58,10 @@
     <Compile Include="HandlingData\I_data.cs" />
     <Compile Include="HandlingData\I_dataObject.cs" />
     <Compile Include="HandlingData\I_dataSet.cs" />
+    <Compile Include="HandlingData\MauronCode_dataList.cs" />
     <Compile Include="Settings\I_hasDefaultSettings.cs" />
     <Compile Include="HandlingData\MauronCode_data.cs" />
-    <Compile Include="HandlingData\Mauroncode_dataSet.cs" />
+    <Compile Include="HandlingData\MauronCode_dataSet.cs" />
     <Compile Include="ErrorHandling\MauronCode_error.cs" />
     <Compile Include="ExplainingCode\MauronCode.cs" />
     <Compile Include="ExplainingCode\CodeStyle.cs" />
@@ -81,7 +82,7 @@
     <Compile Include="ExplainingCode\MauronCode_subtype.cs" />
     <Compile Include="ExplainingCode\MauronCode_utility.cs" />
     <Compile Include="Devices\OS.cs" />
-    <Compile Include="Math\I_mathComponent.cs" />
+    <Compile Include="Mathematics\I_mathComponent.cs" />
     <Compile Include="Projects\I_project.cs" />
     <Compile Include="Projects\MauronCode_project.cs" />
     <Compile Include="Projects\ProjectType.cs" />

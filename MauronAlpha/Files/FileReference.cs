@@ -4,10 +4,6 @@ using MauronAlpha.HandlingData;
 namespace MauronAlpha.Files {
 
     public class FileReference:MauronCode_dataObject,I_dataObject {
-		#region I_dataObject
-		internal override string[] STR_propertyKeys { get { return new String[] {"Location","FileType","Content"}; } }
-		#endregion
-		
         public String Location { 
 			get { throw new NotImplementedException(); } 
 			set { throw new NotImplementedException(); } 
@@ -36,17 +32,6 @@ namespace MauronAlpha.Files {
             this.Loaded = false;
         }
 
-
-
-
-
-		public override string[] ProperyKeys {
-			get { throw new NotImplementedException(); }
-		}
-
-		string[] I_dataObject.PropertyKeys {
-			get { throw new NotImplementedException(); }
-		}
 	}
 
 }
