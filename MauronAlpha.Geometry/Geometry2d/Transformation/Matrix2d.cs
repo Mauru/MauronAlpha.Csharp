@@ -105,7 +105,7 @@ namespace MauronAlpha.Geometry.Geometry2d.Transformation {
 			return pp;
 		}
 		public Vector2d[] ApplyTo (Vector2d[] pp) {
-			Vector2d center=GeometryHelper2d.PolygonCenter(pp).Divide(2);
+			Vector2d center=(Vector2d) GeometryHelper2d.PolygonCenter(pp).Divide(2);
 
 			foreach( Vector2d v in pp ) {
 				//Reset Rotation

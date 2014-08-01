@@ -1,11 +1,12 @@
 ﻿using System;
 
 using MauronAlpha.Geometry.Geometry2d.Utility;
+using MauronAlpha.Mathematics;
 
 namespace MauronAlpha.Geometry.Geometry2d.Units {
 	
 	//A line segment
-	public class Segment2d : GeometryComponent2d {
+	public class Segment2d : GeometryComponent2d, I_mathComponent {
 
 		//constructors
 		public Segment2d (Vector2d a, Vector2d b) {
@@ -85,9 +86,6 @@ namespace MauronAlpha.Geometry.Geometry2d.Units {
 				return new Segment2d(A.Instance, B.Instance);
 			}
 		}
-		public bool Equals (Segment2d s) {
-			return this.ToString==s.ToString;
-		}
 		public new string ToString {
 			get {
 				return "{[1:"+A.ToString+"][2:"+B.ToString+"]}";
@@ -130,7 +128,99 @@ namespace MauronAlpha.Geometry.Geometry2d.Units {
 
 			return true;
 		}
-	
+
+		#region I_mathComponent
+		//add
+		public Segment2d Add(long n) {
+			A.Add(n);
+			B.Add(n);
+			return this;
+		}
+		public Segment2d Add(Segment2d n) {
+			A.Add(n.A);
+			B.Add(n.B);
+			return this;
+		}
+		I_mathComponent I_mathComponent.Add (long n) {
+			return Add(n);
+		}
+		//subtract
+		public Segment2d Subtract(long n) {
+			A.Subtract(n);
+			B.Subtract(n);
+			return this;
+		}
+		public Segment2d Subtract(Segment2d n) {
+			A.Subtract(n.A);
+			B.Subtract(n.B);
+			return this;
+		}
+		I_mathComponent I_mathComponent.Subtract (long n) {
+			return Subtract(n);
+		}
+		//multiply
+		public Segment2d Multiply(long n) {
+			A.Multiply(n);
+			B.Multiply(n);
+			return this;
+		}
+		public Segment2d Multiply (Segment2d n) {
+			A.Multiply(n.A);
+			B.Multiply(n.B);
+			return this;
+		}
+		I_mathComponent I_mathComponent.Multiply (long n) {
+			return Multiply(n);
+		}
+		//divide
+		public Segment2d Divide(long n) {
+			A.Divide(n);
+			B.Divide(n);
+			return this;
+		}
+		public Segment2d Divide (Segment2d n) {
+			A.Divide(n.A);
+			B.Divide(n.B);
+			return this;
+		}
+		I_mathComponent I_mathComponent.Divide (long n) {
+			return Divide(n);
+		}
+
+		public bool SmallerOrEqual (Segment2d n) {
+			return A.SmallerOrEqual(n.A)&&B.SmallerOrEqual(n.B);
+		}
+		public bool SmallerOrEqual (long n) {
+			return A.SmallerOrEqual(n)&&B.SmallerOrEqual(n);
+		}
+		public bool LargerOrEqual (Segment2d n) {
+			return A.LargerOrEqual(n.A)&&B.LargerOrEqual(n.B);
+		}
+		public bool LargerOrEqual (long n) {
+			return A.LargerOrEqual(n)&&B.LargerOrEqual(n);
+		}
+		public object Clone ( ) {
+			return Instance;
+		}
+		public int CompareTo (long other) {
+			if(A.CompareTo(other)==0&&B.CompareTo(other)==0) return 0;
+			if( A.CompareTo(other)==1&&B.CompareTo(other)==1) return 1;
+			return -1;
+		}
+		public int CompareTo (Segment2d other) {
+			if( A.CompareTo(other.A)==0&&B.CompareTo(other.B)==0 )
+				return 0;
+			if( A.CompareTo(other.A)==1&&B.CompareTo(other.B)==1 )
+				return 1;
+			return -1;
+		}
+		public bool Equals (long other) {
+			return (A.Equals(other)&&B.Equals(other));
+		}
+		public bool Equals (Segment2d other) {
+			return (A.Equals(other.A)&&B.Equals(other.B));
+		}
+		#endregion
 	}
 
 }

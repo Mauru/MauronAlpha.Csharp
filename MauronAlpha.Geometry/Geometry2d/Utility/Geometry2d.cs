@@ -38,7 +38,7 @@ namespace MauronAlpha.Geometry.Geometry2d.Utility {
 		//get the centerr of a collection of points
 		public static Vector2d PolygonCenter(Vector2d[] points) {
 			Vector2d[] minmax=	PolygonBounds(points);
-			Vector2d d = minmax[0].Difference(minmax[1]).Divide(2);
+			Vector2d d = (Vector2d) minmax[0].Difference(minmax[1]).Divide(2);
 			return minmax[0].Add(d);
 		}
 		public static Vector2d PolygonCenter (Polygon2d p) {
