@@ -43,6 +43,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ErrorHandling\ErrorType.cs" />
+    <Compile Include="ErrorHandling\ErrorType_exception.cs" />
+    <Compile Include="ErrorHandling\ErrorType_fatal.cs" />
     <Compile Include="Events\I_eventCaller.cs" />
     <Compile Include="Events\I_eventReceiver.cs" />
     <Compile Include="Events\MauronCode_event.cs" />

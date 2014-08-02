@@ -36,7 +36,7 @@ namespace MauronAlpha.Events {
 		public MauronCode_eventClock Clock {
 			get {
 				if(EC_clock==null) {
-					throw new MauronCode_error("Clock can't be null!",this);
+					Error("Clock can't be null!",this);
 				}
 				return EC_clock;
 			}

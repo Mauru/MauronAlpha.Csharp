@@ -187,6 +187,7 @@ namespace MauronAlpha.Geometry.Geometry2d.Units {
 			return Divide(n);
 		}
 
+		//comparison
 		public bool SmallerOrEqual (Segment2d n) {
 			return A.SmallerOrEqual(n.A)&&B.SmallerOrEqual(n.B);
 		}

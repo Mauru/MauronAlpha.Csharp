@@ -12,7 +12,7 @@ namespace MauronAlpha.Events {
 		private I_eventCaller IE_caller;
 		public I_eventCaller Caller { get {
 			if(IE_caller==null) {
-				throw new MauronCode_error("Event Caller can not be null", this);
+				Error("Event Caller can not be null", this);
 			}
 			return IE_caller;
 		} }
@@ -44,7 +44,7 @@ namespace MauronAlpha.Events {
 		private Delegate_condition DEL_condition;
 		public Delegate_condition Condition { get {
 			if(DEL_condition==null) {
-				throw new MauronCode_error("Condition can not be null!", this);
+				Error("Condition can not be null!", this);
 			}
 			return DEL_condition;
 		} }
@@ -63,7 +63,7 @@ namespace MauronAlpha.Events {
 		public Delegate_trigger Trigger {
 			get {
 				if(DEL_trigger==null) {
-					throw new MauronCode_error("Trigger can not be null!", this);
+					Error("Trigger can not be null!", this);
 				}
 				return DEL_trigger;
 			}
@@ -105,7 +105,7 @@ namespace MauronAlpha.Events {
 		public MauronCode_eventShedule Shedule { 
 			get { 
 				if(ES_eventShedule==null) {
-					throw new MauronCode_error("EventShedule can not be null!", this);
+					Error("EventShedule can not be null!", this);
 				}
 				return ES_eventShedule; 
 			}

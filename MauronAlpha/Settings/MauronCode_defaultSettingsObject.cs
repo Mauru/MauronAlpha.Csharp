@@ -25,7 +25,7 @@ namespace MauronAlpha.Settings {
 		internal MauronCode_dataSet Data=new MauronCode_dataSet();
 		public virtual object GetDefault(string key, object obj) {
 			if(!Data.HasKey(key)){
-				throw new MauronCode_error("Invalid Default Key { string "+key+" }",this);
+				Error("Invalid Default Key { string "+key+" }",this);
 			}
 			return Data[key];
 		}

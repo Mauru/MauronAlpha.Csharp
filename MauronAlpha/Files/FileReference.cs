@@ -19,7 +19,7 @@ namespace MauronAlpha.Files {
         public String Content { 
 			get {
 				if (!Loaded) {
-					throw new MauronCode_error("FileReference has not loaded yet",this);
+					Error("FileReference has not loaded yet",this);
 				}
 				return STR_content;
 			}

@@ -59,7 +59,7 @@ namespace MauronAlpha.Events {
 		public MauronCode_eventClock Clock {
 			get {
 				if(EC_clock==null){
-					throw new MauronCode_error("Clock can not be null!", this);
+					Error("Clock can not be null!", this);
 				}
 				return EC_clock;
 			}
@@ -75,7 +75,7 @@ namespace MauronAlpha.Events {
 		public MauronCode_timeUnit Interval {
 			get { 
 				if(TU_interval==null) {
-					throw new MauronCode_error("Interval can not be null!", this);
+					Error("Interval can not be null!", this);
 				}
 				return TU_interval;
 			}
@@ -116,7 +116,7 @@ namespace MauronAlpha.Events {
 		public MauronCode_event E_event;
 		public MauronCode_event Event {
 			get{
-				if(E_event==null) { throw new MauronCode_error("Event can not be null!", this); }
+				if(E_event==null) { Error("Event can not be null!", this); }
 				return E_event;
 			}
 		}

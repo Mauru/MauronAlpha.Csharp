@@ -27,7 +27,7 @@ namespace MauronAlpha.Projects {
 		public ProjectType ProjectType { 
 			get { 
 				if(PT_projecttype==null){ 
-					throw new MauronCode_error("Invalid ProjectType (null)",this); 
+					Error("Invalid ProjectType (null)",this); 
 				}
 			return PT_projecttype; }
 		}
