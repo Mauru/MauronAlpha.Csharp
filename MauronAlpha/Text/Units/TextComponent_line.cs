@@ -7,13 +7,13 @@ namespace MauronAlpha.Text.Units {
 	public class TextComponent_Line : TextComponent {
 
 		//constructor
-		public TextComponent_Line (MauronConsole console, int index) {
+		public TextComponent_Line (I_TextDisplay source, int index) {
 			SetIndex(index);
-			SetWindow(console);
+			SetDisplay(source);
 		}
-		public TextComponent_Line (MauronConsole console, int index, string text) {
+		public TextComponent_Line (I_TextDisplay source, int index, string text) {
 			SetIndex(index);
-			SetWindow(console);
+			SetDisplay(source);
 			SetText(text);
 		}
 
@@ -46,8 +46,8 @@ namespace MauronAlpha.Text.Units {
 			return this;
 		}
 
-		private MauronConsole M;
-		public MauronCode Window {
+		private I_TextDisplay M;
+		public I_TextDisplay Display {
 			get {
 				if( M==null ) {
 					MauronCode.Error("Invalid output source (currently hardcoded to console)", this);
@@ -55,16 +55,16 @@ namespace MauronAlpha.Text.Units {
 				return M;
 			}
 		}
-		public TextComponent_Line SetWindow (MauronConsole m) {
+		public TextComponent_Line SetDisplay (I_TextDisplay m) {
 			M=m;
 			return this;
 		}
 
-		public static TextComponent_Line New (MauronConsole window, string s) {
-			return new TextComponent_Line(window, window.LineBuffer.NextIndex, s);
+		public static TextComponent_Line New (I_TextDisplay display, string s) {
+			return new TextComponent_Line(display, display.LineBuffer.NextIndex, s);
 		}
-		public static TextComponent_Line New (MauronConsole window) {
-			return new TextComponent_Line(window, window.LineBuffer.NextIndex);
+		public static TextComponent_Line New (I_TextDisplay display) {
+			return new TextComponent_Line(display, display.LineBuffer.NextIndex);
 		}
 
 
