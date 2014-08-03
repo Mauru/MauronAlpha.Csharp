@@ -4,7 +4,19 @@ namespace MauronAlpha.HandlingData {
 
 	//A class that contains data and datamethods
 	public abstract class MauronCode_dataObject : MauronCode, I_dataObject {
-		public MauronCode_dataObject():base(CodeType_dataObject.Instance) {}
+		public MauronCode_dataObject(DataType dataType):base(CodeType_dataObject.Instance) {
+		}
+
+		private DataType DT_dataType;
+		public DataType DataType { get {
+			if (DT_dataType==null){
+				MauronCode.Error("DataType can not be null!", this);
+			}
+			return DT_dataType;
+		} }
+		private void SetDataType(DataType dataType) {
+			DT_dataType=dataType;
+		}
 	}
 
 	//Functionality

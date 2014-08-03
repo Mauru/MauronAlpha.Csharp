@@ -55,6 +55,7 @@
     <Compile Include="Events\MauronCode_eventShedule.cs" />
     <Compile Include="Events\MauronCode_eventShedule_defaults.cs" />
     <Compile Include="Events\MauronCode_timeUnit.cs" />
+    <Compile Include="HandlingData\DataType.cs" />
     <Compile Include="HandlingData\I_instantiable.cs" />
     <Compile Include="ExplainingCode\I_Singleton.cs" />
     <Compile Include="Files\MauronCode_file.cs" />

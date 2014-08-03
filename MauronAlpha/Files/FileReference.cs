@@ -4,6 +4,9 @@ using MauronAlpha.HandlingData;
 namespace MauronAlpha.Files {
 
     public class FileReference:MauronCode_dataObject,I_dataObject {
+		
+		public FileReference():base(DataType_plain.Instance) {}
+
         public String Location { 
 			get { throw new NotImplementedException(); } 
 			set { throw new NotImplementedException(); } 

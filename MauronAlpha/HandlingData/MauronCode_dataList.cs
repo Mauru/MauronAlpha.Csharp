@@ -7,7 +7,7 @@ namespace MauronAlpha.HandlingData {
 	public class MauronCode_dataList<T>:MauronCode_dataObject,ICollection<T> {
 
 		//constructor
-		public MauronCode_dataList() {
+		public MauronCode_dataList():base(DataType_maintaining.Instance) {
 			Clear();
 		}
 
@@ -94,6 +94,8 @@ namespace MauronAlpha.HandlingData {
 				return Data [LastIndex];
 			}
 		}
+		
+		//Is a List empty?
 		public bool IsEmpty {
 			get {
 				return Data.Count == 0; 
