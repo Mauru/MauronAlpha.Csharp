@@ -10,10 +10,10 @@ namespace MauronAlpha {
 		}
 
 		//Error handling
-		public void Error(string msg, object o){
+		public static void Error(string msg, object o){
 			throw new MauronCode_error(msg, o, ErrorType_fatal.Instance);
 		}
-		public void Exception(string msg, object o){
+		public static void Exception(string msg, object o){
 			throw new MauronCode_error(msg, o, ErrorType_exception.Instance);
 		}
     }
