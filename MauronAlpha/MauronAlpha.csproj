@@ -32,6 +32,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'DontCompile|AnyCPU'">
     <OutputPath>bin\DontCompile\</OutputPath>
+    <WarningLevel>4</WarningLevel>
+    <Optimize>false</Optimize>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -64,7 +66,6 @@
     <Compile Include="HandlingData\MauronCode_dataList.cs" />
     <Compile Include="Settings\I_hasDefaultSettings.cs" />
     <Compile Include="HandlingData\MauronCode_data.cs" />
-    <Compile Include="HandlingData\MauronCode_dataSet.cs" />
     <Compile Include="ErrorHandling\MauronCode_error.cs" />
     <Compile Include="ExplainingCode\MauronCode.cs" />
     <Compile Include="ExplainingCode\CodeStyle.cs" />
@@ -92,6 +93,7 @@
     <Compile Include="ProjectTypes\Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Settings\MauronCode_defaultSettingsObject.cs" />
+    <Compile Include="HandlingData\Mauroncode_dataSet.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />
