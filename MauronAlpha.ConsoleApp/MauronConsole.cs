@@ -234,7 +234,7 @@ namespace MauronAlpha.ConsoleApp
 
 		//Initialize the Event Handling
 		public I_eventSender InitializeEventHandling ( ) {
-			MauronCode_event updateEvent = new MauronCode_event();
+			MauronCode_event updateEvent = new MauronCode_event(this, this);
 			return this;
 		}
 

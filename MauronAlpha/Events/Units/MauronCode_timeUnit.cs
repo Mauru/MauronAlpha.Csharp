@@ -2,7 +2,7 @@
 using MauronAlpha.Mathematics;
 using MauronAlpha.ExplainingCode;
 
-namespace MauronAlpha.Events {
+namespace MauronAlpha.Events.Units {
 	
 	//A unit of time
 	public class MauronCode_timeUnit: MauronCode,

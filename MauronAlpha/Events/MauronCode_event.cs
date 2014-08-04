@@ -2,6 +2,7 @@
 
 using MauronAlpha.ExplainingCode;
 using MauronAlpha.HandlingData;
+using MauronAlpha.Events.Units;
 
 namespace MauronAlpha.Events {
 	
@@ -9,33 +10,47 @@ namespace MauronAlpha.Events {
 	public class MauronCode_event:MauronCode {
 
 		//constructor
-		public MauronCode_event():base(CodeType_event.Instance){}
+		private MauronCode_event():base(CodeType_event.Instance){}
+		public MauronCode_event(I_eventSender sender, Delegate_condition condition, Delegate_trigger trigger, MauronCode_timeSpan interval, int executions):this() {
+			SetSender(sender);
+			SetCondition(condition);
+			SetTrigger(trigger);
+		}
+		public MauronCode_event(I_eventSender sender, I_eventReceiver receiver):this() {
+			SetSender(sender);
+			SetReceiver(receiver);
+		}
 
-		#region Set the caller
-		private I_eventSender IE_caller;
-		public I_eventSender Caller {
+		#region The Sender of the event
+		
+		private I_eventSender IE_sender;
+		public I_eventSender Sender {
 			get {
-			if(IE_caller==null) {
-				Error("Event Caller can not be null", this);
+			if(IE_sender==null) {
+				Error("Event Sender can not be null", this);
 			}
-			return IE_caller;
+			return IE_sender;
 		} }
-		public MauronCode_event SetCaller (I_eventSender caller) {
-			IE_caller=caller;
+		public MauronCode_event SetSender (I_eventSender sender) {
+			IE_sender=sender;
 			return this;
 		}
+
 		#endregion
 
-		#region Set the receiver
+		#region The Receiver of the event
+
 		private I_eventReceiver IE_receiver;
-		public I_eventReceiver Receiver { get {return IE_receiver; } }
+		public I_eventReceiver Receiver { get { return IE_receiver; } }
 		public MauronCode_event SetReceiver (I_eventReceiver receiver) {
 			IE_receiver=receiver;
 			return this;
 		}
+
 		#endregion
 
 		#region Condition for an Event
+
 		public delegate bool Delegate_condition(I_eventReceiver receiver, MauronCode_event e);
 		public static bool CheckCondition(I_eventReceiver receiver, MauronCode_event e, Delegate_condition check) {
 			return check(receiver,e);
@@ -56,6 +71,7 @@ namespace MauronAlpha.Events {
 			DEL_condition=condition;
 			return this;
 		}
+		
 		#endregion
 
 		#region Trigger Method
