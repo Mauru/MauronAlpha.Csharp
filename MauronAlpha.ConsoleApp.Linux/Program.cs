@@ -1,13 +1,15 @@
 using System;
 using MauronAlpha.Projects;
 using MauronAlpha.HandlingData;
-using MauronAlpha.
+using MauronAlpha.ExplainingCode;
+using MauronAlpha.Text.Units;
+using MauronAlpha.Text;
 
 namespace MauronAlpha.ConsoleApp.Linux
 {
 
 	//A superbasic console
-	public class MauronConsole : MauronCode_project {
+	public class MauronConsole : MauronCode_project, I_textDisplay {
 		public MauronConsole ( )
 			: base(
 				ProjectType_generic.Instance,
@@ -74,7 +76,7 @@ namespace MauronAlpha.ConsoleApp.Linux
 		}
 
 		//The LineBuffer
-		public MauronCode_dataList<TextComponent_Line> LineBuffer=new MauronCode_dataList<TextComponent_Line>();
+		public MauronCode_dataList<TextComponent_line> LineBuffer=new MauronCode_dataList<TextComponent_line>();
 
 		//The character that seperates line number and text
 		private string CHAR_LineSeperator="#";
@@ -84,16 +86,16 @@ namespace MauronAlpha.ConsoleApp.Linux
 			}
 		}
 
-		private TextComponent_Line LINE_active;
-		public TextComponent_Line ActiveLine {
+		private TextComponent_line LINE_active;
+		public TextComponent_line ActiveLine {
 			get {
 				if( LINE_active==null ) {
-					LineBuffer.Add(TextComponent_Line.New(this));
+					LineBuffer.Add(TextComponent_line.New(this));
 				}
 				return LineBuffer.LastElement;
 			}
 		}
-		private MauronConsole SetActiveLine (TextComponent_Line line) {
+		private MauronConsole SetActiveLine (TextComponent_line line) {
 			LINE_active=line;
 			return this;
 		}
@@ -114,12 +116,12 @@ namespace MauronAlpha.ConsoleApp.Linux
 				Debug(s, this);
 				return this;
 			}
-			LineBuffer.Add(TextComponent_Line.New(this, s));
+			LineBuffer.Add(TextComponent_line.New(this, s));
 			SetActiveLine(LineBuffer.LastElement);
 			WriteLine(LineBuffer.LastElement);
 			return this;
 		}
-		public MauronConsole WriteLine (TextComponent_Line line) {
+		public MauronConsole WriteLine (TextComponent_line line) {
 			Console.WriteLine(MakeLineStart(line)+line.Text);
 			return this;
 		}
@@ -128,7 +130,7 @@ namespace MauronAlpha.ConsoleApp.Linux
 			return this;
 		}
 		//Generate the line seperator
-		public string MakeLineStart (TextComponent_Line line) {
+		public string MakeLineStart (TextComponent_line line) {
 			if( !LineNumbersVisible ) {
 				return null;
 			}
@@ -150,19 +152,19 @@ namespace MauronAlpha.ConsoleApp.Linux
 
 		#region Lines
 		//Get the first Line
-		public TextComponent_Line FirstLine {
+		public TextComponent_line FirstLine {
 			get {
 				if( LineBuffer.IsEmpty ) {
-					LineBuffer.Add(new TextComponent_Line(this, LineBuffer.NextIndex));
+					LineBuffer.Add(new TextComponent_line(this, LineBuffer.NextIndex));
 				}
 				return LineBuffer.FirstElement;
 			}
 		}
 		//Get the last Line
-		public TextComponent_Line LastLine {
+		public TextComponent_line LastLine {
 			get {
 				if( LineBuffer.IsEmpty ) {
-					LineBuffer.Add(new TextComponent_Line(this, LineBuffer.NextIndex));
+					LineBuffer.Add(new TextComponent_line(this, LineBuffer.NextIndex));
 				}
 				return LineBuffer.LastElement;
 			}

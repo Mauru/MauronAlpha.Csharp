@@ -69,7 +69,6 @@
     <Compile Include="HandlingData\MauronCode_data.cs" />
     <Compile Include="ErrorHandling\MauronCode_error.cs" />
     <Compile Include="ExplainingCode\MauronCode.cs" />
-    <Compile Include="ExplainingCode\CodeStyle.cs" />
     <Compile Include="ExplainingCode\CodeStyles\CodeStyle_MauronAlpha_CSharp.cs" />
     <Compile Include="ExplainingCode\CodeType.cs" />
     <Compile Include="Devices\Hardware.cs" />
@@ -97,6 +96,10 @@
     <Compile Include="HandlingData\Mauroncode_dataSet.cs" />
     <Compile Include="Text\TextComponent.cs" />
     <Compile Include="Text\Units\TextComponent_line.cs" />
+    <Compile Include="Text\Units\TextComponent_word.cs" />
+    <Compile Include="Text\I_TextDisplay.cs" />
+    <Compile Include="ExplainingCode\CodeStyles\CodeStyle.cs" />
+    <Compile Include="Text\TextBuffer.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />

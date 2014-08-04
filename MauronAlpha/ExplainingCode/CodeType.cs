@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace MauronAlpha {
+namespace MauronAlpha.ExplainingCode {
 
 	//Describes the function of a code
 	public abstract class CodeType : MauronAlphaCode {

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 
+using MauronAlpha.ExplainingCode;
+
 namespace MauronAlpha.HandlingData {
 
 	//Base class for variable data storrage (i.e. storing object by string keys, retrieving by type)
