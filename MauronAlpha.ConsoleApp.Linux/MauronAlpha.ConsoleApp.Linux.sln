@@ -18,21 +18,6 @@ Global
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{942A6BD6-CF18-408C-8C2E-DACC92B98273}.Debug|Any CPU.ActiveCfg = Debug|x86
-		{942A6BD6-CF18-408C-8C2E-DACC92B98273}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
-		{942A6BD6-CF18-408C-8C2E-DACC92B98273}.Debug|Mixed Platforms.Build.0 = Debug|x86
-		{942A6BD6-CF18-408C-8C2E-DACC92B98273}.Debug|x86.ActiveCfg = Debug|x86
-		{942A6BD6-CF18-408C-8C2E-DACC92B98273}.Debug|x86.Build.0 = Debug|x86
-		{942A6BD6-CF18-408C-8C2E-DACC92B98273}.DontCompile|Any CPU.ActiveCfg = Debug|x86
-		{942A6BD6-CF18-408C-8C2E-DACC92B98273}.DontCompile|Mixed Platforms.ActiveCfg = Debug|x86
-		{942A6BD6-CF18-408C-8C2E-DACC92B98273}.DontCompile|Mixed Platforms.Build.0 = Debug|x86
-		{942A6BD6-CF18-408C-8C2E-DACC92B98273}.DontCompile|x86.ActiveCfg = Debug|x86
-		{942A6BD6-CF18-408C-8C2E-DACC92B98273}.DontCompile|x86.Build.0 = Debug|x86
-		{942A6BD6-CF18-408C-8C2E-DACC92B98273}.Release|Any CPU.ActiveCfg = Release|x86
-		{942A6BD6-CF18-408C-8C2E-DACC92B98273}.Release|Mixed Platforms.ActiveCfg = Release|x86
-		{942A6BD6-CF18-408C-8C2E-DACC92B98273}.Release|Mixed Platforms.Build.0 = Release|x86
-		{942A6BD6-CF18-408C-8C2E-DACC92B98273}.Release|x86.ActiveCfg = Release|x86
-		{942A6BD6-CF18-408C-8C2E-DACC92B98273}.Release|x86.Build.0 = Release|x86
 		{6A046817-9F14-4781-97C9-F89FEBC2097B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{6A046817-9F14-4781-97C9-F89FEBC2097B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6A046817-9F14-4781-97C9-F89FEBC2097B}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
@@ -48,6 +33,24 @@ Global
 		{6A046817-9F14-4781-97C9-F89FEBC2097B}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{6A046817-9F14-4781-97C9-F89FEBC2097B}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{6A046817-9F14-4781-97C9-F89FEBC2097B}.Release|x86.ActiveCfg = Release|Any CPU
+		{942A6BD6-CF18-408C-8C2E-DACC92B98273}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{942A6BD6-CF18-408C-8C2E-DACC92B98273}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{942A6BD6-CF18-408C-8C2E-DACC92B98273}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{942A6BD6-CF18-408C-8C2E-DACC92B98273}.Debug|x86.ActiveCfg = Debug|x86
+		{942A6BD6-CF18-408C-8C2E-DACC92B98273}.Debug|x86.Build.0 = Debug|x86
+		{942A6BD6-CF18-408C-8C2E-DACC92B98273}.DontCompile|Any CPU.ActiveCfg = Debug|x86
+		{942A6BD6-CF18-408C-8C2E-DACC92B98273}.DontCompile|Mixed Platforms.ActiveCfg = Debug|x86
+		{942A6BD6-CF18-408C-8C2E-DACC92B98273}.DontCompile|Mixed Platforms.Build.0 = Debug|x86
+		{942A6BD6-CF18-408C-8C2E-DACC92B98273}.DontCompile|x86.ActiveCfg = Debug|x86
+		{942A6BD6-CF18-408C-8C2E-DACC92B98273}.DontCompile|x86.Build.0 = Debug|x86
+		{942A6BD6-CF18-408C-8C2E-DACC92B98273}.Release|Any CPU.ActiveCfg = Release|x86
+		{942A6BD6-CF18-408C-8C2E-DACC92B98273}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{942A6BD6-CF18-408C-8C2E-DACC92B98273}.Release|Mixed Platforms.Build.0 = Release|x86
+		{942A6BD6-CF18-408C-8C2E-DACC92B98273}.Release|x86.ActiveCfg = Release|x86
+		{942A6BD6-CF18-408C-8C2E-DACC92B98273}.Release|x86.Build.0 = Release|x86
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		StartupItem = MauronAlpha.ConsoleApp.Linux.csproj
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

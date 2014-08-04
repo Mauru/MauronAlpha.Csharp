@@ -1,0 +1,27 @@
+﻿<Properties>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|Mixed Platforms" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="MauronConsole.cs">
+    <Files>
+      <File FileName="MauronConsole.cs" Line="123" Column="22" />
+      <File FileName="TestProgram.cs" Line="17" Column="5" />
+    </Files>
+    <Pads>
+      <Pad Id="ClassPad">
+        <State expanded="True" selected="True">
+          <Node name="MauronAlpha" expanded="True" />
+          <Node name="MauronAlpha.ConsoleApp.Linux" expanded="True">
+            <Node name="MauronAlpha" expanded="True">
+              <Node name="ConsoleApp" expanded="True">
+                <Node name="Linux" expanded="True" />
+              </Node>
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>
