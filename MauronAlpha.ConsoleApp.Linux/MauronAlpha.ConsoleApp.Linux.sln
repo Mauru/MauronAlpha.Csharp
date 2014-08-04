@@ -5,6 +5,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MauronAlpha.ConsoleApp.Linu
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MauronAlpha", "..\MauronAlpha\MauronAlpha.csproj", "{6A046817-9F14-4781-97C9-F89FEBC2097B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MauronAlpha.ConsoleApp", "..\MauronAlpha.ConsoleApp\MauronAlpha.ConsoleApp.csproj", "{01AD1AC5-E420-41FB-8237-B61840227E21}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,21 +20,6 @@ Global
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{6A046817-9F14-4781-97C9-F89FEBC2097B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6A046817-9F14-4781-97C9-F89FEBC2097B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6A046817-9F14-4781-97C9-F89FEBC2097B}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{6A046817-9F14-4781-97C9-F89FEBC2097B}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{6A046817-9F14-4781-97C9-F89FEBC2097B}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{6A046817-9F14-4781-97C9-F89FEBC2097B}.DontCompile|Any CPU.ActiveCfg = DontCompile|Any CPU
-		{6A046817-9F14-4781-97C9-F89FEBC2097B}.DontCompile|Any CPU.Build.0 = DontCompile|Any CPU
-		{6A046817-9F14-4781-97C9-F89FEBC2097B}.DontCompile|Mixed Platforms.ActiveCfg = DontCompile|Any CPU
-		{6A046817-9F14-4781-97C9-F89FEBC2097B}.DontCompile|Mixed Platforms.Build.0 = DontCompile|Any CPU
-		{6A046817-9F14-4781-97C9-F89FEBC2097B}.DontCompile|x86.ActiveCfg = DontCompile|Any CPU
-		{6A046817-9F14-4781-97C9-F89FEBC2097B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6A046817-9F14-4781-97C9-F89FEBC2097B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6A046817-9F14-4781-97C9-F89FEBC2097B}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{6A046817-9F14-4781-97C9-F89FEBC2097B}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{6A046817-9F14-4781-97C9-F89FEBC2097B}.Release|x86.ActiveCfg = Release|Any CPU
 		{942A6BD6-CF18-408C-8C2E-DACC92B98273}.Debug|Any CPU.ActiveCfg = Debug|x86
 		{942A6BD6-CF18-408C-8C2E-DACC92B98273}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
 		{942A6BD6-CF18-408C-8C2E-DACC92B98273}.Debug|Mixed Platforms.Build.0 = Debug|x86
@@ -48,11 +35,41 @@ Global
 		{942A6BD6-CF18-408C-8C2E-DACC92B98273}.Release|Mixed Platforms.Build.0 = Release|x86
 		{942A6BD6-CF18-408C-8C2E-DACC92B98273}.Release|x86.ActiveCfg = Release|x86
 		{942A6BD6-CF18-408C-8C2E-DACC92B98273}.Release|x86.Build.0 = Release|x86
-	EndGlobalSection
-	GlobalSection(MonoDevelopProperties) = preSolution
-		StartupItem = MauronAlpha.ConsoleApp.Linux.csproj
+		{6A046817-9F14-4781-97C9-F89FEBC2097B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6A046817-9F14-4781-97C9-F89FEBC2097B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6A046817-9F14-4781-97C9-F89FEBC2097B}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{6A046817-9F14-4781-97C9-F89FEBC2097B}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{6A046817-9F14-4781-97C9-F89FEBC2097B}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{6A046817-9F14-4781-97C9-F89FEBC2097B}.DontCompile|Any CPU.ActiveCfg = DontCompile|Any CPU
+		{6A046817-9F14-4781-97C9-F89FEBC2097B}.DontCompile|Any CPU.Build.0 = DontCompile|Any CPU
+		{6A046817-9F14-4781-97C9-F89FEBC2097B}.DontCompile|Mixed Platforms.ActiveCfg = DontCompile|Any CPU
+		{6A046817-9F14-4781-97C9-F89FEBC2097B}.DontCompile|Mixed Platforms.Build.0 = DontCompile|Any CPU
+		{6A046817-9F14-4781-97C9-F89FEBC2097B}.DontCompile|x86.ActiveCfg = DontCompile|Any CPU
+		{6A046817-9F14-4781-97C9-F89FEBC2097B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6A046817-9F14-4781-97C9-F89FEBC2097B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6A046817-9F14-4781-97C9-F89FEBC2097B}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{6A046817-9F14-4781-97C9-F89FEBC2097B}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{6A046817-9F14-4781-97C9-F89FEBC2097B}.Release|x86.ActiveCfg = Release|Any CPU
+		{01AD1AC5-E420-41FB-8237-B61840227E21}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{01AD1AC5-E420-41FB-8237-B61840227E21}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{01AD1AC5-E420-41FB-8237-B61840227E21}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{01AD1AC5-E420-41FB-8237-B61840227E21}.Debug|x86.ActiveCfg = Debug|x86
+		{01AD1AC5-E420-41FB-8237-B61840227E21}.Debug|x86.Build.0 = Debug|x86
+		{01AD1AC5-E420-41FB-8237-B61840227E21}.DontCompile|Any CPU.ActiveCfg = Debug|x86
+		{01AD1AC5-E420-41FB-8237-B61840227E21}.DontCompile|Mixed Platforms.ActiveCfg = Debug|x86
+		{01AD1AC5-E420-41FB-8237-B61840227E21}.DontCompile|Mixed Platforms.Build.0 = Debug|x86
+		{01AD1AC5-E420-41FB-8237-B61840227E21}.DontCompile|x86.ActiveCfg = Debug|x86
+		{01AD1AC5-E420-41FB-8237-B61840227E21}.DontCompile|x86.Build.0 = Debug|x86
+		{01AD1AC5-E420-41FB-8237-B61840227E21}.Release|Any CPU.ActiveCfg = Release|x86
+		{01AD1AC5-E420-41FB-8237-B61840227E21}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{01AD1AC5-E420-41FB-8237-B61840227E21}.Release|Mixed Platforms.Build.0 = Release|x86
+		{01AD1AC5-E420-41FB-8237-B61840227E21}.Release|x86.ActiveCfg = Release|x86
+		{01AD1AC5-E420-41FB-8237-B61840227E21}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		StartupItem = MauronAlpha.ConsoleApp.Linux.csproj
 	EndGlobalSection
 EndGlobal

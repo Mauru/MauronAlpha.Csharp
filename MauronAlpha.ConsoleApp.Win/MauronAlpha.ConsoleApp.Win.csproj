@@ -5,11 +5,11 @@
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{01AD1AC5-E420-41FB-8237-B61840227E21}</ProjectGuid>
+    <ProjectGuid>{20E867C0-B506-4446-9ED3-EFAB361F6772}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>MauronAlpha.Console</RootNamespace>
-    <AssemblyName>MauronAlpha.Console</AssemblyName>
+    <RootNamespace>MauronAlpha.ConsoleApp.Win</RootNamespace>
+    <AssemblyName>MauronAlpha.ConsoleApp.Win</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <TargetFrameworkProfile>Client</TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
@@ -33,6 +33,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>MauronAlpha.ConsoleApp.Win.TestProgram</StartupObject>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -43,11 +46,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MauronAlpha_Win7ConsoleApp.cs" />
-    <Compile Include="Start.cs" />
+    <Compile Include="TestProgram.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\MauronAlpha.ConsoleApp\MauronAlpha.ConsoleApp.csproj">
+      <Project>{2EA00431-E460-4D40-8817-CC4E08B9B568}</Project>
+      <Name>MauronAlpha.ConsoleApp</Name>
+    </ProjectReference>
     <ProjectReference Include="..\MauronAlpha\MauronAlpha.csproj">
       <Project>{6A046817-9F14-4781-97C9-F89FEBC2097B}</Project>
       <Name>MauronAlpha</Name>

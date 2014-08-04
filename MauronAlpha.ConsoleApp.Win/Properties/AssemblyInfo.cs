@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("MauronAlpha.Console")]
+[assembly: AssemblyTitle("MauronAlpha.ConsoleApp.Win")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("MauronAlpha.Console")]
+[assembly: AssemblyProduct("MauronAlpha.ConsoleApp.Win")]
 [assembly: AssemblyCopyright("Copyright ©  2014")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("d4390067-9871-4436-9a14-c943381d86f8")]
+[assembly: Guid("a542dda1-7ca1-48a3-9f13-6dd709de35ec")]
 
 // Version information for an assembly consists of the following four values:
 //

@@ -6,3 +6,4 @@ C:\Projects\C#\Building a Usable Code-Tree\Attempt 1\Mauron\MauronAlpha.ConsoleA
 C:\Projects\C#\Building a Usable Code-Tree\Attempt 1\Mauron\MauronAlpha.ConsoleApp.Linux\bin\Debug\MauronAlpha.pdb
 C:\Projects\C#\Building a Usable Code-Tree\Attempt 1\Mauron\MauronAlpha.ConsoleApp.Linux\obj\x86\Debug\ConsoleApplication.exe
 C:\Projects\C#\Building a Usable Code-Tree\Attempt 1\Mauron\MauronAlpha.ConsoleApp.Linux\obj\x86\Debug\ConsoleApplication.pdb
+C:\Projects\C#\Building a Usable Code-Tree\Attempt 1\Mauron\MauronAlpha.ConsoleApp.Linux\bin\Debug\ConsoleApplication.exe.config

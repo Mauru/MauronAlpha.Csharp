@@ -1,0 +1,23 @@
+﻿//#MAU.type { Csharp info file }
+
+
+//#MAU.list { Involved Parties }
+
+MasterClock
+
+EventShedule
+
+Event
+
+EventSender
+
+EventReceiver
+
+
+//#MAU.section { Setting up a event chain }
+
+(1)	Set up a MasterClock
+
+(2) Set up a Event
+
+(3) {...}

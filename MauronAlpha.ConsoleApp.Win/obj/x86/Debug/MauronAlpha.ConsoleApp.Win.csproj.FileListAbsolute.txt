@@ -1,0 +1,9 @@
+C:\Projects\C#\Building a Usable Code-Tree\Attempt 1\Mauron\MauronAlpha.ConsoleApp.Win\bin\Debug\MauronAlpha.ConsoleApp.Win.exe
+C:\Projects\C#\Building a Usable Code-Tree\Attempt 1\Mauron\MauronAlpha.ConsoleApp.Win\bin\Debug\MauronAlpha.ConsoleApp.Win.pdb
+C:\Projects\C#\Building a Usable Code-Tree\Attempt 1\Mauron\MauronAlpha.ConsoleApp.Win\bin\Debug\ClassLibrary.dll
+C:\Projects\C#\Building a Usable Code-Tree\Attempt 1\Mauron\MauronAlpha.ConsoleApp.Win\bin\Debug\MauronAlpha.dll
+C:\Projects\C#\Building a Usable Code-Tree\Attempt 1\Mauron\MauronAlpha.ConsoleApp.Win\bin\Debug\ClassLibrary.pdb
+C:\Projects\C#\Building a Usable Code-Tree\Attempt 1\Mauron\MauronAlpha.ConsoleApp.Win\bin\Debug\MauronAlpha.pdb
+C:\Projects\C#\Building a Usable Code-Tree\Attempt 1\Mauron\MauronAlpha.ConsoleApp.Win\obj\x86\Debug\MauronAlpha.ConsoleApp.Win.csprojResolveAssemblyReference.cache
+C:\Projects\C#\Building a Usable Code-Tree\Attempt 1\Mauron\MauronAlpha.ConsoleApp.Win\obj\x86\Debug\MauronAlpha.ConsoleApp.Win.exe
+C:\Projects\C#\Building a Usable Code-Tree\Attempt 1\Mauron\MauronAlpha.ConsoleApp.Win\obj\x86\Debug\MauronAlpha.ConsoleApp.Win.pdb

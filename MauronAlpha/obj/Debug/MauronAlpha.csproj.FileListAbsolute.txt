@@ -2,4 +2,3 @@ C:\Projects\C#\Building a Usable Code-Tree\Attempt 1\Mauron\MauronAlpha\bin\Debu
 C:\Projects\C#\Building a Usable Code-Tree\Attempt 1\Mauron\MauronAlpha\bin\Debug\MauronAlpha.pdb
 C:\Projects\C#\Building a Usable Code-Tree\Attempt 1\Mauron\MauronAlpha\obj\Debug\MauronAlpha.dll
 C:\Projects\C#\Building a Usable Code-Tree\Attempt 1\Mauron\MauronAlpha\obj\Debug\MauronAlpha.pdb
-C:\Projects\C#\Building a Usable Code-Tree\Attempt 1\Mauron\MauronAlpha\obj\Debug\MauronAlpha.csprojResolveAssemblyReference.cache

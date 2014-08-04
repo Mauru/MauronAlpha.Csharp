@@ -48,7 +48,7 @@
     <Compile Include="ErrorHandling\ErrorType.cs" />
     <Compile Include="ErrorHandling\ErrorType_exception.cs" />
     <Compile Include="ErrorHandling\ErrorType_fatal.cs" />
-    <Compile Include="Events\I_eventCaller.cs" />
+    <Compile Include="Events\I_eventSender.cs" />
     <Compile Include="Events\I_eventReceiver.cs" />
     <Compile Include="Events\MauronCode_event.cs" />
     <Compile Include="Events\MauronCode_eventclock.cs" />
@@ -104,7 +104,9 @@
   <ItemGroup>
     <None Include="ClassDiagram.cd" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="Documentation\How Events Work.mau" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

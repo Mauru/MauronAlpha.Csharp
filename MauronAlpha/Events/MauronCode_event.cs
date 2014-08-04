@@ -7,17 +7,20 @@ namespace MauronAlpha.Events {
 	
 	//A Event
 	public class MauronCode_event:MauronCode {
+
+		//constructor
 		public MauronCode_event():base(CodeType_event.Instance){}
 
 		#region Set the caller
-		private I_eventCaller IE_caller;
-		public I_eventCaller Caller { get {
+		private I_eventSender IE_caller;
+		public I_eventSender Caller {
+			get {
 			if(IE_caller==null) {
 				Error("Event Caller can not be null", this);
 			}
 			return IE_caller;
 		} }
-		public MauronCode_event SetCaller(I_eventCaller caller){
+		public MauronCode_event SetCaller (I_eventSender caller) {
 			IE_caller=caller;
 			return this;
 		}
