@@ -4,8 +4,10 @@ using MauronAlpha.HandlingData;
 using MauronAlpha.ExplainingCode;
 using MauronAlpha.Text.Units;
 using MauronAlpha.Text;
+using MauronAlpha.Input.Keyboard;
 
 using MauronAlpha.Events;
+using MauronAlpha.Events.Defaults;
 
 namespace MauronAlpha.ConsoleApp
 {
@@ -25,6 +27,10 @@ namespace MauronAlpha.ConsoleApp
 			SetTitleVisible(true);
 			SetIsEnvironment(true);
 			Clear();
+
+			//Start Environment Cycle
+			SetCanExit(false);
+			CycleInput();
 		}
 
 		#region The Environment
@@ -226,7 +232,12 @@ namespace MauronAlpha.ConsoleApp
 
 		//The event clock for handling timed events
 		private MauronCode_eventClock CLOCK_eventlock;
-		public MauronCode_eventClock EventClock { get { return CLOCK_eventlock; } }
+		public MauronCode_eventClock EventClock { get { 
+			if(CLOCK_eventlock==null){
+				Error("No Event Clock Set!", this);
+			}
+			return CLOCK_eventlock;
+		} }
 		public MauronConsole SetEventClock (MauronCode_eventClock clock) {
 			CLOCK_eventlock=clock;
 			return this;
@@ -234,8 +245,21 @@ namespace MauronAlpha.ConsoleApp
 
 		//Initialize the Event Handling
 		public I_eventSender InitializeEventHandling ( ) {
-			MauronCode_event updateEvent = new MauronCode_event(this, this);
+			
 			return this;
+		}
+
+		private MauronConsole SendEvent(MauronCode_eventClock clock, string eventName, MauronCode_dataObject data) {
+			
+			//create a raw event
+			MauronCode_event e = new MauronCode_event(clock,this,EventCondition_always.Delegate,EventTrigger_nothing.Delegate);
+
+
+			return this;
+		}
+
+		I_eventSender I_eventSender.SendEvent (MauronCode_eventClock clock, string eventName, MauronCode_dataObject data) {
+			return SendEvent(clock, eventName, data);
 		}
 
 		#endregion
@@ -254,9 +278,65 @@ namespace MauronAlpha.ConsoleApp
 
 		#endregion
 
+		//The counter for keypresses
+		private MauronCode_eventClock CLOCK_keyPressCounter;
+		public MauronCode_eventClock KeyPressCounter { get { 
+			if(CLOCK_keyPressCounter==null) {
+				CLOCK_keyPressCounter=new MauronCode_eventClock(SystemTime.Instance);
+			}
+			return CLOCK_keyPressCounter; } }
+		public MauronConsole SetKeyPressCounter(MauronCode_eventClock clock) {
+			CLOCK_keyPressCounter=clock;
+			return this;
+		}
 
+		//Listen for a key Press
+		public MauronConsole WaitForKeyUp(){
+			ConsoleKeyInfo key=System.Console.ReadKey();
+			KeyPress input=new KeyPress();
+			
+			//was the ctrl key pressed
+			if((key.Modifiers & ConsoleModifiers.Shift) !=0){
+				input.SetIsShiftKeyDown(true);
+			}
+			//was the alt key pressed
+			if( (key.Modifiers&ConsoleModifiers.Control)!=0 ) {
+				input.SetIsCtrlKeyDown(true);
+			}
+			//was the ctrl 
+			if( (key.Modifiers&ConsoleModifiers.Alt)!=0 ) {
+				input.SetIsAltKeyDown(true);
+			}
 
+			//Set the character 
+			input.SetKey(key.KeyChar);
 
+			//throw a new Keyboardevent
+			SendEvent(KeyPressCounter,"keyUp", input);
+			return this;
+		}
+
+		//this is a cycle that keeps the console window open until CanExit is true or the process is terminated or the window is closed
+		public MauronConsole CycleInput() {
+			WaitForKeyUp();
+			if( !CanExit ) {
+				CycleInput();
+			}
+			return this;
+		}
+
+		//Tell the program when to exit
+		private bool B_canExit=true;
+		public bool CanExit { get { return B_canExit; } }
+		public MauronConsole SetCanExit (bool status) {
+			B_canExit=status;
+			return this;
+		}
+		public MauronConsole Exit() {
+			Clear();
+			SetCanExit(true);
+			return this;
+		}
 
 
 	}

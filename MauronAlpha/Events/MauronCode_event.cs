@@ -11,14 +11,16 @@ namespace MauronAlpha.Events {
 
 		//constructor
 		private MauronCode_event():base(CodeType_event.Instance){}
-		public MauronCode_event(I_eventSender sender, Delegate_condition condition, Delegate_trigger trigger, MauronCode_timeSpan interval, int executions):this() {
+		public MauronCode_event(MauronCode_eventClock clock, I_eventSender sender, Delegate_condition condition, Delegate_trigger trigger):this() {
+			
+			//generate the event shedule
+			MauronCode_eventShedule shedule = new MauronCode_eventShedule(clock);
+			shedule.SetEvent(this);
+			SetShedule(shedule);
+
 			SetSender(sender);
 			SetCondition(condition);
 			SetTrigger(trigger);
-		}
-		public MauronCode_event(I_eventSender sender, I_eventReceiver receiver):this() {
-			SetSender(sender);
-			SetReceiver(receiver);
 		}
 
 		#region The Sender of the event

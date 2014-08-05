@@ -14,6 +14,8 @@ namespace MauronAlpha.ConsoleApp.Win {
 			MauronConsole M = new MauronConsole("MauronConsole (Windows)");
 			M.SetEventClock(MasterClock);
 
+
+
 		}
 	}
 }

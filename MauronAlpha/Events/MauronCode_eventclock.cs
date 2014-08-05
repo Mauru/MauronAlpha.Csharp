@@ -7,16 +7,22 @@ namespace MauronAlpha.Events {
 
 	//A class keeping Time
 	public class MauronCode_eventClock:MauronCode {
+
+		//Is this clock the System Time
+		public virtual bool IsSytemTime { get { return false; } }
 		
 		//constructor
 		public MauronCode_eventClock():base(CodeType_eventClock.Instance) {}
+		public MauronCode_eventClock (MauronCode_eventClock clock) : this() { 
+			SetMasterClock(clock);
+		}
 
 		//MasterClock
 		private MauronCode_eventClock EC_masterClock;
 		public MauronCode_eventClock MasterClock {
 			get {
 				if(EC_masterClock==null) {
-					return this;
+					return SystemTime.Instance;
 				}
 				return EC_masterClock;
 			}
@@ -28,13 +34,23 @@ namespace MauronAlpha.Events {
 
 		//Get the time
 		private MauronCode_timeUnit TU_time; 
-		public MauronCode_timeUnit Time {
+		public virtual MauronCode_timeUnit Time {
 			get { 
 				if(TU_time==null) {
 					TU_time=new MauronCode_timeUnit(0, this);
 				}
 				return TU_time; 
 			}
+		}
+		public MauronCode_eventClock SetTime(MauronCode_timeUnit time) {
+			if(IsSytemTime) {
+				Error("Can not set System Time",this);
+			}
+			TU_time=time;
+			return this;
+		}
+		public MauronCode_eventClock SetTime (long n) {
+			return SetTime(new MauronCode_timeUnit(n,this));
 		}
 	}
 

@@ -48,12 +48,15 @@
     <Compile Include="ErrorHandling\ErrorType.cs" />
     <Compile Include="ErrorHandling\ErrorType_exception.cs" />
     <Compile Include="ErrorHandling\ErrorType_fatal.cs" />
+    <Compile Include="Events\Defaults\EventCondition.cs" />
+    <Compile Include="Events\Defaults\EventTrigger.cs" />
     <Compile Include="Events\I_eventSender.cs" />
     <Compile Include="Events\I_eventReceiver.cs" />
     <Compile Include="Events\MauronCode_event.cs" />
     <Compile Include="Events\MauronCode_eventclock.cs" />
     <Compile Include="Events\MauronCode_eventShedule.cs" />
     <Compile Include="Events\MauronCode_eventShedule_defaults.cs" />
+    <Compile Include="Events\SystemTime.cs" />
     <Compile Include="Events\Units\MauronCode_timeSpan.cs" />
     <Compile Include="Events\Units\MauronCode_timeUnit.cs" />
     <Compile Include="HandlingData\DataType.cs" />
@@ -66,6 +69,8 @@
     <Compile Include="HandlingData\I_dataObject.cs" />
     <Compile Include="HandlingData\I_dataSet.cs" />
     <Compile Include="HandlingData\MauronCode_dataList.cs" />
+    <Compile Include="Input\Keyboard\Events\Event_keyUp.cs" />
+    <Compile Include="Input\Keyboard\KeyPress.cs" />
     <Compile Include="Settings\I_hasDefaultSettings.cs" />
     <Compile Include="HandlingData\MauronCode_data.cs" />
     <Compile Include="ErrorHandling\MauronCode_error.cs" />
@@ -96,6 +101,7 @@
     <Compile Include="Settings\MauronCode_defaultSettingsObject.cs" />
     <Compile Include="HandlingData\Mauroncode_dataSet.cs" />
     <Compile Include="Text\TextComponent.cs" />
+    <Compile Include="Text\Units\TextComponent_character.cs" />
     <Compile Include="Text\Units\TextComponent_line.cs" />
     <Compile Include="Text\Units\TextComponent_word.cs" />
     <Compile Include="Text\I_TextDisplay.cs" />
@@ -108,6 +114,7 @@
   <ItemGroup>
     <None Include="Documentation\How Events Work.mau" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
