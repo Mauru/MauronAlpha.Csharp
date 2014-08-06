@@ -10,7 +10,7 @@ namespace MauronAlpha.Events {
 
 		I_eventSender InitializeEventHandling();
 
-		I_eventSender SendEvent(MauronCode_eventClock clock, string code, MauronCode_dataObject data);
+		I_eventSender SendEvent(MauronCode_eventClock clock, string code, MauronCode_dataSet data);
 	
 	}
 

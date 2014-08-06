@@ -5,6 +5,15 @@ namespace MauronAlpha.HandlingData {
 	//Defines the Behavior of the Data stored in a DataObject
 	public abstract class DataType:MauronCode_subtype {
 		public abstract string Name { get; }
+		
+		//optional converters
+		public virtual bool IsConvertibleTo(Type t){
+			return false;
+		}
+		public virtual T Convert<T>(MauronCode_dataObject obj){
+			Error("Can not convert dataObject!",this);
+			return default(T);
+		}
 	}
 
 	//A datatype that holds plain data in either binary or string form

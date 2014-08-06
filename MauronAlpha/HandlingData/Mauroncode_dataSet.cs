@@ -145,10 +145,27 @@ namespace MauronAlpha.HandlingData {
 			Add(o);
 			return this;
 		}
-		
-		//Remove the value of a dataSet by Value
+		public MauronCode_dataSet SetValue(ICollection<KeyValuePair<string,object>> values) {
+			foreach(KeyValuePair<string,object> d in values){
+				SetValue(d.Key,d.Value);
+			}
+			return this;
+		}
+
+		//Find any instances of o in Data and remove them
 		public MauronCode_dataSet RemoveValue(object o){
-		
+			foreach(KeyValuePair<string,KeyValuePair<object,Type>> d in Data){
+				if(d.Value.Key==o){
+					Remove(d.Key);
+				}
+			}
+			return this;
+		}
+		public MauronCode_dataSet RemoveValue(ICollection<object> o){
+			foreach(object obj in o) {
+				RemoveValue(obj);
+			}
+			return this;
 		}
 		#endregion
 
@@ -329,8 +346,11 @@ namespace MauronAlpha.HandlingData {
 		bool IDictionary<string, KeyValuePair<object, Type>>.Remove (string key) {
 			return Data.Remove(key);
 		}
+		bool ICollection<KeyValuePair<string, KeyValuePair<object, Type>>>.Remove (KeyValuePair<string, KeyValuePair<object, Type>> item) {
+			return Data.Remove(item.Key);
+		}
 
-		//Try and set a value, return if successful
+		//Try and set IN value to value with key , return true if successful
 		public bool TryGet<T>(string key, out T value) {
 			KeyValuePair<object,Type> result;
 			bool success=Data.TryGetValue(key, out result);
@@ -377,6 +397,14 @@ namespace MauronAlpha.HandlingData {
 		}
 
 		//Check if data Contains an object
+		public bool Contains(object o) {
+			foreach(KeyValuePair<string,KeyValuePair<object,Type>> d in Data) {
+				if(o==d.Value.Key){
+					return true;
+				}
+			}
+			return false;
+		}
 		bool ICollection<KeyValuePair<string, KeyValuePair<object, Type>>>.Contains (KeyValuePair<string, KeyValuePair<object, Type>> item) {
 			//fast check
 			return Data.ContainsKey(item.Key);
@@ -396,8 +424,11 @@ namespace MauronAlpha.HandlingData {
 			foreach(KeyValuePair<string, KeyValuePair<object, Type>> d in Data){
 				if(dataSet.ContainsKey(d.Key)){
 					MergeConflict conflict = new MergeConflict(this,dataSet, d.Key ,dataSet.Value(d.Key));
+					conflicts.Add(conflict);
 				}
+				CopyTo(dataSet);
 			}
+			return this;
 		}
 
 
@@ -416,24 +447,25 @@ namespace MauronAlpha.HandlingData {
 			}
 		}
 
+		//How many items in data
+		public int Count { get { return Data.Count; } }
 		int ICollection<KeyValuePair<string, KeyValuePair<object, Type>>>.Count {
-			get { throw new NotImplementedException(); }
+			get { return Data.Count; }
 		}
 
+		//Is data readonly (currently no)
+		private bool B_isReadOnly=false;
+		public bool IsReadOnly { get { return B_isReadOnly; } } 
 		bool ICollection<KeyValuePair<string, KeyValuePair<object, Type>>>.IsReadOnly {
-			get { throw new NotImplementedException(); }
+			get { return IsReadOnly; }
 		}
 
-		bool ICollection<KeyValuePair<string, KeyValuePair<object, Type>>>.Remove (KeyValuePair<string, KeyValuePair<object, Type>> item) {
-			throw new NotImplementedException();
-		}
-
+		//The Enumerator for data (foreach)
 		IEnumerator<KeyValuePair<string, KeyValuePair<object, Type>>> IEnumerable<KeyValuePair<string, KeyValuePair<object, Type>>>.GetEnumerator ( ) {
-			throw new NotImplementedException();
+			return Data.GetEnumerator();
 		}
-
 		System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator ( ) {
-			throw new NotImplementedException();
+			return Data.GetEnumerator();
 		}
 	}
 

@@ -52,6 +52,12 @@ namespace MauronAlpha.Events {
 		public MauronCode_eventClock SetTime (long n) {
 			return SetTime(new MauronCode_timeUnit(n,this));
 		}
+	
+		//Advance the internal Time by one
+		public MauronCode_eventClock Tick() {
+			SetTime(Time.Ticks+1);
+			return this;
+		}
 	}
 
 	//Code Description

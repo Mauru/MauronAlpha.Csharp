@@ -110,14 +110,31 @@ namespace MauronAlpha.Events {
 		#endregion
 
 		#region The Event Data
-		private MauronCode_dataSet DS_data= new MauronCode_dataSet();
-		public MauronCode_dataSet Data { get { return DS_data; } }
+		private MauronCode_dataSet DS_data;
+		public MauronCode_dataSet Data { get { 
+			if(DS_data==null) {
+				SetData(new MauronCode_dataSet("Event Data"));
+			}
+			return DS_data; 
+		} }
 		public MauronCode_event SetData(MauronCode_dataSet data) {
 			DS_data=data;
 			return this;
 		}
+		/*public MauronCode_event SetData(MauronCode_dataObject data){
+			if(data.DataType.IsConvertibleTo(Data.GetType())){
+				SetData(
+					data.DataType.Convert<MauronCode_dataSet>(data)
+				);
+			}
+			return this;
+		}*/
 		public MauronCode_event SetData(string key, object val) {
-			Data.Store(key,val);
+			Data.SetValue(key,val);
+			return this;
+		}
+		public MauronCode_event SetData<T>(string key, T val) {
+			Data.SetValue<T>(key, val);
 			return this;
 		}
 		#endregion

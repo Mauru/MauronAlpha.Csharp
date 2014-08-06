@@ -22,19 +22,28 @@ namespace MauronAlpha.Settings {
 		}
 		
 		#region Default Settings
-		internal MauronCode_dataSet Data=new MauronCode_dataSet();
+		private MauronCode_dataSet DS_data;
+		internal MauronCode_dataSet Data { 
+			get { 
+				if(DS_data==null) {
+					DS_data=new MauronCode_dataSet(Name);
+				}
+				return DS_data;
+			}
+		}
+		
 		public virtual object GetDefault(string key, object obj) {
-			if(!Data.HasKey(key)){
+			if(!Data.ContainsKey(key)){
 				Error("Invalid Default Key { string "+key+" }",this);
 			}
-			return Data[key];
+			return Data.Value(key);
 		}
 		public virtual MauronCode_defaultSettingsObject SetDefault(string key, object obj) {
-			Data.Store(key,obj);
+			Data.SetValue(key,obj);
 			return this;
 		}
-		public virtual MauronCode_defaultSettingsObject SetDefaults(KeyValuePair<string,object>[] values){
-			Data.Store(values);
+		public virtual MauronCode_defaultSettingsObject SetDefaults(ICollection<KeyValuePair<string,object>> values){
+			Data.SetValue(values);
 			return this;
 		}
 		#endregion

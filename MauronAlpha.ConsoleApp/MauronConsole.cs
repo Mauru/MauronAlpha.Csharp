@@ -249,7 +249,7 @@ namespace MauronAlpha.ConsoleApp
 			return this;
 		}
 
-		private MauronConsole SendEvent(MauronCode_eventClock clock, string eventName, MauronCode_dataObject data) {
+		private MauronConsole SendEvent(MauronCode_eventClock clock, string eventName, MauronCode_dataSet data) {
 			
 			//create a raw event
 			MauronCode_event e = new MauronCode_event(
@@ -258,14 +258,10 @@ namespace MauronAlpha.ConsoleApp
 				EventCondition_always.Delegate,
 				EventTrigger_nothing.Delegate
 			).SetMessage(eventName).SetData(data);
-
-			e.SetData(new MauronCode_dataSet());
-
-
 			return this;
 		}
 
-		I_eventSender I_eventSender.SendEvent (MauronCode_eventClock clock, string eventName, MauronCode_dataObject data) {
+		I_eventSender I_eventSender.SendEvent (MauronCode_eventClock clock, string eventName, MauronCode_dataSet data) {
 			return SendEvent(clock, eventName, data);
 		}
 
@@ -297,7 +293,7 @@ namespace MauronAlpha.ConsoleApp
 			return this;
 		}
 
-		//Listen for a key Press
+		//Wait for a key up event
 		public MauronConsole WaitForKeyUp(){
 			ConsoleKeyInfo key=System.Console.ReadKey();
 			KeyPress input=new KeyPress();
@@ -318,10 +314,18 @@ namespace MauronAlpha.ConsoleApp
 			//Set the character 
 			input.SetKey(key.KeyChar);
 
+			if(!KeyPress.IsSpecialAction(KeyPressActions,input)){
+
+			}
+
+			KeyPressCounter.Tick();
+
 			//throw a new Keyboardevent
-			SendEvent(KeyPressCounter,"keyUp", input);
+			SendEvent(KeyPressCounter,"keyUp", new MauronCode_dataSet("Event Data").SetValue<KeyPress>("KeyPress",input));
 			return this;
 		}
+
+		public MauronCode_dataList<KeyPress> KeyPressActions=new MauronCode_dataList<KeyPress>();
 
 		//this is a cycle that keeps the console window open until CanExit is true or the process is terminated or the window is closed
 		public MauronConsole CycleInput() {

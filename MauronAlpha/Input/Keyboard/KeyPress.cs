@@ -1,5 +1,6 @@
 ﻿using MauronAlpha.HandlingData;
 
+
 namespace MauronAlpha.Input.Keyboard {
 
 	public class KeyPress:MauronCode_dataObject {
@@ -43,6 +44,14 @@ namespace MauronAlpha.Input.Keyboard {
 			return this;
 		}
 
+		public static bool IsSpecialAction(MauronCode_dataList<KeyPress> actions, KeyPress input){
+			foreach(KeyPress k in actions){
+				if(k==input){
+					return true;
+				}
+			}
+			return false;
+		}
 	}
 
 }
