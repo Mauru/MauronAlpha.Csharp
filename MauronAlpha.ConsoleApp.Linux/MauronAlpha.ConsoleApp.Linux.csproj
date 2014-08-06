@@ -63,6 +63,10 @@
       <Project>{6A046817-9F14-4781-97C9-F89FEBC2097B}</Project>
       <Name>MauronAlpha</Name>
     </ProjectReference>
+    <ProjectReference Include="..\MauronAlpha.ConsoleApp\MauronAlpha.ConsoleApp.csproj">
+      <Project>{2EA00431-E460-4D40-8817-CC4E08B9B568}</Project>
+      <Name>MauronAlpha.ConsoleApp</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSHARP.Targets" />
   <ProjectExtensions>
