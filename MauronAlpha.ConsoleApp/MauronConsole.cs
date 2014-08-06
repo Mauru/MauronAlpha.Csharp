@@ -248,9 +248,7 @@ namespace MauronAlpha.ConsoleApp
 			
 			return this;
 		}
-
 		private MauronConsole SendEvent(MauronCode_eventClock clock, string eventName, MauronCode_dataSet data) {
-			
 			//create a raw event
 			MauronCode_event e = new MauronCode_event(
 				clock,
@@ -315,7 +313,7 @@ namespace MauronAlpha.ConsoleApp
 			input.SetKey(key.KeyChar);
 
 			if(!KeyPress.IsSpecialAction(KeyPressActions,input)){
-
+	
 			}
 
 			KeyPressCounter.Tick();
