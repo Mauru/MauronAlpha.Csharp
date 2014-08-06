@@ -55,7 +55,6 @@
     <Compile Include="Events\MauronCode_event.cs" />
     <Compile Include="Events\MauronCode_eventclock.cs" />
     <Compile Include="Events\MauronCode_eventShedule.cs" />
-    <Compile Include="Events\MauronCode_eventShedule_defaults.cs" />
     <Compile Include="Events\SystemTime.cs" />
     <Compile Include="Events\Units\MauronCode_timeSpan.cs" />
     <Compile Include="Events\Units\MauronCode_timeUnit.cs" />
@@ -69,6 +68,7 @@
     <Compile Include="HandlingData\I_dataObject.cs" />
     <Compile Include="HandlingData\I_dataSet.cs" />
     <Compile Include="HandlingData\MauronCode_dataList.cs" />
+    <Compile Include="HandlingData\MergeConflict.cs" />
     <Compile Include="Input\Keyboard\Events\Event_keyUp.cs" />
     <Compile Include="Input\Keyboard\KeyPress.cs" />
     <Compile Include="Settings\I_hasDefaultSettings.cs" />
@@ -99,7 +99,7 @@
     <Compile Include="ProjectTypes\Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Settings\MauronCode_defaultSettingsObject.cs" />
-    <Compile Include="HandlingData\Mauroncode_dataSet.cs" />
+    <Compile Include="HandlingData\MauronCode_dataSet.cs" />
     <Compile Include="Text\TextComponent.cs" />
     <Compile Include="Text\Units\TextComponent_character.cs" />
     <Compile Include="Text\Units\TextComponent_line.cs" />

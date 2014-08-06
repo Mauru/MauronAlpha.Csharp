@@ -210,5 +210,4 @@ namespace MauronAlpha.HandlingData {
 
 		public override string Name { get { return "isolated"; } }
 	}
-
 }

@@ -7,52 +7,12 @@ using MauronAlpha.Events.Units;
 namespace MauronAlpha.Events {
 
 	// A Timing based execution check for an event
-	public class MauronCode_eventShedule:MauronCode,I_hasDefaultSettings {
+	public class MauronCode_eventShedule:MauronCode {
 		
 		//constructor
 		public MauronCode_eventShedule(MauronCode_eventClock clock):base(CodeType_eventShedule.Instance) {
 			SetClock(clock);
-			FromDefaults(new string[3] {"Interval","LastChecked","LastExecuted"});
-		}
-
-		#region I_HasDefaultSettings
-
-		#region create From Defaults
-		public MauronCode_eventShedule FromDefaults(string[] query){
-			List<string> q_defaults = new List<string>(query);
-			if (q_defaults.Contains("Clock")) SetClock((MauronCode_eventClock) Defaults.GetDefault("Clock",this));
-			if (q_defaults.Contains("Interval")) SetInterval((MauronCode_timeUnit) Defaults.GetDefault("Interval",this));
-			if (q_defaults.Contains("LastChecked")) SetLastChecked((MauronCode_timeUnit) Defaults.GetDefault("LastChecked",this));
-			if (q_defaults.Contains("LastExecuted")) SetLastExecuted((MauronCode_timeUnit) Defaults.GetDefault("LastExecuted",this));
-			return this;
-		}
-		I_hasDefaultSettings I_hasDefaultSettings.FromDefaults (string[] query) {
-			return FromDefaults(query);
-		}
-		public MauronCode_eventShedule FromDefaults(){
-			SetClock((MauronCode_eventClock) Defaults.GetDefault("Clock", this));
-			SetInterval((MauronCode_timeUnit) Defaults.GetDefault("Interval", this));
-			SetLastChecked((MauronCode_timeUnit) Defaults.GetDefault("LastChecked", this));
-			SetLastExecuted((MauronCode_timeUnit) Defaults.GetDefault("LastExecuted", this));
-			return this;
-		}
-		I_hasDefaultSettings I_hasDefaultSettings.FromDefaults ( ) {
-			return FromDefaults();
-		}
-		#endregion
-		
-		#region get the default settings
-		public MauronCode_defaultSettingsObject Defaults {
-			get {
-				return MauronCode_eventShedule_defaults.Instance;
-			}
-		}
-		MauronCode_defaultSettingsObject I_hasDefaultSettings.Defaults {
-			get {	return Defaults; }
-		}
-		#endregion
-		
-		#endregion
+		}	
 
 		#region original feature-set
 		#region The clock that determins the time

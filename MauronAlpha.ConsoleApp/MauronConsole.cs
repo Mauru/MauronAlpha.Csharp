@@ -252,7 +252,14 @@ namespace MauronAlpha.ConsoleApp
 		private MauronConsole SendEvent(MauronCode_eventClock clock, string eventName, MauronCode_dataObject data) {
 			
 			//create a raw event
-			MauronCode_event e = new MauronCode_event(clock,this,EventCondition_always.Delegate,EventTrigger_nothing.Delegate);
+			MauronCode_event e = new MauronCode_event(
+				clock,
+				this,
+				EventCondition_always.Delegate,
+				EventTrigger_nothing.Delegate
+			).SetMessage(eventName).SetData(data);
+
+			e.SetData(new MauronCode_dataSet());
 
 
 			return this;
