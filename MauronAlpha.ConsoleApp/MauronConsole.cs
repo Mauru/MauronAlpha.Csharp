@@ -314,8 +314,8 @@ namespace MauronAlpha.ConsoleApp
 			//Set the character 
 			input.SetKey(key.KeyChar);
 
-			if(!KeyPress.IsSpecialAction(KeyPressActions,input)){
-
+			if(!KeyPress.IsSpecialAction(KeyMap,input)){
+				Debug(""+key.Key,this);
 			}
 
 			KeyPressCounter.Tick();
@@ -325,7 +325,7 @@ namespace MauronAlpha.ConsoleApp
 			return this;
 		}
 
-		public MauronCode_dataList<KeyPress> KeyPressActions=new MauronCode_dataList<KeyPress>();
+		public KeyboardMap_mauronConsole KeyMap=new KeyboardMap_mauronConsole();
 
 		//this is a cycle that keeps the console window open until CanExit is true or the process is terminated or the window is closed
 		public MauronConsole CycleInput() {

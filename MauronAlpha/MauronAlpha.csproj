@@ -68,9 +68,14 @@
     <Compile Include="HandlingData\I_dataObject.cs" />
     <Compile Include="HandlingData\I_dataSet.cs" />
     <Compile Include="HandlingData\MauronCode_dataList.cs" />
+    <Compile Include="HandlingData\MauronCode_dataMap.cs" />
     <Compile Include="HandlingData\MergeConflict.cs" />
+    <Compile Include="Input\Keyboard\KeyboardMap.cs" />
     <Compile Include="Input\Keyboard\Events\Event_keyUp.cs" />
+    <Compile Include="Input\Keyboard\SpecialKeys.cs" />
     <Compile Include="Input\Keyboard\KeyPress.cs" />
+    <Compile Include="Input\Keyboard\KeyPressSequence.cs" />
+    <Compile Include="Input\Keyboard\SpecialKey.cs" />
     <Compile Include="Settings\I_hasDefaultSettings.cs" />
     <Compile Include="HandlingData\MauronCode_data.cs" />
     <Compile Include="ErrorHandling\MauronCode_error.cs" />

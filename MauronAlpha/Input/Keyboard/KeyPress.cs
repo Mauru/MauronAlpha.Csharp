@@ -44,8 +44,22 @@ namespace MauronAlpha.Input.Keyboard {
 			return this;
 		}
 
-		public static bool IsSpecialAction(MauronCode_dataList<KeyPress> actions, KeyPress input){
-			foreach(KeyPress k in actions){
+		//Special Keys
+		private bool B_IsSpecialKey=false;
+		public bool IsSpecialKey { get { return B_IsSpecialKey; } }
+		public KeyPress SetIsSpecialKey(bool status) {
+			B_IsSpecialKey=status;
+			return this;
+		}
+
+		//Special Key
+		private SpecialKey KEY_specialKey;
+		public SpecialKey SpecialKey { get { return KEY_specialKey; } }
+		public KeyPress SetSpecialKey(SpecialKey key) { KEY_specialKey=key; return this; }
+
+
+		public static bool IsSpecialAction(KeyboardMap map, KeyPress input){
+			foreach(KeyPress k in map){
 				if(k==input){
 					return true;
 				}

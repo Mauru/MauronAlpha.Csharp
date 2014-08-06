@@ -4,7 +4,7 @@ using System;
 namespace MauronAlpha.HandlingData {
 
 	//A list of numerically sorted data
-	public class MauronCode_dataList<T>:MauronCode_dataObject,ICollection<T> {
+	public class MauronCode_dataList<T>:MauronCode_dataObject,ICollection<T>,IEnumerable<T> {
 
 		//constructor
 		public MauronCode_dataList():base(DataType_maintaining.Instance) {
@@ -181,6 +181,8 @@ namespace MauronAlpha.HandlingData {
 
 		#endregion
 
+
+
 		public IEnumerator<T> GetEnumerator ( ) {
 			return Data.GetEnumerator();
 		}
@@ -188,6 +190,7 @@ namespace MauronAlpha.HandlingData {
 		System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator ( ) {
 			return Data.GetEnumerator ();
 		}
+
 	}
 
 }
