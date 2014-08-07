@@ -57,13 +57,9 @@ namespace MauronAlpha.Input.Keyboard {
 		public SpecialKey SpecialKey { get { return KEY_specialKey; } }
 		public KeyPress SetSpecialKey(SpecialKey key) { KEY_specialKey=key; return this; }
 
-
+		//Figure out if a Keypress is a special Key
 		public static bool IsSpecialAction(KeyboardMap map, KeyPress input){
-			foreach(KeyPress k in map){
-				if(k==input){
-					return true;
-				}
-			}
+			
 			return false;
 		}
 	}

@@ -12,7 +12,7 @@ namespace MauronAlpha.HandlingData {
 		//Data
 		private Dictionary<string,T> DIC_data=new Dictionary<string,T>();
 		public Dictionary<string,T> Data {
-			get { return Data; }
+			get { return DIC_data; }
 		}
 		public MauronCode_dataMap<T> SetData(Dictionary<string,T> data) {
 			DIC_data=data;
@@ -140,8 +140,6 @@ namespace MauronAlpha.HandlingData {
 			get { return IsReadOnly; }
 		}
 
-
-
 		IEnumerator<KeyValuePair<string, T>> IEnumerable<KeyValuePair<string, T>>.GetEnumerator ( ) {
 			return Data.GetEnumerator();
 		}
@@ -150,7 +148,8 @@ namespace MauronAlpha.HandlingData {
 			return Data.GetEnumerator();
 		}
 
+
+
 		#endregion
 	}
-
 }

@@ -13,7 +13,7 @@ namespace MauronAlpha.ConsoleApp {
 	//A superbasic console
 	public class MauronConsole : MauronCode_project, I_textDisplay, I_eventSender, I_eventReceiver {
 
-		//constructor
+		#region Constructors
 		public MauronConsole ( )
 			: base(
 				ProjectType_generic.Instance,
@@ -31,8 +31,9 @@ namespace MauronAlpha.ConsoleApp {
 			SetCanExit(false);
 			CycleInput();
 		}
+		#endregion
 
-		#region The Environment
+		#region The Environment (i.e. Console stays open)
 
 		//Is the applicaton a one time only process?
 		private bool B_isEnvironment=false;
@@ -280,7 +281,7 @@ namespace MauronAlpha.ConsoleApp {
 
 		#endregion
 
-		//The counter for keypresses
+		#region Reacting to KeyPresses
 		private MauronCode_eventClock CLOCK_keyPressCounter;
 		public MauronCode_eventClock KeyPressCounter {
 			get {
@@ -326,8 +327,16 @@ namespace MauronAlpha.ConsoleApp {
 			SendEvent(KeyPressCounter, "keyUp", new MauronCode_dataSet("Event Data").SetValue<KeyPress>("KeyPress", input));
 			return this;
 		}
+		#endregion
 
-		public KeyboardMap_mauronConsole KeyMap=new KeyboardMap_mauronConsole();
+		#region Special Keys
+		private KeyboardMap KEYS_map=new KeyboardMap_mauronConsole();
+		public KeyboardMap KeyMap { get { return KEYS_map; } }
+		public MauronConsole SetKeyboardMap(KeyboardMap map) {
+			KEYS_map=map;
+			return this;
+		}
+		#endregion
 
 		//this is a cycle that keeps the console window open until CanExit is true or the process is terminated or the window is closed
 		public MauronConsole CycleInput ( ) {
