@@ -1,6 +1,10 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|Mixed Platforms" />
-  <MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workbench ActiveDocument="../MauronAlpha.ConsoleApp/MauronConsole.cs">
+    <Files>
+      <File FileName="TestProgram.cs" Line="12" Column="74" />
+      <File FileName="../MauronAlpha.ConsoleApp/MauronConsole.cs" Line="301" Column="4" />
+    </Files>
     <Pads>
       <Pad Id="ClassPad">
         <State expanded="True" selected="True" />

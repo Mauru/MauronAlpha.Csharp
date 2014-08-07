@@ -4,7 +4,15 @@ namespace MauronAlpha.Input.Keyboard {
 	public class SpecialKey:MauronCode_dataObject {
 
 		//constructor
-		public SpecialKey(string name):base(DataType_maintaining.Instance){
+		public SpecialKey(
+			string name,
+			bool useShift,
+			bool useCtrl,
+			bool useAlt,
+			bool IsLineBreak,
+			bool IsSeperator,
+			bool IsScripted
+		):base(DataType_maintaining.Instance){
 			SetName(name);
 		}
 
