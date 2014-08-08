@@ -50,10 +50,11 @@
     <Compile Include="ErrorHandling\ErrorType_fatal.cs" />
     <Compile Include="Events\Defaults\EventCondition.cs" />
     <Compile Include="Events\Defaults\EventTrigger.cs" />
+    <Compile Include="Events\EventData.cs" />
     <Compile Include="Events\I_eventSender.cs" />
     <Compile Include="Events\I_eventReceiver.cs" />
     <Compile Include="Events\MauronCode_event.cs" />
-    <Compile Include="Events\MauronCode_eventclock.cs" />
+    <Compile Include="Events\MauronCode_eventClock.cs" />
     <Compile Include="Events\MauronCode_eventShedule.cs" />
     <Compile Include="Events\SystemTime.cs" />
     <Compile Include="Events\Units\MauronCode_timeSpan.cs" />
@@ -72,10 +73,13 @@
     <Compile Include="HandlingData\MergeConflict.cs" />
     <Compile Include="Input\Keyboard\KeyboardMap.cs" />
     <Compile Include="Input\Keyboard\Events\Event_keyUp.cs" />
-    <Compile Include="Input\Keyboard\SpecialKeys.cs" />
+    <Compile Include="Input\Keyboard\KeyPressSequenceMap.cs" />
     <Compile Include="Input\Keyboard\KeyPress.cs" />
     <Compile Include="Input\Keyboard\KeyPressSequence.cs" />
     <Compile Include="Input\Keyboard\SpecialKey.cs" />
+    <Compile Include="Input\Keyboard\SpecialKeyMap.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Settings\I_hasDefaultSettings.cs" />
     <Compile Include="HandlingData\MauronCode_data.cs" />
     <Compile Include="ErrorHandling\MauronCode_error.cs" />

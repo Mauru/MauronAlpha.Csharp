@@ -1,5 +1,6 @@
 ﻿using MauronAlpha.HandlingData;
 using MauronAlpha.Events;
+using MauronAlpha.Events.Data;
 
 namespace MauronAlpha.Input.Keyboard {
 
@@ -58,12 +59,50 @@ namespace MauronAlpha.Input.Keyboard {
 		public KeyPress SetSpecialKey(SpecialKey key) { KEY_specialKey=key; return this; }
 
 		//Figure out if a Keypress is a special Key
-		public static bool IsSpecialAction(KeyboardMap map, KeyPress input){
-			foreach (KeyPress key in map) {
-
+		public static bool Check_SpecialAction(KeyboardMap map, KeyPress input){
+			foreach (SpecialKey key in map) {
+				if(key.Equals(input)){
+					input.SetSpecialKey(key);
+					SendEvent(EventClock, "SpecialKey", EventData.New.SetValue("SpecialKey", input));
+					return true;
+				}
 			}
 			return false;
 		}
-	}
+	
+		#region I_eventSender
+		//The event clock
+		private MauronCode_eventClock CLOCK_events;
+		public MauronCode_eventClock EventClock {
+			get { 
+				if(CLOCK_events==null) {
+					Error("Event Clock can not be null", this);
+				}
+				return CLOCK_events; }
+		}
+		public KeyPress SetEventClock(MauronCode_eventClock clock){
+			CLOCK_events=clock;
+			return this;
+		}
+		public I_eventSender SendEvent (MauronCode_eventClock clock, string code, EventData data) {
+			clock.SubmitEvent(new MauronCode_event(clock,this,code,data));
+		}
+		#endregion
+
+		#region I_eventReceiver
+		public I_eventReceiver SubscribeToEvents ( ) {
+			return this;
+		}
+		public I_eventReceiver ReceiveEvent (MauronCode_event e) {
+			e.Execute(this);
+		}
+		public static bool IsEventCondition (MauronCode_event e) {
+			return false;
+		}
+		#endregion
+	
+
+
+}
 
 }

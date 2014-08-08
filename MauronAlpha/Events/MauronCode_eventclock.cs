@@ -9,6 +9,9 @@ namespace MauronAlpha.Events {
 	public class MauronCode_eventClock:MauronCode {
 
 		//Is this clock the System Time
+		public MauronCode_timeUnit SystemTime {
+			get { return SystemTime.Instance.Time; }
+		}
 		public virtual bool IsSytemTime { get { return false; } }
 		
 		//constructor
@@ -56,6 +59,14 @@ namespace MauronAlpha.Events {
 		//Advance the internal Time by one
 		public MauronCode_eventClock Tick() {
 			SetTime(Time.Ticks+1);
+			return this;
+		}
+	
+		public MauronCode_eventClock SubmitEvent(MauronCode_event e){
+
+			//TODO: handle event submission
+			Error("Event Submission has not been implemented yet!");
+
 			return this;
 		}
 	}

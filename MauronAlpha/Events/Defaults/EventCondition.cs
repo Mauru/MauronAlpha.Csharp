@@ -8,6 +8,8 @@ namespace MauronAlpha.Events.Defaults {
 
 	public abstract class EventCondition : MauronCode_subtype {
 		public abstract string Name { get; }
+		public static EventCondition Always { get { return EventCondition_always.Instance; } }
+		public static EventCondition Never { get { return EventCondition_never.Instance; } }
 	}
 
 	//A event condition that is never triggered

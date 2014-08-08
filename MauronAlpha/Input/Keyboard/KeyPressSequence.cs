@@ -24,8 +24,8 @@ namespace MauronAlpha.Input.Keyboard {
 			get { throw new System.NotImplementedException(); }
 		}
 
-		public I_eventSender InitializeEventHandling ( ) {
-			throw new System.NotImplementedException();
+		public I_eventSender SubscribeToEvents ( ) {
+			return this;
 		}
 
 		public I_eventSender SendEvent (MauronCode_eventClock clock, string code, MauronCode_dataSet data) {

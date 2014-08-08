@@ -3,6 +3,8 @@
 using MauronAlpha.ExplainingCode;
 using MauronAlpha.HandlingData;
 using MauronAlpha.Events.Units;
+using MauronAlpha.Events.Data;
+using MauronAlpha.Events.Defaults;
 
 namespace MauronAlpha.Events {
 	
@@ -11,16 +13,21 @@ namespace MauronAlpha.Events {
 
 		//constructor
 		private MauronCode_event():base(CodeType_event.Instance){}
-		public MauronCode_event(MauronCode_eventClock clock, I_eventSender sender, Delegate_condition condition, Delegate_trigger trigger):this() {
+		public MauronCode_event(MauronCode_eventClock clock, I_eventSender sender, Delegate_condition condition, Delegate_trigger trigger, string code):this() {
+			
+			//Assign required fields
+			SetMessage(code);			
+			SetSender(sender);
+			SetCondition(condition);
+			SetTrigger(trigger);
 			
 			//generate the event shedule
 			MauronCode_eventShedule shedule = new MauronCode_eventShedule(clock);
 			shedule.SetEvent(this);
 			SetShedule(shedule);
+		}
+		public MauronCode_event(MauronCode_eventClock clock, I_eventSender sender, string code, EventData data):this(clock,sender,EventCondition.Always,EventTrigger.Nothing){
 
-			SetSender(sender);
-			SetCondition(condition);
-			SetTrigger(trigger);
 		}
 
 		#region The Sender of the event
@@ -79,7 +86,12 @@ namespace MauronAlpha.Events {
 		#region Trigger Method
 		public delegate void Delegate_trigger(I_eventReceiver receiver, MauronCode_event e);
 		public static void Execute(I_eventReceiver receiver, MauronCode_event e, Delegate_trigger trigger) {
+			e.Shedule.SetExecutions(e.Shedule.Executions+1);
+			e.Shedule.SetLastExecuted(e.Shedule.Clock.Time);
 			trigger(receiver,e);
+			if(e.Shedule.MaxExecutions>0&&e.Shedule.MaxExecutions>=e.Shedule.Executions) {
+				e.Dispose();
+			}
 		}
 		private Delegate_trigger DEL_trigger;
 		public Delegate_trigger Trigger {

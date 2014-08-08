@@ -5,6 +5,9 @@ namespace MauronAlpha.Events.Defaults {
 	//Base class for the execution of an event
 	public abstract class EventTrigger : MauronCode_subtype {
 		public abstract string Name { get; }
+		public static EventTrigger Nothing { get {
+			return EventTrigger_nothing.Instance;
+		} }
 	}
 
 	//A trigger that does nothing
