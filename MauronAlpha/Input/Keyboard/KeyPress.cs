@@ -1,9 +1,9 @@
 ﻿using MauronAlpha.HandlingData;
-
+using MauronAlpha.Events;
 
 namespace MauronAlpha.Input.Keyboard {
 
-	public class KeyPress:MauronCode_dataObject {
+	public class KeyPress:MauronCode_dataObject, I_eventSender, I_eventReceiver {
 		
 		//constructor
 		public KeyPress():base(DataType_object.Instance){}
@@ -59,7 +59,9 @@ namespace MauronAlpha.Input.Keyboard {
 
 		//Figure out if a Keypress is a special Key
 		public static bool IsSpecialAction(KeyboardMap map, KeyPress input){
-			
+			foreach (KeyPress key in map) {
+
+			}
 			return false;
 		}
 	}

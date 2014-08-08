@@ -1,9 +1,13 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|Mixed Platforms" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="../MauronAlpha.ConsoleApp/MauronConsole.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="../MauronAlpha/Input/Keyboard/KeyPress.cs">
     <Files>
-      <File FileName="TestProgram.cs" Line="12" Column="74" />
-      <File FileName="../MauronAlpha.ConsoleApp/MauronConsole.cs" Line="301" Column="4" />
+      <File FileName="../MauronAlpha/Input/Keyboard/SpecialKey.cs" Line="5" Column="3" />
+      <File FileName="../MauronAlpha/Input/Keyboard/SpecialKeys.cs" Line="6" Column="60" />
+      <File FileName="../MauronAlpha.ConsoleApp/KeyboardMap_mauronConsole.cs" Line="14" Column="4" />
+      <File FileName="../MauronAlpha/Input/Keyboard/KeyboardMap.cs" Line="8" Column="1" />
+      <File FileName="../MauronAlpha/Input/Keyboard/KeyPress.cs" Line="21" Column="3" />
+      <File FileName="../MauronAlpha.ConsoleApp/MauronConsole.cs" Line="323" Column="4" />
     </Files>
     <Pads>
       <Pad Id="ClassPad">
