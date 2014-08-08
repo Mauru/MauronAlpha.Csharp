@@ -1,7 +1,7 @@
 ﻿using System;
-using MauronAlpha.Settings;
 using MauronAlpha.ExplainingCode;
 using MauronAlpha.Events.Units;
+using MauronAlpha.HandlingData;
 
 namespace MauronAlpha.Events {
 
@@ -55,13 +55,14 @@ namespace MauronAlpha.Events {
 		public MauronCode_eventClock SetTime (long n) {
 			return SetTime(new MauronCode_timeUnit(n,this));
 		}
-	
+
 		//Advance the internal Time by one
 		public MauronCode_eventClock Tick() {
 			SetTime(Time.Ticks+1);
 			return this;
 		}
-	
+
+		//Register a event
 		public MauronCode_eventClock SubmitEvent(MauronCode_event e){
 
 			//TODO: handle event submission
@@ -69,6 +70,22 @@ namespace MauronAlpha.Events {
 
 			return this;
 		}
+
+		//The registered event shedules
+		private MauronCode_dataList<MauronCode_eventShedule> DATA_eventShedules;
+		public MauronCode_dataList<MauronCode_eventShedule> Shedules { 
+			get {
+				if (DATA_eventShedules == null) {
+					SetShedules (new MauronCode_dataList<MauronCode_eventShedule>());
+				}
+				return DATA_eventShedules; 
+			}
+		}
+		public MauronCode_eventClock SetShedules(MauronCode_dataList<MauronCode_eventShedule> shedules){
+			DATA_eventShedules = shedules;
+			return this;
+		}
+
 	}
 
 	//Code Description
