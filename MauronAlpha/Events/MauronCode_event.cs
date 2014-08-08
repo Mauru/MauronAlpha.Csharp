@@ -26,8 +26,8 @@ namespace MauronAlpha.Events {
 			shedule.SetEvent(this);
 			SetShedule(shedule);
 		}
-		public MauronCode_event(MauronCode_eventClock clock, I_eventSender sender, string code, EventData data):this(clock,sender,EventCondition.Always,EventTrigger.Nothing){
-
+		public MauronCode_event(MauronCode_eventClock clock, I_eventSender sender, string code, EventData data):this(clock,sender,EventCondition.Always,EventTrigger.Nothing,code){
+			SetData (data);
 		}
 
 		#region The Sender of the event
@@ -86,11 +86,18 @@ namespace MauronAlpha.Events {
 		#region Trigger Method
 		public delegate void Delegate_trigger(I_eventReceiver receiver, MauronCode_event e);
 		public static void Execute(I_eventReceiver receiver, MauronCode_event e, Delegate_trigger trigger) {
+			//set the receiver
+			e.SetReceiver (receiver);
+
+			//update shedule
 			e.Shedule.SetExecutions(e.Shedule.Executions+1);
 			e.Shedule.SetLastExecuted(e.Shedule.Clock.Time);
+
+			//trigger the event
 			trigger(receiver,e);
+
 			if(e.Shedule.MaxExecutions>0&&e.Shedule.MaxExecutions>=e.Shedule.Executions) {
-				e.Dispose();
+				e.Shedule.SheduleDone();
 			}
 		}
 		private Delegate_trigger DEL_trigger;

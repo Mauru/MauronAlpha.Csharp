@@ -8,8 +8,10 @@ namespace MauronAlpha.Events.Defaults {
 
 	public abstract class EventCondition : MauronCode_subtype {
 		public abstract string Name { get; }
-		public static EventCondition Always { get { return EventCondition_always.Instance; } }
-		public static EventCondition Never { get { return EventCondition_never.Instance; } }
+		public static MauronCode_event.Delegate_condition Always { get { return EventCondition_always.Delegate; } }
+		public static MauronCode_event.Delegate_condition Never { get { return EventCondition_never.Delegate; } }
+
+		public abstract MauronCode_event.Delegate_condition DelegateMethod { get; }
 	}
 
 	//A event condition that is never triggered
@@ -41,6 +43,11 @@ namespace MauronAlpha.Events.Defaults {
 		public static MauronCode_event.Delegate_condition Delegate { 
 			get {
 				return Check;
+			}
+		}
+		public override MauronCode_event.Delegate_condition DelegateMethod {
+			get {
+				return Delegate;
 			}
 		}
 		public static bool Check(I_eventReceiver receiver, MauronCode_event e) {
@@ -77,6 +84,11 @@ namespace MauronAlpha.Events.Defaults {
 		public static MauronCode_event.Delegate_condition Delegate {
 			get {
 				return Check;
+			}
+		}
+		public override MauronCode_event.Delegate_condition DelegateMethod {
+			get {
+				return Delegate;
 			}
 		}
 		public static bool Check (I_eventReceiver receiver, MauronCode_event e) {

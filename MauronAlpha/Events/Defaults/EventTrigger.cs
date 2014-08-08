@@ -5,8 +5,9 @@ namespace MauronAlpha.Events.Defaults {
 	//Base class for the execution of an event
 	public abstract class EventTrigger : MauronCode_subtype {
 		public abstract string Name { get; }
-		public static EventTrigger Nothing { get {
-			return EventTrigger_nothing.Instance;
+		public abstract MauronCode_event.Delegate_trigger DelegateMethod { get; }
+		public static MauronCode_event.Delegate_trigger Nothing { get {
+			return EventTrigger_nothing.Instance.DelegateMethod;
 		} }
 	}
 
@@ -39,6 +40,11 @@ namespace MauronAlpha.Events.Defaults {
 		public static MauronCode_event.Delegate_trigger Delegate {
 			get {
 				return Execute;
+			}
+		}
+		public override MauronCode_event.Delegate_trigger DelegateMethod {
+			get {
+				return Delegate;
 			}
 		}
 		public static void Execute (I_eventReceiver receiver, MauronCode_event e) {

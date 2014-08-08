@@ -10,7 +10,7 @@ namespace MauronAlpha.Events {
 
 		//Is this clock the System Time
 		public MauronCode_timeUnit SystemTime {
-			get { return SystemTime.Instance.Time; }
+			get { return MauronAlpha.Events.SystemTime.Instance.Time; }
 		}
 		public virtual bool IsSytemTime { get { return false; } }
 		
@@ -25,7 +25,7 @@ namespace MauronAlpha.Events {
 		public MauronCode_eventClock MasterClock {
 			get {
 				if(EC_masterClock==null) {
-					return SystemTime.Instance;
+					return MauronAlpha.Events.SystemTime.Instance;
 				}
 				return EC_masterClock;
 			}
