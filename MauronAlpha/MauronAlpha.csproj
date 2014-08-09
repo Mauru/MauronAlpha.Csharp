@@ -48,6 +48,7 @@
     <Compile Include="ErrorHandling\ErrorType.cs" />
     <Compile Include="ErrorHandling\ErrorType_exception.cs" />
     <Compile Include="ErrorHandling\ErrorType_fatal.cs" />
+    <Compile Include="Events\Data\EventSubscription.cs" />
     <Compile Include="Events\Defaults\EventCondition.cs" />
     <Compile Include="Events\Defaults\EventTrigger.cs" />
     <Compile Include="Events\EventData.cs" />
@@ -114,9 +115,8 @@
     <Compile Include="Text\I_TextDisplay.cs" />
     <Compile Include="ExplainingCode\CodeStyles\CodeStyle.cs" />
     <Compile Include="Text\TextBuffer.cs" />
-    <Compile Include="Events\MauronCode_eventclock.cs" />
+    <Compile Include="Events\MauronCode_eventClock.cs" />
     <Compile Include="HandlingData\Mauroncode_dataSet.cs" />
-    <Compile Include="HandlingData\DataObject_indexMap.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />

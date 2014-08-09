@@ -71,6 +71,7 @@ namespace MauronAlpha.Input.Keyboard {
 		}
 	
 		#region I_eventSender
+		
 		//The event clock
 		private MauronCode_eventClock CLOCK_events;
 		public MauronCode_eventClock EventClock {
@@ -86,23 +87,35 @@ namespace MauronAlpha.Input.Keyboard {
 		}
 		public I_eventSender SendEvent (MauronCode_eventClock clock, string code, EventData data) {
 			clock.SubmitEvent(new MauronCode_event(clock,this,code,data));
+			return this;
 		}
+
 		#endregion
 
 		#region I_eventReceiver
+
 		public I_eventReceiver SubscribeToEvents ( ) {
 			return this;
 		}
 		public I_eventReceiver ReceiveEvent (MauronCode_event e) {
-			e.Execute(this);
+				
+			return this;
 		}
-		public static bool IsEventCondition (MauronCode_event e) {
+		public bool IsEventCondition (MauronCode_event e) {
 			return false;
 		}
+
+		public I_eventReceiver SubscribeToEvent (MauronCode_event e) {
+			throw new System.NotImplementedException();
+		}
+		
 		#endregion
-	
 
 
-}
+
+
+
+				
+	}
 
 }
