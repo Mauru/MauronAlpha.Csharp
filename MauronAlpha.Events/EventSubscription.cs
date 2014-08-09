@@ -2,7 +2,7 @@
 using MauronAlpha.Events.Units;
 using MauronAlpha.ErrorHandling;
 
-namespace MauronAlpha.Events.Data {
+namespace MauronAlpha.Events {
 
 	//A subscription to an event
 	public class EventSubscription:MauronCode_dataObject {
@@ -78,6 +78,8 @@ namespace MauronAlpha.Events.Data {
 			EVENT_object=e;
 			return this;
 		}
+
+		//Testing an event against a subscription
 	
 		//The TestHistory
 		private MauronCode_timeStamp TIMESTAMP_testHistory; 

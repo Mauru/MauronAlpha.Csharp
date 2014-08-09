@@ -229,6 +229,8 @@ namespace MauronAlpha.ConsoleApp {
 
 		#region I_eventSender
 
+
+
 		//The event clock for handling timed events
 		private MauronCode_eventClock CLOCK_eventlock;
 		public MauronCode_eventClock EventClock {
@@ -244,40 +246,45 @@ namespace MauronAlpha.ConsoleApp {
 			return this;
 		}
 
-		//Initialize the Event Handling
-		public I_eventSender InitializeEventHandling ( ) {
-
-			return this;
-		}
-
-		private MauronConsole SendEvent (MauronCode_eventClock clock, string eventName, MauronCode_dataSet data) {
+		public MauronConsole SendEvent (MauronCode_eventClock clock, string eventName, MauronCode_dataSet data) {
 
 			//create a raw event
 			MauronCode_event e=new MauronCode_event(
 				clock,
 				this,
-				EventCondition_always.Delegate,
-				EventTrigger_nothing.Delegate
+				eventName,
+				data
 			).SetMessage(eventName).SetData(data);
+			clock.SubmitEvent (e);
 			return this;
 		}
-
-		I_eventSender I_eventSender.SendEvent (MauronCode_eventClock clock, string eventName, MauronCode_dataSet data) {
-			return SendEvent(clock, eventName, data);
+		I_eventSender I_eventSender.SendEvent (MauronCode_eventClock clock, string code, MauronCode_dataSet data)
+		{
+			return SendEvent (clock, code, data);
 		}
 
 		#endregion
 
 		#region I_eventReceiver
 
-		//Receive an event
-		public I_eventReceiver ReceiveEvent (MauronCode_event e) {
-			return this;
+		public I_eventReceiver SubscribeToEvents ()
+		{
+			throw new NotImplementedException ();
 		}
 
-		//Check for an event condition
-		public bool IsEventCondition (MauronCode_event e) {
-			return false;
+		public I_eventReceiver SubscribeToEvent (MauronCode_event e)
+		{
+			throw new NotImplementedException ();
+		}
+
+		public I_eventReceiver ReceiveEvent (MauronCode_event e)
+		{
+			throw new NotImplementedException ();
+		}
+
+		public bool IsEventCondition (MauronCode_event e)
+		{
+			throw new NotImplementedException ();
 		}
 
 		#endregion
@@ -318,11 +325,9 @@ namespace MauronAlpha.ConsoleApp {
 			//Set the character 
 			input.SetKey(key.KeyChar);
 
-			if( !KeyPress.IsSpecialAction(KeyMap, input) ) {
-				Debug(""+key.Key, this);
-			}
+			Debug(""+key.Key, this);
 
-			KeyPressCounter.Tick();
+			KeyPressCounter.AdvanceTime();
 
 			//throw a new Keyboardevent
 			SendEvent(KeyPressCounter, "keyUp", new MauronCode_dataSet("Event Data").SetValue<KeyPress>("KeyPress", input));

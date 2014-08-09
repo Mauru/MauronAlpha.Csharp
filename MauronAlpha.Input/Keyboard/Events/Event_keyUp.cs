@@ -1,12 +1,22 @@
 ﻿using MauronAlpha.Events;
-using MauronAlpha.Events.Defaults;
+using MauronAlpha.Events.Data;
 
 namespace MauronAlpha.Input.Keyboard.Events {
 
 	public class Event_keyUp:MauronCode_event {
-		
-		public Event_keyUp(MauronCode_eventClock clock, I_eventSender sender):base(clock,sender,EventCondition_never.Delegate,EventTrigger_nothing.Delegate){
-			
+
+		//constructor
+		public Event_keyUp(
+			MauronCode_eventClock clock,
+			I_eventSender sender,
+			KeyPress key
+		):base(
+			clock,
+			sender,
+			"keyUp",
+			new EventData().SetValue("KeyPress",key)
+		){
+
 		}
 
 

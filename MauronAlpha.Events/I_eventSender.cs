@@ -1,4 +1,4 @@
-﻿using MauronAlpha.Events.Data;
+﻿using MauronAlpha.HandlingData;
 
 namespace MauronAlpha.Events {
 
@@ -8,7 +8,7 @@ namespace MauronAlpha.Events {
 		//Get the eventclock
 		MauronCode_eventClock EventClock { get; }
 
-		I_eventSender SendEvent(MauronCode_eventClock clock, string code, EventData data);
+		I_eventSender SendEvent(MauronCode_eventClock clock, string code, MauronCode_dataSet data);
 	
 	}
 

@@ -40,12 +40,12 @@
     <Compile Include="MauronCode_eventClock.cs" />
     <Compile Include="MauronCode_eventShedule.cs" />
     <Compile Include="SystemTime.cs" />
-    <Compile Include="Data\EventSubscription.cs" />
     <Compile Include="Defaults\EventCondition.cs" />
     <Compile Include="Defaults\EventTrigger.cs" />
     <Compile Include="Units\MauronCode_timeSpan.cs" />
     <Compile Include="Units\MauronCode_timeStamp.cs" />
     <Compile Include="Units\MauronCode_timeUnit.cs" />
+    <Compile Include="EventSubscription.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

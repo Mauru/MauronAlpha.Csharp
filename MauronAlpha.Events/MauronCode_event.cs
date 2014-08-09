@@ -26,7 +26,7 @@ namespace MauronAlpha.Events {
 			shedule.SetEvent(this);
 			SetShedule(shedule);
 		}
-		public MauronCode_event(MauronCode_eventClock clock, I_eventSender sender, string code, EventData data):this(clock,sender,EventCondition.Always,EventTrigger.Nothing,code){
+		public MauronCode_event(MauronCode_eventClock clock, I_eventSender sender, string code, MauronCode_dataSet data):this(clock,sender,EventCondition.Always,EventTrigger.Nothing,code){
 			SetData (data);
 		}
 
