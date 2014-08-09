@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>10.0.0</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{7135ED8B-1992-4170-B4A1-A0086686FEBF}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>MauronAlpha.Input</RootNamespace>
+    <AssemblyName>MauronAlpha.Input</AssemblyName>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug</OutputPath>
+    <DefineConstants>DEBUG;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>full</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Keyboard\KeyPress.cs" />
+    <Compile Include="Keyboard\KeyPressSequence.cs" />
+    <Compile Include="Keyboard\KeyPressSequenceMap.cs" />
+    <Compile Include="Keyboard\KeyboardMap.cs" />
+    <Compile Include="Keyboard\SpecialKey.cs" />
+    <Compile Include="Keyboard\SpecialKeyMap.cs" />
+    <Compile Include="Keyboard\Events\Event_keyUp.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <ProjectReference Include="..\MauronAlpha\MauronAlpha.csproj">
+      <Project>{6A046817-9F14-4781-97C9-F89FEBC2097B}</Project>
+      <Name>MauronAlpha</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MauronAlpha.Events\MauronAlpha.Events.csproj">
+      <Project>{425A4B94-31DF-4569-B68C-EDEAF82163A7}</Project>
+      <Name>MauronAlpha.Events</Name>
+    </ProjectReference>
+  </ItemGroup>
+</Project>
