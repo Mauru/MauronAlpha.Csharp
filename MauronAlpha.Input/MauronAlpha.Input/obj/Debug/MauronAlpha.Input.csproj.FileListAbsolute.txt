@@ -1,1 +1,0 @@
-C:\Projects\C#\Building a Usable Code-Tree\Attempt 1\Mauron\MauronAlpha.Input\MauronAlpha.Input\obj\Debug\MauronAlpha.Input.csprojResolveAssemblyReference.cache
