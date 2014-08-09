@@ -59,15 +59,13 @@ namespace MauronAlpha.Events {
 		//Advance the internal Time by one
 		public MauronCode_eventClock Tick() {
 			SetTime(Time.Ticks+1);
+			CheckShedules();
 			return this;
 		}
 
 		//Register a event
 		public MauronCode_eventClock SubmitEvent(MauronCode_event e){
-
-			//TODO: handle event submission
-			Error("Event Submission has not been implemented yet!");
-
+			Shedules.Add (e.Shedule);
 			return this;
 		}
 

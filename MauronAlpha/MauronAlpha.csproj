@@ -54,7 +54,6 @@
     <Compile Include="Events\I_eventSender.cs" />
     <Compile Include="Events\I_eventReceiver.cs" />
     <Compile Include="Events\MauronCode_event.cs" />
-    <Compile Include="Events\MauronCode_eventClock.cs" />
     <Compile Include="Events\MauronCode_eventShedule.cs" />
     <Compile Include="Events\SystemTime.cs" />
     <Compile Include="Events\Units\MauronCode_timeSpan.cs" />
@@ -108,7 +107,6 @@
     <Compile Include="ProjectTypes\Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Settings\MauronCode_defaultSettingsObject.cs" />
-    <Compile Include="HandlingData\MauronCode_dataSet.cs" />
     <Compile Include="Text\TextComponent.cs" />
     <Compile Include="Text\Units\TextComponent_character.cs" />
     <Compile Include="Text\Units\TextComponent_line.cs" />
@@ -116,6 +114,9 @@
     <Compile Include="Text\I_TextDisplay.cs" />
     <Compile Include="ExplainingCode\CodeStyles\CodeStyle.cs" />
     <Compile Include="Text\TextBuffer.cs" />
+    <Compile Include="Events\MauronCode_eventclock.cs" />
+    <Compile Include="HandlingData\Mauroncode_dataSet.cs" />
+    <Compile Include="HandlingData\DataObject_indexMap.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />
