@@ -58,6 +58,7 @@
     <Compile Include="Events\MauronCode_eventShedule.cs" />
     <Compile Include="Events\SystemTime.cs" />
     <Compile Include="Events\Units\MauronCode_timeSpan.cs" />
+    <Compile Include="Events\Units\MauronCode_timeStamp.cs" />
     <Compile Include="Events\Units\MauronCode_timeUnit.cs" />
     <Compile Include="HandlingData\DataType.cs" />
     <Compile Include="HandlingData\I_instantiable.cs" />
@@ -68,23 +69,15 @@
     <Compile Include="HandlingData\I_data.cs" />
     <Compile Include="HandlingData\I_dataObject.cs" />
     <Compile Include="HandlingData\I_dataSet.cs" />
+    <Compile Include="HandlingData\MauronCode_dataIndex.cs" />
     <Compile Include="HandlingData\MauronCode_dataList.cs" />
     <Compile Include="HandlingData\MauronCode_dataMap.cs" />
     <Compile Include="HandlingData\MergeConflict.cs" />
-    <Compile Include="Input\Keyboard\KeyboardMap.cs" />
-    <Compile Include="Input\Keyboard\Events\Event_keyUp.cs" />
-    <Compile Include="Input\Keyboard\KeyPressSequenceMap.cs" />
-    <Compile Include="Input\Keyboard\KeyPress.cs" />
-    <Compile Include="Input\Keyboard\KeyPressSequence.cs" />
-    <Compile Include="Input\Keyboard\SpecialKey.cs" />
-    <Compile Include="Input\Keyboard\SpecialKeyMap.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Settings\I_hasDefaultSettings.cs" />
     <Compile Include="HandlingData\MauronCode_data.cs" />
     <Compile Include="ErrorHandling\MauronCode_error.cs" />
     <Compile Include="ExplainingCode\MauronCode.cs" />
-    <Compile Include="ExplainingCode\CodeStyles\CodeStyle_MauronAlpha_CSharp.cs" />
+    <Compile Include="ExplainingCode\Languages\CSharp\CodeStyle_MauronAlpha_CSharp.cs" />
     <Compile Include="ExplainingCode\CodeType.cs" />
     <Compile Include="Devices\Hardware.cs" />
     <Compile Include="ExplainingCode\Definition.cs" />
@@ -113,7 +106,7 @@
     <Compile Include="Text\Units\TextComponent_line.cs" />
     <Compile Include="Text\Units\TextComponent_word.cs" />
     <Compile Include="Text\I_TextDisplay.cs" />
-    <Compile Include="ExplainingCode\CodeStyles\CodeStyle.cs" />
+    <Compile Include="ExplainingCode\Languages\CodeStyle.cs" />
     <Compile Include="Text\TextBuffer.cs" />
     <Compile Include="Events\MauronCode_eventClock.cs" />
     <Compile Include="HandlingData\Mauroncode_dataSet.cs" />

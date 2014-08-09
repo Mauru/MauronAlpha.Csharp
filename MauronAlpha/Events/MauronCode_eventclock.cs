@@ -57,9 +57,9 @@ namespace MauronAlpha.Events {
 		}
 
 		//Advance the internal Time by one
-		public MauronCode_eventClock Tick() {
+		public MauronCode_eventClock AdvanceTime() {
 			SetTime(Time.Ticks+1);
-			CheckShedules();
+			ExecuteShedules();
 			return this;
 		}
 
@@ -68,6 +68,40 @@ namespace MauronAlpha.Events {
 			Shedules.Add (e.Shedule);
 			return this;
 		}
+
+		//The Shedule Map <TimeUnit.Tick>
+		private MauronCode_dataIndex<MauronCode_dataList<MauronCode_eventShedule>>  INDEX_shedules;
+		public MauronCode_dataIndex<MauronCode_dataList<MauronCode_eventShedule>> EventShedulesByTick {
+			get {
+				if(INDEX_shedules==null){
+					SetShedulesByTick(new MauronCode_dataIndex<MauronCode_dataList<MauronCode_eventShedule>>());
+				}
+				return INDEX_shedules;
+			}
+		}
+		private MauronCode_eventClock SetShedulesByTick(MauronCode_dataIndex<MauronCode_dataList<MauronCode_eventShedule>> shedules){
+			INDEX_shedules=shedules;
+			return this;
+		}
+
+
+		//Get all applicable 
+	
+		public MauronCode_dataList<MauronCode_eventShedule> ShedulesByTick(long n){
+			if(!EventShedulesByTick.ContainsKey(n)){
+				EventShedulesByTick.SetValue(n,new MauronCode_dataList<MauronCode_eventShedule>());
+			}
+			return EventShedulesByTick.Value(n);
+		}
+
+		//Execute any event shedules for the current tick
+		private MauronCode_eventClock ExecuteShedules(){
+			foreach (MauronCode_eventShedule shedule in ShedulesByTick(Time.Ticks)) {
+				//DO SOMETHING HERE
+			}
+			return this;
+		}
+
 
 		//The registered event shedules
 		private MauronCode_dataList<MauronCode_eventShedule> DATA_eventShedules;

@@ -7,6 +7,7 @@ namespace MauronAlpha.ProjectTypes {
     public abstract class Program:MauronCode_project {
 		//The device the program is running on
         public Device Device;
+
 		//The OS of the device
         public OS Os;
 

@@ -10,13 +10,14 @@ using MauronAlpha.Events;
 using MauronAlpha.Events.Defaults;
 
 namespace MauronAlpha.ConsoleApp {
+	
 	//A superbasic console
 	public class MauronConsole : MauronCode_project, I_textDisplay, I_eventSender, I_eventReceiver {
 
 		#region Constructors
 		public MauronConsole ( )
 			: base(
-				ProjectType_generic.Instance,
+				ProjectType_mauronConsole.Instance,
 				"MauronConsole Application") {
 
 		}
@@ -361,5 +362,27 @@ namespace MauronAlpha.ConsoleApp {
 		}
 
 
+	}
+
+	//Project Description
+	public sealed class ProjectType_mauronConsole:ProjectType {
+		#region singleton
+		private static volatile ProjectType_mauronConsole instance=new ProjectType_mauronConsole();
+		private static object syncRoot=new Object();
+		//constructor singleton multithread safe
+		static ProjectType_mauronConsole ( ) { }
+		public static ProjectType Instance {
+			get {
+				if( instance==null ) {
+					lock( syncRoot ) {
+						instance=new ProjectType_mauronConsole();
+					}
+				}
+				return instance;
+			}
+		}
+		#endregion
+
+		public override string Name { get { return "mauronConsole"; } }
 	}
 }

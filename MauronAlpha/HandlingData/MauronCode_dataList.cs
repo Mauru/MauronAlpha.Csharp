@@ -7,7 +7,7 @@ namespace MauronAlpha.HandlingData {
 	public class MauronCode_dataList<T>:MauronCode_dataObject,ICollection<T>,IEnumerable<T> {
 
 		//constructor
-		public MauronCode_dataList():base(DataType_maintaining.Instance) {
+		public MauronCode_dataList():base(DataType_dataList.Instance) {
 			Clear();
 		}
 
@@ -193,4 +193,26 @@ namespace MauronAlpha.HandlingData {
 
 	}
 
+	//A Description of the DataType
+	public sealed class DataType_dataList:DataType {
+		#region singleton
+		private static volatile DataType_dataList instance=new DataType_dataList();
+		private static object syncRoot=new Object();
+		//constructor singleton multithread safe
+		static DataType_dataList ( ) { }
+		public static DataType Instance {
+			get {
+				if( instance==null ) {
+					lock( syncRoot ) {
+						instance=new DataType_dataList();
+					}
+				}
+				return instance;
+			}
+		}
+		#endregion
+
+		public override string Name { get { return "dataList"; } }
+
+	}
 }

@@ -1,4 +1,6 @@
 ﻿using MauronAlpha.HandlingData;
+using MauronAlpha.Events.Units;
+using MauronAlpha.ErrorHandling;
 
 namespace MauronAlpha.Events.Data {
 
@@ -78,7 +80,15 @@ namespace MauronAlpha.Events.Data {
 		}
 	
 		//The TestHistory
-		public MauronCode_timeStamp TimeStamp {}
+		private MauronCode_timeStamp TIMESTAMP_testHistory; 
+		public MauronCode_timeStamp TestHistory {
+			get {
+				if(TIMESTAMP_testHistory==null){
+					Error("TestHistory can not be null!",this);
+				}
+				return TIMESTAMP_testHistory;
+			}
+		}
 	}
 
 }

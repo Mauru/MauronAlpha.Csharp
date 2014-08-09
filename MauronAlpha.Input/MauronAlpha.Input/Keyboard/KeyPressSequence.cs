@@ -2,6 +2,8 @@
 using MauronAlpha.Events;
 
 namespace MauronAlpha.Input.Keyboard {
+
+	
 	public class KeyPressSequence:MauronCode_dataList<KeyPress>,I_eventReceiver,I_eventSender {
 		
 		public static bool Delegate_condition(I_eventReceiver receiver, MauronCode_event e){
@@ -32,4 +34,5 @@ namespace MauronAlpha.Input.Keyboard {
 			throw new System.NotImplementedException();
 		}
 	}
+
 }
