@@ -46,6 +46,7 @@
     <Compile Include="Units\MauronCode_timeStamp.cs" />
     <Compile Include="Units\MauronCode_timeUnit.cs" />
     <Compile Include="EventSubscription.cs" />
+    <Compile Include="Units\EventHistory.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

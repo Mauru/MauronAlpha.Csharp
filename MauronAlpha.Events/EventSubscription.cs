@@ -63,32 +63,44 @@ namespace MauronAlpha.Events {
 			DEL_trigger=trigger;
 			return this;
 		}
-		
-		//The Event
-		private MauronCode_event EVENT_object;
-		public MauronCode_event Event {
-			get {
-				if(EVENT_object==null){
-					Error("MauronCode_event can not be null!", this);
-				}
-				return EVENT_object;
+
+		//The related event clock
+		private MauronCode_eventClock CLOCK_events;
+		public MauronCode_eventClock Clock { get {
+			if (CLOCK_events == null) {
+				Error ("Clock can not be null!", this);
 			}
-		}
-		public EventSubscription SetEvent(MauronCode_event e){
-			EVENT_object=e;
+			return CLOCK_events;
+		}}
+		public EventSubscription SetClock(MauronCode_eventClock clock){
+			CLOCK_events = clock;
 			return this;
 		}
 
 		//Testing an event against a subscription
+		public EventSubscription TestAgainst(MauronCode_event e){
+			//event code
+			if (e.Message != Message) {
+				return this;
+			}
+			e.History.SetLastTested (Clock.Time);
+			//condition
+			if (e.Condition (Receiver, e)) {
+				History.SetLastExecuted (Clock.Time);
+				Receiver.ReceiveEvent (e);
+				History.SetExecutionCount (History.ExecutionCount + 1);
+			}
+			return this;
+		}
 	
 		//The TestHistory
-		private MauronCode_timeStamp TIMESTAMP_testHistory; 
-		public MauronCode_timeStamp TestHistory {
+		private EventHistory TIMESTAMP_history; 
+		public EventHistory History {
 			get {
-				if(TIMESTAMP_testHistory==null){
-					Error("TestHistory can not be null!",this);
+				if(TIMESTAMP_history==null){
+					EventHistory = new EventHistory (Clock);
 				}
-				return TIMESTAMP_testHistory;
+				return TIMESTAMP_history;
 			}
 		}
 	}
