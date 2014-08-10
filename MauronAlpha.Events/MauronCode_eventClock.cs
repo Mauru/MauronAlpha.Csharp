@@ -77,7 +77,7 @@ namespace MauronAlpha.Events {
 		//Register a event
 		public MauronCode_eventClock SubmitEvent(MauronCode_event e){
 			foreach (EventSubscription subscription in Subscriptions) {
-				subscription.TestAgainst (e);
+				subscription.CheckAgainst (e);
 			}
 			return this;
 		}
@@ -110,6 +110,7 @@ namespace MauronAlpha.Events {
 		private MauronCode_eventClock ExecuteShedules(){
 			foreach (MauronCode_eventShedule shedule in ShedulesByTick(Time.Ticks)) {
 				//DO SOMETHING HERE
+
 			}
 			return this;
 		}

@@ -78,12 +78,12 @@ namespace MauronAlpha.Events {
 		}
 
 		//Testing an event against a subscription
-		public EventSubscription TestAgainst(MauronCode_event e){
+		public EventSubscription CheckAgainst(MauronCode_event e){
 			//event code
 			if (e.Message != Message) {
 				return this;
 			}
-			e.History.SetLastTested (Clock.Time);
+			History.SetLastChecked (Clock.Time);
 			//condition
 			if (e.Condition (Receiver, e)) {
 				History.SetLastExecuted (Clock.Time);
@@ -94,14 +94,18 @@ namespace MauronAlpha.Events {
 		}
 	
 		//The TestHistory
-		private EventHistory TIMESTAMP_history; 
+		private EventHistory HISTORY_events; 
 		public EventHistory History {
 			get {
-				if(TIMESTAMP_history==null){
-					EventHistory = new EventHistory (Clock);
+				if(HISTORY_events==null){
+					SetHistory(new EventHistory (Clock));
 				}
-				return TIMESTAMP_history;
+				return HISTORY_events;
 			}
+		}
+		public EventSubscription SetHistory(EventHistory h){
+			HISTORY_events=h;
+			return this;
 		}
 	}
 
