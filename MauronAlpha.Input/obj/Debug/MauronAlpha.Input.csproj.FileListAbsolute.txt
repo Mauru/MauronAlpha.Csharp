@@ -5,3 +5,5 @@ C:\Projects\C#\Building a Usable Code-Tree\Attempt 1\Mauron\MauronAlpha.Input\bi
 C:\Projects\C#\Building a Usable Code-Tree\Attempt 1\Mauron\MauronAlpha.Input\bin\Debug\MauronAlpha.pdb
 C:\Projects\C#\Building a Usable Code-Tree\Attempt 1\Mauron\MauronAlpha.Input\obj\Debug\MauronAlpha.Input.dll
 C:\Projects\C#\Building a Usable Code-Tree\Attempt 1\Mauron\MauronAlpha.Input\obj\Debug\MauronAlpha.Input.pdb
+C:\Projects\C#\Building a Usable Code-Tree\Attempt 1\Mauron\MauronAlpha.Input\bin\Debug\MauronAlpha.Events.pdb
+C:\Projects\C#\Building a Usable Code-Tree\Attempt 1\Mauron\MauronAlpha.Input\obj\Debug\MauronAlpha.Input.csprojResolveAssemblyReference.cache

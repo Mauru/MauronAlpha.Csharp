@@ -64,14 +64,25 @@ namespace MauronAlpha.Events {
 		}
 
 		//Event Subscriptions
-		private MauronCode_dataList<EventSubscription> DATA_subscriptions;
-		public MauronCode_dataList<EventSubscription> Subscriptions { 
+		private MauronCode_dataMapArray<EventSubscription> DATA_subscriptions;
+		public MauronCode_dataMapArray<EventSubscription> Subscriptions { 
 			get { 
 				if (DATA_subscriptions == null) {
-					DATA_subscriptions = new MauronCode_dataList<EventSubscription> ();
+					SetSubscriptions(new MauronCode_dataMapArray<EventSubscription>());
 				}
 				return DATA_subscriptions;
 			}
+		}
+		private MauronCode_eventClock SetSubscriptions(MauronCode_dataMapArray<EventSubscription> subscriptions){
+			DATA_subscriptions=subscriptions;
+			return this;
+		}
+
+		//Subscribe to a event
+		public MauronCode_eventClock SubscribeToEvent(string message, I_eventReceiver receiver){
+			EventSubscription s = new EventSubscription(message,receiver);
+			Subscriptions.SetValue(message,s);
+			return this;
 		}
 
 		//Register a event
@@ -97,7 +108,6 @@ namespace MauronAlpha.Events {
 			return this;
 		}
 
-
 		//Get all applicable	
 		public MauronCode_dataList<MauronCode_eventShedule> ShedulesByTick(long n){
 			if(!EventShedulesByTick.ContainsKey(n)){
@@ -114,7 +124,6 @@ namespace MauronAlpha.Events {
 			}
 			return this;
 		}
-
 
 		//The registered event shedules
 		private MauronCode_dataList<MauronCode_eventShedule> DATA_eventShedules;

@@ -7,13 +7,10 @@
 		I_eventReceiver SubscribeToEvents();
 
 		//Subscribe to a single Event
-		I_eventReceiver SubscribeToEvent(MauronCode_event e);
+		I_eventReceiver SubscribeToEvent(MauronCode_eventClock clock,string message);
 
 		//Receive an event
 		I_eventReceiver ReceiveEvent(MauronCode_event e);
-
-		//Check for an event condition
-		bool IsEventCondition (MauronCode_event e);
 	}
 
 }

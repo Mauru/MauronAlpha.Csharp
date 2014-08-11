@@ -5,6 +5,7 @@ using System.Text;
 
 namespace MauronAlpha.HandlingData {
 
+	//A data array that maps a string to a generic
 	public class MauronCode_dataMap<T>:MauronCode_dataObject,IDictionary<string,T> {
 
 		public MauronCode_dataMap():base(DataType_dataSet.Instance){}

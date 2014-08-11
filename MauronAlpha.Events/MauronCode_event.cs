@@ -40,6 +40,9 @@ namespace MauronAlpha.Events {
 			}
 			return IE_sender;
 		} }
+		public T SenderAs<T>(){
+			return (T) Sender;
+		}
 		public MauronCode_event SetSender (I_eventSender sender) {
 			IE_sender=sender;
 			return this;
@@ -51,6 +54,9 @@ namespace MauronAlpha.Events {
 
 		private I_eventReceiver IE_receiver;
 		public I_eventReceiver Receiver { get { return IE_receiver; } }
+		public T ReceiverAs<T> ( ) {
+			return (T) Receiver;
+		}
 		public MauronCode_event SetReceiver (I_eventReceiver receiver) {
 			IE_receiver=receiver;
 			return this;

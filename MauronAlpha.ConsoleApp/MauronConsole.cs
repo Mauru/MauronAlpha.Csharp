@@ -227,9 +227,32 @@ namespace MauronAlpha.ConsoleApp {
 
 		#endregion
 
+		#region Events
+
+		#region I_eventReceiver
+
+		public I_eventReceiver SubscribeToEvents ( ) {
+			SubscribeToEvent(KeyPressCounter, "KeyUp");
+			return this;
+		}
+
+		public I_eventReceiver SubscribeToEvent (MauronCode_eventClock clock, string message) {
+			clock.SubscribeToEvent(message,this);
+			return this;
+		}
+
+		public I_eventReceiver ReceiveEvent (MauronCode_event e) {
+			//Key Up
+			if( e.Message=="keyUp" ) {
+				Event_keyUp(e);
+				return this;
+			}
+			return this;
+		}
+
+		#endregion
+
 		#region I_eventSender
-
-
 
 		//The event clock for handling timed events
 		private MauronCode_eventClock CLOCK_eventlock;
@@ -255,38 +278,19 @@ namespace MauronAlpha.ConsoleApp {
 				eventName,
 				data
 			).SetMessage(eventName).SetData(data);
-			clock.SubmitEvent (e);
+			clock.SubmitEvent(e);
 			return this;
 		}
-		I_eventSender I_eventSender.SendEvent (MauronCode_eventClock clock, string code, MauronCode_dataSet data)
-		{
-			return SendEvent (clock, code, data);
+		I_eventSender I_eventSender.SendEvent (MauronCode_eventClock clock, string code, MauronCode_dataSet data) {
+			return SendEvent(clock, code, data);
 		}
 
 		#endregion
 
-		#region I_eventReceiver
-
-		public I_eventReceiver SubscribeToEvents ()
-		{
-			throw new NotImplementedException ();
+		private MauronConsole Event_keyUp(MauronCode_event e) {
+			KeyPressCounter.AdvanceTime();
+			return this;
 		}
-
-		public I_eventReceiver SubscribeToEvent (MauronCode_event e)
-		{
-			throw new NotImplementedException ();
-		}
-
-		public I_eventReceiver ReceiveEvent (MauronCode_event e)
-		{
-			throw new NotImplementedException ();
-		}
-
-		public bool IsEventCondition (MauronCode_event e)
-		{
-			throw new NotImplementedException ();
-		}
-
 		#endregion
 
 		#region Reacting to KeyPresses
@@ -324,10 +328,6 @@ namespace MauronAlpha.ConsoleApp {
 
 			//Set the character 
 			input.SetKey(key.KeyChar);
-
-			Debug(""+key.Key, this);
-
-			KeyPressCounter.AdvanceTime();
 
 			//throw a new Keyboardevent
 			SendEvent(KeyPressCounter, "keyUp", new MauronCode_dataSet("Event Data").SetValue<KeyPress>("KeyPress", input));
