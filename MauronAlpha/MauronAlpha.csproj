@@ -60,7 +60,7 @@
     <Compile Include="HandlingData\MauronCode_dataIndex.cs" />
     <Compile Include="HandlingData\MauronCode_dataList.cs" />
     <Compile Include="HandlingData\MauronCode_dataMap.cs" />
-    <Compile Include="HandlingData\MauronCode_dataRelay.cs" />
+    <Compile Include="HandlingData\MauronCode_dataRegistry.cs" />
     <Compile Include="HandlingData\MergeConflict.cs" />
     <Compile Include="Settings\I_hasDefaultSettings.cs" />
     <Compile Include="HandlingData\MauronCode_data.cs" />
@@ -97,7 +97,7 @@
     <Compile Include="Text\I_TextDisplay.cs" />
     <Compile Include="ExplainingCode\Languages\CodeStyle.cs" />
     <Compile Include="Text\TextBuffer.cs" />
-    <Compile Include="HandlingData\Mauroncode_dataSet.cs" />
+    <Compile Include="HandlingData\MauronCode_dataSet.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />

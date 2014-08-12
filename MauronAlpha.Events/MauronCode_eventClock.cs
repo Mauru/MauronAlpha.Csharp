@@ -64,16 +64,16 @@ namespace MauronAlpha.Events {
 		}
 
 		//Event Subscriptions
-		private MauronCode_dataMapArray<EventSubscription> DATA_subscriptions;
-		public MauronCode_dataMapArray<EventSubscription> Subscriptions { 
+		private MauronCode_dataRegistry<EventSubscription> DATA_subscriptions;
+		public MauronCode_dataRegistry<EventSubscription> Subscriptions { 
 			get { 
 				if (DATA_subscriptions == null) {
-					SetSubscriptions(new MauronCode_dataMapArray<EventSubscription>());
+					SetSubscriptions(new MauronCode_dataRegistry<EventSubscription>());
 				}
 				return DATA_subscriptions;
 			}
 		}
-		private MauronCode_eventClock SetSubscriptions(MauronCode_dataMapArray<EventSubscription> subscriptions){
+		private MauronCode_eventClock SetSubscriptions (MauronCode_dataRegistry<EventSubscription> subscriptions) {
 			DATA_subscriptions=subscriptions;
 			return this;
 		}
@@ -81,7 +81,7 @@ namespace MauronAlpha.Events {
 		//Subscribe to a event
 		public MauronCode_eventClock SubscribeToEvent(string message, I_eventReceiver receiver){
 			EventSubscription s = new EventSubscription(message,receiver);
-			Subscriptions.SetValue(message,s);
+			Subscriptions.Add(message,s);
 			return this;
 		}
 
