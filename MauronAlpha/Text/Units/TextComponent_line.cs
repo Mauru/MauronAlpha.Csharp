@@ -13,7 +13,7 @@ namespace MauronAlpha.Text.Units {
 		public TextComponent_line (I_textDisplay source, int index, string text) {
 			SetIndex(index);
 			SetDisplay(source);
-			SetText(text);
+			TextHelper.ParseText(text,this);
 		}
 
 		//get any related words
@@ -24,6 +24,40 @@ namespace MauronAlpha.Text.Units {
 					SetWords(new MauronCode_dataList<TextComponent_word>());
 				}
 				return DATA_words;
+			}
+		}
+		public TextComponent_line SetWords(MauronCode_dataList<TextComponent_word> words) {
+			DATA_words=words;
+			return this;
+		}
+
+		//Characters
+		public TextComponent_line AddCharacter(TextComponent_character c){
+			LastWord.AddCharacter(c);
+			SetIsEmpty(false);
+			return this;
+		}
+
+		//Words
+		public TextComponent_line AddWord(TextComponent_word word){
+			Words.AddValue(word);
+			SetIsEmpty(false);
+			return this;
+		}
+		public TextComponent_word LastWord {
+			get {
+				if(Words.Count==0){
+					AddWord(new TextComponent_word(Display,this));
+				}
+				return Words.LastElement;
+			}
+		}
+		public TextComponent_word FirstWord {
+			get {
+				if(Words.Count==0){
+					return LastWord;
+				}
+				return Words.FirstElement;
 			}
 		}
 
@@ -55,6 +89,7 @@ namespace MauronAlpha.Text.Units {
 			return this;
 		}
 
+		//The Display
 		private I_textDisplay IT_display;
 		public I_textDisplay Display {
 			get {
