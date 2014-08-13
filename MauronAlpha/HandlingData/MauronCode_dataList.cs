@@ -6,17 +6,19 @@ namespace MauronAlpha.HandlingData {
 	//A list of numerically sorted data
 	public class MauronCode_dataList<T>:MauronCode_dataObject,ICollection<T>,IEnumerable<T> {
 
-		//constructor
-		public MauronCode_dataList():base(DataType_dataList.Instance) {
-			Clear();
+		//Constructor
+		public MauronCode_dataList():base(DataType_dataList.Instance) {}
+		public MauronCode_dataList ( T obj)
+			: base(DataType_dataList.Instance) {
+			AddValue(obj);
 		}
 
 		//Data
-		private List<T> L_data=null;
+		private List<T> L_data;
 		public List<T> Data {
 			get { 
 				if (L_data == null) {
-					Clear ();		
+					SetData(new List<T>());
 				}
 				return L_data;
 			}
@@ -29,14 +31,43 @@ namespace MauronAlpha.HandlingData {
 		public MauronCode_dataList<T> SetData(List<T> data) {
 			L_data=data;
 			return this;
-		}	
+		}
+
+		//readonly
+		internal bool B_isReadOnly=false;
+		public bool IsReadOnly {
+			get {
+				return B_isReadOnly;
+			}
+		}
+
+		//Remove
+		public MauronCode_dataList<T> RemoveByValue(T obj){
+			Data.Remove(obj);
+			return this;
+		}
+		public MauronCode_dataList<T> RemoveByKey(int key){
+			//!silent return
+			if(!ContainsKey(key)){
+				return this;
+			}
+			//actual removal
+			T obj = Data[key];
+			Data.RemoveAt(key);
+			return this;
+		}
+
+		//Count
+		public int Count {
+			get { return Data.Count; }
+		}
 
 		//Contains
-		public bool Contains(T obj) {
+		public bool ContainsValue(T obj) {
 			return Data.Contains(obj);
 		}
 		public bool ContainsKey(int i) {
-			return (Data[i]!=null);
+			return i>0 && Data.Count>0;
 		}
 		
 		//Perform an action on each element
@@ -48,27 +79,71 @@ namespace MauronAlpha.HandlingData {
 			return this;
 		}
 
-		
+		//Add a value
+		public MauronCode_dataList<T> AddValue(T obj) {
+			return SetValue(NextIndex, obj);
+		}
+		public MauronCode_dataList<T> SetValue(int key, T obj){
+			if(!ContainsKey(key)){
+				if(key==0||key==(Count-1)){
+					Data.Add(obj);
+					return this;
+				}
+				Error("Invalid Index! {"+key+"}",this);
+			}
+			Data[key]=obj;
+			return this;
+		}
+		public MauronCode_dataList<T> AddValuesFrom(ICollection<T> collection){
+			foreach(T obj in collection) {
+				AddValue(obj);
+			}
+			return this;
+		}
+
+		//Get a value
+		public T Value(int key){
+			if(!ContainsKey(key)){
+				Error("Invalid key {"+key+"}",this);
+			}
+			return Data[key];
+		}
+		public ICollection<T> Values {
+			get {
+				return Data;
+			}
+		}
+		public MauronCode_dataList<T> SetValues(ICollection<T> values){
+			SetData(new List<T>(values));
+			return this;
+		}
+
+		//Clear
+		public MauronCode_dataList<T> Clear ( ) {
+			L_data=new List<T>();
+			return this;
+		}
+
 		//return an instance of this list, do not instance the objects
 		public MauronCode_dataList<T> Instance { get {
 			MauronCode_dataList<T> ret = new MauronCode_dataList<T>();
 			foreach(T obj in Data) {
-				ret.Add(obj);
+				ret.AddValue(obj);
 			}
 			return this;
 		}}
 
 		//Indexes
 		public int NextIndex { get {
-			if (Data.Count == 0) {
+			if (Count == 0) {
 				return 0;
 			}
-			return Data.Count;
+			return Count;
 		} }
 		public int LastIndex { 
 			get {
-				if(Data.Count>0){
-					return Data.Count-1;
+				if(Count>0){
+					return Count-1;
 				}
 				return 0;
 			}
@@ -76,6 +151,7 @@ namespace MauronAlpha.HandlingData {
 		public static int FirstIndex {
 			get { return 0; }
 		}
+		
 		//Get the first element
 		public T FirstElement {
 			get {
@@ -103,93 +179,52 @@ namespace MauronAlpha.HandlingData {
 		} 
 
 		#region ICollection
+
 		//Add
-		public MauronCode_dataList<T> Add (T obj) {
-			L_data.Add(obj);
-			return this;
-		}
-		public MauronCode_dataList<T> AddAt (T obj, int n) {
-			if( !ContainsKey(n) ) {
-				Error("Invalid index ["+n+"]", this);
-			}
-			Data[n]=obj;
-			return this;
-		}
 		void ICollection<T>.Add (T item) {
-			Data.Add(item);
+			AddValue(item);
 		}
 
-		//clear
-		public MauronCode_dataList<T> Clear ( ) {
-			L_data=new List<T>();
-			return this;
-		}
 		void ICollection<T>.Clear ( ) {
 			Clear();
 		}
 
 		//copy to array
-		public void CopyTo (T[] array, int arrayIndex) {
-			foreach(T obj in Data) {
-				array.CopyTo(array, arrayIndex);
+		void ICollection<T>.CopyTo (T[] array, int arrayIndex) {
+			int index=arrayIndex;
+			foreach(T obj in Values) {
+				array.CopyTo(array, index);
+				index++;
 			}
 		}
-
-		//count
-		public int Count {
-			get { return Data.Count; }
-		}
-
-		//readonly
-		internal bool B_readOnly = false;
-		public bool ReadOnly { get {
-			return B_readOnly;
-		} }
-		public MauronCode_dataList<T> SetReadOnly(bool b) {
-			B_readOnly=b;
-			return this;
-		}
-		public bool IsReadOnly {
-			get { return B_readOnly; }
-		}
-
-		//Remove
-		public MauronCode_dataList<T> Remove (T obj) {
-			if( ReadOnly ) {
-				Error("DataList is readOnly!", this);
-			}
-			Data.Remove(obj);
-			return this;
-		}
-		public MauronCode_dataList<T> RemoveAt (int n) {
-			if( !ContainsKey(n) ) {
-				Error("Invalid index ["+n+"]", this);
-			}
-			if( ReadOnly ) {
-				Error("DataList is readOnly!", this);
-			}
-			Data.RemoveAt(n);
-			return this;
-		}
+		
 		bool ICollection<T>.Remove (T item) {
-			if( ReadOnly ) {
-				Error("DataList is readOnly!", this);
-			}
-			Remove(item);
+			if(!ContainsValue(item)){ return false; }
+			RemoveByValue(item);
 			return true;
 		}
 
-		#endregion
+		bool ICollection<T>.Contains (T item) {
+			return ContainsValue(item);
+		}
 
+		int ICollection<T>.Count {
+			get { return Count; }
+		}
 
+		bool ICollection<T>.IsReadOnly {
+			get { return IsReadOnly; }
+		}
 
-		public IEnumerator<T> GetEnumerator ( ) {
+		IEnumerator<T> IEnumerable<T>.GetEnumerator ( ) {
 			return Data.GetEnumerator();
 		}
 
 		System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator ( ) {
-			return Data.GetEnumerator ();
+			return Data.GetEnumerator();
 		}
+
+		#endregion
 
 	}
 

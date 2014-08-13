@@ -1,4 +1,6 @@
-﻿namespace MauronAlpha.Text.Units {
+﻿using MauronAlpha.HandlingData;
+
+namespace MauronAlpha.Text.Units {
 
 	//A line of text
 	public class TextComponent_line : TextComponent {
@@ -12,6 +14,17 @@
 			SetIndex(index);
 			SetDisplay(source);
 			SetText(text);
+		}
+
+		//get any related words
+		private MauronCode_dataList<TextComponent_word> DATA_words;
+		public MauronCode_dataList<TextComponent_word> Words {
+			get {
+				if(DATA_words==null){
+					SetWords(new MauronCode_dataList<TextComponent_word>());
+				}
+				return DATA_words;
+			}
 		}
 
 		//is the line empty (unset)

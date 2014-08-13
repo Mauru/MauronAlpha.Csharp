@@ -15,7 +15,7 @@ namespace MauronAlpha.ConsoleApp {
 	public class MauronConsole : MauronCode_project, I_textDisplay, I_eventSender, I_eventReceiver {
 
 		#region Constructors
-		public MauronConsole ( )
+		private MauronConsole ( )
 			: base(
 				ProjectType_mauronConsole.Instance,
 				"MauronConsole Application") {
@@ -26,11 +26,11 @@ namespace MauronAlpha.ConsoleApp {
 			SetTitle(title);
 			SetTitleVisible(true);
 			SetIsEnvironment(true);
-			Clear();
 
 			//Start Environment Cycle
 			SetCanExit(false);
-			CycleInput();
+			SubscribeToEvents();
+			WaitForKeyUp();
 		}
 		#endregion
 
@@ -85,7 +85,7 @@ namespace MauronAlpha.ConsoleApp {
 				Debug(s, this);
 				return this;
 			}
-			TextBuffer.Add(TextComponent_line.New(this, s));
+			TextBuffer.AddValue(TextComponent_line.New(this, s));
 			SetActiveLine(TextBuffer.LastElement);
 			WriteLine(TextBuffer.LastElement);
 			return this;
@@ -195,7 +195,7 @@ namespace MauronAlpha.ConsoleApp {
 		public TextComponent_line ActiveLine {
 			get {
 				if( LINE_active==null ) {
-					TextBuffer.Add(TextComponent_line.New(this));
+					TextBuffer.AddValue(TextComponent_line.New(this));
 				}
 				return TextBuffer.LastElement;
 			}
@@ -209,7 +209,7 @@ namespace MauronAlpha.ConsoleApp {
 		public TextComponent_line FirstLine {
 			get {
 				if( TextBuffer.IsEmpty ) {
-					TextBuffer.Add(new TextComponent_line(this, TextBuffer.NextIndex));
+					TextBuffer.AddValue(new TextComponent_line(this, TextBuffer.NextIndex));
 				}
 				return TextBuffer.FirstElement;
 			}
@@ -219,7 +219,7 @@ namespace MauronAlpha.ConsoleApp {
 		public TextComponent_line LastLine {
 			get {
 				if( TextBuffer.IsEmpty ) {
-					TextBuffer.Add(new TextComponent_line(this, TextBuffer.NextIndex));
+					TextBuffer.AddValue(new TextComponent_line(this, TextBuffer.NextIndex));
 				}
 				return TextBuffer.LastElement;
 			}
@@ -232,7 +232,7 @@ namespace MauronAlpha.ConsoleApp {
 		#region I_eventReceiver
 
 		public I_eventReceiver SubscribeToEvents ( ) {
-			SubscribeToEvent(KeyPressCounter, "KeyUp");
+			SubscribeToEvent(KeyPressCounter, "keyUp");
 			return this;
 		}
 
@@ -289,6 +289,12 @@ namespace MauronAlpha.ConsoleApp {
 
 		private MauronConsole Event_keyUp(MauronCode_event e) {
 			KeyPressCounter.AdvanceTime();
+			KeyPress k = e.Data.Value<KeyPress>("KeyPress");
+			if(k.IsSpecialKey){
+
+			}else{
+				ActiveLine.AddCharacter(k.Key);
+			}
 			return this;
 		}
 		#endregion
@@ -298,7 +304,7 @@ namespace MauronAlpha.ConsoleApp {
 		public MauronCode_eventClock KeyPressCounter {
 			get {
 				if( CLOCK_keyPressCounter==null ) {
-					CLOCK_keyPressCounter=new MauronCode_eventClock(SystemTime.Instance);
+					SetKeyPressCounter(new MauronCode_eventClock(SystemTime.Instance));
 				}
 				return CLOCK_keyPressCounter;
 			}
@@ -310,7 +316,8 @@ namespace MauronAlpha.ConsoleApp {
 
 		//Wait for a key up event
 		public MauronConsole WaitForKeyUp ( ) {
-			ConsoleKeyInfo key=System.Console.ReadKey();
+			ConsoleKeyInfo key=System.Console.ReadKey(false);
+
 			KeyPress input=new KeyPress();
 
 			//was the ctrl key pressed
@@ -331,6 +338,7 @@ namespace MauronAlpha.ConsoleApp {
 
 			//throw a new Keyboardevent
 			SendEvent(KeyPressCounter, "keyUp", new MauronCode_dataSet("Event Data").SetValue<KeyPress>("KeyPress", input));
+			WaitForKeyUp();
 			return this;
 		}
 		#endregion
@@ -343,15 +351,6 @@ namespace MauronAlpha.ConsoleApp {
 			return this;
 		}
 		#endregion
-
-		//this is a cycle that keeps the console window open until CanExit is true or the process is terminated or the window is closed
-		public MauronConsole CycleInput ( ) {
-			WaitForKeyUp();
-			if( !CanExit ) {
-				CycleInput();
-			}
-			return this;
-		}
 
 		//Tell the program when to exit
 		private bool B_canExit=true;

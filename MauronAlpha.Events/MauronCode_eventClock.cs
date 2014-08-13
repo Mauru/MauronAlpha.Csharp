@@ -80,8 +80,8 @@ namespace MauronAlpha.Events {
 
 		//Subscribe to a event
 		public MauronCode_eventClock SubscribeToEvent(string message, I_eventReceiver receiver){
-			EventSubscription s = new EventSubscription(message,receiver);
-			Subscriptions.Add(message,s);
+			EventSubscription s = new EventSubscription(this,message,receiver);
+			Subscriptions.AddValue(message,s);
 			return this;
 		}
 

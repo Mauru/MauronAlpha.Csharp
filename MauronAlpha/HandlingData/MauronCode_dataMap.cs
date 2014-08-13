@@ -20,74 +20,122 @@ namespace MauronAlpha.HandlingData {
 			return this;
 		}
 
+		//Count
+		public int Count { get { return Data.Count; } }
 
 		//values
 		public T Value(string key) {
 			return Data[key];
 		}
+		public ICollection<T> Values {
+			get {
+				return Data.Values;
+			}
+		}		
 		public MauronCode_dataMap<T> SetValue(string key, T value){
 			Data[key]=value;
 			return this;
 		}
 
-		#region IDictionary
+		//Get all keys
+		public ICollection<string> Keys {
+			get {
+				return Data.Keys;
+			}
+		}
 
-		//Add 
-		public MauronCode_dataMap<T> Add(string key, T value) {
-			SetValue(key, value);
+		//read Only (false)
+		private bool B_isReadOnly=false;
+		public bool IsReadOnly { get { return B_isReadOnly; } }
+
+		//Remove
+		public MauronCode_dataMap<T> RemoveByKey (string key) {
+			Data.Remove(key);
 			return this;
 		}
-		void IDictionary<string, T>.Add (string key, T value) {
-			SetValue(key,value);
-		}
-		void ICollection<KeyValuePair<string, T>>.Add (KeyValuePair<string, T> item) {
-			SetValue(item.Key, item.Value);
+		public MauronCode_dataMap<T> Clear ( ) {
+			SetData(new Dictionary<string, T>());
+			return this;
 		}
 
-		//ContainsKey
-		public bool ContainsKey(string key){
+		//Contains
+		public bool ContainsKey (string key) {
 			return Data.ContainsKey(key);
 		}
-		bool IDictionary<string, T>.ContainsKey (string key) {
-			return ContainsKey(key);
+		public bool ContainsValue (T item) {
+			foreach( KeyValuePair<string, T> d in Data ) {
+				if( d.Value.Equals(item) ) {
+					return true;
+				}
+			}
+			return false;
 		}
 
-		//Get all keys
-		public ICollection<string> Keys { get {
-			return Data.Keys;
-		} }
+		#region IDictionary
+
+		#region ICollection
 		ICollection<string> IDictionary<string, T>.Keys {
 			get { return Keys; }
 		}
 
-		//Remove by Key
-		public MauronCode_dataMap<T> Remove(string key) {
-			Data.Remove(key);
-			return this;
-		}
-		bool IDictionary<string, T>.Remove (string key) {
-			return Data.Remove(key);
-		}
-		bool ICollection<KeyValuePair<string, T>>.Remove (KeyValuePair<string, T> item) {
-			return Data.Remove(item.Key);
-		}
-
-		//Try and set value, return bool is availiable
-		bool IDictionary<string, T>.TryGetValue (string key, out T value) {
-			return Data.TryGetValue(key, out value);
-		}
-
-		//Get all values
-		public ICollection<T> Values {
-			get {
-				return Data.Values;
-			}
-		}
 		ICollection<T> IDictionary<string, T>.Values {
 			get { return Values; }
 		}
 
-		//Set a value
+		void ICollection<KeyValuePair<string, T>>.Add (KeyValuePair<string, T> item) {
+			SetValue(item.Key,item.Value);
+		}
+
+		void ICollection<KeyValuePair<string, T>>.Clear ( ) {
+			Clear();
+		}
+
+		bool ICollection<KeyValuePair<string, T>>.Contains (KeyValuePair<string, T> item) {
+			//remember this is !notprecise
+			return ContainsKey(item.Key);
+		}
+
+		void ICollection<KeyValuePair<string, T>>.CopyTo (KeyValuePair<string, T>[] array, int arrayIndex) {
+			int index=0;
+			foreach(KeyValuePair<string,T> d in Data){
+				array[index]=d;
+				index++;
+			}	
+		}
+
+		int ICollection<KeyValuePair<string, T>>.Count {
+			get { return Count; }
+		}
+
+		bool ICollection<KeyValuePair<string, T>>.IsReadOnly {
+			get { return IsReadOnly; }
+		}
+
+		bool ICollection<KeyValuePair<string, T>>.Remove (KeyValuePair<string, T> item) {
+			if(!ContainsKey(item.Key)){
+				return false;
+			}
+			RemoveByKey(item.Key);
+			return true;
+		}
+		#endregion
+
+		void IDictionary<string, T>.Add (string key, T value) {
+			SetValue(key,value);
+		}
+		bool IDictionary<string, T>.ContainsKey (string key) {
+			return ContainsKey(key);
+		}
+		bool IDictionary<string, T>.Remove (string key) {
+			if(!ContainsKey(key)){
+				return false;
+			}
+			RemoveByKey(key);
+			return true;
+		}
+		bool IDictionary<string, T>.TryGetValue (string key, out T value) {
+			return Data.TryGetValue(key, out value);
+		}
 		T IDictionary<string, T>.this[string key] {
 			get {
 				return Value(key);
@@ -96,61 +144,14 @@ namespace MauronAlpha.HandlingData {
 				SetValue(key,value);
 			}
 		}
-
-		//Clear the array
-		public MauronCode_dataMap<T> Clear() {
-			SetData(new Dictionary<string,T>());
-			return this;
-		}
-		void ICollection<KeyValuePair<string, T>>.Clear ( ) {
-			Clear();
-		}
-
-		//Does the data contain an entry
-		public bool Contains(T item){
-			foreach(KeyValuePair<string,T> d in Data) {
-				if(d.Value.Equals(item)){
-					return true;
-				}
-			}
-			return false;
-		}
-		bool ICollection<KeyValuePair<string, T>>.Contains (KeyValuePair<string, T> item) {
-			return ContainsKey(item.Key);
-		}
-
-		//Copy to array
-		void ICollection<KeyValuePair<string, T>>.CopyTo (KeyValuePair<string, T>[] array, int arrayIndex) {
-			int index=arrayIndex;
-			foreach( KeyValuePair<string, T> d in Data ) {
-				array[index]=d;
-				index++;
-			}
-		}
-
-		//Count
-		public int Count { get { return Data.Count; } }
-		int ICollection<KeyValuePair<string, T>>.Count {
-			get { throw new NotImplementedException(); }
-		}
-
-		//read Only (false)
-		private bool B_isReadOnly=false;
-		public bool IsReadOnly { get { return B_isReadOnly; } }
-		bool ICollection<KeyValuePair<string, T>>.IsReadOnly {
-			get { return IsReadOnly; }
-		}
-
 		IEnumerator<KeyValuePair<string, T>> IEnumerable<KeyValuePair<string, T>>.GetEnumerator ( ) {
 			return Data.GetEnumerator();
 		}
-
 		System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator ( ) {
 			return Data.GetEnumerator();
 		}
-
-
-
 		#endregion
-	}
+
+
+	}	
 }

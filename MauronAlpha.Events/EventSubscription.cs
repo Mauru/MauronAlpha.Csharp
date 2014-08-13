@@ -8,7 +8,8 @@ namespace MauronAlpha.Events {
 	public class EventSubscription:MauronCode_dataObject {
 
 		//constructor
-		public EventSubscription(string message, I_eventReceiver receiver):base(DataType_locked.Instance){
+		public EventSubscription(MauronCode_eventClock clock, string message, I_eventReceiver receiver):base(DataType_locked.Instance){
+			SetClock(clock);
 			SetMessage(message);
 			SetReceiver(receiver);
 		}
@@ -85,11 +86,10 @@ namespace MauronAlpha.Events {
 			}
 			History.SetLastChecked (Clock.Time);
 			//condition
-			if (e.Condition (Receiver, e)) {
-				History.SetLastExecuted (Clock.Time);
-				Receiver.ReceiveEvent (e);
-				History.SetExecutionCount (History.ExecutionCount + 1);
-			}
+			History.SetLastExecuted (Clock.Time);
+			Receiver.ReceiveEvent (e);
+			History.SetExecutionCount (History.ExecutionCount + 1);
+
 			return this;
 		}
 	

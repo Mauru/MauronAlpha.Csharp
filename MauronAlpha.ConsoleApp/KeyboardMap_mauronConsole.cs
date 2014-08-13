@@ -11,10 +11,9 @@ namespace MauronAlpha.ConsoleApp {
 		//Constructor
 		public KeyboardMap_mauronConsole() {
 			//Set defaults
-			SpecialKeys.Add("Enter", new SpecialKey("Enter",false,false,false,true,false,false));
-			SpecialKeys.Add("ArrowLeft",new SpecialKey("LeftArrow", false,false,false,false,false,true));
-			SpecialKeys.Add("ArrowRight",new SpecialKey("RightArrow",false,false,false,false,false,true));
-
+			SpecialKeys.SetValue("Enter", new SpecialKey("Enter",false,false,false,true,false,false));
+			SpecialKeys.SetValue("ArrowLeft", new SpecialKey("LeftArrow", false, false, false, false, false, true));
+			SpecialKeys.SetValue("ArrowRight", new SpecialKey("RightArrow", false, false, false, false, false, true));
 		}
 	}
 
