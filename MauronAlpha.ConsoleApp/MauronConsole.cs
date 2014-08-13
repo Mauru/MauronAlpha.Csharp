@@ -287,13 +287,14 @@ namespace MauronAlpha.ConsoleApp {
 
 		#endregion
 
+		//KeyUp
 		private MauronConsole Event_keyUp(MauronCode_event e) {
 			KeyPressCounter.AdvanceTime();
 			KeyPress k = e.Data.Value<KeyPress>("KeyPress");
 			if(k.IsSpecialKey){
 
 			}else{
-				ActiveLine.AddCharacter(k.Key);
+				
 			}
 			return this;
 		}

@@ -93,11 +93,13 @@
     <Compile Include="Text\TextComponent.cs" />
     <Compile Include="Text\Units\TextComponent_character.cs" />
     <Compile Include="Text\Units\TextComponent_line.cs" />
+    <Compile Include="Text\Units\TextComponent_text.cs" />
     <Compile Include="Text\Units\TextComponent_word.cs" />
     <Compile Include="Text\I_TextDisplay.cs" />
     <Compile Include="ExplainingCode\Languages\CodeStyle.cs" />
     <Compile Include="Text\TextBuffer.cs" />
     <Compile Include="HandlingData\MauronCode_dataSet.cs" />
+    <Compile Include="Text\Utility\TextHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />
