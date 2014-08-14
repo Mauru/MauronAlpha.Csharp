@@ -23,13 +23,6 @@ namespace MauronAlpha.Text.Units {
 			return this;
 		}
 
-		//Characters
-		public TextComponent_line AddCharacter(TextComponent_character c){
-			LastWord.AddCharacter(c);
-			SetIsEmpty(false);
-			return this;
-		}
-
 		//Words
 		public TextComponent_line AddWord(TextComponent_word word){
 			Words.AddValue(word);
@@ -50,6 +43,13 @@ namespace MauronAlpha.Text.Units {
 					return LastWord;
 				}
 				return Words.FirstElement;
+			}
+		}
+
+		//is the line terminated by a linebreak
+		public bool IsComplete {
+			get {
+				return LastWord.EndsLine;
 			}
 		}
 

@@ -20,6 +20,19 @@ namespace MauronAlpha.Text.Units {
 			}
 		}
 
+		//Instance
+		public TextComponent_character Instance {
+			get {
+				TextComponent_character c= new TextComponent_character();
+				c.SetCharacter(Character);
+				c.SetIsLineBreak(IsLineBreak);
+				c.SetIsWhiteSpace(IsWhiteSpace);
+				c.SetIsWordBreak(IsWordBreak);
+				c.SetIsEmpty(IsEmpty);
+				return c;
+			}
+		}
+
 		// the character
 		private char CHAR_character;
 		public char Character { get {
@@ -42,9 +55,16 @@ namespace MauronAlpha.Text.Units {
 		}
 	
 		//does the character terminate a word?
-		public bool TerminatesWord {
+		public bool EndsWord {
 			get {
 				return IsLineBreak||IsWhiteSpace;
+			}
+		}
+
+		//does the character End a line?
+		public bool EndsLine {
+			get {
+				return IsLineBreak;
 			}
 		}
 
@@ -69,4 +89,5 @@ namespace MauronAlpha.Text.Units {
 			return this;
 		}
 	}
+
 }

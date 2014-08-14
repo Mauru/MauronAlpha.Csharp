@@ -6,6 +6,41 @@ namespace MauronAlpha.Text.Units {
 	//A complete text
 	public class TextComponent_text:TextComponent {
 
+		//Lines
+		private MauronCode_dataList<TextComponent_line> DATA_lines;
+		public MauronCode_dataList<TextComponent_line> Lines {
+			get {
+				if( DATA_lines==null ) {
+					DATA_lines=new MauronCode_dataList<TextComponent_line>();
+				}
+				return DATA_lines;
+			}
+		}
+		private TextComponent_text SetLines (MauronCode_dataList<TextComponent_line> lines) {
+			DATA_lines=lines;
+			return this;
+		}
+		private TextComponent_text AddLine (TextComponent_line line) {
+			Lines.AddValue(line);
+			return this;
+		}
+		public TextComponent_line LastLine {
+			get {
+				if( Lines.Count<1 ) {
+					AddLine(new TextComponent_line());
+				}
+				return Lines.LastElement;
+			}
+		}
+		public TextComponent_line FirstLine {
+			get {
+				if( Lines.Count<1 ) {
+					AddLine(new TextComponent_line());
+				}
+				return Lines.FirstElement;
+			}
+		}			
+
 		//words
 		private MauronCode_dataList<TextComponent_word> DATA_words;
 		public MauronCode_dataList<TextComponent_word> Words { get {
@@ -19,7 +54,11 @@ namespace MauronAlpha.Text.Units {
 			return this;
 		}	
 		public TextComponent_text AddWord(TextComponent_word word){
+			if(LastLine.IsComplete){
+				AddLine(new TextComponent_line());
+			}
 			Words.AddValue(word);
+			LastLine.AddWord(word);
 			return this;
 		}
 		public TextComponent_word LastWord { get {
@@ -37,6 +76,7 @@ namespace MauronAlpha.Text.Units {
 			}
 		}			
 		
+		//Add a character
 		public TextComponent_text AddCharacter(TextComponent_character c){
 			if(LastWord.IsComplete){
 				AddWord(new TextComponent_word());

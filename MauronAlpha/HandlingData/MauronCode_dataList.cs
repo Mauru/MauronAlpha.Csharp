@@ -52,9 +52,36 @@ namespace MauronAlpha.HandlingData {
 				return this;
 			}
 			//actual removal
-			T obj = Data[key];
 			Data.RemoveAt(key);
 			return this;
+		}
+		public MauronCode_dataList<T> RemoveByRange(int start, int end){
+			if( start<0||start>=Count ) {
+				Error("Range start out of bounds! {"+start+"}", this);
+			}
+			if( end<0||end>=Count||end<start ) {
+				Error("Range end out of bounds! {"+end+"}", this);
+			}
+			for( int n=start; n<=end; n++ ) {
+				RemoveByKey(start);
+			}
+			return this;
+		}
+
+		//Get a range of results
+		public MauronCode_dataList<T> Range(int start, int end){
+			if(start<0||start>=Count){
+				Error("Range start out of bounds! {"+start+"}",this);
+			}
+			if(end<0||end>=Count||end<start){
+				Error("Range end out of bounds! {"+end+"}",this);
+			}
+			MauronCode_dataList<T> result = new MauronCode_dataList<T>();
+			for(int n=start;n<=end;n++){
+				T obj = Value(n);
+				result.AddValue(obj);
+			}
+			return result;
 		}
 
 		//Count
