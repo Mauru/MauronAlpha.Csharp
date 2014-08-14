@@ -2,11 +2,11 @@
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|Mixed Platforms" />
   <MonoDevelop.Ide.Workbench ActiveDocument="../MauronAlpha.Events/EventSubscription.cs">
     <Files>
-      <File FileName="../MauronAlpha.ConsoleApp/MauronConsole.cs" Line="6" Column="24" />
-      <File FileName="../MauronAlpha.Events/MauronCode_eventClock.cs" Line="80" Column="18" />
-      <File FileName="../MauronAlpha.Events/EventSubscription.cs" Line="90" Column="30" />
-      <File FileName="../MauronAlpha.Events/Units/EventHistory.cs" Line="7" Column="13" />
-      <File FileName="../MauronAlpha.Events/Units/MauronCode_timeStamp.cs" Line="12" Column="9" />
+      <File FileName="../MauronAlpha.ConsoleApp/MauronConsole.cs" Line="1" Column="1" />
+      <File FileName="../MauronAlpha.Events/MauronCode_eventClock.cs" Line="1" Column="1" />
+      <File FileName="../MauronAlpha.Events/EventSubscription.cs" Line="80" Column="43" />
+      <File FileName="../MauronAlpha.Events/Units/EventHistory.cs" Line="1" Column="1" />
+      <File FileName="../MauronAlpha.Events/Units/MauronCode_timeStamp.cs" Line="1" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ClassPad">
