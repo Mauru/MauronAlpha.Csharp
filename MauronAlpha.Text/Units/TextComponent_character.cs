@@ -3,7 +3,7 @@
 namespace MauronAlpha.Text.Units {
 	
 	//A character in a text
-	public class TextComponent_character:TextComponent {
+	public class TextComponent_character:TextComponent, I_textComponent<TextComponent_character> {
 
 		//constructor
 		public TextComponent_character() {}
@@ -43,6 +43,29 @@ namespace MauronAlpha.Text.Units {
 			SetIsEmpty(false);
 			return this;
 		}
+
+		#region Text, forming the text property
+
+		//Get the line text
+		private string STR_text;
+		public string Text {
+			get {
+				return STR_text;
+			}
+		}
+		private TextComponent_character SetText (string txt) {
+			STR_text=txt;
+			return this;
+		}
+		private TextComponent_character ConstructText ( ) {
+			string txt=""+Character;
+			STR_text=txt;
+			return this;
+		}
+
+		#endregion
+
+		#region State Flags (bool)
 
 		//is the character empty?
 		private bool B_isEmpty=true;
@@ -88,6 +111,9 @@ namespace MauronAlpha.Text.Units {
 			B_isWhiteSpace=status;
 			return this;
 		}
+	
+		#endregion
+
 	}
 
 }

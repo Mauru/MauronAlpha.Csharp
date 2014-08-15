@@ -46,6 +46,10 @@
     <Compile Include="MauronConsole.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\MauronAlpha.Text\MauronAlpha.Text.csproj">
+      <Project>{8491848C-470B-4652-AEAE-547EAA8F2AD9}</Project>
+      <Name>MauronAlpha.Text</Name>
+    </ProjectReference>
     <ProjectReference Include="..\MauronAlpha\MauronAlpha.csproj">
       <Project>{6A046817-9F14-4781-97C9-F89FEBC2097B}</Project>
       <Name>MauronAlpha</Name>

@@ -3,14 +3,36 @@
 namespace MauronAlpha.Text.Units {
 
 	//A line of text
-	public class TextComponent_line : TextComponent {
+	public class TextComponent_line : TextComponent, I_textComponent<TextComponent_line> {
 
 		//constructor
-		public TextComponent_line () {}		
+		public TextComponent_line () {}
+		
+		#region Text, forming the text property
+
+		//Get the line text
+		private string STR_text;
+		public string Text { get {
+			return STR_text;
+		} }
+		private TextComponent_line SetText (string txt) {
+			STR_text=txt;
+			return this;
+		}
+		private TextComponent_line ConstructText () {
+			string txt="";
+			foreach(TextComponent_word word in Words){
+				txt+=word.Text;
+			}
+			STR_text=txt;
+			return this;			
+		}
+
+		#endregion
 
 		//get any related words
 		private MauronCode_dataList<TextComponent_word> DATA_words;
-		public MauronCode_dataList<TextComponent_word> Words {
+		private MauronCode_dataList<TextComponent_word> Words {
 			get {
 				if(DATA_words==null){
 					SetWords(new MauronCode_dataList<TextComponent_word>());
@@ -18,21 +40,41 @@ namespace MauronAlpha.Text.Units {
 				return DATA_words;
 			}
 		}
-		public TextComponent_line SetWords(MauronCode_dataList<TextComponent_word> words) {
+		private TextComponent_line SetWords(MauronCode_dataList<TextComponent_word> words) {
 			DATA_words=words;
+			if(Words.Count==0){
+				SetIsEmpty(true);
+			}else{
+				SetIsEmpty(false);
+			}
+			ConstructText();
 			return this;
 		}
 
 		//Words
+		public TextComponent_line RemoveWordByIndex(int n){
+			if(n<0||n>=Words.Count){
+				return this;
+			}
+			Words.RemoveByKey(n);
+			if(Words.Count==0){
+				SetIsEmpty(true);
+			}else{
+				SetIsEmpty(false);
+			}
+			ConstructText();
+			return this;
+		}
 		public TextComponent_line AddWord(TextComponent_word word){
 			Words.AddValue(word);
 			SetIsEmpty(false);
+			ConstructText();
 			return this;
 		}
 		public TextComponent_word LastWord {
 			get {
 				if(Words.Count==0){
-					AddWord(new TextComponent_word(Display,this));
+					AddWord(new TextComponent_word());
 				}
 				return Words.LastElement;
 			}
@@ -67,8 +109,9 @@ namespace MauronAlpha.Text.Units {
 
 		//Clear the text
 		public TextComponent_line Clear ( ) {
-			SetText(null);
+			Words.Clear();
 			SetIsEmpty(true);
+			SetText(null);
 			return this;
 		}
 

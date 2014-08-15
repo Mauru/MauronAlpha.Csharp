@@ -4,7 +4,63 @@ using MauronAlpha.HandlingData;
 namespace MauronAlpha.Text.Units {
 
 	//A complete text
-	public class TextComponent_text:TextComponent {
+	public class TextComponent_text:TextComponent, I_textComponent<TextComponent_text> {
+
+		//constructor
+		public TextComponent_text(){}
+
+		//Instance
+		public TextComponent_text Instance {
+			get {
+				TextComponent_text instance=new TextComponent_text();
+				instance.SetWords(Words);
+				return instance;
+			}
+		}
+
+		#region Text, forming the text property
+
+		//Get the line text
+		private string STR_text;
+		public string Text {
+			get {
+				return STR_text;
+			}
+		}
+		private TextComponent_text SetText (string txt) {
+			STR_text=txt;
+			return this;
+		}
+		private TextComponent_text ConstructText ( ) {
+			string txt="";
+			foreach( TextComponent_character c in Characters ) {
+				txt+=c.Text;
+			}
+			STR_text=txt;
+			return this;
+		}
+
+		#endregion
+
+		//Clear
+		public TextComponent_text Clear() {
+			SetWords(null);
+			SetLines(null);
+			SetCharacters(null);
+			SetText(null);
+			SetIsEmpty(true);
+			return this;
+		}
+
+		//is the text empty?
+		private bool B_isEmpty=true;
+		public bool IsEmpty {
+			get { return B_isEmpty; }
+		}
+		private TextComponent_text SetIsEmpty (bool status) {
+			B_isEmpty=status;
+			return this;
+		}
 
 		//Lines
 		private MauronCode_dataList<TextComponent_line> DATA_lines;
@@ -50,7 +106,10 @@ namespace MauronAlpha.Text.Units {
 			return DATA_words;
 		}}
 		public TextComponent_text SetWords(MauronCode_dataList<TextComponent_word> words){
-			DATA_words=words;
+			Clear();
+			foreach(TextComponent_word word in words){
+				AddWord(word);
+			}
 			return this;
 		}	
 		public TextComponent_text AddWord(TextComponent_word word){
@@ -59,6 +118,8 @@ namespace MauronAlpha.Text.Units {
 			}
 			Words.AddValue(word);
 			LastLine.AddWord(word);
+			SetIsEmpty(false);
+			ConstructText();
 			return this;
 		}
 		public TextComponent_word LastWord { get {

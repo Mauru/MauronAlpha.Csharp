@@ -2,8 +2,11 @@ using System;
 using MauronAlpha.Projects;
 using MauronAlpha.HandlingData;
 using MauronAlpha.ExplainingCode;
+
 using MauronAlpha.Text.Units;
 using MauronAlpha.Text;
+using MauronAlpha.Text.Utility;
+
 using MauronAlpha.Input.Keyboard;
 
 using MauronAlpha.Events;
@@ -85,15 +88,18 @@ namespace MauronAlpha.ConsoleApp {
 				Debug(s, this);
 				return this;
 			}
-			TextBuffer.AddValue(TextComponent_line.New(this, s));
-			SetActiveLine(TextBuffer.LastElement);
-			WriteLine(TextBuffer.LastElement);
+			TextComponent_text txt = TextHelper.ParseString(s);
+			
+			TextBuffer.MergeText(txt);
+			
+			SetActiveLine(TextBuffer.LastLine);
+			WriteLine(TextBuffer.LastLine);
 			return this;
 		}
 
 		//Write a whole Line
-		public MauronConsole WriteLine (TextComponent_line text) {
-			Console.WriteLine(MakeLineStart(text)+text.Text);
+		public MauronConsole WriteLine (TextComponent_line line) {
+			Console.WriteLine(MakeLineStart(line)+line.Text);
 			return this;
 		}
 
@@ -114,6 +120,7 @@ namespace MauronAlpha.ConsoleApp {
 		#endregion
 
 		#region I_TextDisplay
+
 		public I_textDisplay WriteLine (TextComponent text) {
 			return WriteLine(text);
 
@@ -122,19 +129,18 @@ namespace MauronAlpha.ConsoleApp {
 		public I_textDisplay Write (TextComponent text) {
 			return Write(text);
 		}
-		private TextBuffer TXT_buffer=new TextBuffer();
-		public TextBuffer TextBuffer {
+		private TextComponent_text TXT_buffer=new TextComponent_text();
+		public TextComponent_text TextBuffer {
 			get {
 				return TXT_buffer;
 			}
 		}
-		public MauronConsole SetTextBuffer (TextBuffer buffer) {
+		public MauronConsole SetTextBuffer (TextComponent_text buffer) {
 			TXT_buffer=buffer;
 			return this;
 		}
-		#endregion
 
-		#region Lines
+		#endregion
 
 		#region Line Start and -number display
 
@@ -170,17 +176,15 @@ namespace MauronAlpha.ConsoleApp {
 			}
 		}
 
-		#endregion
-
 		//Generate the line seperator
 		private string MakeLineStart (TextComponent_line line) {
 			if( !LineNumbersVisible ) {
 				return null;
 			}
-			int lineindex=line.Index;
+			int lineindex=TextBuffer.LineIndex(line);
 			if( TitleVisible ) {
 				lineindex=lineindex-1;
-				if( line.Index==1 ) {
+				if( TextBuffer.LineIndex(line) ) {
 					return null;
 				}
 			}
@@ -190,40 +194,128 @@ namespace MauronAlpha.ConsoleApp {
 			return ""+lineindex+LineSeperator;
 		}
 
-		//The active Line
-		private TextComponent_line LINE_active;
-		public TextComponent_line ActiveLine {
-			get {
-				if( LINE_active==null ) {
-					TextBuffer.AddValue(TextComponent_line.New(this));
-				}
-				return TextBuffer.LastElement;
-			}
-		}
-		private MauronConsole SetActiveLine (TextComponent_line line) {
-			LINE_active=line;
-			return this;
-		}
+		#endregion
 
-		//Get the first Line
-		public TextComponent_line FirstLine {
-			get {
-				if( TextBuffer.IsEmpty ) {
-					TextBuffer.AddValue(new TextComponent_line(this, TextBuffer.NextIndex));
-				}
-				return TextBuffer.FirstElement;
-			}
-		}
+		#region Defining what Line we are on
 
-		//Get the last Line
-		public TextComponent_line LastLine {
-			get {
-				if( TextBuffer.IsEmpty ) {
-					TextBuffer.AddValue(new TextComponent_line(this, TextBuffer.NextIndex));
+		//The active line
+			public TextComponent_line ActiveLine {
+				get {
+					return TextBuffer.LineByIndex(LineIndex);
 				}
-				return TextBuffer.LastElement;
 			}
-		}
+			public TextComponent_line FirstLine {
+				get {
+					return TextBuffer.FirstLine;
+				}
+			}
+			public TextComponent_line LastLine {
+				get {
+					return TextBuffer.LastLine;
+				}
+			}		
+			public TextComponent_line LineByIndex(int n){
+				return TextBuffer.LineByIndex(n);
+			}
+					
+			private int INT_line=0;
+			public int LineIndex {
+				get {
+					return INT_line;
+				}	
+			}
+			public MauronConsole SetLineIndex (int n) {
+				if(n<0){
+					INT_line=0;
+				}else if(n>=TextBuffer.CountLines){
+					INT_line=TextBuffer.CountLines-1;
+				}else{
+					INT_line=n;
+				}
+				return this;
+			}
+		
+		#endregion
+
+		#region Defining what word we are on
+			
+			//The active word
+			public TextComponent_word ActiveWord {
+				get {
+					return TextBuffer.WordByIndex(WordIndex);
+				}
+			}
+			public TextComponent_word FirstWord {
+				get {
+					return TextBuffer.FirstWord;
+				}
+			}
+			public TextComponent_word LastWord {
+				get {
+					return TextBuffer.LastWord;
+				}
+			}
+			public TextComponent_word WordByIndex (int n) {
+				return TextBuffer.WordByIndex(n);
+			}
+			
+			private int INT_word=0;
+			public int WordIndex {
+				get {
+					return INT_word;
+				}
+			}
+			public MauronConsole SetWordIndex(int n){
+				if(n<0){
+					INT_word=0;
+				}else if(n>=TextBuffer.CountWords){
+					INT_word=TextBuffer.CountWords-1;
+				}else{
+					INT_word=n;
+				}
+				return this;
+			}
+
+		#endregion
+
+		#region Defining what character we are on
+
+			//The active character
+			public TextComponent_character ActiveCharacter {
+				get {
+					return TextBuffer.CharacterByIndex(CharacterIndex);
+				}
+			}
+			public TextComponent_character FirstCharacter {
+				get {
+					return TextBuffer.FirstCharacter;
+				}
+			}
+			public TextComponent_character LastCharacter {
+				get {
+					return TextBuffer.LastCharacter;
+				}
+			}
+			public TextComponent_character CharacterByIndex (int n) {
+				return TextBuffer.CharacterByIndex(n);
+			}
+
+			private int INT_character=0;
+			public int CharacterIndex {
+				get {
+					return INT_character;
+				}
+			}
+			public MauronConsole SetCharacterIndex(int n){
+				if(n<0){
+					INT_character=0;
+				}else if(n>=TextBuffer.CountChracters){
+					INT_character=TextBuffer.CountChracters-1;
+				}else{
+					INT_character=n;
+				}
+				return this;
+			}
 
 		#endregion
 
@@ -345,13 +437,17 @@ namespace MauronAlpha.ConsoleApp {
 		#endregion
 
 		#region Special Keys
+		
 		private KeyboardMap KEYS_map=new KeyboardMap_mauronConsole();
 		public KeyboardMap KeyMap { get { return KEYS_map; } }
 		public MauronConsole SetKeyboardMap(KeyboardMap map) {
 			KEYS_map=map;
 			return this;
 		}
+
 		#endregion
+
+		#region Exiting the program
 
 		//Tell the program when to exit
 		private bool B_canExit=true;
@@ -366,11 +462,12 @@ namespace MauronAlpha.ConsoleApp {
 			return this;
 		}
 
-
+		#endregion
+	
 	}
 
 	//Project Description
-	public sealed class ProjectType_mauronConsole:ProjectType {
+	public sealed class ProjectType_mauronConsole : ProjectType {
 		#region singleton
 		private static volatile ProjectType_mauronConsole instance=new ProjectType_mauronConsole();
 		private static object syncRoot=new Object();

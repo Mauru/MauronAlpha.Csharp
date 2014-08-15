@@ -5,7 +5,7 @@ using System.Collections.Generic;
 namespace MauronAlpha.Text.Units {
 
 	//A word
-	public class TextComponent_word:TextComponent {
+	public class TextComponent_word:TextComponent, I_textComponent<TextComponent_word> {
 		
 		//constructor
 		public TextComponent_word() {}
@@ -34,6 +34,30 @@ namespace MauronAlpha.Text.Units {
 				return newWord;
 			}
 		}
+
+		#region Text, forming the text property
+
+		//Get the line text
+		private string STR_text;
+		public string Text {
+			get {
+				return STR_text;
+			}
+		}
+		private TextComponent_word SetText (string txt) {
+			STR_text=txt;
+			return this;
+		}
+		private TextComponent_word ConstructText ( ) {
+			string txt="";
+			foreach( TextComponent_character c in Characters ) {
+				txt+=c.Text;
+			}
+			STR_text=txt;
+			return this;
+		}
+
+		#endregion
 
 		#region Characters
 
