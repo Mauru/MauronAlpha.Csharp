@@ -62,9 +62,11 @@ namespace MauronAlpha.Text.Units {
 			return this;
 		}
 
+		#region Lines
+
 		//Lines
 		private MauronCode_dataList<TextComponent_line> DATA_lines;
-		public MauronCode_dataList<TextComponent_line> Lines {
+		private MauronCode_dataList<TextComponent_line> Lines {
 			get {
 				if( DATA_lines==null ) {
 					DATA_lines=new MauronCode_dataList<TextComponent_line>();
@@ -76,10 +78,26 @@ namespace MauronAlpha.Text.Units {
 			DATA_lines=lines;
 			return this;
 		}
+		
 		private TextComponent_text AddLine (TextComponent_line line) {
 			Lines.AddValue(line);
 			return this;
 		}
+		private TextComponent_text RemoveLineByIndex(int n){
+			//remove the words
+			if(!Lines.ContainsKey(n)){
+				return this;
+			}
+			int startIndex=0;
+			int range=Lines.Value(i).WordCount;
+			for(int i=0; i<=n;i++){
+				TextComponent_line line = Lines.Value(i);
+				startIndex+=line.WordCount;
+			}
+			Words.RemoveByKey(startIndex);			
+			return this;			
+		}
+		
 		public TextComponent_line LastLine {
 			get {
 				if( Lines.Count<1 ) {
@@ -95,7 +113,20 @@ namespace MauronAlpha.Text.Units {
 				}
 				return Lines.FirstElement;
 			}
-		}			
+		}
+		public TextComponent_line LineByIndex(int n){
+			if(n>=Lines.Count){
+				return LastLine;
+			}
+			if(n<=0){
+				return FirstLine;
+			}
+			return Lines.Value(n);
+		}
+
+		#endregion		
+
+		#region Words
 
 		//words
 		private MauronCode_dataList<TextComponent_word> DATA_words;
@@ -137,6 +168,10 @@ namespace MauronAlpha.Text.Units {
 			}
 		}			
 		
+		#endregion
+
+		#region Characters
+
 		//Add a character
 		public TextComponent_text AddCharacter(TextComponent_character c){
 			if(LastWord.IsComplete){
@@ -145,6 +180,8 @@ namespace MauronAlpha.Text.Units {
 			LastWord.AddCharacter(c);
 			return this;
 		}
+	
+		#endregion
 	}
 
 }

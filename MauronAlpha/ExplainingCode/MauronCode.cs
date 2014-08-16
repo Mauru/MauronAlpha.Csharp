@@ -15,9 +15,11 @@ namespace MauronAlpha {
 			MauronCode_error e = new MauronCode_error(msg, o, ErrorType_fatal.Instance);
 			throw e;
 		}
-		public static MauronCode_error Exception(string msg, object o){
-			throw new MauronCode_error(msg, o, ErrorType_exception.Instance);
+		public static MauronCode_error Exception(string msg, object o, ErrorResolution resolution){
+			MauronCode_error e=new MauronCode_error(msg, o, ErrorType_exception.Instance);
+			return e;
 		}
+
     }
 
 }

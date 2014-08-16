@@ -4,7 +4,7 @@ namespace MauronAlpha.ErrorHandling {
 
 	//A fatal error condition
 	public sealed class ErrorType_fatal:ErrorType {
-			#region Singleton
+		#region Singleton
 		private static volatile ErrorType_fatal instance=new ErrorType_fatal();
 		private static object syncRoot = new Object();
 		//constructor singleton multithread safe

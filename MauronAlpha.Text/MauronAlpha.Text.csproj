@@ -43,6 +43,7 @@
     <Compile Include="I_TextDisplay.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TextComponent.cs" />
+    <Compile Include="TextContext.cs" />
     <Compile Include="Units\I_textComponent.cs" />
     <Compile Include="Units\TextComponent_character.cs" />
     <Compile Include="Units\TextComponent_line.cs" />
