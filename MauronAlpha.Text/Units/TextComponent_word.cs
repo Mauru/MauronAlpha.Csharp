@@ -63,7 +63,7 @@ namespace MauronAlpha.Text.Units {
 
 		//Characters
 		private MauronCode_dataList<TextComponent_character> DATA_characters;
-		public MauronCode_dataList<TextComponent_character> Characters {
+		private MauronCode_dataList<TextComponent_character> Characters {
 			get {
 				if(DATA_characters==null){
 					DATA_characters=new MauronCode_dataList<TextComponent_character>();
@@ -86,11 +86,11 @@ namespace MauronAlpha.Text.Units {
 		}
 		
 		public TextComponent_word RemoveCharacterByIndex(int n){
-			if(n>0||n>=Count){
+			if( n>0||n>=CharacterCount ) {
 				Error("Character Index out of range {"+n+"}",this);
 			}
 			Characters.RemoveByKey(n);
-			if(Count==0){
+			if( CharacterCount==0 ) {
 				SetIsEmpty(true);
 			}
 			InitializeWordBreaks();
@@ -113,12 +113,15 @@ namespace MauronAlpha.Text.Units {
 				return Characters.FirstElement;
 			}
 		}
-		public TextComponent_character CharacterAt(int n){
-			if(n<0||n>=Count){
+		public TextComponent_character CharacterByIndex(int n){
+			if( n<0||n>=CharacterCount ) {
 				Error("Index out of bounds {"+n+"}",this);
 			}
 			return Characters.Value(n);
 		}
+		public int CharacterCount { get {
+			return Characters.Count;
+		} }
 
 		#endregion
 
@@ -126,13 +129,6 @@ namespace MauronAlpha.Text.Units {
 		public bool IsComplete { get {
 			return ((!IsEmpty)&&(!LastCharacter.EndsWord));
 		} }
-
-		//count characters
-		public int Count { 
-			get {
-				return Characters.Count;
-			}
-		}
 
 		#region breaking a word into parts (experimental)
 		
@@ -203,8 +199,8 @@ namespace MauronAlpha.Text.Units {
 			}
 			TextComponent_word newWord = new TextComponent_word(Characters.Range(n, Characters.Count-1));
 			AddWordPart(newWord);
-			int newCount=Count-newWord.Count;
-			while( Count>newCount ) { 
+			int newCount=CharacterCount-newWord.CharacterCount;
+			while( CharacterCount>newCount ) { 
 				RemoveCharacterByIndex(n);
 			}
 			return this;

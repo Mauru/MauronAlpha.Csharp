@@ -153,6 +153,7 @@ namespace MauronAlpha.Text.Units {
 			ConstructText();
 			return this;
 		}
+		
 		public TextComponent_word LastWord { get {
 			if(Words.Count<1){
 				AddWord(new TextComponent_word());
@@ -167,12 +168,22 @@ namespace MauronAlpha.Text.Units {
 				return Words.FirstElement;
 			}
 		}			
-		
+		public TextComponent_word WordByIndex {
+			get {
+			
+			}
+		}
+
 		#endregion
 
 		#region Characters
 
 		//Add a character
+		public MauronCode_dataList<TextComponent_character> Characters {
+			get {
+				
+			}
+		}
 		public TextComponent_text AddCharacter(TextComponent_character c){
 			if(LastWord.IsComplete){
 				AddWord(new TextComponent_word());
