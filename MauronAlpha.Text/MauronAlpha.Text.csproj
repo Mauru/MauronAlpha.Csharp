@@ -51,12 +51,6 @@
     <Compile Include="Units\TextComponent_word.cs" />
     <Compile Include="Utility\TextHelper.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\MauronAlpha\MauronAlpha.csproj">
-      <Project>{6A046817-9F14-4781-97C9-F89FEBC2097B}</Project>
-      <Name>MauronAlpha</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
@@ -65,4 +59,10 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  <ItemGroup>
+    <ProjectReference Include="..\MauronAlpha\MauronAlpha.csproj">
+      <Project>{6A046817-9F14-4781-97C9-F89FEBC2097B}</Project>
+      <Name>MauronAlpha</Name>
+    </ProjectReference>
+  </ItemGroup>
 </Project>
