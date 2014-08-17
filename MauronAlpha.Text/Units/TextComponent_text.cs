@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using MauronAlpha.HandlingData;
+using MauronAlpha.Text.Utility;
 
 namespace MauronAlpha.Text.Units {
 
@@ -23,7 +24,7 @@ namespace MauronAlpha.Text.Units {
 			ResetLineIndex (false);
 			ResetWordIndex (false);
 			ResetCharacterIndex (false);
-			ResetTextIndex (false);
+			ResetStringIndex (false);
 			SetIsEmpty(true,false);
 			return this;
 		}
@@ -46,8 +47,8 @@ namespace MauronAlpha.Text.Units {
 		#region Text as string
 
 		#region Set text property to null
-		private TextComponent_text ResetTextIndex(bool reIndex){
-			SetText (null, false);
+		private TextComponent_text ResetStringIndex(bool reIndex){
+			SetString (null, false);
 
 			//re-index
 			if (reIndex) {
@@ -60,25 +61,25 @@ namespace MauronAlpha.Text.Units {
 		#endregion
 
 		#region Constructing the text property
-		private TextComponent_text BuildTextIndex(bool reIndex)	{
+		private TextComponent_text BuildStringIndex(bool reIndex)	{
 			ResetTextIndex (false);
 			if (CharacterCount > 0) {
-				return BuildTextIndexFromCharacters (reIndex);
+				return BuildStringIndexFromCharacters (reIndex);
 			}
 			if (WordCount > 0) {
-				return BuildTextIndexFromWords (reIndex);
+				return BuildStringIndexFromWords (reIndex);
 			}
 			if (LineCount > 0) {
-				return BuildTextIndexFromLines (reIndex);
+				return BuildStringIndexFromLines (reIndex);
 			}
-			return SetText ("",reIndex);
+			return SetString ("",reIndex);
 		}
-		private TextComponent_text BuildTextIndexFromCharacters (bool reIndex) {
+		private TextComponent_text BuildStringndexFromCharacters (bool reIndex) {
 			string txt="";
 			foreach( TextComponent_character c in Characters ) {
 				txt+=c.Text;
 			}
-			SetText (txt, false);
+			SetString (txt, false);
 
 			if (reIndex) {
 				ResetLineIndex (false);
@@ -88,12 +89,12 @@ namespace MauronAlpha.Text.Units {
 
 			return this;
 		}
-		private TextComponent_text BuildTextIndexFromWords (bool reIndex) {
+		private TextComponent_text BuildStringIndexFromWords (bool reIndex) {
 			string txt="";
 			foreach( TextComponent_word c in Words ) {
 				txt+=c.Text;
 			}
-			SetText (txt, false);
+			SetString (txt, false);
 
 			if (reIndex) {
 				ResetLineIndex (false);
@@ -103,12 +104,12 @@ namespace MauronAlpha.Text.Units {
 
 			return this;
 		}
-		private TextComponent_text BuildTextIndexFromLines (bool reIndex) {
+		private TextComponent_text BuildStringIndexFromLines (bool reIndex) {
 			string txt="";
 			foreach( TextComponent_line c in Lines ) {
 				txt+=c.Text;
 			}
-			SetText (txt, false);
+			SetString(txt, false);
 
 			if (reIndex) {
 				ResetWordIndex (false);
@@ -122,10 +123,10 @@ namespace MauronAlpha.Text.Units {
 
 		#region Returning the text property
 		private string STR_text;
-		public string Text {
+		public string String {
 			get {
 				if (STR_text == null) {
-					BuildTextIndex (false);
+					BuildStringIndex (false);
 				}
 				return STR_text;
 			}
@@ -133,10 +134,10 @@ namespace MauronAlpha.Text.Units {
 		#endregion
 
 		#region Setting the text property
-		public TextComponent_text SetText (string txt) {
+		public TextComponent_text SetString (string txt) {
 			return SetText(txt, true);
 		}
-		private TextComponent_text SetText(string text, bool reIndex){
+		private TextComponent_text SetString(string text, bool reIndex) {
 			STR_text = text;
 
 			//reset indexes
@@ -150,12 +151,12 @@ namespace MauronAlpha.Text.Units {
 		#endregion
 
 		#region Adding to the TextProperty
-		public TextComponent_text AddText(string text){
-			return AddText (text, true);
+		public TextComponent_text AddString(string text){
+			return AddString (text, true);
 		}
-		private TextComponent_text AddText(string text, bool reIndex){
+		private TextComponent_text AddString (string text, bool reIndex) {
 			if (STR_text == null) {
-				SetText ("", false);
+				SetString("", false);
 			}
 			STR_text += text;
 
@@ -168,22 +169,73 @@ namespace MauronAlpha.Text.Units {
 
 			return this;
 		}
-		public TextComponent_text AddTextbyContext(string text, TextContext context){
-			return AddTextByContext (text, context, true);
+		//context is an offset!
+		public TextComponent_text AddStringByContext (string text, TextContext context) {
+			return AddStringByContext (text, context, true);
 		}
-		private TextComponent_text AddTextbyContext(string text, TextContext context, bool reIndex){
+		private TextComponent_text AddStringByContext(string text, TextContext context, bool reIndex){
+			TextComponent_text txt = TextHelper.ParseString(text);
+			
+			//no context, we add to End
 			if (context.IsEmpty) {
-				return AddText (text, reIndex);
+				return AddString (text, reIndex);
 			}
 
-			//line
+			//negative offsets
+			if(context.IsLine&&context.LineOffset<0){
+				int newIndex = LineCount-context.LineOffset;
+				if(newIndex<0){ newIndex=0;	}
+				context.SetLineOffset(newIndex);
+				return AddStringByContext(text,context,reIndex);
+			}
+			if(context.IsWord&&context.WordOffset<0){
+				int newIndex = WordCount-context.WordOffset;
+				if(newIndex<0){ context.SetLineOffset(context.LineOffset-1); }
+				context.SetWordOffset(newIndex);
+				return AddStringByContext(text,context,reIndex);
+			}
+			if(context.IsCharacter&&context.CharacterOffset<0){
+				int newIndex = CharacterCount-context.CharacterOffset;
+				if(newIndex<0){ context.SetWordOffset(context.WordOffset-1); }
+				context.SetCharacterOffset(newIndex);
+				return AddStringByContext(text,context,reIndex);
+			}
+
+			
+
+			TextComponent_line line;
+			TextComponent_word word;
+			TextComponent_character character;
+
+			#region add at line
 			if (context.IsLineOnly) {
+				//firstline
+				if(context.LineOffset==0){
+					line=FirstLine;
+				}
+				//lastline
+				else if(context.LineOffset>=LineCount){
+					line=LastLine;
+				}
+				//Specific line
+				else{
+					line=LineByIndex(context.LineOffset);
+				}
+
+			}
+			#endregion
+
+			//line,word
+			if (context.IsLine && context.IsWord) {
+				TextComponent_line line;
+				if(context.LineOffset<0)				
 			}
 
-			if (context.IsLine && context.IsWord) {
-			}
+
+			//line, word, character
 			if (context.IsLine && context.IsWord && context.IsCharacter) {
 			}
+			//line, character
 			if (context.IsLine && context.IsCharacter) {
 			}
 
@@ -191,6 +243,7 @@ namespace MauronAlpha.Text.Units {
 			if (context.IsWordOnly) {
 			}
 
+			//word, character
 			if (context.IsWord&&context.IsCharacter) {
 			}
 
