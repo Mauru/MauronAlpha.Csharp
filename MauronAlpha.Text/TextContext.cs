@@ -1,24 +1,56 @@
 ﻿using MauronAlpha.HandlingData;
 using MauronAlpha.Text.Units;
 
+using System;
+
 namespace MauronAlpha.Text {
 
-	public class TextContext:MauronCode_dataObject {
+	public class TextContext:MauronCode_dataObject, IEquatable<TextContext> {
 
 		//constructor
 		public TextContext():base(DataType_maintaining.Instance) {}
 
-		public TextContext(int line, int word, int character){
+		public TextContext(int line, int word, int character):this(){
 			SetLineOffset(line);
 			SetWordOffset(word);
 			SetCharacterOffset(character);
 		}
-		public TextContext (int line, int word) {
+		public TextContext (int line, int word):this() {
 			SetLineOffset(line);
 			SetWordOffset(word);
 		}
-		public TextContext (int line) {
+		public TextContext (int line):this() {
 			SetLineOffset(line);
+		}
+
+		private TextComponent_text TXT_source;
+		public TextComponent_text Source {
+			get {
+				if(TXT_source==null){
+					SetSource(new TextComponent_text());
+				}
+				return TXT_source;
+			}
+		}
+		public TextContext SetSource(TextComponent_text source){
+			TXT_source=source;
+			return this;
+		}
+		public bool HasSource {
+			get {
+				return TXT_source==null;
+			}
+		}
+
+		public TextContext Instance {
+			get {
+				return TextContext.New.SetSource(Source).SetLineOffset(LineOffset).SetWordOffset(WordOffset).SetCharacterOffset(CharacterOffset);
+			}
+		}
+		public static TextContext New {
+			get {
+				return new TextContext();
+			}
 		}
 
 		#region line
@@ -100,6 +132,26 @@ namespace MauronAlpha.Text {
 				return IsLine&&IsCharacter&&IsWord;
 			}
 		}
+
+		#region IEquatable<TextContext>
+		bool IEquatable<TextContext>.Equals (TextContext other) {
+			if(
+				HasSource&&!other.HasSource
+				||	!HasSource&&other.HasSource
+			){
+				return false;
+			}
+			else if(HasSource&&other.HasSource){
+				if(Source!=other.Source){
+					return false;
+				}
+			}
+			return 
+			LineOffset==other.LineOffset
+			&& WordOffset==other.WordOffset
+			&& CharacterOffset==other.CharacterOffset;
+		}
+		#endregion
 
 	}
 

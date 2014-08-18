@@ -226,9 +226,10 @@ namespace MauronAlpha.Text.Units {
 			#endregion
 
 			//line,word
-			if (context.IsLine && context.IsWord) {
-				TextComponent_line line;
-				if(context.LineOffset<0)				
+			else if (context.IsLine && context.IsWord) {
+				if(context.LineOffset<0){
+					
+				}				
 			}
 
 
@@ -429,7 +430,7 @@ namespace MauronAlpha.Text.Units {
 			}
 			return this;
 		}
-		private TextComponent_text BuildLineIndex<TextComponent_word>(){
+		private TextComponent_text BuildLineIndexFromWords(){
 			ResetLineIndex ();
 			foreach (TextComponent_word word in Words) {
 				TextComponent_line activeLine = LastLine;
@@ -440,7 +441,7 @@ namespace MauronAlpha.Text.Units {
 			}
 			return this;
 		}
-		private TextComponent_text BuildLineIndex<TextComponent_character>(){
+		private TextComponent_text BuildLineIndexFromCharacters(){
 			ResetWordIndex ();
 			BuildWordIndex<TextComponent_character> ();
 			return BuildWordIndex<TextComponent_word> ();

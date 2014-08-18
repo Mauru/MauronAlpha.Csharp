@@ -1,23 +1,17 @@
 ﻿using MauronAlpha.Text.Utility;
 
+using System;
+
+
 namespace MauronAlpha.Text.Units {
 	
 	//A character in a text
-	public class TextComponent_character:TextComponent, I_textComponent<TextComponent_character> {
+	public class TextComponent_character:TextComponent, I_textComponent<TextComponent_character>,IEquatable<TextComponent_character> {
 
 		//constructor
 		public TextComponent_character() {}
 		public TextComponent_character(char c){
 			SetCharacter(c);
-			if(TextHelper.LineBreaks.ContainsValue(c)){
-				SetIsLineBreak(true);
-			}
-			if(TextHelper.WordBreaks.ContainsValue(c)){
-				SetIsWordBreak(true);
-			}
-			if(TextHelper.WhiteSpaces.ContainsValue(c)){
-				SetIsWhiteSpace(true);
-			}
 		}
 
 		//Instance
@@ -32,6 +26,11 @@ namespace MauronAlpha.Text.Units {
 				return c;
 			}
 		}
+		public static TextComponent_character New {
+			get {
+				return new TextComponent_character();
+			}
+		}
 
 		// the character
 		private char CHAR_character;
@@ -40,24 +39,55 @@ namespace MauronAlpha.Text.Units {
 		} }
 		public TextComponent_character SetCharacter(char c){
 			CHAR_character=c;
-			SetIsEmpty(false);
+			AnalyzeCharacter();
 			return this;
+		}
+		public TextComponent_character AnalyzeCharacter() {
+			SetIsEmpty(Character==null);
+			if( TextHelper.LineBreaks.ContainsValue(Character) ) {
+				SetIsLineBreak(true);
+			}
+			if( TextHelper.WordBreaks.ContainsValue(Character) ) {
+				SetIsWordBreak(true);
+			}
+			if( TextHelper.WhiteSpaces.ContainsValue(Character) ) {
+				SetIsWhiteSpace(true);
+			}
+			return this;
+		}
+
+		//context
+		private TextContext DATA_context;
+		public TextContext Context {
+			get {
+				if(DATA_context==null){
+					SetContext(new TextContext());
+				}
+				return DATA_context;
+			}
+		}
+		public TextComponent_character SetContext(TextContext context){
+			DATA_context=context;
+			return this;
+		}
+		public bool HasContext {
+			get { return DATA_context==null; }
 		}
 
 		#region Text, forming the text property
 
 		//Get the line text
 		private string STR_text;
-		public string Text {
+		public string AsString {
 			get {
 				return STR_text;
 			}
 		}
-		private TextComponent_character SetText (string txt) {
+		private TextComponent_character SetString (string txt) {
 			STR_text=txt;
 			return this;
 		}
-		private TextComponent_character ConstructText ( ) {
+		private TextComponent_character ConstructString ( ) {
 			string txt=""+Character;
 			STR_text=txt;
 			return this;
@@ -113,6 +143,62 @@ namespace MauronAlpha.Text.Units {
 		}
 	
 		#endregion
+
+		#region I_TextComponent
+		string I_textComponent<TextComponent_character>.AsString {
+			get { return AsString; }
+		}
+		bool I_textComponent<TextComponent_character>.IsEmpty {
+			get { return IsEmpty; }
+		}
+		bool I_textComponent<TextComponent_character>.IsComplete {
+			get { return !IsEmpty; }
+		}
+		bool I_textComponent<TextComponent_character>.HasWhiteSpace {
+			get { return IsWhiteSpace; }
+		}
+		bool I_textComponent<TextComponent_character>.HasWordBreak {
+			get { return IsWordBreak; }
+		}
+		bool I_textComponent<TextComponent_character>.HasLineBreak {
+			get { return IsLineBreak; }
+		}
+		bool I_textComponent<TextComponent_character>.HasContext {
+			get { return HasContext; }
+		}
+		TextComponent_character I_textComponent<TextComponent_character>.SetContext (TextContext context) {
+			return SetContext(context);
+		}
+		TextContext I_textComponent<TextComponent_character>.Context {
+			get { return Context; }
+		}
+
+		TextComponent_text I_textComponent<TextComponent_character>.Source {
+			get { return Context.Source; }
+		}
+
+		TextComponent_character I_textComponent<TextComponent_character>.Instance {
+			get { return Instance; }
+		}
+		#endregion
+	
+		#region IEquatable<TextComponent_character>
+		bool IEquatable<TextComponent_character>.Equals (TextComponent_character other) {
+			if(other.HasContext&&HasContext){
+				return Character==other.Character && Context==other.Context;
+			}
+			else if(
+				!other.HasContext&&HasContext
+				|| !HasContext&&other.HasContext
+			){
+				return false;
+			}
+			return Character==other.Character;
+		}
+		#endregion
+
+
+
 
 	}
 
