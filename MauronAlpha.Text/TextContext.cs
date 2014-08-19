@@ -9,7 +9,6 @@ namespace MauronAlpha.Text {
 
 		//constructor
 		public TextContext():base(DataType_maintaining.Instance) {}
-
 		public TextContext(int line, int word, int character):this(){
 			SetLineOffset(line);
 			SetWordOffset(word);

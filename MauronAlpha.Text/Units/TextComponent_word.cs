@@ -1,11 +1,12 @@
 using MauronAlpha.HandlingData;
 
 using System.Collections.Generic;
+using System;
 
 namespace MauronAlpha.Text.Units {
 
 	//A word
-	public class TextComponent_word:TextComponent, I_textComponent<TextComponent_word> {
+	public class TextComponent_word:TextComponent, I_textComponent<TextComponent_word>, IEquatable<TextComponent_word> {
 		
 		//constructor
 		public TextComponent_word() {}
@@ -34,6 +35,38 @@ namespace MauronAlpha.Text.Units {
 				return newWord;
 			}
 		}
+		public static TextComponent_word New {
+			get { 
+				return new TextComponent_word();
+			}
+
+		}
+		public TextComponent_character NewChild {
+			get { 
+				TextComponent_character c = new TextComponent_character (this);
+				return c;
+			}
+
+		}
+
+		#region Context
+		private TextContext DATA_context;
+		public TextContext Context {
+			get {
+				if(DATA_context==null){
+					SetContext(new TextContext());
+				}
+				return DATA_context;
+			}
+		}
+		public TextComponent_word SetContext(TextContext context){
+			DATA_context=context;
+			return this;
+		}
+		public bool HasContext {
+			get { return DATA_context==null; }
+		}
+		#endregion
 
 		#region Text, forming the text property
 
@@ -80,11 +113,13 @@ namespace MauronAlpha.Text.Units {
 		
 		public TextComponent_word AddCharacter(TextComponent_character c){
 			Characters.AddValue(c);
+			c.SetContext (new TextContext (Context.LineOffset,Context.WordOffset,CharacterCount));
+			c.SetParent (this);
 			SetIsEmpty(false);
 			InitializeWordBreaks();
 			return this;
 		}
-		
+
 		public TextComponent_word RemoveCharacterByIndex(int n){
 			if( n>0||n>=CharacterCount ) {
 				Error("Character Index out of range {"+n+"}",this);
@@ -100,7 +135,7 @@ namespace MauronAlpha.Text.Units {
 		public TextComponent_character LastCharacter {
 			get {
 				if(Characters.Count<1){
-					AddCharacter(new TextComponent_character());
+					AddCharacter(NewChild);
 				}
 				return Characters.LastElement;
 			}
@@ -108,7 +143,7 @@ namespace MauronAlpha.Text.Units {
 		public TextComponent_character FirstCharacter {
 			get {
 				if( Characters.Count<1 ) {
-					AddCharacter(new TextComponent_character());
+					AddCharacter(NewChild);
 				}
 				return Characters.FirstElement;
 			}

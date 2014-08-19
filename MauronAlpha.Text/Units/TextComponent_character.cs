@@ -34,9 +34,11 @@ namespace MauronAlpha.Text.Units {
 
 		// the character
 		private char CHAR_character;
-		public char Character { get {
-			return CHAR_character; 
-		} }
+		public char Character { 
+			get {
+				return CHAR_character;
+			}
+		}
 		public TextComponent_character SetCharacter(char c){
 			CHAR_character=c;
 			AnalyzeCharacter();
@@ -56,7 +58,29 @@ namespace MauronAlpha.Text.Units {
 			return this;
 		}
 
-		//context
+		//Parent component
+		private TextComponent_word TXT_parent;
+		public bool HasParent {
+			get { 
+				return TXT_parent = null;
+			}
+		}
+		public TextComponent_word Parent {
+			get {
+				if (TXT_parent == null) {
+					SetParent (new TextComponent_word ());
+					Parent.AddCharacter (this);
+					Context.SetCharacterOffset (Parent.CharacterCount - 1);
+				}
+				return TXT_parent;
+			}
+		}
+		public TextComponent_character SetParent(TextComponent_word word){
+			TXT_parent=word;
+			return this;
+		}
+
+		#region the Context
 		private TextContext DATA_context;
 		public TextContext Context {
 			get {
@@ -73,6 +97,7 @@ namespace MauronAlpha.Text.Units {
 		public bool HasContext {
 			get { return DATA_context==null; }
 		}
+		#endregion
 
 		#region Text, forming the text property
 
@@ -196,9 +221,6 @@ namespace MauronAlpha.Text.Units {
 			return Character==other.Character;
 		}
 		#endregion
-
-
-
 
 	}
 
