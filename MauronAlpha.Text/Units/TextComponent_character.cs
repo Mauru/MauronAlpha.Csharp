@@ -9,9 +9,10 @@ namespace MauronAlpha.Text.Units {
 	public class TextComponent_character:TextComponent, I_textComponent<TextComponent_character>,IEquatable<TextComponent_character> {
 
 		//constructor
-		public TextComponent_character() {}
-		public TextComponent_character(char c){
+		public TextComponent_character(TextComponent_word parent, TextContext context, char c){
 			SetCharacter(c);
+			SetParent (parent);
+			SetContext (context);
 		}
 
 		//Instance
