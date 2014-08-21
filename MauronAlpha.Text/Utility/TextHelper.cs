@@ -12,13 +12,28 @@ namespace MauronAlpha.Text.Utility {
 		public static MauronCode_dataList<char> LineBreaks=new MauronCode_dataList<char>();
 
 		public static TextComponent_text ParseString(string str) {
-			TextComponent_text r=new TextComponent_text();
+			TextComponent_text text=new TextComponent_text();
 			ICollection<char> characters = str.ToCharArray();
-			foreach(char c in characters){
-				r.AddCharacter(new TextComponent_character(c));
+			
+			MauronCode_dataList<TextComponent_word> words=new MauronCode_dataList<TextComponent_word>();
+			
+			MauronCode_dataList<TextComponent_line> lines=new MauronCode_dataList<TextComponent_line>();
+
+			TextComponent_line line = new TextComponent_line(text,new TextContext(1));
+			lines.AddValue(line);
+
+			TextComponent_word word = new TextComponent_word(line,new TextContext(1,1));
+			line.AddWord(word);
+
+			for(int i=0; i<characters.Count;i++){
+				
 			}
-			return r;			
+
+			return text;			
 		}
-	
+		public static bool IsLineBreak(char c) {
+			return LineBreaks.ContainsValue(c);
+		}
+
 	}
 }

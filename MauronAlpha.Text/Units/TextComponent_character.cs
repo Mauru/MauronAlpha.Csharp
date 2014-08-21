@@ -33,7 +33,7 @@ namespace MauronAlpha.Text.Units {
 			}
 		}
 		public TextComponent_character SetParent(TextComponent_word context){
-			TXT_context=context;
+			TXT_parent=context;
 			return this;
 		}
 
@@ -48,6 +48,19 @@ namespace MauronAlpha.Text.Units {
 			return this;
 		}
 	
+		public bool EndsLine {
+			get {
+				if(IsEmpty){
+					return false;
+				}
+				return TextHelper.IsLineBreak(Char);
+			}
+		}
+		public bool IsEmpty {
+			get {
+				return (CHAR_txt==null);
+			}
+		}
 	}
 
 }

@@ -45,10 +45,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ErrorHandling\ErrorResolution.cs" />
-    <Compile Include="ErrorHandling\ErrorType.cs" />
-    <Compile Include="ErrorHandling\ErrorType_exception.cs" />
-    <Compile Include="ErrorHandling\ErrorType_fatal.cs" />
+    <Compile Include="HandlingErrors\ErrorResolution.cs" />
+    <Compile Include="HandlingErrors\ErrorType.cs" />
+    <Compile Include="HandlingErrors\ErrorType_exception.cs" />
+    <Compile Include="HandlingErrors\ErrorType_fatal.cs" />
     <Compile Include="HandlingData\DataType.cs" />
     <Compile Include="HandlingData\I_instantiable.cs" />
     <Compile Include="ExplainingCode\I_Singleton.cs" />
@@ -63,9 +63,10 @@
     <Compile Include="HandlingData\MauronCode_dataMap.cs" />
     <Compile Include="HandlingData\MauronCode_dataRegistry.cs" />
     <Compile Include="HandlingData\MergeConflict.cs" />
+    <Compile Include="HandlingErrors\ErrorType_nullError.cs" />
     <Compile Include="Settings\I_hasDefaultSettings.cs" />
     <Compile Include="HandlingData\MauronCode_data.cs" />
-    <Compile Include="ErrorHandling\MauronCode_error.cs" />
+    <Compile Include="HandlingErrors\MauronCode_error.cs" />
     <Compile Include="ExplainingCode\MauronCode.cs" />
     <Compile Include="ExplainingCode\Languages\CSharp\CodeStyle_MauronAlpha_CSharp.cs" />
     <Compile Include="ExplainingCode\CodeType.cs" />
@@ -78,7 +79,7 @@
     <Compile Include="Files\FileTypes\FileType_mau.cs" />
     <Compile Include="ExplainingCode\LanguageComponent.cs" />
     <Compile Include="ExplainingCode\MauronAlphaCode.cs" />
-    <Compile Include="ErrorHandling\MauronCode_exception.cs" />
+    <Compile Include="HandlingErrors\MauronCode_exception.cs" />
     <Compile Include="HandlingData\MauronCode_dataObject.cs" />
     <Compile Include="ExplainingCode\MauronCode_singleton.cs" />
     <Compile Include="ExplainingCode\MauronCode_subtype.cs" />

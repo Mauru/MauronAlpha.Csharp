@@ -1,7 +1,7 @@
 ﻿using System;
 using MauronAlpha.ExplainingCode;
 
-namespace MauronAlpha.ErrorHandling {
+namespace MauronAlpha.HandlingErrors {
 	
 	//Describes a Error Resolution Behavior (usually in cases where erronous userinput is interpreted/corrected)
 	public class ErrorResolution:MauronCode {

@@ -1,19 +1,19 @@
 ﻿using System;
 
-namespace MauronAlpha.ErrorHandling {
+namespace MauronAlpha.HandlingErrors {
 
 	//A fatal error condition
-	public sealed class ErrorType_exception : ErrorType {
+	public sealed class ErrorType_nullError : ErrorType {
 		#region Singleton
-		private static volatile ErrorType_exception instance=new ErrorType_exception();
+		private static volatile ErrorType_nullError instance=new ErrorType_nullError();
 		private static object syncRoot=new Object();
 		//constructor singleton multithread safe
-		static ErrorType_exception ( ) { }
+		static ErrorType_nullError ( ) { }
 		public static ErrorType Instance {
 			get {
 				if( instance==null ) {
 					lock( syncRoot ) {
-						instance=new ErrorType_exception();
+						instance=new ErrorType_nullError();
 					}
 				}
 				return instance;
@@ -22,7 +22,7 @@ namespace MauronAlpha.ErrorHandling {
 		#endregion
 
 		public override string Name {
-			get { return "exception"; }
+			get { return "nullError"; }
 		}
 	}
 

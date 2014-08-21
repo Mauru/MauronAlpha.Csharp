@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace MauronAlpha {
+namespace MauronAlpha.HandlingErrors {
 
 	public class MauronCode_exception : Exception {
 

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace MauronAlpha.ErrorHandling {
+namespace MauronAlpha.HandlingErrors {
 
 	//A fatal error condition
 	public sealed class ErrorType_fatal:ErrorType {
