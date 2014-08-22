@@ -61,16 +61,6 @@ namespace MauronAlpha.Text {
 			INT_lineOffset=n;
 			return this;
 		}
-		public bool IsLine {
-			get {
-				return LineOffset!=null;
-			}
-		}
-		public bool IsLineOnly {
-			get {
-				return !IsCharacter&&!IsWord&&IsLine;
-			}
-		}
 		#endregion
 
 		#region word
@@ -81,16 +71,6 @@ namespace MauronAlpha.Text {
 		public TextContext SetWordOffset(int n){
 			INT_wordOffset=n;
 			return this;
-		}
-		public bool IsWord {
-			get {
-				return WordOffset!=null&&WordOffset!=0;
-			}
-		}
-		public bool IsWordOnly {
-			get {
-				return !IsCharacter&&IsWord&&!IsLine;
-			}
 		}
 		#endregion
 
@@ -103,16 +83,6 @@ namespace MauronAlpha.Text {
 			INT_characterOffset=n;
 			return this;
 		}
-		public bool IsCharacter {
-			get {
-				return CharacterOffset!=null&&CharacterOffset!=0;
-			}
-		}
-		public bool IsCharacterOnly {
-			get {
-				return IsCharacter&&!IsWord&&!IsLine;
-			}
-		}
 		#endregion
 
 		public static TextContext End {
@@ -123,12 +93,6 @@ namespace MauronAlpha.Text {
 		public static TextContext Start {
 			get {
 				return new TextContext(0, 0, 0);
-			}
-		}
-
-		public bool IsEmpty {
-			get {
-				return IsLine&&IsCharacter&&IsWord;
 			}
 		}
 

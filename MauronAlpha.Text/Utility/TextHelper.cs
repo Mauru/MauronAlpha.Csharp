@@ -7,9 +7,10 @@ namespace MauronAlpha.Text.Utility {
 	//A class that helps with Text Operations
 	public class TextHelper:MauronCode_utility {
 		
-		public static MauronCode_dataList<char> WhiteSpaces= new MauronCode_dataList<char>();
-		public static MauronCode_dataList<char> WordBreaks=new MauronCode_dataList<char>();
-		public static MauronCode_dataList<char> LineBreaks=new MauronCode_dataList<char>();
+		public static MauronCode_dataList<char> WhiteSpaces= new MauronCode_dataList<char>(){' '};
+		public static MauronCode_dataList<char> WordBreaks=new MauronCode_dataList<char>() { '-', '+', '*', '-','/','=','<','>','@','[',']','{','}','_','|','~','«','»','|','(',')' };
+		public static MauronCode_dataList<char> LineBreaks=new MauronCode_dataList<char>() {'¶'};
+		public static MauronCode_dataList<char> WordEnders=new MauronCode_dataList<char>(){'.',',',':',';'};
 
 		public static TextComponent_text ParseString(string str) {
 			TextComponent_text text=new TextComponent_text();
@@ -33,7 +34,9 @@ namespace MauronAlpha.Text.Utility {
 				char c = characters.Value(i);
 				word = line.LastWord;
 
+				#region last word ended line, start new
 				if (word.EndsLine) {
+
 					line = new TextComponent_line (
 						text,
 						new TextContext (
@@ -51,10 +54,32 @@ namespace MauronAlpha.Text.Utility {
 							0
 						)
 					);
+					line.AddWord(word);
 
 					charIndex = 0;
 					wordIndex = 0;
+
 				}
+				#endregion
+
+				#region last word is complete start new
+
+				if(word.IsComplete){
+					word=new TextComponent_word(
+						line,
+						new TextContext(
+							line.Context.LineOffset,
+							line.WordCount,
+							0
+						)
+					);
+					line.AddWord(word);
+					wordIndex++;
+					charIndex=0;
+				}
+
+				#endregion
+
 				TextComponent_character ch = new TextComponent_character (
 					                             word,
 					                             new TextContext (
@@ -71,6 +96,8 @@ namespace MauronAlpha.Text.Utility {
 		public static bool IsLineBreak(char c) {
 			return LineBreaks.ContainsValue(c);
 		}
-
+		public static bool IsWordEnd(char c) {
+			return WordEnders.ContainsValue(c);
+		}
 	}
 }

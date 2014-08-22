@@ -63,6 +63,7 @@
     <Compile Include="HandlingData\MauronCode_dataMap.cs" />
     <Compile Include="HandlingData\MauronCode_dataRegistry.cs" />
     <Compile Include="HandlingData\MergeConflict.cs" />
+    <Compile Include="HandlingErrors\ErrorType_index.cs" />
     <Compile Include="HandlingErrors\ErrorType_nullError.cs" />
     <Compile Include="Settings\I_hasDefaultSettings.cs" />
     <Compile Include="HandlingData\MauronCode_data.cs" />

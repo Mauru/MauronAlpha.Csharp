@@ -45,6 +45,7 @@ namespace MauronAlpha.Text.Units {
 		}
 		public TextComponent_character SetChar(char c){
 			CHAR_txt=c;
+			SetIsEmpty(false);
 			return this;
 		}
 	
@@ -56,10 +57,24 @@ namespace MauronAlpha.Text.Units {
 				return TextHelper.IsLineBreak(Char);
 			}
 		}
+		public bool EndsWord {
+			get {
+				if(IsEmpty){
+					return false;
+				}
+				return TextHelper.IsWordEnd(Char);
+			}
+		}
+
+		private bool B_isEmpty=true;
 		public bool IsEmpty {
 			get {
-				return (CHAR_txt==null);
+				return B_isEmpty;
 			}
+		}
+		private TextComponent_character SetIsEmpty(bool status){
+			B_isEmpty=status;
+			return this;
 		}
 	}
 

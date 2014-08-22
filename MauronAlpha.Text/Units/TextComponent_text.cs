@@ -26,7 +26,6 @@ namespace MauronAlpha.Text.Units {
 			get { 
 				return Lines.Count;
 			}
-
 		}
 	}
 

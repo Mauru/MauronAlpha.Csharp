@@ -54,12 +54,27 @@ namespace MauronAlpha.Text.Units {
 			return this;
 		}
 	
+		public TextComponent_character LastCharacter {
+			get {
+				if(Characters.Count<1){
+					Error("Character Index out of bounds #{F:LastCharacter}",this,ErrorType_index.Instance);
+				}
+				return Characters.LastElement;
+			}
+		}
+
 		public bool EndsLine {
 			get {
 				if(Characters.Count<1){
 					return false;
 				}
 				return Characters.LastElement.EndsLine;
+			}
+		}
+		
+		public bool IsComplete {
+			get {
+				return (Characters.Count>0&&LastCharacter.EndsWord);
 			}
 		}	
 	}

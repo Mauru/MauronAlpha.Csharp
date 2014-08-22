@@ -15,6 +15,10 @@ namespace MauronAlpha {
 			MauronCode_error e = new MauronCode_error(msg, o, ErrorType_fatal.Instance);
 			throw e;
 		}
+		public static MauronCode_error Error (string msg, object o,ErrorType errorType) {
+			MauronCode_error e=new MauronCode_error(msg, o, errorType);
+			throw e;
+		}
 		public static MauronCode_error NullError (string msg, object o, Type expected) {
 			MauronCode_error e = new MauronCode_error(msg+" #[Expected:"+expected.FullName+"]", o, ErrorType_nullError.Instance);
 			throw e;

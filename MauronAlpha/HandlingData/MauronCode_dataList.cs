@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System;
 
+using MauronAlpha.HandlingErrors;
+
 namespace MauronAlpha.HandlingData {
 
 	//A list of numerically sorted data
@@ -61,10 +63,10 @@ namespace MauronAlpha.HandlingData {
 		}
 		public MauronCode_dataList<T> RemoveByRange(int start, int end){
 			if( start<0||start>=Count ) {
-				Error("Range start out of bounds! {"+start+"}", this);
+				Error("Range start out of bounds! {"+start+"}", this,ErrorType_index.Instance);
 			}
 			if( end<0||end>=Count||end<start ) {
-				Error("Range end out of bounds! {"+end+"}", this);
+				Error("Range end out of bounds! {"+end+"}", this,ErrorType_index.Instance);
 			}
 			for( int n=start; n<=end; n++ ) {
 				RemoveByKey(start);
@@ -75,10 +77,10 @@ namespace MauronAlpha.HandlingData {
 		//Get a range of results
 		public MauronCode_dataList<T> Range(int start, int end){
 			if(start<0||start>=Count){
-				Error("Range start out of bounds! {"+start+"}",this);
+				Error("Range start out of bounds! {"+start+"}", this, ErrorType_index.Instance);
 			}
 			if(end<0||end>=Count||end<start){
-				Error("Range end out of bounds! {"+end+"}",this);
+				Error("Range end out of bounds! {"+end+"}", this, ErrorType_index.Instance);
 			}
 			MauronCode_dataList<T> result = new MauronCode_dataList<T>();
 			for(int n=start;n<=end;n++){
@@ -111,6 +113,9 @@ namespace MauronAlpha.HandlingData {
 		}
 
 		//Add a value
+		public MauronCode_dataList<T> Add(T obj){
+			return AddValue(obj);
+		}
 		public MauronCode_dataList<T> AddValue(T obj) {
 			return SetValue(NextIndex, obj);
 		}
@@ -120,7 +125,7 @@ namespace MauronAlpha.HandlingData {
 					Data.Add(obj);
 					return this;
 				}
-				Error("Invalid Index! {"+key+"}",this);
+				Error("Invalid Index! {"+key+"}",this, ErrorType_index.Instance);
 			}
 			Data[key]=obj;
 			return this;
@@ -141,7 +146,7 @@ namespace MauronAlpha.HandlingData {
 		//Get a value
 		public T Value(int key){
 			if(!ContainsKey(key)){
-				Error("Invalid key {"+key+"}",this);
+				Error("Invalid key {"+key+"}",this,ErrorType_index.Instance);
 			}
 			return Data[key];
 		}
@@ -193,7 +198,7 @@ namespace MauronAlpha.HandlingData {
 		public T FirstElement {
 			get {
 				if (Data.Count < 1) {
-					MauronCode.Error ("Data is empty!", this);
+					MauronCode.Error ("Data is empty!", this,ErrorType_index.Instance);
 				}
 				return Data [FirstIndex];
 			}
@@ -203,7 +208,7 @@ namespace MauronAlpha.HandlingData {
 		public T LastElement {
 			get {
 				if (Data.Count < 1) {
-					MauronCode.Error ("Data is empty",this);
+					MauronCode.Error("Data is empty", this, ErrorType_index.Instance);
 				}
 				return Data [LastIndex];
 			}
