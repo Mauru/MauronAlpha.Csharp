@@ -41,9 +41,35 @@ namespace MauronAlpha.Text.Units {
 
 
 		public TextComponent_line AddWord(TextComponent_word word){
+
 			if(Words.Count>0&&Words.LastElement.EndsLine){
+
 				//Add to new line
-				Parent.InsertLineAtContext(Context.Instance);
+				TextContext context = Context.Instance;
+				context.SetLineOffset (context.LineOffset + 1)
+				.SetWordOffset (0)
+				.SetCharacterOffset(0);
+
+				Parent.AddLineAtContext (context);
+				return Parent.LineByContext(context).AddWord (word);
+
+			}
+			Words.AddValue (word);
+			return this;
+		}
+
+		public TextComponent_word LastWord {
+			get { 
+				if (Words.Count < 1) {
+					Error ("Invalid Index {LastWord}", this);
+				}
+				return Words.LastElement;
+			}
+		}
+
+		public int WordCount {
+			get { 
+				return Words.Count;
 			}
 		}
 

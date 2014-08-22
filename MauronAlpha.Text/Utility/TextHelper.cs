@@ -13,7 +13,7 @@ namespace MauronAlpha.Text.Utility {
 
 		public static TextComponent_text ParseString(string str) {
 			TextComponent_text text=new TextComponent_text();
-			ICollection<char> characters = str.ToCharArray();
+			MauronCode_dataList<char> characters = new MauronCode_dataList<char>(str.ToCharArray());
 			
 			MauronCode_dataList<TextComponent_word> words=new MauronCode_dataList<TextComponent_word>();
 			
@@ -25,8 +25,45 @@ namespace MauronAlpha.Text.Utility {
 			TextComponent_word word = new TextComponent_word(line,new TextContext(1,1));
 			line.AddWord(word);
 
+			int charIndex = 0;
+			int wordIndex = 0;
+
 			for(int i=0; i<characters.Count;i++){
-				
+				line = lines.LastElement;
+				char c = characters.Value(i);
+				word = line.LastWord;
+
+				if (word.EndsLine) {
+					line = new TextComponent_line (
+						text,
+						new TextContext (
+							text.LineCount,
+							0,
+							0
+						)
+					);
+
+					word = new TextComponent_word (
+						line,
+						new TextContext(
+							line.Context.LineOffset,
+							line.WordCount,
+							0
+						)
+					);
+
+					charIndex = 0;
+					wordIndex = 0;
+				}
+				TextComponent_character ch = new TextComponent_character (
+					                             word,
+					                             new TextContext (
+						                             line.Context.LineOffset,
+						                             wordIndex,
+						                             charIndex
+					                             ),
+												c
+				                             );
 			}
 
 			return text;			

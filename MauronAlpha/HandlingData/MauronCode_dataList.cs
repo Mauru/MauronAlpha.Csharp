@@ -9,10 +9,14 @@ namespace MauronAlpha.HandlingData {
 		//Constructor
 		public MauronCode_dataList():base(DataType_dataList.Instance) {}
 		public MauronCode_dataList ( T obj)
-			: base(DataType_dataList.Instance) {
+			: this() {
 			AddValue(obj);
 		}
-
+		public MauronCode_dataList(T[] obj):this() {
+			foreach (T o in obj) {
+				AddValue (o);
+			}
+		}
 		//Data
 		private List<T> L_data;
 		public List<T> Data {
@@ -98,8 +102,8 @@ namespace MauronAlpha.HandlingData {
 		}
 		
 		//Perform an action on each element
-		public delegate void Delegate_performeach(T obj);
-		public MauronCode_dataList<T> Each(Delegate_performeach doStuff){
+		public delegate void Delegate_performEach(T obj);
+		public MauronCode_dataList<T> Each(Delegate_performEach doStuff){
 			foreach(T obj in L_data){
 				doStuff(obj);
 			}
@@ -125,6 +129,12 @@ namespace MauronAlpha.HandlingData {
 			foreach(T obj in collection) {
 				AddValue(obj);
 			}
+			return this;
+		}
+
+		//Add a value at the specified index, shift all other indexes
+		public MauronCode_dataList<T> InsertValueAt(int key, T obj){
+			Data.InsertRange(key, new T[1]{obj});
 			return this;
 		}
 
@@ -188,6 +198,7 @@ namespace MauronAlpha.HandlingData {
 				return Data [FirstIndex];
 			}
 		}
+
 		//Get the last element
 		public T LastElement {
 			get {
