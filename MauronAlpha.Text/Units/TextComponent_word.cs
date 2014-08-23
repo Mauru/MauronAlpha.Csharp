@@ -26,6 +26,11 @@ namespace MauronAlpha.Text.Units {
 			return this;
 		}
 
+		public TextComponent_word AddCharacter(TextComponent_character c){
+			Characters.AddValue (c);
+			return this;
+		}
+
 		private TextComponent_line TXT_parent;
 		public TextComponent_line Parent {
 			get {
@@ -69,6 +74,12 @@ namespace MauronAlpha.Text.Units {
 					return false;
 				}
 				return Characters.LastElement.EndsLine;
+			}
+		}
+
+		public int CharacterCount {
+			get { 
+				return Characters.Count;
 			}
 		}
 		

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using MauronAlpha.HandlingData;
 using MauronAlpha.Text.Utility;
+using MauronAlpha.HandlingErrors;
 
 namespace MauronAlpha.Text.Units {
 
@@ -8,6 +9,11 @@ namespace MauronAlpha.Text.Units {
 	public class TextComponent_text:TextComponent {
 
 		private MauronCode_dataList<TextComponent_line> Lines=new MauronCode_dataList<TextComponent_line>();
+
+		public TextComponent_text AddLine(TextComponent_line line){
+			Lines.AddValue (line);
+			return this;
+		}
 
 		public TextComponent_text AddLineAtContext(TextContext context){
 			TextComponent_line line = new TextComponent_line (this, context);
@@ -26,6 +32,16 @@ namespace MauronAlpha.Text.Units {
 			get { 
 				return Lines.Count;
 			}
+		}
+
+		public TextComponent_line LastLine {
+			get { 
+				if (Lines.Count < 1) {
+					Error ("Lines is empty #f{LastLine}", this, ErrorType_index.Instance);
+				}
+				return Lines.LastElement;
+			}
+
 		}
 	}
 

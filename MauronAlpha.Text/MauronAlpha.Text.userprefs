@@ -1,8 +1,13 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Units/TextComponent_character.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Utility/TextHelper.cs">
     <Files>
-      <File FileName="Units/TextComponent_character.cs" Line="195" Column="43" />
+      <File FileName="Units/TextComponent_text.cs" Line="27" Column="24" />
+      <File FileName="Units/TextComponent_word.cs" Line="30" Column="35" />
+      <File FileName="Units/TextComponent_character.cs" Line="51" Column="3" />
+      <File FileName="Units/TextComponent_line.cs" Line="72" Column="24" />
+      <File FileName="Utility/TextHelper.cs" Line="44" Column="8" />
+      <File FileName="../MauronAlpha/HandlingData/MauronCode_dataList.cs" Line="35" Column="4" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

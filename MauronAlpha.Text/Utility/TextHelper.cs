@@ -16,25 +16,19 @@ namespace MauronAlpha.Text.Utility {
 			TextComponent_text text=new TextComponent_text();
 			MauronCode_dataList<char> characters = new MauronCode_dataList<char>(str.ToCharArray());
 			
-			MauronCode_dataList<TextComponent_word> words=new MauronCode_dataList<TextComponent_word>();
-			
-			MauronCode_dataList<TextComponent_line> lines=new MauronCode_dataList<TextComponent_line>();
-
 			TextComponent_line line = new TextComponent_line(text,new TextContext(1));
-			lines.AddValue(line);
+			text.AddLine(line);
 
 			TextComponent_word word = new TextComponent_word(line,new TextContext(1,1));
 			line.AddWord(word);
 
-			int charIndex = 0;
-			int wordIndex = 0;
-
 			for(int i=0; i<characters.Count;i++){
-				line = lines.LastElement;
+				line = text.LastLine;
 				char c = characters.Value(i);
 				word = line.LastWord;
 
 				#region last word ended line, start new
+
 				if (word.EndsLine) {
 
 					line = new TextComponent_line (
@@ -45,20 +39,17 @@ namespace MauronAlpha.Text.Utility {
 							0
 						)
 					);
+					text.AddLine(line);
 
 					word = new TextComponent_word (
 						line,
 						new TextContext(
-							line.Context.LineOffset,
+							text.LineCount-1,
 							line.WordCount,
 							0
 						)
 					);
 					line.AddWord(word);
-
-					charIndex = 0;
-					wordIndex = 0;
-
 				}
 				#endregion
 
@@ -68,14 +59,12 @@ namespace MauronAlpha.Text.Utility {
 					word=new TextComponent_word(
 						line,
 						new TextContext(
-							line.Context.LineOffset,
+							text.LineCount-1,
 							line.WordCount,
 							0
 						)
 					);
 					line.AddWord(word);
-					wordIndex++;
-					charIndex=0;
 				}
 
 				#endregion
@@ -83,12 +72,13 @@ namespace MauronAlpha.Text.Utility {
 				TextComponent_character ch = new TextComponent_character (
 					                             word,
 					                             new TextContext (
-						                             line.Context.LineOffset,
-						                             wordIndex,
-						                             charIndex
+													text.LineCount-1,
+													line.WordCount-1,
+													word.CharacterCount
 					                             ),
 												c
 				                             );
+				word.AddCharacter(ch);
 			}
 
 			return text;			
@@ -99,5 +89,6 @@ namespace MauronAlpha.Text.Utility {
 		public static bool IsWordEnd(char c) {
 			return WordEnders.ContainsValue(c);
 		}
+	
 	}
 }
