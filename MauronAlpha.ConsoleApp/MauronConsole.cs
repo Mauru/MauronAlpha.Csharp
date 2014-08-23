@@ -18,6 +18,7 @@ namespace MauronAlpha.ConsoleApp {
 	public class MauronConsole : MauronCode_project, I_textDisplay, I_eventSender, I_eventReceiver {
 
 		#region Constructors
+
 		private MauronConsole ( )
 			: base(
 				ProjectType_mauronConsole.Instance,
@@ -26,49 +27,40 @@ namespace MauronAlpha.ConsoleApp {
 		}
 		public MauronConsole (string title)
 			: this() {
-			SetTitle(title);
-			SetTitleVisible(true);
-			SetIsEnvironment(true);
+
+			//Settings
+			Settings.SetTitle(title);
+			Settings.SetTitleVisible(true);
+			Settings.SetIsEnvironment(true);
 
 			//Start Environment Cycle
 			SetCanExit(false);
 			SubscribeToEvents();
 			WaitForKeyUp();
-		}
-		#endregion
 
-		#region The Environment (i.e. Console stays open)
-
-		//Is the applicaton a one time only process?
-		private bool B_isEnvironment=false;
-		public bool IsEnvironment { get { return B_isEnvironment; } }
-		public MauronConsole SetIsEnvironment (bool status) {
-			B_isEnvironment=status;
-			return this;
 		}
 
 		#endregion
 
-		#region Window title
-		private static string STR_title="MauronConsole Application";
-		public string Title { get { return STR_title; } }
-		public MauronConsole SetTitle (string title) {
-			STR_title=title;
-			return this;
-		}
-
-		//show the title in window at all times
-		private bool B_titleVisible=false;
-		public bool TitleVisible {
+		#region Console Settings
+		private ConsoleSettings CFG_settings;
+		public ConsoleSettings Settings {
 			get {
-				return B_titleVisible;
+				if(CFG_settings==null){
+					SetSettings(new ConsoleSettings(this));
+				}
+				return CFG_settings;
 			}
 		}
-		public MauronConsole SetTitleVisible (bool visible) {
-			B_titleVisible=visible;
+		public MauronConsole SetSettings(ConsoleSettings settings) {
+			CFG_settings=settings;
 			return this;
 		}
 		#endregion
+
+
+
+
 
 		#region Output to window
 
@@ -99,7 +91,13 @@ namespace MauronAlpha.ConsoleApp {
 
 		//Write a whole Line
 		public MauronConsole WriteLine (TextComponent_line line) {
-			Console.WriteLine(MakeLineStart(line)+line.Text);
+			string txt="";
+			if(VisualizeSpecialChars){
+				txt=Text.Visualized;
+			}else{
+				txt=Text.AsString;
+			}
+			Console.WriteLine(MakeLineStart(line)+txt);
 			return this;
 		}
 
