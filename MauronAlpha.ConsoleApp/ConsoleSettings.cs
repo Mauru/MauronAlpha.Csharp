@@ -68,7 +68,37 @@ namespace MauronAlpha.ConsoleApp {
 		}
 
 		#endregion
-	
+
+		#region Print Output as MauronCode.Debug
+		private bool B_writeAsDebug=true;
+		public bool WriteAsDebug { get { return B_writeAsDebug; } }
+		public ConsoleSettings SetWriteAsDebug (bool status) {
+			B_writeAsDebug=status;
+			return this;
+		}
+		#endregion
+
+		#region Show the line Numbers
+		private bool B_lineNumbersVisible=false;
+		public bool LineNumbersVisible {
+			get {
+				return B_lineNumbersVisible;
+			}
+		}
+		public ConsoleSettings SetLineNumbersVisible (bool visible) {
+			B_lineNumbersVisible=visible;
+			return this;
+		}
+		#endregion
+
+		#region The character that seperates line number and text
+		private string CHAR_LineSeperator="#";
+		public string LineSeperator {
+			get {
+				return CHAR_LineSeperator;
+			}
+		}	
+		#endregion
 	
 	}
 

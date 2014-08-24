@@ -96,6 +96,13 @@ namespace MauronAlpha.Text {
 			}
 		}
 
+		public TextContext Add(TextContext context){
+			SetLineOffset(LineOffset+context.LineOffset);
+			SetWordOffset(WordOffset+context.WordOffset);
+			SetCharacterOffset(CharacterOffset+context.CharacterOffset);
+			return this;
+		}
+
 		#region IEquatable<TextContext>
 		bool IEquatable<TextContext>.Equals (TextContext other) {
 			if(

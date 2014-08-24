@@ -19,6 +19,7 @@ namespace MauronAlpha.HandlingData {
 				AddValue (o);
 			}
 		}
+		
 		//Data
 		private List<T> L_data;
 		public List<T> Data {
@@ -88,6 +89,9 @@ namespace MauronAlpha.HandlingData {
 				result.AddValue(obj);
 			}
 			return result;
+		}
+		public MauronCode_dataList<T> Range(int start){
+			return Range(start,LastIndex);
 		}
 
 		//Count

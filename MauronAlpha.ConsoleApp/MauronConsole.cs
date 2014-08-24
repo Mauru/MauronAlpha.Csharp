@@ -1,4 +1,5 @@
 using System;
+
 using MauronAlpha.Projects;
 using MauronAlpha.HandlingData;
 using MauronAlpha.ExplainingCode;
@@ -85,24 +86,18 @@ namespace MauronAlpha.ConsoleApp {
 
 		#endregion
 
-		#region Output to window
-
-		//Write a line
+		#region Add to the TextBuffer
 		public MauronConsole Write (string s) {
-			TextComponent_text = TextHelper.ParseString (s);
-			TextHelper.MergeText (Text, s);
+			TextBuffer.AddString(s);
 			return this;
 		}
+		#endregion
+
+		#region Output to window
 
 		//Write a whole Line
-		public MauronConsole WriteLine (TextComponent_line line) {
-			string txt="";
-			if(Settings.VisualizeStrings){
-				txt=Text.Visualized;
-			}else{
-				txt=Text.AsString;
-			}
-			Console.WriteLine(MakeLineStart(line)+txt);
+		private MauronConsole OutputLine(TextComponent_line line) {
+			Console.WriteLine(MakeLineStart(line)+line.AsString);
 			return this;
 		}
 
@@ -111,27 +106,10 @@ namespace MauronAlpha.ConsoleApp {
 			MauronCode.Debug(msg, obj);
 			return this;
 		}
-
-		//print output as MauronCode.Debug
-		private bool B_writeAsDebug=true;
-		public bool WriteAsDebug { get { return B_writeAsDebug; } }
-		public MauronConsole SetWriteAsDebug (bool status) {
-			B_writeAsDebug=status;
-			return this;
-		}
-
 		#endregion
 
-		#region I_TextDisplay
+		#region The Text Buffer
 
-		public I_textDisplay WriteLine (TextComponent text) {
-			return WriteLine(text);
-
-		}
-
-		public I_textDisplay Write (TextComponent text) {
-			return Write(text);
-		}
 		private TextComponent_text TXT_buffer=new TextComponent_text();
 		public TextComponent_text TextBuffer {
 			get {
@@ -145,181 +123,153 @@ namespace MauronAlpha.ConsoleApp {
 
 		#endregion
 
-		#region Line Start and -number display
-
-		//Show the line Numbers
-		private bool B_lineNumbersVisible=false;
-		public bool LineNumbersVisible {
-			get {
-				return B_lineNumbersVisible;
-			}
-		}
-		public MauronConsole SetLineNumbersVisible (bool visible) {
-			B_lineNumbersVisible=visible;
-			return this;
-		}
-
-		//Does the console linenumber start at 0 or at 1
-		private bool B_linesStartAtZero=true;
-		public bool LinesStartAtZero {
-			get {
-				return B_linesStartAtZero;
-			}
-		}
-		public MauronConsole SetLineStartAtZero (bool status) {
-			B_linesStartAtZero=status;
-			return this;
-		}
-
-		//The character that seperates line number and text
-		private string CHAR_LineSeperator="#";
-		public string LineSeperator {
-			get {
-				return CHAR_LineSeperator;
-			}
-		}
+		#region Line Start (line number)
 
 		//Generate the line seperator
 		private string MakeLineStart (TextComponent_line line) {
-			if( !LineNumbersVisible ) {
+			//no line start
+			if( !Settings.LineNumbersVisible ) {
 				return null;
 			}
-			int lineindex=TextBuffer.LineIndex(line);
-			if( TitleVisible ) {
-				lineindex=lineindex-1;
-				if( TextBuffer.LineIndex(line) ) {
-					return null;
-				}
-			}
-			if( LinesStartAtZero ) {
-				lineindex=lineindex-1;
-			}
-			return ""+lineindex+LineSeperator;
+			int lineindex=line.Context.LineOffset;
+			return ""+lineindex+Settings.LineSeperator;
 		}
 
 		#endregion
 
 		#region Defining what Line we are on
-
-		//The active line
-			public TextComponent_line ActiveLine {
-				get {
-					return TextBuffer.LineByIndex(LineIndex);
-				}
+		private int INT_line=0;
+		public int LineIndex {
+			get {
+				return INT_line;
 			}
-			public TextComponent_line FirstLine {
-				get {
-					return TextBuffer.FirstLine;
-				}
+		}
+		public MauronConsole SetLineIndex (int n) {
+			if( n<0 ) {
+				INT_line=0;
 			}
-			public TextComponent_line LastLine {
-				get {
-					return TextBuffer.LastLine;
-				}
-			}		
-			public TextComponent_line LineByIndex(int n){
-				return TextBuffer.LineByIndex(n);
+			else if( n>=TextBuffer.LineCount ) {
+				INT_line=TextBuffer.LineCount-1;
 			}
-					
-			private int INT_line=0;
-			public int LineIndex {
-				get {
-					return INT_line;
-				}	
+			else {
+				INT_line=n;
 			}
-			public MauronConsole SetLineIndex (int n) {
-				if(n<0){
-					INT_line=0;
-				}else if(n>=TextBuffer.CountLines){
-					INT_line=TextBuffer.CountLines-1;
-				}else{
-					INT_line=n;
-				}
-				return this;
+			return this;
+		}
+		#endregion
+		#region Getting a specific Line in the TextBuffer //TODO: Add Error Handling by exception
+		public TextComponent_line ActiveLine {
+			get {
+				return LineByIndex(LineIndex);
 			}
-		
+		}
+		public TextComponent_line FirstLine {
+			get {
+				return TextBuffer.FirstLine;
+			}
+		}
+		public TextComponent_line LastLine {
+			get {
+				return TextBuffer.LastLine;
+			}
+		}		
+		public TextComponent_line LineByIndex(int n){
+			if(n<0){
+				return LineException("Invalid LineIndex {"+n+"}",this,FirstLine);
+			}else if(n>=TextBuffer.LineCount){
+				return LineException("Invalid LineIndex {"+n+"}",this,LastLine);
+			}
+			return TextBuffer.LineByContext(new TextContext(LineIndex));
+		}		
 		#endregion
 
 		#region Defining what word we are on
-			
-			//The active word
-			public TextComponent_word ActiveWord {
-				get {
-					return TextBuffer.WordByIndex(WordIndex);
-				}
+		private int INT_word=0;
+		public int WordIndex {
+			get {
+				return INT_word;
 			}
-			public TextComponent_word FirstWord {
-				get {
-					return TextBuffer.FirstWord;
-				}
+		}
+		public MauronConsole SetWordIndex (int n) {
+			if( n<0 ) {
+				INT_word=0;
 			}
-			public TextComponent_word LastWord {
-				get {
-					return TextBuffer.LastWord;
-				}
+			else if( n>=TextBuffer.WordCount ) {
+				INT_word=TextBuffer.WordCount-1;
 			}
-			public TextComponent_word WordByIndex (int n) {
-				return TextBuffer.WordByIndex(n);
+			else {
+				INT_word=n;
 			}
-			
-			private int INT_word=0;
-			public int WordIndex {
-				get {
-					return INT_word;
-				}
+			return this;
+		}
+		#endregion
+		#region Getting a specific Word in the TextBuffer //TODO: Add Error Handling By Exception
+		//The active word
+		public TextComponent_word ActiveWord {
+			get {
+				return WordByIndex(WordIndex);
 			}
-			public MauronConsole SetWordIndex(int n){
-				if(n<0){
-					INT_word=0;
-				}else if(n>=TextBuffer.CountWords){
-					INT_word=TextBuffer.CountWords-1;
-				}else{
-					INT_word=n;
-				}
-				return this;
+		}
+		public TextComponent_word FirstWord {
+			get {
+				return TextBuffer.FirstWord;
 			}
-
+		}
+		public TextComponent_word LastWord {
+			get {
+				return TextBuffer.LastWord;
+			}
+		}
+		public TextComponent_word WordByIndex (int n) {
+			return TextBuffer.WordByIndex(n);
+		}
 		#endregion
 
 		#region Defining what character we are on
-
-			//The active character
-			public TextComponent_character ActiveCharacter {
-				get {
-					return TextBuffer.CharacterByIndex(CharacterIndex);
-				}
+		private int INT_character=0;
+		public int CharacterIndex {
+			get {
+				return INT_character;
 			}
-			public TextComponent_character FirstCharacter {
-				get {
-					return TextBuffer.FirstCharacter;
-				}
+		}
+		public MauronConsole SetCharacterIndex (int n) {
+			if( n<0 ) {
+				INT_character=0;
 			}
-			public TextComponent_character LastCharacter {
-				get {
-					return TextBuffer.LastCharacter;
-				}
+			else if( n>=TextBuffer.CharacterCount ) {
+				INT_character=TextBuffer.CharacterCount-1;
 			}
-			public TextComponent_character CharacterByIndex (int n) {
-				return TextBuffer.CharacterByIndex(n);
+			else {
+				INT_character=n;
 			}
-
-			private int INT_character=0;
-			public int CharacterIndex {
-				get {
-					return INT_character;
-				}
+			return this;
+		}
+		#endregion
+		#region Getting a specific Character in the TextBuffer //TODO: Add Error Handling by exception
+		public TextComponent_character ActiveCharacter {
+			get {
+				return TextBuffer.CharacterByContext(new TextContext(LineIndex,WordIndex,CharacterIndex));
 			}
-			public MauronConsole SetCharacterIndex(int n){
-				if(n<0){
-					INT_character=0;
-				}else if(n>=TextBuffer.CountChracters){
-					INT_character=TextBuffer.CountChracters-1;
-				}else{
-					INT_character=n;
-				}
-				return this;
+		}
+		public TextComponent_character FirstCharacter {
+			get {
+				return TextBuffer.FirstCharacter;
 			}
-
+		}
+		public TextComponent_character LastCharacter {
+			get {
+				return TextBuffer.LastCharacter;
+			}
+		}
+		public TextComponent_character CharacterByIndex (int n) {
+			if(n<0){
+				return CharacterException("Invalid CharacterIndex {"+n+"}",this,FirstCharacter);
+			}
+			if(TextBuffer.CharacterCount<n){
+				return CharacterException("Invalid CharacterIndex {"+n+"}",this,LastCharacter);
+			}
+			return TextBuffer.CharacterByIndex(n);
+		}
 		#endregion
 
 		#region Events
@@ -490,4 +440,5 @@ namespace MauronAlpha.ConsoleApp {
 
 		public override string Name { get { return "mauronConsole"; } }
 	}
+
 }
