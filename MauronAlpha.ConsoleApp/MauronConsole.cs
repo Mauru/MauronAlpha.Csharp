@@ -72,10 +72,10 @@ namespace MauronAlpha.ConsoleApp {
 
 		public MauronConsole ResetScreen ( ) {
 			ClearScreen ();
-			SetActiveLine(FirstLine);
 			if( Settings.TitleVisible ) {
 				Write(Title);
 			}
+			OutputBuffer ();
 			return this;
 		}
 

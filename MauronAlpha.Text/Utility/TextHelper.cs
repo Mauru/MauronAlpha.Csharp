@@ -25,17 +25,5 @@ namespace MauronAlpha.Text.Utility {
 		public static bool IsWordEnd(char c) {
 			return WordEnders.ContainsValue(c);
 		}
-<<<<<<< HEAD
-	
-		public static TextComponent_text MergeText(TextComponent_text parent, TextComponent_text child){
-
-			foreach (TextComponent_line line in child) {
-			
-			}
-			return parent;
-		}
-=======
-
->>>>>>> a1afe405254750901a8fe52a5ce1e03672a6288e
 	}
 }
