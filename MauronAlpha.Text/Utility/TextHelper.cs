@@ -92,6 +92,7 @@ namespace MauronAlpha.Text.Utility {
 		}
 	
 		public static TextComponent_text MergeText(TextComponent_text parent, TextComponent_text child){
+
 			foreach (TextComponent_line line in child) {
 			
 			}
