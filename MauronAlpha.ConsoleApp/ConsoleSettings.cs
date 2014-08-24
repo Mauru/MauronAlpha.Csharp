@@ -1,9 +1,30 @@
 ﻿using System;
 using MauronAlpha.HandlingData;
+using MauronAlpha.HandlingErrors;
+using MauronAlpha.Projects;
 
 namespace MauronAlpha.ConsoleApp {
 	
 	public class ConsoleSettings:ProjectSettings {
+
+		private MauronConsole MC_parent;
+		private MauronConsole Parent {
+			get { 
+				if (MC_parent == null) {
+					NullError ("Parent can not be null", this, typeof(MauronConsole));
+				}
+				return MC_parent;
+			}
+		}
+		private ConsoleSettings SetParent(MauronConsole parent){
+			MC_parent = parent;
+			return this;
+		}
+
+		//constructor
+		public ConsoleSettings(MauronConsole console){
+			SetParent (console);
+		}
 
 		#region How to treat whitespaces and other special characters
 
@@ -32,14 +53,7 @@ namespace MauronAlpha.ConsoleApp {
 
 		#endregion
 
-		#region Window title
-
-		private static string STR_title="MauronConsole Application";
-		public string Title { get { return STR_title; } }
-		public ConsoleSettings SetTitle (string title) {
-			STR_title=title;
-			return this;
-		}
+		#region Show Window title
 
 		//show the title in window at all times
 		private bool B_titleVisible=false;

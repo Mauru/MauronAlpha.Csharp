@@ -1,6 +1,6 @@
 ﻿using MauronAlpha.HandlingData;
 using MauronAlpha.Events.Units;
-using MauronAlpha.ErrorHandling;
+using MauronAlpha.HandlingErrors;
 
 namespace MauronAlpha.Events {
 
@@ -19,7 +19,7 @@ namespace MauronAlpha.Events {
 		public I_eventReceiver Receiver {
 			get {
 				if(RECEIVER_eventObject==null){
-					Error("I_eventReceiver can not be null!", this);
+					NullError("I_eventReceiver can not be null!", this,typeof(I_eventReceiver));
 				}
 				return RECEIVER_eventObject;
 			}

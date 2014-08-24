@@ -15,7 +15,7 @@ using MauronAlpha.Events.Defaults;
 namespace MauronAlpha.ConsoleApp {
 	
 	//A superbasic console
-	public class MauronConsole : MauronCode_project, I_textDisplay, I_eventSender, I_eventReceiver {
+	public class MauronConsole : MauronCode_project, I_eventSender, I_eventReceiver {
 
 		#region Constructors
 
@@ -29,7 +29,7 @@ namespace MauronAlpha.ConsoleApp {
 			: this() {
 
 			//Settings
-			Settings.SetTitle(title);
+			SetTitle(title);
 			Settings.SetTitleVisible(true);
 			Settings.SetIsEnvironment(true);
 
@@ -40,6 +40,15 @@ namespace MauronAlpha.ConsoleApp {
 
 		}
 
+		#endregion
+
+		#region Application title
+		private static string STR_title="MauronConsole Application";
+		public string Title { get { return STR_title; } }
+		public MauronConsole SetTitle (string title) {
+			STR_title=title;
+			return this;
+		}
 		#endregion
 
 		#region Console Settings
@@ -58,41 +67,37 @@ namespace MauronAlpha.ConsoleApp {
 		}
 		#endregion
 
+		#region Clear Console Window
 
-
-
-
-		#region Output to window
-
-		//Clear the window
-		public MauronConsole Clear ( ) {
-			System.Console.Clear();
+		public MauronConsole ResetScreen ( ) {
+			ClearScreen ();
 			SetActiveLine(FirstLine);
-			if( TitleVisible ) {
+			if( Settings.TitleVisible ) {
 				Write(Title);
 			}
 			return this;
 		}
 
+		public MauronConsole ClearScreen() {
+			System.Console.Clear ();
+			return this;
+		}
+
+		#endregion
+
+		#region Output to window
+
 		//Write a line
 		public MauronConsole Write (string s) {
-			if( !WriteAsDebug ) {
-				Debug(s, this);
-				return this;
-			}
-			TextComponent_text txt = TextHelper.ParseString(s);
-			
-			TextBuffer.MergeText(txt);
-			
-			SetActiveLine(TextBuffer.LastLine);
-			WriteLine(TextBuffer.LastLine);
+			TextComponent_text = TextHelper.ParseString (s);
+			TextHelper.MergeText (Text, s);
 			return this;
 		}
 
 		//Write a whole Line
 		public MauronConsole WriteLine (TextComponent_line line) {
 			string txt="";
-			if(VisualizeSpecialChars){
+			if(Settings.VisualizeStrings){
 				txt=Text.Visualized;
 			}else{
 				txt=Text.AsString;

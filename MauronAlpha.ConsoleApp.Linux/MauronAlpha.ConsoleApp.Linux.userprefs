@@ -1,18 +1,10 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|Mixed Platforms" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="../MauronAlpha.Events/EventSubscription.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="../MauronAlpha.ConsoleApp/MauronConsole.cs">
     <Files>
-      <File FileName="../MauronAlpha.ConsoleApp/MauronConsole.cs" Line="1" Column="1" />
-      <File FileName="../MauronAlpha.Events/MauronCode_eventClock.cs" Line="1" Column="1" />
-      <File FileName="../MauronAlpha.Events/EventSubscription.cs" Line="80" Column="43" />
-      <File FileName="../MauronAlpha.Events/Units/EventHistory.cs" Line="1" Column="1" />
-      <File FileName="../MauronAlpha.Events/Units/MauronCode_timeStamp.cs" Line="1" Column="1" />
+      <File FileName="../MauronAlpha.ConsoleApp/MauronConsole.cs" Line="75" Column="19" />
+      <File FileName="../MauronAlpha.ConsoleApp/ConsoleSettings.cs" Line="56" Column="16" />
     </Files>
-    <Pads>
-      <Pad Id="ClassPad">
-        <State expanded="True" selected="True" />
-      </Pad>
-    </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />

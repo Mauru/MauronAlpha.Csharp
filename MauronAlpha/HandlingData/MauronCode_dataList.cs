@@ -161,27 +161,31 @@ namespace MauronAlpha.HandlingData {
 		}
 
 		//Clear
-		public MauronCode_dataList<T> Clear ( ) {
+		public MauronCode_dataList<T> Clear () {
 			L_data=new List<T>();
 			return this;
 		}
 
 		//return an instance of this list, do not instance the objects
-		public MauronCode_dataList<T> Instance { get {
-			MauronCode_dataList<T> ret = new MauronCode_dataList<T>();
-			foreach(T obj in Data) {
-				ret.AddValue(obj);
+		public MauronCode_dataList<T> Instance {
+			get {
+				MauronCode_dataList<T> ret = new MauronCode_dataList<T>();
+				foreach(T obj in Data) {
+					ret.AddValue(obj);
+				}
+				return this;
 			}
-			return this;
-		}}
+		}
 
 		//Indexes
-		public int NextIndex { get {
-			if (Count == 0) {
-				return 0;
+		public int NextIndex { 
+			get {
+				if (Count == 0) {
+					return 0;
+				}
+				return Count;
 			}
-			return Count;
-		} }
+		}
 		public int LastIndex { 
 			get {
 				if(Count>0){
