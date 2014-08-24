@@ -25,6 +25,10 @@ namespace MauronAlpha.Text.Units {
 			TXT_context=context;
 			return this;
 		}
+		public TextComponent_character OffsetContext (TextContext context) {
+			Context.Add(context);
+			return this;
+		}
 
 		private TextComponent_word TXT_parent;
 		public TextComponent_word Parent {
@@ -76,6 +80,14 @@ namespace MauronAlpha.Text.Units {
 			B_isEmpty=status;
 			return this;
 		}
+
+		//Output as string
+		public string AsString {
+			get {
+				return ""+Char;
+			}
+		}
+
 	}
 
 }
