@@ -8,3 +8,6 @@
 /#M/Projects/C#/CodeTree/MauronAlpha.ConsoleApp/bin/Debug/MauronAlpha.Input.dll.mdb
 /#M/Projects/C#/CodeTree/MauronAlpha.ConsoleApp/bin/Debug/MauronAlpha.Events.dll
 /#M/Projects/C#/CodeTree/MauronAlpha.ConsoleApp/bin/Debug/MauronAlpha.Events.dll.mdb
+/#M/Projects/C#/CodeTree/MauronAlpha.ConsoleApp/bin/Debug/ClassLibrary.dll.mdb
+/#M/Projects/C#/CodeTree/MauronAlpha.ConsoleApp/bin/Debug/ClassLibrary.dll
+/#M/Projects/C#/CodeTree/MauronAlpha.ConsoleApp/obj/Debug/ClassLibrary.dll.mdb

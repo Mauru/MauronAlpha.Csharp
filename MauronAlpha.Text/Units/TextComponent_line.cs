@@ -9,10 +9,22 @@ namespace MauronAlpha.Text.Units {
 		//constructor
 		public TextComponent_line (TextComponent_text parent, TextContext context) {}
 
+		#region Instance (clone)
+		public TextComponent_line Instance {
+			get { 
+				TextComponent_line line = new TextComponent_line (Parent, Context.Instance);
+				foreach (TextComponent_word word in Words) {
+					line.AddWord (word.Instance);
+				}
+				return line;
+			}
+		}
+		#endregion
+
 		//The words in this line
 		private MauronCode_dataList<TextComponent_word> Words = new MauronCode_dataList<TextComponent_word>();
 
-		#region The Text this line belongs to
+		#region The TextComponent_text this line belongs to
 		private TextComponent_text TXT_parent;
 		public TextComponent_text Parent {
 			get {
@@ -27,15 +39,27 @@ namespace MauronAlpha.Text.Units {
 			return this;	
 		}
 		#endregion
+		#region Same as above (as Source)
+		public TextComponent_text Source {
+			get { 
+				return Parent;
+			}
+		}
+		#endregion
 
 		#region The Context of the line
 		private TextContext TXT_context;
 		public TextContext Context {
 			get {
 				if(TXT_context==null){
-					NullError("Context can't be null", this, typeof(TextContext));
+					NullError("Context can't be null!,(Context)", this, typeof(TextContext));
 				}
 				return TXT_context;
+			}
+		}
+		public bool HasContext {
+			get { 
+				return TXT_context == null;
 			}
 		}
 		private TextComponent_line SetContext(TextContext context){
@@ -148,6 +172,57 @@ namespace MauronAlpha.Text.Units {
 		}
 		#endregion
 
+		#region Boolean states
+		public bool IsEmpty {
+			get { 
+				foreach(TextComponent_word word in Words){
+					if (!word.IsEmpty) {
+						return false;
+					}
+				}
+				return true;
+			}
+		}
+		public bool IsComplete {
+			get {
+				return (!IsEmpty && LastWord.EndsLine);
+			}
+		}
+		public bool EndsLine {
+			get { return true; }
+		}
+		public bool HasWhiteSpace {
+			get { 
+				foreach (TextComponent_word word in Words) {
+					if (word.HasWhiteSpace) {
+						return true;
+					}
+				}
+				return false;
+			}
+		}
+		public bool HasWordBreak {
+			get { 
+				foreach (TextComponent_word word in Words) {
+					if (word.HasWordBreak) {
+						return true;
+					}
+				}
+				return false;
+			}
+		}
+		public bool HasLineBreak { 
+			get { 
+				foreach (TextComponent_word word in Words) {
+					if (word.HasLineBreak) {
+						return true;
+					}
+				}
+				return false;
+			}
+		}
+		#endregion
+
 		//Output as string
 		public string AsString {
 			get {
@@ -194,7 +269,5 @@ namespace MauronAlpha.Text.Units {
 			get { return Instance; }
 		}
 		#endregion
-
-
 	}
 }

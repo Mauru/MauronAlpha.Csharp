@@ -43,15 +43,6 @@ namespace MauronAlpha.ConsoleApp {
 
 		#endregion
 
-		#region Application title
-		private static string STR_title="MauronConsole Application";
-		public string Title { get { return STR_title; } }
-		public MauronConsole SetTitle (string title) {
-			STR_title=title;
-			return this;
-		}
-		#endregion
-
 		#region Console Settings
 		private ConsoleSettings CFG_settings;
 		public ConsoleSettings Settings {
@@ -73,7 +64,7 @@ namespace MauronAlpha.ConsoleApp {
 		public MauronConsole ResetScreen ( ) {
 			ClearScreen ();
 			if( Settings.TitleVisible ) {
-				OutputHeader(Title);
+				OutputHeader();
 			}
 			OutputBuffer();
 			return this;
@@ -86,13 +77,6 @@ namespace MauronAlpha.ConsoleApp {
 
 		#endregion
 
-		#region Add to the TextBuffer
-		public MauronConsole Write (string s) {
-			TextBuffer.AddString(s);
-			return this;
-		}
-		#endregion
-
 		#region Output to window
 
 		//Output the TextBuffer
@@ -103,13 +87,33 @@ namespace MauronAlpha.ConsoleApp {
 			}
 			return this;
 		}
+		//Output the header (title)
+		public MauronConsole OutputHeader() {
+			for (int i = 0; i < Header.LineCount; i++) {
+				TextComponent_line line = Header.LineByIndex(i);
+				OutputLine(line,false);
+			}
+			return this;
+		}
 
 		//Ourput a whole Line
 		private MauronConsole OutputLine(TextComponent_line line, bool makeLineStart) {
 			Console.WriteLine(MakeLineStart(line)+line.AsString);
 			return this;
 		}
+		#region Line Start (line number)
 
+		//Generate the line seperator
+		private string MakeLineStart (TextComponent_line line) {
+			//no line start
+			if( !Settings.LineNumbersVisible ) {
+				return null;
+			}
+			int lineindex=line.Context.LineOffset;
+			return ""+lineindex+Settings.LineSeperator;
+		}
+
+		#endregion
 		//Write a Debug message
 		public new MauronConsole Debug (string msg, object obj) {
 			MauronCode.Debug(msg, obj);
@@ -131,20 +135,35 @@ namespace MauronAlpha.ConsoleApp {
 		}
 
 		#endregion
+		#region Add to the TextBuffer
+		public MauronConsole Write (string s) {
+			TextBuffer.AddString(s);
+			return this;
+		}
+		#endregion
 
-		#region Line Start (line number)
-
-		//Generate the line seperator
-		private string MakeLineStart (TextComponent_line line) {
-			//no line start
-			if( !Settings.LineNumbersVisible ) {
-				return null;
+		#region The Header
+		private TextComponent_text TXT_header = new TextComponent_text ();
+		public TextComponent_text Header {
+			get { 
+				return TXT_header;
 			}
-			int lineindex=line.Context.LineOffset;
-			return ""+lineindex+Settings.LineSeperator;
 		}
 
+		#region Application title
+		private static string STR_title="MauronConsole Application";
+		public string Title { get { return STR_title; } }
+		public MauronConsole SetTitle (string title) {
+			STR_title=title;
+			Header.Clear ();
+			Header.AddString (title);
+			return this;
+		}
 		#endregion
+
+		#endregion
+
+
 
 		#region Defining what Line we are on
 		private int INT_line=0;

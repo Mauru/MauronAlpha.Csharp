@@ -10,6 +10,13 @@ namespace MauronAlpha.Text.Units {
 
 		private MauronCode_dataList<TextComponent_line> Lines=new MauronCode_dataList<TextComponent_line>();
 
+		#region Clear the string
+		public TextComponent_text Clear() {
+			Lines = new MauronCode_dataList<TextComponent_line> ();
+			return this;
+		}
+		#endregion
+
 		#region Adding to a text
 		public TextComponent_text AddLine(TextComponent_line line){
 			Lines.AddValue (line);
@@ -114,17 +121,24 @@ namespace MauronAlpha.Text.Units {
 		#region Lines
 		public TextComponent_line FirstLine{
 			get {
+				#region Error Check
 				if( LineCount<1 ) {
-					Error("Invalid Line {0}", this, ErrorType_index.Instance);
+					Error("Invalid Line!,{0},(Firstline)", this, ErrorType_index.Instance);
 				}
+				#endregion
 				return Lines.FirstElement;
 			}
 		}
 		public TextComponent_line LineByContext(TextContext context){
+			#region Error Check
 			if (!Lines.ContainsKey (context.LineOffset)) {
-				Error("Invalid Line {"+context.LineOffset+"}", this, ErrorType_index.Instance);
+				Error("Invalid Line!,{"+context.LineOffset+"},(LineByContext)", this, ErrorType_index.Instance);
 			}
+			#endregion
 			return Lines.Value (context.LineOffset);
+		}
+		public TextComponent_line LineByIndex(int index){
+			return LineByContext (new TextContext (index));
 		}
 		public TextComponent_line LastLine {
 			get { 
@@ -148,9 +162,11 @@ namespace MauronAlpha.Text.Units {
 			return line.WordByContext(context);
 		}
 		public TextComponent_word WordByIndex(int n){
+			#region Error Check
 			if(WordCount<n){
-				Error("WordIndex out of bounds {"+n+"}",this,ErrorType_index.Instance);
+				Error("WordIndex out of bounds!,{"+n+"},(WordByIndex)",this,ErrorType_index.Instance);
 			}
+			#endregion
 			TextComponent_word word = FirstWord;
 			int wordOffset=0;
 			foreach(TextComponent_line line in Lines){
@@ -184,9 +200,11 @@ namespace MauronAlpha.Text.Units {
 			return word.CharacterByContext(context);
 		}
 		public TextComponent_character CharacterByIndex (int n) {
+			#region Error Check
 			if( CharacterCount<n ) {
-				Error("CharacterIndex out of bounds {"+n+"}", this, ErrorType_index.Instance);
+				Error("CharacterIndex out of bounds!,{"+n+"},(CharacterByIndex)", this, ErrorType_index.Instance);
 			}
+			#endregion
 			TextComponent_word word=FirstWord;
 			TextComponent_character c=FirstCharacter;
 			int characterOffset=0;

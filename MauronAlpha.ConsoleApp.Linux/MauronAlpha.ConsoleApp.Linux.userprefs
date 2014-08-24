@@ -1,11 +1,9 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|Mixed Platforms" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="../MauronAlpha.ConsoleApp/MauronConsole.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="../MauronAlpha.Text/Units/TextComponent_line.cs">
     <Files>
-      <File FileName="../MauronAlpha.ConsoleApp/MauronConsole.cs" Line="94" Column="16" />
-      <File FileName="../MauronAlpha.ConsoleApp/ConsoleSettings.cs" Line="56" Column="16" />
-      <File FileName="../MauronAlpha.Text/Units/TextComponent_text.cs" Line="42" Column="30" />
-      <File FileName="../MauronAlpha/HandlingData/MauronCode_dataList.cs" Line="23" Column="17" />
+      <File FileName="../MauronAlpha.ConsoleApp/MauronConsole.cs" Line="82" Column="39" />
+      <File FileName="../MauronAlpha.Text/Units/TextComponent_line.cs" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
