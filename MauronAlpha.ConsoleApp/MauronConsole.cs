@@ -73,9 +73,9 @@ namespace MauronAlpha.ConsoleApp {
 		public MauronConsole ResetScreen ( ) {
 			ClearScreen ();
 			if( Settings.TitleVisible ) {
-				Write(Title);
+				OutputHeader(Title);
 			}
-			OutputBuffer ();
+			OutputBuffer();
 			return this;
 		}
 
@@ -95,8 +95,17 @@ namespace MauronAlpha.ConsoleApp {
 
 		#region Output to window
 
-		//Write a whole Line
-		private MauronConsole OutputLine(TextComponent_line line) {
+		//Output the TextBuffer
+		public MauronConsole OutputBuffer() {
+			for(int i=0;i<TextBuffer.LineCount;i++){
+				TextComponent_line line = TextBuffer.LineByIndex(i);
+				OutputLine(line,Settings.LineNumbersVisible);
+			}
+			return this;
+		}
+
+		//Ourput a whole Line
+		private MauronConsole OutputLine(TextComponent_line line, bool makeLineStart) {
 			Console.WriteLine(MakeLineStart(line)+line.AsString);
 			return this;
 		}
@@ -157,7 +166,7 @@ namespace MauronAlpha.ConsoleApp {
 			return this;
 		}
 		#endregion
-		#region Getting a specific Line in the TextBuffer //TODO: Add Error Handling by exception
+		#region Getting a specific Line in the TextBuffer
 		public TextComponent_line ActiveLine {
 			get {
 				return LineByIndex(LineIndex);
@@ -165,20 +174,33 @@ namespace MauronAlpha.ConsoleApp {
 		}
 		public TextComponent_line FirstLine {
 			get {
+				#region ErrorResolution
+				if(TextBuffer.LineCount<1){
+					TextBuffer.AddLine(new TextComponent_line(TextBuffer,new TextContext(0)));
+					return LineException("Lines is empty","Created empty line",FirstLine);
+				}
+				#endregion
 				return TextBuffer.FirstLine;
 			}
 		}
 		public TextComponent_line LastLine {
 			get {
+				#region ErrorResolution
+				if( TextBuffer.LineCount<1 ) {
+					return LineException("Lines is empty", "Created empty line (FirstLine)", FirstLine);
+				}
+				#endregion
 				return TextBuffer.LastLine;
 			}
 		}		
 		public TextComponent_line LineByIndex(int n){
+			#region ErrorResolution
 			if(n<0){
-				return LineException("Invalid LineIndex {"+n+"}",this,FirstLine);
+				return LineException("Invalid LineIndex {"+n+"}","Used FirstLine",FirstLine);
 			}else if(n>=TextBuffer.LineCount){
-				return LineException("Invalid LineIndex {"+n+"}",this,LastLine);
+				return LineException("Invalid LineIndex {"+n+"}","Used LastLine",LastLine);
 			}
+			#endregion
 			return TextBuffer.LineByContext(new TextContext(LineIndex));
 		}		
 		#endregion
@@ -212,15 +234,39 @@ namespace MauronAlpha.ConsoleApp {
 		}
 		public TextComponent_word FirstWord {
 			get {
+				#region ErrorResolution
+				if(TextBuffer.WordCount<1){
+					TextBuffer.FirstLine.AddWord(
+						new TextComponent_word(
+							TextBuffer.FirstLine,
+							new TextContext(0,0)
+						)
+					);
+					return WordException("Words is empty","Create empty word",FirstWord);
+				}
+				#endregion
 				return TextBuffer.FirstWord;
 			}
 		}
 		public TextComponent_word LastWord {
 			get {
+				#region ErrorResolution
+				if( TextBuffer.WordCount<1 ) {
+					return WordException("Words is empty", "Create empty word (FirstWord)", FirstWord);
+				}
+				#endregion
 				return TextBuffer.LastWord;
 			}
 		}
 		public TextComponent_word WordByIndex (int n) {
+			#region ErrorResolution
+			if( n<0 ) {
+				return WordException("Invalid WordIndex {"+n+"}", "Used FirstWord", FirstWord);
+			}
+			if( TextBuffer.WordCount<n ) {
+				return WordException("Invalid CharacterIndex {"+n+"}", "Used LastWord", LastWord);
+			}
+			#endregion
 			return TextBuffer.WordByIndex(n);
 		}
 		#endregion
@@ -245,7 +291,7 @@ namespace MauronAlpha.ConsoleApp {
 			return this;
 		}
 		#endregion
-		#region Getting a specific Character in the TextBuffer //TODO: Add Error Handling by exception
+		#region Getting a specific Character in the TextBuffer
 		public TextComponent_character ActiveCharacter {
 			get {
 				return TextBuffer.CharacterByContext(new TextContext(LineIndex,WordIndex,CharacterIndex));
@@ -253,21 +299,39 @@ namespace MauronAlpha.ConsoleApp {
 		}
 		public TextComponent_character FirstCharacter {
 			get {
+				#region ErrorResolution
+				if(TextBuffer.CharacterCount<1){
+					TextBuffer.FirstWord.AddCharacter(
+						new TextComponent_character(
+							FirstWord,
+							new TextContext(0,0,0),
+							TextHelper.Empty)
+						);
+					return CharacterException("Characters are empty!","Return empty character",FirstCharacter);
+				}
+				#endregion
 				return TextBuffer.FirstCharacter;
 			}
 		}
 		public TextComponent_character LastCharacter {
 			get {
+				#region ErrorResolution
+				if(TextBuffer.CharacterCount<1){
+					return CharacterException("Characters are empty!", "Create empty character (FirstCharacter)", FirstCharacter);
+				}
+				#endregion
 				return TextBuffer.LastCharacter;
 			}
 		}
 		public TextComponent_character CharacterByIndex (int n) {
+			#region ErrorResolution
 			if(n<0){
-				return CharacterException("Invalid CharacterIndex {"+n+"}",this,FirstCharacter);
+				return CharacterException("Invalid CharacterIndex {"+n+"}","Used FirstCharacter",FirstCharacter);
 			}
 			if(TextBuffer.CharacterCount<n){
-				return CharacterException("Invalid CharacterIndex {"+n+"}",this,LastCharacter);
+				return CharacterException("Invalid CharacterIndex {"+n+"}","Used LastCharacter",LastCharacter);
 			}
+			#endregion
 			return TextBuffer.CharacterByIndex(n);
 		}
 		#endregion
@@ -410,13 +474,29 @@ namespace MauronAlpha.ConsoleApp {
 			return this;
 		}
 		public MauronConsole Exit ( ) {
-			Clear();
+			ClearScreen();
 			SetCanExit(true);
 			return this;
 		}
 
 		#endregion
 	
+		#region Handling CharacterExceptions //TODO: Track Exceptions
+		public TextComponent_character CharacterException(string error, string solution, TextComponent_character result){
+
+			return result;
+		}
+		#endregion
+		#region Handling LineExceptions //TODO: Track Exceptions
+		public TextComponent_line LineException (string error, string solution, TextComponent_line result) {
+			return result;
+		}
+		#endregion
+		#region Handling WordExceptions //TODO: Track Exceptions
+		public TextComponent_word WordException (string error, string solution, TextComponent_word result) {
+			return result;
+		}
+		#endregion
 	}
 
 	//Project Description

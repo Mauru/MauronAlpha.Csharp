@@ -4,7 +4,7 @@ using MauronAlpha.HandlingErrors;
 namespace MauronAlpha.Text.Units {
 
 	//A line of text
-	public class TextComponent_line : TextComponent {
+	public class TextComponent_line : TextComponent,I_textComponent<TextComponent_line> {
 
 		//constructor
 		public TextComponent_line (TextComponent_text parent, TextContext context) {}
@@ -106,6 +106,22 @@ namespace MauronAlpha.Text.Units {
 			TextComponent_word word = WordByContext(context);
 			return word.CharacterByContext(context);
 		}
+		public TextComponent_character CharacterByIndex (int n) {
+			if( CharacterCount<n ) {
+				Error("CharacterIndex out of bounds {"+n+"}", this, ErrorType_index.Instance);
+			}
+			TextComponent_character character=FirstCharacter;
+			int characterOffset=0;
+			foreach( TextComponent_word word in Words ) {
+				character=word.LastCharacter;
+				if( characterOffset+word.CharacterCount>n ) {
+					character=word.CharacterByContext(new TextContext(word.Context.LineOffset, word.Context.WordOffset,n-characterOffset));
+					break;
+				}
+				characterOffset+=word.CharacterCount;
+			}
+			return character;
+		}		
 		public TextComponent_character LastCharacter {
 			get {
 				return LastWord.LastCharacter;
@@ -142,6 +158,43 @@ namespace MauronAlpha.Text.Units {
 				return result;
 			}
 		}
+
+		#region I_textComponent
+		string I_textComponent<TextComponent_line>.AsString {
+			get { return AsString; }
+		}
+		bool I_textComponent<TextComponent_line>.IsEmpty {
+			get { return IsEmpty; }
+		}
+		bool I_textComponent<TextComponent_line>.IsComplete {
+			get { return IsComplete; }
+		}
+		bool I_textComponent<TextComponent_line>.HasWhiteSpace {
+			get { return HasWhiteSpace; }
+		}
+		bool I_textComponent<TextComponent_line>.HasWordBreak {
+			get { return HasWordBreak; }
+		}
+		bool I_textComponent<TextComponent_line>.HasLineBreak {
+			get { return HasLineBreak; }
+		}
+		bool I_textComponent<TextComponent_line>.HasContext {
+			get { return HasContext; }
+		}
+		TextComponent_line I_textComponent<TextComponent_line>.SetContext (TextContext context) {
+			return SetContext(context);
+		}
+		TextContext I_textComponent<TextComponent_line>.Context {
+			get { return Context; }
+		}
+		TextComponent_text I_textComponent<TextComponent_line>.Source {
+			get { return Source; }
+		}
+		TextComponent_line I_textComponent<TextComponent_line>.Instance {
+			get { return Instance; }
+		}
+		#endregion
+
 
 	}
 }

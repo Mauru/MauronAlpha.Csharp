@@ -1,17 +1,24 @@
 ﻿using System;
+using MauronAlpha.HandlingErrors;
 
 namespace MauronAlpha.HandlingData {
 
 	//Defines the Behavior of the Data stored in a DataObject
 	public abstract class DataType:MauronCode_subtype {
+		//The name
 		public abstract string Name { get; }
+
+		//Can the item be set to ReadOnly (default: false)
+		public virtual bool IsProtectable { get {
+			return false;
+		} }
 		
 		//optional converters
 		public virtual bool IsConvertibleTo(Type t){
 			return false;
 		}
 		public virtual T Convert<T>(MauronCode_dataObject obj){
-			Error("Can not convert dataObject!",this);
+			Error("Can not convert dataObject!,(Covert<T>)",this,ErrorType_fatal.Instance);
 			return default(T);
 		}
 	}
@@ -219,4 +226,5 @@ namespace MauronAlpha.HandlingData {
 
 		public override string Name { get { return "isolated"; } }
 	}
+
 }

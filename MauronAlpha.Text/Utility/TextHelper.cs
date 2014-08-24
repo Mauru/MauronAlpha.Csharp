@@ -12,6 +12,7 @@ namespace MauronAlpha.Text.Utility {
 		public static MauronCode_dataList<char> WordBreaks=new MauronCode_dataList<char>() { '-', '+', '*', '-','/','=','<','>','@','[',']','{','}','_','|','~','«','»','|','(',')' };
 		public static MauronCode_dataList<char> LineBreaks=new MauronCode_dataList<char>() {'\u0058','\u000B','\u000C','\u000D','\u0085','\u2028','\u2029'};
 		public static MauronCode_dataList<char> WordEnders=new MauronCode_dataList<char>(){'.',',',':',';','!','?'};
+		public static char Empty='\u200B'; //zero width character
 
 		//parse a string into a text
 		public static TextComponent_text ParseString(string str) {
@@ -24,6 +25,12 @@ namespace MauronAlpha.Text.Utility {
 		}
 		public static bool IsWordEnd(char c) {
 			return WordEnders.ContainsValue(c);
+		}
+		public static bool IsWhiteSpace(char c){
+			return WhiteSpaces.ContainsValue(c);
+		}
+		public static bool IsWordBreak(char c) {
+			return WordBreaks.ContainsValue(c);
 		}
 	}
 }

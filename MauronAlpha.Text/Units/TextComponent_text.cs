@@ -147,6 +147,22 @@ namespace MauronAlpha.Text.Units {
 			TextComponent_line line = LineByContext(context);
 			return line.WordByContext(context);
 		}
+		public TextComponent_word WordByIndex(int n){
+			if(WordCount<n){
+				Error("WordIndex out of bounds {"+n+"}",this,ErrorType_index.Instance);
+			}
+			TextComponent_word word = FirstWord;
+			int wordOffset=0;
+			foreach(TextComponent_line line in Lines){
+				word=line.LastWord;
+				if(wordOffset+line.WordCount>n){
+					word=line.WordByContext(new TextContext(line.Context.LineOffset,n-wordOffset));
+					break;
+				}
+				wordOffset+=line.WordCount;
+			}
+			return word;
+		}
 		public TextComponent_word LastWord {
 			get {
 				return LastLine.LastWord;
@@ -166,6 +182,24 @@ namespace MauronAlpha.Text.Units {
 			TextComponent_line line=LineByContext(context);
 			TextComponent_word word=line.WordByContext(context);
 			return word.CharacterByContext(context);
+		}
+		public TextComponent_character CharacterByIndex (int n) {
+			if( CharacterCount<n ) {
+				Error("CharacterIndex out of bounds {"+n+"}", this, ErrorType_index.Instance);
+			}
+			TextComponent_word word=FirstWord;
+			TextComponent_character c=FirstCharacter;
+			int characterOffset=0;
+			foreach( TextComponent_line line in Lines ) {
+				c=line.LastCharacter;
+				int count=line.CharacterCount;
+				if( characterOffset+count>n ) {
+					c=line.CharacterByIndex(n-characterOffset);
+					break;
+				}
+				characterOffset+=count;
+			}
+			return c;
 		}
 		public TextComponent_character LastCharacter {
 			get {

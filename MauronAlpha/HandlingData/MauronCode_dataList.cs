@@ -36,6 +36,11 @@ namespace MauronAlpha.HandlingData {
 			}
 		}
 		public MauronCode_dataList<T> SetData(List<T> data) {
+			#region ReadOnly Check
+			if( IsReadOnly ) {
+				Error("ReadOnly!,(SetData)", this, ErrorType_protected.Instance);
+			}
+			#endregion
 			L_data=data;
 			return this;
 		}
@@ -47,32 +52,66 @@ namespace MauronAlpha.HandlingData {
 				return B_isReadOnly;
 			}
 		}
+		public MauronCode_dataList<T> SetIsReadOnly(bool status) {
+			B_isReadOnly=status;
+			return this;
+		}
 
 		//Remove
 		public MauronCode_dataList<T> RemoveByValue(T obj){
+			#region ReadOnly Check
+			if(IsReadOnly){
+				Error("ReadOnly!,(RemoveByValue)",this,ErrorType_protected.Instance);
+			}
+			#endregion
 			Data.Remove(obj);
 			return this;
 		}
 		public MauronCode_dataList<T> RemoveByKey(int key){
-			//!silent return
-			if(!ContainsKey(key)){
-				return this;
+			#region ReadOnly Check
+			if( IsReadOnly ) {
+				Error("ReadOnly!,(RemoveByKey)", this, ErrorType_protected.Instance);
 			}
-			//actual removal
+			#endregion
+			#region Error Check
+			if(!ContainsKey(key)){
+				Error("Index out of bounds! {"+key+"},(RemoveByKey)", this, ErrorType_index.Instance);
+			}
+			#endregion
 			Data.RemoveAt(key);
 			return this;
 		}
-		public MauronCode_dataList<T> RemoveByRange(int start, int end){
+		public MauronCode_dataList<T> RemoveByRange(int start, int end) {
+			#region ReadOnly Check
+			if( IsReadOnly ) {
+				Error("ReadOnly!,(RemoveByRange)", this, ErrorType_protected.Instance);
+			}
+			#endregion
+			#region Error Check
 			if( start<0||start>=Count ) {
-				Error("Range start out of bounds! {"+start+"}", this,ErrorType_index.Instance);
+				Error("Range start out of bounds! {"+start+"},(RemoveByRange)", this, ErrorType_index.Instance);
 			}
 			if( end<0||end>=Count||end<start ) {
-				Error("Range end out of bounds! {"+end+"}", this,ErrorType_index.Instance);
+				Error("Range end out of bounds! {"+end+"},(RemoveByRange)", this, ErrorType_index.Instance);
 			}
+			#endregion
 			for( int n=start; n<=end; n++ ) {
 				RemoveByKey(start);
 			}
 			return this;
+		}
+		public MauronCode_dataList<T> RemoveLastElement() {
+			#region ReadOnly Check
+			if( IsReadOnly ) {
+				Error("ReadOnly!,(RemoveByValue)", this, ErrorType_protected.Instance);
+			}
+			#endregion
+			#region Error Check
+			if(Count==0){
+				Error("Data is empty!,(RemovelastElement)", this, ErrorType_index.Instance);
+			}
+			#endregion
+			return RemoveByKey(Count-1);
 		}
 
 		//Get a range of results
@@ -118,23 +157,37 @@ namespace MauronAlpha.HandlingData {
 
 		//Add a value
 		public MauronCode_dataList<T> Add(T obj){
+			#region ReadOnly Check
+			if( IsReadOnly ) {
+				Error("ReadOnly!,(Add)", this, ErrorType_protected.Instance);
+			}
+			#endregion
 			return AddValue(obj);
 		}
 		public MauronCode_dataList<T> AddValue(T obj) {
+			#region ReadOnly Check
+			if( IsReadOnly ) {
+				Error("ReadOnly!,(AddValue)", this, ErrorType_protected.Instance);
+			}
+			#endregion
 			return SetValue(NextIndex, obj);
 		}
-		public MauronCode_dataList<T> SetValue(int key, T obj){
-			if(!ContainsKey(key)){
-				if(key==0||key==(Count-1)){
-					Data.Add(obj);
-					return this;
-				}
-				Error("Invalid Index! {"+key+"}",this, ErrorType_index.Instance);
+		public MauronCode_dataList<T> SetValue(int key, T obj) {
+			#region Error Check
+			if(!ContainsKey(key)){				
+				Error("Invalid Index! {"+key+"},(SetValue)",this, ErrorType_index.Instance);
+
 			}
+			#endregion
 			Data[key]=obj;
 			return this;
 		}
 		public MauronCode_dataList<T> AddValuesFrom(ICollection<T> collection){
+			#region ReadOnly Check
+			if( IsReadOnly ) {
+				Error("ReadOnly!,(AddValuesFrom)", this, ErrorType_protected.Instance);
+			}
+			#endregion
 			foreach(T obj in collection) {
 				AddValue(obj);
 			}
@@ -143,15 +196,22 @@ namespace MauronAlpha.HandlingData {
 
 		//Add a value at the specified index, shift all other indexes
 		public MauronCode_dataList<T> InsertValueAt(int key, T obj){
+			#region ReadOnly Check
+			if( IsReadOnly ) {
+				Error("ReadOnly!,(InsertValueAt)", this, ErrorType_protected.Instance);
+			}
+			#endregion
 			Data.InsertRange(key, new T[1]{obj});
 			return this;
 		}
 
 		//Get a value
 		public T Value(int key){
+			#region Error Check
 			if(!ContainsKey(key)){
-				Error("Invalid key {"+key+"}",this,ErrorType_index.Instance);
+				Error("Invalid key {"+key+"},(Value)",this,ErrorType_index.Instance);
 			}
+			#endregion
 			return Data[key];
 		}
 		public ICollection<T> Values {
@@ -160,12 +220,22 @@ namespace MauronAlpha.HandlingData {
 			}
 		}
 		public MauronCode_dataList<T> SetValues(ICollection<T> values){
+			#region ReadOnly Check
+			if( IsReadOnly ) {
+				Error("ReadOnly!,(SetValues)", this, ErrorType_protected.Instance);
+			}
+			#endregion
 			SetData(new List<T>(values));
 			return this;
 		}
 
 		//Clear
 		public MauronCode_dataList<T> Clear () {
+			#region ReadOnly Check
+			if( IsReadOnly ) {
+				Error("ReadOnly!,(Clear)", this, ErrorType_protected.Instance);
+			}
+			#endregion
 			L_data=new List<T>();
 			return this;
 		}
@@ -205,9 +275,11 @@ namespace MauronAlpha.HandlingData {
 		//Get the first element
 		public T FirstElement {
 			get {
+				#region Error Check
 				if (Data.Count < 1) {
-					MauronCode.Error ("Data is empty!", this,ErrorType_index.Instance);
+					MauronCode.Error ("Data is empty!,(FirstElement)", this,ErrorType_index.Instance);
 				}
+				#endregion
 				return Data [FirstIndex];
 			}
 		}
@@ -215,9 +287,11 @@ namespace MauronAlpha.HandlingData {
 		//Get the last element
 		public T LastElement {
 			get {
+				#region Error Check
 				if (Data.Count < 1) {
-					MauronCode.Error("Data is empty", this, ErrorType_index.Instance);
+					MauronCode.Error("Data is empty!,(LastElement)", this, ErrorType_index.Instance);
 				}
+				#endregion
 				return Data [LastIndex];
 			}
 		}
@@ -298,6 +372,7 @@ namespace MauronAlpha.HandlingData {
 		}
 		#endregion
 
+		public override bool IsProtectable { get { return true; }}
 		public override string Name { get { return "dataList"; } }
 
 	}

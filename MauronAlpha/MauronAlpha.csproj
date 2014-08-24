@@ -65,6 +65,7 @@
     <Compile Include="HandlingData\MergeConflict.cs" />
     <Compile Include="HandlingErrors\ErrorType_index.cs" />
     <Compile Include="HandlingErrors\ErrorType_nullError.cs" />
+    <Compile Include="HandlingErrors\ErrorType_protected.cs" />
     <Compile Include="Projects\ProjectSettings.cs" />
     <Compile Include="Settings\I_hasDefaultSettings.cs" />
     <Compile Include="HandlingData\MauronCode_data.cs" />
