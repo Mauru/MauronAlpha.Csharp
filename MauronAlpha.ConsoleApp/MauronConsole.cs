@@ -9,6 +9,7 @@ using MauronAlpha.Text;
 using MauronAlpha.Text.Utility;
 
 using MauronAlpha.Input.Keyboard;
+using MauronAlpha.Input.Keyboard.Events;
 
 using MauronAlpha.Events;
 using MauronAlpha.Events.Defaults;
@@ -38,7 +39,6 @@ namespace MauronAlpha.ConsoleApp {
 			SetCanExit(false);
 			SubscribeToEvents();
 			WaitForKeyUp();
-
 		}
 
 		#endregion
@@ -98,7 +98,12 @@ namespace MauronAlpha.ConsoleApp {
 
 		//Ourput a whole Line
 		private MauronConsole OutputLine(TextComponent_line line, bool makeLineStart) {
-			Console.WriteLine(MakeLineStart(line)+line.AsString);
+			string output="";
+			if(makeLineStart){
+				output+=MakeLineStart(line);
+			}
+			output+=line.AsString;
+			Console.WriteLine();
 			return this;
 		}
 		#region Line Start (line number)
@@ -397,15 +402,7 @@ namespace MauronAlpha.ConsoleApp {
 			return this;
 		}
 
-		public MauronConsole SendEvent (MauronCode_eventClock clock, string eventName, MauronCode_dataSet data) {
-
-			//create a raw event
-			MauronCode_event e=new MauronCode_event(
-				clock,
-				this,
-				eventName,
-				data
-			).SetMessage(eventName).SetData(data);
+		public MauronConsole SendEvent (MauronCode_eventClock clock, MauronCode_event e) {
 			clock.SubmitEvent(e);
 			return this;
 		}
@@ -416,9 +413,9 @@ namespace MauronAlpha.ConsoleApp {
 		#endregion
 
 		//KeyUp
-		private MauronConsole Event_keyUp(MauronCode_event e) {
+		private MauronConsole E_keyUp(Event_keyUp e) {
 			KeyPressCounter.AdvanceTime();
-			KeyPress k = e.Data.Value<KeyPress>("KeyPress");
+			KeyPress k = e.KeyPress;
 			if(k.IsSpecialKey){
 
 			}else{
@@ -466,7 +463,8 @@ namespace MauronAlpha.ConsoleApp {
 			input.SetKey(key.KeyChar);
 
 			//throw a new Keyboardevent
-			SendEvent(KeyPressCounter, "keyUp", new MauronCode_dataSet("Event Data").SetValue<KeyPress>("KeyPress", input));
+			new Event_keyUp(KeyPressCounter,this,input).submit();
+
 			WaitForKeyUp();
 			return this;
 		}

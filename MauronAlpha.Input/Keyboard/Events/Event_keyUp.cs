@@ -13,8 +13,7 @@ namespace MauronAlpha.Input.Keyboard.Events {
 		):base(
 			clock,
 			sender,
-			"keyUp",
-			new EventData().SetValue("KeyPress",key)
+			"keyUp"
 		){
 
 		}

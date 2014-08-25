@@ -11,7 +11,7 @@ namespace MauronAlpha.Events {
 	//A Event
 	public class MauronCode_event:MauronCode {
 
-		//constructor
+		#region Constructors
 		private MauronCode_event():base(CodeType_event.Instance){}
 		public MauronCode_event(MauronCode_eventClock clock, I_eventSender sender, Delegate_condition condition, Delegate_trigger trigger, string code):this() {
 			
@@ -26,9 +26,8 @@ namespace MauronAlpha.Events {
 			shedule.SetEvent(this);
 			SetShedule(shedule);
 		}
-		public MauronCode_event(MauronCode_eventClock clock, I_eventSender sender, string code, MauronCode_dataSet data):this(clock,sender,EventCondition.Always,EventTrigger.Nothing,code){
-			SetData (data);
-		}
+		public MauronCode_event(MauronCode_eventClock clock, I_eventSender sender, string code):this(clock,sender,EventCondition.Always,EventTrigger.Nothing,code){}
+		#endregion
 
 		#region The Sender of the event
 		
@@ -134,37 +133,7 @@ namespace MauronAlpha.Events {
 		}
 		#endregion
 
-		#region The Event Data
-		private MauronCode_dataSet DS_data;
-		public MauronCode_dataSet Data { get { 
-			if(DS_data==null) {
-				SetData(new MauronCode_dataSet("Event Data"));
-			}
-			return DS_data; 
-		} }
-		public MauronCode_event SetData(MauronCode_dataSet data) {
-			DS_data=data;
-			return this;
-		}
-		/*public MauronCode_event SetData(MauronCode_dataObject data){
-			if(data.DataType.IsConvertibleTo(Data.GetType())){
-				SetData(
-					data.DataType.Convert<MauronCode_dataSet>(data)
-				);
-			}
-			return this;
-		}*/
-		public MauronCode_event SetData(string key, object val) {
-			Data.SetValue(key,val);
-			return this;
-		}
-		public MauronCode_event SetData<T>(string key, T val) {
-			Data.SetValue<T>(key, val);
-			return this;
-		}
-		#endregion
-	
-		#region the Event Shedule
+		#region The Event Shedule
 		private MauronCode_eventShedule ES_eventShedule;
 		public MauronCode_eventShedule Shedule { 
 			get { 
@@ -179,6 +148,7 @@ namespace MauronAlpha.Events {
 			return this;
 		}
 		#endregion
+	
 	}
 
 	//Class decription for an event
@@ -199,7 +169,6 @@ namespace MauronAlpha.Events {
 			}
 		}
 		#endregion
-
 		public override string Name { get { return "event"; } }
 	}
 }

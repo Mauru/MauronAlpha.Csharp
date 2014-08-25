@@ -84,8 +84,8 @@ namespace MauronAlpha.Input.Keyboard {
 			CLOCK_events=clock;
 			return this;
 		}
-		public I_eventSender SendEvent (MauronCode_eventClock clock, string code, MauronCode_dataSet data) {
-			clock.SubmitEvent(new MauronCode_event(clock,this,code,data));
+		public I_eventSender SendEvent (MauronCode_eventClock clock, MauronCode_event e) {
+			clock.SubmitEvent(e);
 			return this;
 		}
 
