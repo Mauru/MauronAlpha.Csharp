@@ -81,8 +81,8 @@ namespace MauronAlpha.HandlingData {
 		public bool ContainsValue(T obj) {
 			return Data.Contains(obj);
 		}
-		public bool ContainsKey(int i) {
-			return i>0 && Data.Count>0;
+		public bool ContainsKey(int key) {
+			return key>=0 && Data.Count>0 && key<Data.Count;
 		}
 		//Is a List empty?
 		public bool IsEmpty {

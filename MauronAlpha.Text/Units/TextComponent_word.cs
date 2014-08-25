@@ -120,7 +120,7 @@ namespace MauronAlpha.Text.Units {
 		public TextComponent_character FirstCharacter {
 			get {
 				#region Error Check
-				if( Characters.Count<1 ) {
+				if( CharacterCount<1 ) {
 					Error("Character Index out of bounds!,(FirstCharacter)", this, ErrorType_index.Instance);
 				}
 				#endregion
@@ -138,7 +138,7 @@ namespace MauronAlpha.Text.Units {
 		public TextComponent_character LastCharacter {
 			get {
 				#region Error Check
-				if(Characters.Count<1){
+				if(CharacterCount<1){
 					Error("Character Index out of bounds!,(LastCharacter)",this,ErrorType_index.Instance);
 				}
 				#endregion
@@ -170,7 +170,9 @@ namespace MauronAlpha.Text.Units {
 		//this is important! empty can mean that charactercount is 0 or that the lastcharacter is TextHelper.Empty (zerowidth)!
 		public bool IsEmpty {
 			get {
-				return CharacterCount==0||LastCharacter.Equals(TextHelper.Empty);
+				if(CharacterCount<1) return true;
+				if(LastCharacter.Equals(TextHelper.Empty)) return  true;
+				return false;
 			}
 		}
 		public bool HasLineBreak {

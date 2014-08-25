@@ -1,5 +1,6 @@
 ﻿using System;
 using MauronAlpha.HandlingErrors;
+using System.Diagnostics;
 
 namespace MauronAlpha.HandlingErrors {
 
@@ -21,7 +22,21 @@ namespace MauronAlpha.HandlingErrors {
 			MauronCode.Debug(message,source);
 			ErrorSource=source;
 			SetErrorType(errorType);
+			StackTrace info = new StackTrace(true);
+			PrintStackTrace(info);
+			System.Console.ReadKey();
 			Environment.Exit(1);
+		}
+
+		private MauronCode_error PrintStackTrace(StackTrace info){
+			for(int i=0; i<info.FrameCount;i++){
+				StackFrame frame = info.GetFrame(i);
+				string className = frame.GetMethod().DeclaringType.Name;
+				string methodName = frame.GetMethod().Name;
+				int lineNumber = frame.GetFileLineNumber();
+				System.Console.WriteLine("#"+i+" "+className+" - "+methodName+ "("+lineNumber+")", this);
+			}
+			return this;
 		}
 
 	}
