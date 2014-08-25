@@ -43,7 +43,7 @@ namespace MauronAlpha.Text.Units {
 
 		//Add a character, remove zerowidth (TextHelper.Empty)
 		public TextComponent_word AddCharacter(TextComponent_character c){
-			if(!c.IsEmpty&&LastCharacter.IsEmpty){
+			if(CharacterCount>0&&LastCharacter.IsEmpty){
 				RemoveLastCharacter();
 			}
 			Characters.AddValue (c);
@@ -171,7 +171,7 @@ namespace MauronAlpha.Text.Units {
 		public bool IsEmpty {
 			get {
 				if(CharacterCount<1) return true;
-				if(LastCharacter.Equals(TextHelper.Empty)) return  true;
+				if(LastCharacter.Equals(TextHelper.Empty)) return true;
 				return false;
 			}
 		}
