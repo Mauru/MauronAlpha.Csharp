@@ -1,8 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MauronAlpha.ConsoleApp.Linux", "MauronAlpha.ConsoleApp.Linux.csproj", "{942A6BD6-CF18-408C-8C2E-DACC92B98273}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MauronAlpha", "..\MauronAlpha\MauronAlpha.csproj", "{6A046817-9F14-4781-97C9-F89FEBC2097B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MauronAlpha.ConsoleApp", "..\MauronAlpha.ConsoleApp\MauronAlpha.ConsoleApp.csproj", "{2EA00431-E460-4D40-8817-CC4E08B9B568}"
@@ -12,6 +10,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MauronAlpha.Input", "..\MauronAlpha.Input\MauronAlpha.Input.csproj", "{7135ED8B-1992-4170-B4A1-A0086686FEBF}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MauronAlpha.Text", "..\MauronAlpha.Text\MauronAlpha.Text.csproj", "{8491848C-470B-4652-AEAE-547EAA8F2AD9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MauronAlpha.ConsoleApp.Linux", "MauronAlpha.ConsoleApp.Linux.csproj", "{942A6BD6-CF18-408C-8C2E-DACC92B98273}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -117,16 +117,19 @@ Global
 		{8491848C-470B-4652-AEAE-547EAA8F2AD9}.Release|x86.ActiveCfg = Release|Any CPU
 		{8491848C-470B-4652-AEAE-547EAA8F2AD9}.Release|x86.Build.0 = Release|Any CPU
 		{942A6BD6-CF18-408C-8C2E-DACC92B98273}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{942A6BD6-CF18-408C-8C2E-DACC92B98273}.Debug|Any CPU.Build.0 = Debug|x86
 		{942A6BD6-CF18-408C-8C2E-DACC92B98273}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
 		{942A6BD6-CF18-408C-8C2E-DACC92B98273}.Debug|Mixed Platforms.Build.0 = Debug|x86
 		{942A6BD6-CF18-408C-8C2E-DACC92B98273}.Debug|x86.ActiveCfg = Debug|x86
 		{942A6BD6-CF18-408C-8C2E-DACC92B98273}.Debug|x86.Build.0 = Debug|x86
 		{942A6BD6-CF18-408C-8C2E-DACC92B98273}.DontCompile|Any CPU.ActiveCfg = Debug|x86
+		{942A6BD6-CF18-408C-8C2E-DACC92B98273}.DontCompile|Any CPU.Build.0 = Debug|x86
 		{942A6BD6-CF18-408C-8C2E-DACC92B98273}.DontCompile|Mixed Platforms.ActiveCfg = Debug|x86
 		{942A6BD6-CF18-408C-8C2E-DACC92B98273}.DontCompile|Mixed Platforms.Build.0 = Debug|x86
 		{942A6BD6-CF18-408C-8C2E-DACC92B98273}.DontCompile|x86.ActiveCfg = Debug|x86
 		{942A6BD6-CF18-408C-8C2E-DACC92B98273}.DontCompile|x86.Build.0 = Debug|x86
 		{942A6BD6-CF18-408C-8C2E-DACC92B98273}.Release|Any CPU.ActiveCfg = Release|x86
+		{942A6BD6-CF18-408C-8C2E-DACC92B98273}.Release|Any CPU.Build.0 = Release|x86
 		{942A6BD6-CF18-408C-8C2E-DACC92B98273}.Release|Mixed Platforms.ActiveCfg = Release|x86
 		{942A6BD6-CF18-408C-8C2E-DACC92B98273}.Release|Mixed Platforms.Build.0 = Release|x86
 		{942A6BD6-CF18-408C-8C2E-DACC92B98273}.Release|x86.ActiveCfg = Release|x86

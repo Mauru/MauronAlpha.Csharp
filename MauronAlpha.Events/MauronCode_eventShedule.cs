@@ -1,194 +1,53 @@
 ﻿using System;
-using System.Collections.Generic;
 using MauronAlpha.ExplainingCode;
-using MauronAlpha.Settings;
 using MauronAlpha.Events.Units;
 
-namespace MauronAlpha.Events {
+namespace MauronAlpha.Events.Shedules {
 
-	// A Timing based execution check for an event
+	//A event Shedule that is executed in intervals
 	public class MauronCode_eventShedule:MauronCode {
-		
-		//constructor
-		public MauronCode_eventShedule(MauronCode_eventClock clock):base(CodeType_eventShedule.Instance) {
-			SetClock(clock);
-		}	
 
-		#region original feature-set
-		#region The clock that determins the time
-		private MauronCode_eventClock EC_clock;
-		public MauronCode_eventClock Clock {
-			get {
-				if(EC_clock==null){
-					Error("Clock can not be null!", this);
+		//constructor
+		public MauronCode_eventShedule (MauronCode_eventClock clock, MauronCode_timeSpan interval):base(CodeType_eventShedule.Instance){
+			SetClock (clock);
+			SetInterval (interval);
+		}
+
+		#region The interval for when this shedule is executed
+		private MauronCode_timeSpan TIME_interval;
+		public MauronCode_timeSpan Interval {
+			get { 
+				if (TIME_interval == null) {
+					NullError ("Interval can not be null!,(Interval)", this, typeof(MauronCode_timeSpan));
 				}
-				return EC_clock;
+				return TIME_interval;
+			}
+		}
+		public MauronCode_eventShedule SetInterval(MauronCode_timeSpan interval){
+			TIME_interval = interval;
+			return this;
+		}
+		#endregion
+		#region The EventClock this shedule belongs to
+		private MauronCode_eventClock CLOCK_events;
+		public MauronCode_eventClock Clock {
+			get { 
+				if (CLOCK_events==null) {
+					NullError ("Clock can not be null!", this, typeof(MauronCode_eventClock));
+				}
+				return CLOCK_events;
 			}
 		}
 		public MauronCode_eventShedule SetClock(MauronCode_eventClock clock){
-			EC_clock=clock;
+			CLOCK_events = clock;
 			return this;
 		}
-		#endregion
-
-		#region the interval in ticks when the clock is checked
-		public MauronCode_timeUnit TU_interval;
-		public MauronCode_timeUnit Interval {
-			get { 
-				if(TU_interval==null) {
-					Error("Interval can not be null!", this);
-				}
-				return TU_interval;
-			}
-		}
-		public MauronCode_eventShedule SetInterval(MauronCode_timeUnit time){
-			TU_interval=time;
-			return this;
-		}
-		#endregion
-
-		#region Last Checked
-		public MauronCode_timeUnit TU_lastChecked;
-		public MauronCode_timeUnit LastChecked {
-			get {
-				return TU_lastChecked;
-			}
-		}
-		public MauronCode_eventShedule SetLastChecked(MauronCode_timeUnit time) {
-			TU_lastChecked=time;
-			return this;
-		}
-		#endregion
-
-		#region Last Executed
-		public MauronCode_timeUnit TU_lastExecuted;
-		public MauronCode_timeUnit LastExecuted {
-			get {
-				return TU_lastExecuted;
-			}
-		}
-		public MauronCode_eventShedule SetLastExecuted (MauronCode_timeUnit time) {
-			TU_lastExecuted=time;
-			return this;
-		}
-		#endregion
-
-		#region Linked Event
-		public MauronCode_event E_event;
-		public MauronCode_event Event {
-			get{
-				if(E_event==null) { Error("Event can not be null!", this); }
-				return E_event;
-			}
-		}
-		public MauronCode_eventShedule SetEvent(MauronCode_event e) {
-			E_event=e;
-			return this;
-		}
-		#endregion
-
-		#region How often has this event been executed?
-		public int INT_executions=0;
-		public int Executions { get {
-			return INT_executions;
-		} }
-		public MauronCode_eventShedule SetExecutions(int n){
-			INT_executions=n;
-			return this;
-		}
-		#endregion
-
-		#region How often CAN this event be executed
-		public int INT_maxExecutions=1;
-		public int MaxExecutions {
-			get {
-				return INT_maxExecutions;
-			}
-		}
-		public MauronCode_eventShedule SetMaxExecutions (int n) {
-			INT_maxExecutions=n;
-			return this;
-		}
-		#endregion
-		
-		#region How often has this event been checked?
-		public int INT_checks=0;
-		public int Checks { get { return INT_checks; } }
-		public MauronCode_eventShedule SetChecks(int n) {
-			INT_checks=n;
-			return this;
-		}
-		#endregion
-
-		#region How CAN this event be checked?
-		public int INT_MaxChecks=0;
-		public int MaxChecks { get { return INT_MaxChecks; } }
-		public MauronCode_eventShedule SetMaxChecks (int n) {
-			INT_MaxChecks=n;
-			return this;
-		}
-		#endregion
-
-		//Force Event execution regardless of anything
-		public MauronCode_eventShedule ForceExecute() {
-			SetLastExecuted(Clock.Time);
-			SetExecutions(Executions+1);
-			Event.Trigger(Event.Receiver, Event);
-			return this;
-		}
-
-		//Cycle the event shedule
-		public MauronCode_eventShedule Cycle() {
-			
-			//Only one check per cycle
-			if(LastChecked==Clock.Time) {
-				return this;
-			}
-
-			//Cycle interval
-			if(LastChecked.Add(Interval).SmallerOrEqual(Clock.Time)){
-				return this;
-			}
-						
-			//Set Check Timestamp
-			SetLastChecked(Clock.Time);
-
-			//check count
-			if(MaxChecks>0&&MaxChecks<Checks) {
-				//check limit reached, shedule done
-				SheduleDone();
-				return this;
-			}
-			SetChecks(Checks+1);
-
-			//check condition
-			if(!Event.IsCondition){
-				return this;
-			}
-
-			//Execution count
-			if(MaxExecutions>0&&MaxExecutions<Executions){
-				return SheduleDone(true);
-			}
-			
-			return ForceExecute();
-		}
-
-		#region The Shedule is done, either because Checked or Executions has reached a limit, assume Checked Limit as default
-		public MauronCode_eventShedule SheduleDone(bool dueToExecutions) {
-			return this;
-		}
-		public MauronCode_eventShedule SheduleDone() {
-			//check limit reached, deRegister
-			return SheduleDone(false);
-		}
-		#endregion
 		#endregion
 
 	}
 
-	//Code Description
-	public sealed class CodeType_eventShedule: CodeType {
+	//Class decription
+	public sealed class CodeType_eventShedule : CodeType {
 		#region singleton
 		private static volatile CodeType_eventShedule instance=new CodeType_eventShedule();
 		private static object syncRoot=new Object();
@@ -205,8 +64,8 @@ namespace MauronAlpha.Events {
 			}
 		}
 		#endregion
-
-		public override string Name { get { return "eventShedule"; } }
+		public override string Name { get { return "event"; } }
 	}
 
 }
+

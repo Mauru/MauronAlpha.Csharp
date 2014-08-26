@@ -3,8 +3,6 @@
 using MauronAlpha.ExplainingCode;
 using MauronAlpha.HandlingData;
 using MauronAlpha.Events.Units;
-using MauronAlpha.Events.Data;
-using MauronAlpha.Events.Defaults;
 
 namespace MauronAlpha.Events {
 	
@@ -13,20 +11,10 @@ namespace MauronAlpha.Events {
 
 		#region Constructors
 		private MauronCode_event():base(CodeType_event.Instance){}
-		public MauronCode_event(MauronCode_eventClock clock, I_eventSender sender, Delegate_condition condition, Delegate_trigger trigger, string code):this() {
-			
-			//Assign required fields
+		public MauronCode_event(I_eventSender sender, string code):this() {
 			SetMessage(code);			
 			SetSender(sender);
-			SetCondition(condition);
-			SetTrigger(trigger);
-			
-			//generate the event shedule
-			MauronCode_eventShedule shedule = new MauronCode_eventShedule(clock);
-			shedule.SetEvent(this);
-			SetShedule(shedule);
 		}
-		public MauronCode_event(MauronCode_eventClock clock, I_eventSender sender, string code):this(clock,sender,EventCondition.Always,EventTrigger.Nothing,code){}
 		#endregion
 
 		#region The Sender of the event
@@ -49,77 +37,6 @@ namespace MauronAlpha.Events {
 
 		#endregion
 
-		#region The Receiver of the event
-
-		private I_eventReceiver IE_receiver;
-		public I_eventReceiver Receiver { get { return IE_receiver; } }
-		public T ReceiverAs<T> ( ) {
-			return (T) Receiver;
-		}
-		public MauronCode_event SetReceiver (I_eventReceiver receiver) {
-			IE_receiver=receiver;
-			return this;
-		}
-
-		#endregion
-
-		#region Condition for an Event
-
-		public delegate bool Delegate_condition(I_eventReceiver receiver, MauronCode_event e);
-		public static bool CheckCondition(I_eventReceiver receiver, MauronCode_event e, Delegate_condition check) {
-			return check(receiver,e);
-		}
-		public bool IsCondition { 
-			get {
-				return Condition(Receiver,this);
-			}
-		}
-		private Delegate_condition DEL_condition;
-		public Delegate_condition Condition { get {
-			if(DEL_condition==null) {
-				Error("Condition can not be null!", this);
-			}
-			return DEL_condition;
-		} }
-		public MauronCode_event SetCondition(Delegate_condition condition){
-			DEL_condition=condition;
-			return this;
-		}
-		
-		#endregion
-
-		#region Trigger Method
-		public delegate void Delegate_trigger(I_eventReceiver receiver, MauronCode_event e);
-		public static void Execute(I_eventReceiver receiver, MauronCode_event e, Delegate_trigger trigger) {
-			//set the receiver
-			e.SetReceiver (receiver);
-
-			//update shedule
-			e.Shedule.SetExecutions(e.Shedule.Executions+1);
-			e.Shedule.SetLastExecuted(e.Shedule.Clock.Time);
-
-			//trigger the event
-			trigger(receiver,e);
-
-			if(e.Shedule.MaxExecutions>0&&e.Shedule.MaxExecutions>=e.Shedule.Executions) {
-				e.Shedule.SheduleDone();
-			}
-		}
-		private Delegate_trigger DEL_trigger;
-		public Delegate_trigger Trigger {
-			get {
-				if(DEL_trigger==null) {
-					Error("Trigger can not be null!", this);
-				}
-				return DEL_trigger;
-			}
-		}
-		public MauronCode_event SetTrigger (Delegate_trigger trigger) {
-			DEL_trigger=trigger;
-			return this;
-		}
-		#endregion
-	
 		#region The Event Message
 		private string STR_message;
 		public string Message { 
@@ -133,23 +50,15 @@ namespace MauronAlpha.Events {
 		}
 		#endregion
 
-		#region The Event Shedule
-		private MauronCode_eventShedule ES_eventShedule;
-		public MauronCode_eventShedule Shedule { 
-			get { 
-				if(ES_eventShedule==null) {
-					Error("EventShedule can not be null!", this);
-				}
-				return ES_eventShedule; 
-			}
-		}
-		public MauronCode_event SetShedule(MauronCode_eventShedule eventShedule) {
-			ES_eventShedule=eventShedule;
+		#region Let an event submit itself to an event clock
+		public MauronCode_event Submit(MauronCode_eventClock clock) {
+			clock.SubmitEvent (this);
 			return this;
 		}
 		#endregion
 	
 	}
+
 
 	//Class decription for an event
 	public sealed class CodeType_event : CodeType {

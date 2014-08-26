@@ -1,9 +1,12 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|Mixed Platforms" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="../MauronAlpha.Text/Units/TextComponent_line.cs">
+  <MonoDevelop.Ide.Workspace />
+  <MonoDevelop.Ide.Workbench ActiveDocument="../MauronAlpha.ConsoleApp/MauronConsole.cs">
     <Files>
-      <File FileName="../MauronAlpha.ConsoleApp/MauronConsole.cs" Line="82" Column="39" />
-      <File FileName="../MauronAlpha.Text/Units/TextComponent_line.cs" Line="1" Column="1" />
+      <File FileName="../MauronAlpha.Events/MauronCode_eventShedule.cs" Line="31" Column="1" />
+      <File FileName="../MauronAlpha.Events/MauronCode_eventClock.cs" Line="4" Column="19" />
+      <File FileName="../MauronAlpha.ConsoleApp/MauronConsole.cs" Line="20" Column="3" />
+      <File FileName="../MauronAlpha.Events/I_eventSender.cs" Line="8" Column="76" />
+      <File FileName="../MauronAlpha.Events/I_eventReceiver.cs" Line="14" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

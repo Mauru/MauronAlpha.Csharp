@@ -37,39 +37,11 @@ namespace MauronAlpha.Events {
 			return this;
 		}
 
-		//The condition for the event to trigger
-		private MauronCode_event.Delegate_condition DEL_condition;
-		public MauronCode_event.Delegate_condition Condition { get {
-			if(DEL_condition==null) {
-				Error("Invalid condition!", this);
-			}
-			return DEL_condition;
-		} }
-		public EventSubscription SetCondition(MauronCode_event.Delegate_condition condition){
-			DEL_condition=condition;
-			return this;
-		}
-
-		//The Trigger function
-		private MauronCode_event.Delegate_trigger DEL_trigger;
-		public MauronCode_event.Delegate_trigger Trigger {
-			get {
-				if( DEL_trigger==null ) {
-					Error("Invalid trigger!", this);
-				}
-				return DEL_trigger;
-			}
-		}
-		public EventSubscription SetTrigger (MauronCode_event.Delegate_trigger trigger) {
-			DEL_trigger=trigger;
-			return this;
-		}
-
 		//The related event clock
 		private MauronCode_eventClock CLOCK_events;
 		public MauronCode_eventClock Clock { get {
 			if (CLOCK_events == null) {
-				Error ("Clock can not be null!", this);
+				NullError ("Clock can not be null!", this, typeof(MauronCode_eventClock));
 			}
 			return CLOCK_events;
 		}}
@@ -85,9 +57,10 @@ namespace MauronAlpha.Events {
 				return this;
 			}
 			History.SetLastChecked (Clock.Time);
+
 			//condition
 			History.SetLastExecuted (Clock.Time);
-			Receiver.ReceiveEvent (e);
+			Receiver.ReceiveEvent (Clock,e);
 			History.SetExecutionCount (History.ExecutionCount + 1);
 
 			return this;

@@ -12,7 +12,6 @@ using MauronAlpha.Input.Keyboard;
 using MauronAlpha.Input.Keyboard.Events;
 
 using MauronAlpha.Events;
-using MauronAlpha.Events.Defaults;
 
 namespace MauronAlpha.ConsoleApp {
 	
@@ -167,8 +166,6 @@ namespace MauronAlpha.ConsoleApp {
 		#endregion
 
 		#endregion
-
-
 
 		#region Defining what Line we are on
 		private int INT_line=0;
@@ -360,45 +357,21 @@ namespace MauronAlpha.ConsoleApp {
 		}
 		#endregion
 
-		#region Events
-
-		#region I_eventReceiver
-
-		public I_eventReceiver SubscribeToEvents ( ) {
+		#region Receiving and Sending Events
+		public MauronConsole SubscribeToEvents ( ) {
 			SubscribeToEvent(KeyPressCounter, "keyUp");
 			return this;
 		}
-
-		public I_eventReceiver SubscribeToEvent (MauronCode_eventClock clock, string message) {
+		public MauronConsole SubscribeToEvent (MauronCode_eventClock clock, string message) {
 			clock.SubscribeToEvent(message,this);
 			return this;
 		}
-
-		public I_eventReceiver ReceiveEvent (MauronCode_event e) {
+		public MauronConsole ReceiveEvent(MauronCode_eventClock clock, MauronCode_event e) {
 			//Key Up
 			if( e.Message=="keyUp" ) {
-				Event_keyUp(e);
+				HandleEvent_keyUp(e as Event_keyUp);
 				return this;
 			}
-			return this;
-		}
-
-		#endregion
-
-		#region I_eventSender
-
-		//The event clock for handling timed events
-		private MauronCode_eventClock CLOCK_eventlock;
-		public MauronCode_eventClock EventClock {
-			get {
-				if( CLOCK_eventlock==null ) {
-					Error("No Event Clock Set!", this);
-				}
-				return CLOCK_eventlock;
-			}
-		}
-		public MauronConsole SetEventClock (MauronCode_eventClock clock) {
-			CLOCK_eventlock=clock;
 			return this;
 		}
 
@@ -406,26 +379,7 @@ namespace MauronAlpha.ConsoleApp {
 			clock.SubmitEvent(e);
 			return this;
 		}
-		I_eventSender I_eventSender.SendEvent (MauronCode_eventClock clock, string code, MauronCode_dataSet data) {
-			return SendEvent(clock, code, data);
-		}
 
-		#endregion
-
-		//KeyUp
-		private MauronConsole E_keyUp(Event_keyUp e) {
-			KeyPressCounter.AdvanceTime();
-			KeyPress k = e.KeyPress;
-			if(k.IsSpecialKey){
-
-			}else{
-				
-			}
-			return this;
-		}
-		#endregion
-
-		#region Reacting to KeyPresses
 		private MauronCode_eventClock CLOCK_keyPressCounter;
 		public MauronCode_eventClock KeyPressCounter {
 			get {
@@ -440,8 +394,16 @@ namespace MauronAlpha.ConsoleApp {
 			return this;
 		}
 
-		//Wait for a key up event
-		public MauronConsole WaitForKeyUp ( ) {
+		//KeyUp
+		private MauronConsole HandleEvent_keyUp(Event_keyUp e) {
+			KeyPressCounter.AdvanceTime();
+			KeyPress k = e.KeyPress;
+			return this;
+		}
+		#endregion
+
+		//Cycle keyup
+		public MauronConsole WaitForKeyUp () {
 			ConsoleKeyInfo key=System.Console.ReadKey(false);
 
 			KeyPress input=new KeyPress();
@@ -463,12 +425,11 @@ namespace MauronAlpha.ConsoleApp {
 			input.SetKey(key.KeyChar);
 
 			//throw a new Keyboardevent
-			new Event_keyUp(KeyPressCounter,this,input).submit();
+			new Event_keyUp(this,input).Submit(KeyPressCounter);
 
 			WaitForKeyUp();
 			return this;
 		}
-		#endregion
 
 		#region Special Keys
 		
@@ -512,6 +473,26 @@ namespace MauronAlpha.ConsoleApp {
 		#region Handling WordExceptions //TODO: Track Exceptions
 		public TextComponent_word WordException (string error, string solution, TextComponent_word result) {
 			return result;
+		}
+		#endregion
+	
+		#region I_eventSender
+		I_eventSender I_eventSender.SendEvent(MauronCode_eventClock clock, MauronCode_event e){
+			return SendEvent (clock, e);
+		}
+		#endregion
+		#region I_eventReceiver
+		//Subscribe to Events
+		I_eventReceiver I_eventReceiver.SubscribeToEvents(){
+			return SubscribeToEvents();
+		}
+		//Subscribe to a single Event
+		I_eventReceiver I_eventReceiver.SubscribeToEvent(MauronCode_eventClock clock, string message){
+			return SubscribeToEvent (clock, message);
+		}
+		//Receive an event
+		I_eventReceiver I_eventReceiver.ReceiveEvent(MauronCode_eventClock clock, MauronCode_event e){
+			return ReceiveEvent (clock, e);
 		}
 		#endregion
 	}
