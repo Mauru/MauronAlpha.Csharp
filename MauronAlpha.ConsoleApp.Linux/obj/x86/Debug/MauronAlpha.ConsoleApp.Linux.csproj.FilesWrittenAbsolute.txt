@@ -1,0 +1,15 @@
+/#M/Projects/C#/CodeTree/MauronAlpha.ConsoleApp.Linux/obj/x86/Debug/.NETFramework,Version=v4.0.AssemblyAttribute.cs
+/#M/Projects/C#/CodeTree/MauronAlpha.ConsoleApp.Linux/bin/Debug/MauronAlpha.ConsoleApp.Linux.exe.mdb
+/#M/Projects/C#/CodeTree/MauronAlpha.ConsoleApp.Linux/bin/Debug/MauronAlpha.ConsoleApp.Linux.exe
+/#M/Projects/C#/CodeTree/MauronAlpha.ConsoleApp.Linux/obj/x86/Debug/MauronAlpha.ConsoleApp.Linux.exe
+/#M/Projects/C#/CodeTree/MauronAlpha.ConsoleApp.Linux/obj/x86/Debug/MauronAlpha.ConsoleApp.Linux.exe.mdb
+/#M/Projects/C#/CodeTree/MauronAlpha.ConsoleApp.Linux/bin/Debug/MauronAlpha.Events.dll
+/#M/Projects/C#/CodeTree/MauronAlpha.ConsoleApp.Linux/bin/Debug/MauronAlpha.Events.dll.mdb
+/#M/Projects/C#/CodeTree/MauronAlpha.ConsoleApp.Linux/bin/Debug/MauronAlpha.Input.dll
+/#M/Projects/C#/CodeTree/MauronAlpha.ConsoleApp.Linux/bin/Debug/MauronAlpha.Input.dll.mdb
+/#M/Projects/C#/CodeTree/MauronAlpha.ConsoleApp.Linux/bin/Debug/MauronAlpha.Text.dll
+/#M/Projects/C#/CodeTree/MauronAlpha.ConsoleApp.Linux/bin/Debug/MauronAlpha.Text.dll.mdb
+/#M/Projects/C#/CodeTree/MauronAlpha.ConsoleApp.Linux/bin/Debug/ClassLibrary.dll
+/#M/Projects/C#/CodeTree/MauronAlpha.ConsoleApp.Linux/bin/Debug/ClassLibrary.dll.mdb
+/#M/Projects/C#/CodeTree/MauronAlpha.ConsoleApp.Linux/bin/Debug/MauronAlpha.dll
+/#M/Projects/C#/CodeTree/MauronAlpha.ConsoleApp.Linux/bin/Debug/MauronAlpha.dll.mdb

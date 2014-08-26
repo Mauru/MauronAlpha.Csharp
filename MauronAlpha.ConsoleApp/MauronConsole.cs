@@ -33,6 +33,7 @@ namespace MauronAlpha.ConsoleApp {
 			SetTitle(title);
 			Settings.SetTitleVisible(true);
 			Settings.SetIsEnvironment(true);
+			SetInput (new ConsoleInput (this));
 
 			//Print the title
 			ResetScreen();
@@ -40,7 +41,7 @@ namespace MauronAlpha.ConsoleApp {
 			//Start Environment Cycle
 			SetCanExit(false);
 			SubscribeToEvents();
-			WaitForKeyUp();
+			Input.Listen();
 		}
 
 		#endregion
@@ -77,6 +78,22 @@ namespace MauronAlpha.ConsoleApp {
 			return this;
 		}
 
+		#endregion
+
+		#region Input
+		private ConsoleInput IN_keyboard;
+		private ConsoleInput Input {
+			get { 
+				if (IN_keyboard == null) {
+					NullError ("Input can not be null!,(Input)",this, typeof(ConsoleInput));
+				}
+				return IN_keyboard;
+			}
+		}
+		public MauronConsole SetInput(ConsoleInput input) {
+			IN_keyboard = input;
+			return this;
+		}
 		#endregion
 
 		#region Output to window
@@ -408,38 +425,6 @@ namespace MauronAlpha.ConsoleApp {
 			return this;
 		}
 		#endregion
-
-		//Cycle keyup
-		public MauronConsole WaitForKeyUp () {
-			ConsoleKeyInfo key=System.Console.ReadKey(false);
-
-			KeyPress input=new KeyPress();
-
-			//was the ctrl key pressed
-			if( (key.Modifiers&ConsoleModifiers.Shift)!=0 ) {
-				input.SetIsShiftKeyDown(true);
-			}
-			//was the alt key pressed
-			if( (key.Modifiers&ConsoleModifiers.Control)!=0 ) {
-				input.SetIsCtrlKeyDown(true);
-			}
-			//was the ctrl 
-			if( (key.Modifiers&ConsoleModifiers.Alt)!=0 ) {
-				input.SetIsAltKeyDown(true);
-			}
-
-			//Set the character 
-			input.SetKey(key.KeyChar);
-
-			//throw a new Keyboardevent
-			new Event_keyUp(this,input).Submit(KeyPressCounter);
-			
-
-			if(!CanExit){
-				WaitForKeyUp();
-			}
-			return this;
-		}
 
 		#region Special Keys
 		
