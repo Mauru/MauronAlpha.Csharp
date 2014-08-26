@@ -34,6 +34,9 @@ namespace MauronAlpha.ConsoleApp {
 			Settings.SetTitleVisible(true);
 			Settings.SetIsEnvironment(true);
 
+			//Print the title
+			ResetScreen();
+
 			//Start Environment Cycle
 			SetCanExit(false);
 			SubscribeToEvents();
@@ -102,7 +105,7 @@ namespace MauronAlpha.ConsoleApp {
 				output+=MakeLineStart(line);
 			}
 			output+=line.AsString;
-			Console.WriteLine();
+			Console.WriteLine(output);
 			return this;
 		}
 		#region Line Start (line number)
@@ -166,7 +169,7 @@ namespace MauronAlpha.ConsoleApp {
 		#endregion
 
 		#endregion
-
+		
 		#region Defining what Line we are on
 		private int INT_line=0;
 		public int LineIndex {
@@ -359,7 +362,7 @@ namespace MauronAlpha.ConsoleApp {
 
 		#region Receiving and Sending Events
 		public MauronConsole SubscribeToEvents ( ) {
-			SubscribeToEvent(KeyPressCounter, "keyUp");
+			SubscribeToEvent(KeyPressCounter, "KeyUp");
 			return this;
 		}
 		public MauronConsole SubscribeToEvent (MauronCode_eventClock clock, string message) {
@@ -368,7 +371,7 @@ namespace MauronAlpha.ConsoleApp {
 		}
 		public MauronConsole ReceiveEvent(MauronCode_eventClock clock, MauronCode_event e) {
 			//Key Up
-			if( e.Message=="keyUp" ) {
+			if( e.Message=="KeyUp" ) {
 				HandleEvent_keyUp(e as Event_keyUp);
 				return this;
 			}
@@ -393,11 +396,15 @@ namespace MauronAlpha.ConsoleApp {
 			CLOCK_keyPressCounter=clock;
 			return this;
 		}
+		#endregion
 
+		#region Received events
 		//KeyUp
-		private MauronConsole HandleEvent_keyUp(Event_keyUp e) {
+		private MauronConsole HandleEvent_keyUp (Event_keyUp e) {
 			KeyPressCounter.AdvanceTime();
-			KeyPress k = e.KeyPress;
+			KeyPress key=e.KeyPress;
+			TextBuffer.AddChar(key.Key);
+			ResetScreen();
 			return this;
 		}
 		#endregion
@@ -426,8 +433,11 @@ namespace MauronAlpha.ConsoleApp {
 
 			//throw a new Keyboardevent
 			new Event_keyUp(this,input).Submit(KeyPressCounter);
+			
 
-			WaitForKeyUp();
+			if(!CanExit){
+				WaitForKeyUp();
+			}
 			return this;
 		}
 

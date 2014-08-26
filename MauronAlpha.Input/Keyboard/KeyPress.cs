@@ -1,6 +1,7 @@
 ﻿using MauronAlpha.HandlingData;
 using MauronAlpha.Events;
 
+
 namespace MauronAlpha.Input.Keyboard {
 
 	public class KeyPress:MauronCode_dataObject {
@@ -63,7 +64,6 @@ namespace MauronAlpha.Input.Keyboard {
 			return false;
 		}
 		#endregion				
-	
 	
 	}
 

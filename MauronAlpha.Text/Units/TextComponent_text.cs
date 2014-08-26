@@ -114,6 +114,9 @@ namespace MauronAlpha.Text.Units {
 
 			return this;
 		}
+		public TextComponent_text AddChar(char c){
+			return AddString(""+c);
+		}
 		#endregion
 
 		#region Getting portions of a text

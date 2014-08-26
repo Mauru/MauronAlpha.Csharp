@@ -42,7 +42,9 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ConsoleInput.cs" />
     <Compile Include="ConsoleSettings.cs" />
+    <Compile Include="CaretPosition.cs" />
     <Compile Include="KeyboardMap_mauronConsole.cs" />
     <Compile Include="MauronConsole.cs" />
   </ItemGroup>

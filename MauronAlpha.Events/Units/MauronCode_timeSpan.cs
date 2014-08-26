@@ -17,17 +17,50 @@ namespace MauronAlpha.Events.Units {
 			}
 			return CLOCK_clock;
 		} }
+		public MauronCode_timeSpan SetClock(MauronCode_eventClock clock) {
+			CLOCK_clock=clock;
+			return this;
+		}
 
 		//start of the timespan
 		private MauronCode_timeUnit TU_start;
+		public MauronCode_timeUnit Start {
+			get {
+				if(TU_start==null){
+					NullError("Start can not be null!",this,typeof(MauronCode_timeUnit));
+				}
+				return TU_start;
+			}
+		}
+		public MauronCode_timeSpan SetStart(MauronCode_timeUnit tu){
+			TU_start=tu;
+			return this;
+		}
 
 		//end of the timespan
 		private MauronCode_timeUnit TU_end;
+		public MauronCode_timeUnit End {
+			get {
+				if(TU_end==null){
+					return Start;
+				}
+				return TU_end;
+			}
+		}
+		public MauronCode_timeSpan SetEnd(MauronCode_timeUnit tu){
+			TU_end=tu;
+			return this;
+		}
 
 		//the potential intervals
-		private long INT_ticks;
-		private long INT_ms;
-
+		public long Ticks {
+			get {
+				if(Start==End){
+					return Start.Ticks;
+				}
+				return End.Subtract(Start).Ticks;
+			}
+		}
 	}
 
 	//A class that contains data
