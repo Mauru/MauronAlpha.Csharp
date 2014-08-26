@@ -46,7 +46,19 @@
     <Compile Include="KeyboardMap_mauronConsole.cs" />
     <Compile Include="MauronConsole.cs" />
   </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSHARP.Targets" />
+  <ProjectExtensions>
+    <VisualStudio AllowExistingFolder="true" />
+  </ProjectExtensions>
   <ItemGroup>
+    <ProjectReference Include="..\MauronAlpha.Events\MauronAlpha.Events.csproj">
+      <Project>{425A4B94-31DF-4569-B68C-EDEAF82163A7}</Project>
+      <Name>MauronAlpha.Events</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MauronAlpha.Input\MauronAlpha.Input.csproj">
+      <Project>{7135ED8B-1992-4170-B4A1-A0086686FEBF}</Project>
+      <Name>MauronAlpha.Input</Name>
+    </ProjectReference>
     <ProjectReference Include="..\MauronAlpha.Text\MauronAlpha.Text.csproj">
       <Project>{8491848C-470B-4652-AEAE-547EAA8F2AD9}</Project>
       <Name>MauronAlpha.Text</Name>
@@ -55,17 +67,5 @@
       <Project>{6A046817-9F14-4781-97C9-F89FEBC2097B}</Project>
       <Name>MauronAlpha</Name>
     </ProjectReference>
-    <ProjectReference Include="..\MauronAlpha.Input\MauronAlpha.Input.csproj">
-      <Project>{7135ED8B-1992-4170-B4A1-A0086686FEBF}</Project>
-      <Name>MauronAlpha.Input</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\MauronAlpha.Events\MauronAlpha.Events.csproj">
-      <Project>{425A4B94-31DF-4569-B68C-EDEAF82163A7}</Project>
-      <Name>MauronAlpha.Events</Name>
-    </ProjectReference>
   </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSHARP.Targets" />
-  <ProjectExtensions>
-    <VisualStudio AllowExistingFolder="true" />
-  </ProjectExtensions>
 </Project>

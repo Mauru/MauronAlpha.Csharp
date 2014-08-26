@@ -32,7 +32,6 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MyClass.cs" />
     <Compile Include="I_eventReceiver.cs" />
     <Compile Include="I_eventSender.cs" />
     <Compile Include="MauronCode_event.cs" />
@@ -43,16 +42,16 @@
     <Compile Include="Units\MauronCode_timeUnit.cs" />
     <Compile Include="EventSubscription.cs" />
     <Compile Include="Units\EventHistory.cs" />
-    <Compile Include="MauronCode_eventShedule.cs" />
+    <Compile Include="Shedules\MauronCode_eventShedule.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <Folder Include="Shedules\" />
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MauronAlpha\MauronAlpha.csproj">
       <Project>{6A046817-9F14-4781-97C9-F89FEBC2097B}</Project>
       <Name>MauronAlpha</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Shedules\" />
   </ItemGroup>
 </Project>
