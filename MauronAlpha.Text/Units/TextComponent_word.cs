@@ -36,13 +36,34 @@ namespace MauronAlpha.Text.Units {
 			}
 		}
 		private TextComponent_word SetCharacters(MauronCode_dataList<TextComponent_character> characters){
+			#region ReadOnly Check
+			if( IsReadOnly ) {
+				Error("Is protected!,(SetCharacters)", this, ErrorType_protected.Instance);
+			}
+			#endregion
 			DATA_characters=characters;
+			return this;
+		}
+		#endregion
+
+		#region ReadOnly
+		private bool B_isReadOnly=false;
+		public bool IsReadOnly {
+			get { return B_isReadOnly; }
+		}
+		public TextComponent_word SetReadOnly (bool status) {
+			B_isReadOnly=status;
 			return this;
 		}
 		#endregion
 
 		//Add a character, remove zerowidth (TextHelper.Empty)
 		public TextComponent_word AddCharacter(TextComponent_character c){
+			#region ReadOnly Check
+			if( IsReadOnly ) {
+				Error("Is protected!,(AddCharacter)", this, ErrorType_protected.Instance);
+			}
+			#endregion
 			if(CharacterCount>0&&LastCharacter.IsEmpty){
 				RemoveLastCharacter();
 			}
@@ -52,6 +73,11 @@ namespace MauronAlpha.Text.Units {
 
 		//Remove the last character
 		public TextComponent_word RemoveLastCharacter() {
+			#region ReadOnly Check
+			if( IsReadOnly ) {
+				Error("Is protected!,(RemoveLastCharacter)", this, ErrorType_protected.Instance);
+			}
+			#endregion
 			#region Error Check
 			if(CharacterCount==0){
 				Error("Characters is empty (RemoveLastCharacter)",this, ErrorType_index.Instance);

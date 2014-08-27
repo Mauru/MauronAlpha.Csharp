@@ -10,8 +10,24 @@ namespace MauronAlpha.Text.Units {
 
 		private MauronCode_dataList<TextComponent_line> Lines=new MauronCode_dataList<TextComponent_line>();
 
+		#region ReadOnly
+		private bool B_isReadOnly=false;
+		public bool IsReadOnly { 
+			get { return B_isReadOnly; }
+		}
+		public TextComponent_text SetReadOnly(bool status) {
+			B_isReadOnly=status;
+			return this;
+		}
+		#endregion
+		
 		#region Clear the string
 		public TextComponent_text Clear() {
+			#region ReadOnly Check
+			if( IsReadOnly ) {
+				Error("Is protected!,(Clear)", this, ErrorType_protected.Instance);
+			}
+			#endregion
 			Lines = new MauronCode_dataList<TextComponent_line> ();
 			return this;
 		}
@@ -19,10 +35,20 @@ namespace MauronAlpha.Text.Units {
 
 		#region Adding to a text
 		public TextComponent_text AddLine(TextComponent_line line){
+			#region ReadOnly Check
+			if( IsReadOnly ) {
+				Error("Is protected!,(AddLine)", this, ErrorType_protected.Instance);
+			}
+			#endregion
 			Lines.AddValue (line);
 			return this;
 		}
 		public TextComponent_text AddLineAtContext(TextContext context){
+			#region ReadOnly Check
+			if( IsReadOnly ) {
+				Error("Is protected!,(AddLineAtContext)", this, ErrorType_protected.Instance);
+			}
+			#endregion
 			TextComponent_line line = new TextComponent_line (this, context);
 			Lines.InsertValueAt (context.LineOffset, line);
 
@@ -34,7 +60,11 @@ namespace MauronAlpha.Text.Units {
 			return this;
 		}
 		public TextComponent_text AddString (string str) {
-
+			#region ReadOnly Check
+			if( IsReadOnly ) {
+				Error("Is protected!,(AddString)", this, ErrorType_protected.Instance);
+			}
+			#endregion
 			//create char list
 			MauronCode_dataList<char> characters=new MauronCode_dataList<char>(str.ToCharArray());
 
@@ -115,6 +145,11 @@ namespace MauronAlpha.Text.Units {
 			return this;
 		}
 		public TextComponent_text AddChar(char c){
+			#region ReadOnly Check
+			if( IsReadOnly ) {
+				Error("Is protected!,(AddChar)", this, ErrorType_protected.Instance);
+			}
+			#endregion
 			return AddString(""+c);
 		}
 		#endregion

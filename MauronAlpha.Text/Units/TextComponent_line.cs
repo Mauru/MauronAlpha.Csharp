@@ -21,6 +21,17 @@ namespace MauronAlpha.Text.Units {
 		}
 		#endregion
 
+		#region ReadOnly
+		private bool B_isReadOnly=false;
+		public bool IsReadOnly {
+			get { return B_isReadOnly; }
+		}
+		public TextComponent_line SetReadOnly (bool status) {
+			B_isReadOnly=status;
+			return this;
+		}
+		#endregion
+
 		//The words in this line
 		private MauronCode_dataList<TextComponent_word> Words = new MauronCode_dataList<TextComponent_word>();
 
@@ -76,7 +87,11 @@ namespace MauronAlpha.Text.Units {
 		#endregion
 
 		public TextComponent_line AddWord(TextComponent_word word){
-
+			#region ReadOnly Check
+			if( IsReadOnly ) {
+				Error("Is protected!,(AddWord)", this, ErrorType_protected.Instance);
+			}
+			#endregion
 			if(Words.Count>0&&Words.LastElement.EndsLine){
 
 				//Add to new line

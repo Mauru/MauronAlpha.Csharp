@@ -1,4 +1,5 @@
 ﻿using MauronAlpha.Text.Utility;
+using MauronAlpha.HandlingErrors;
 
 using System;
 
@@ -15,6 +16,17 @@ namespace MauronAlpha.Text.Units {
 			SetContext (context);
 		}
 
+		#region ReadOnly
+		private bool B_isReadOnly=false;
+		public bool IsReadOnly {
+			get { return B_isReadOnly; }
+		}
+		public TextComponent_character SetReadOnly (bool status) {
+			B_isReadOnly=status;
+			return this;
+		}
+		#endregion
+		
 		#region Get The TextComponent_text of this Object
 		public TextComponent_text Source {
 			get {
@@ -74,6 +86,11 @@ namespace MauronAlpha.Text.Units {
 			}
 		}
 		public TextComponent_character SetChar(char c){
+			#region ReadOnly Check
+			if( IsReadOnly ) {
+				Error("Is protected!,(SetChar)", this, ErrorType_protected.Instance);
+			}
+			#endregion
 			CHAR_txt=c;
 			return this;
 		}

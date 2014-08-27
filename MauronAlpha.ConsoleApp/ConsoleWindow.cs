@@ -50,5 +50,13 @@ namespace MauronAlpha.ConsoleApp {
 		}
 		#endregion
 
+		#region The Buffer area
+		public Vector2d BufferArea {
+			get {
+				return new Vector2d(System.Console.BufferWidth,System.Console.BufferHeight).SetIsReadOnly(true);
+			}
+		}
+		#endregion
+	
 	}
 }
