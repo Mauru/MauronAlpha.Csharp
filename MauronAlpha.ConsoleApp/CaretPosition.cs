@@ -10,7 +10,6 @@ namespace MauronAlpha.ConsoleApp {
 		//constructor
 		public CaretPosition(TextComponent_text text)
 			: base(DataType_object.Instance) {
-			
 		}
 		
 	}

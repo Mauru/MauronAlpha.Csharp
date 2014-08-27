@@ -29,11 +29,15 @@ namespace MauronAlpha.ConsoleApp {
 		public MauronConsole (string title)
 			: this() {
 
+			//Interfaces to System
+			SetInput (new ConsoleInput (this));
+			SetOutput(new ConsoleOutput(this));
+			SetWindow(new ConsoleWindow(this));
+
 			//Settings
 			SetTitle(title);
 			Settings.SetTitleVisible(true);
 			Settings.SetIsEnvironment(true);
-			SetInput (new ConsoleInput (this));
 
 			//Print the title
 			ResetScreen();
@@ -74,13 +78,28 @@ namespace MauronAlpha.ConsoleApp {
 		}
 
 		public MauronConsole ClearScreen() {
-			System.Console.Clear ();
+			Output.Clear();
 			return this;
 		}
 
 		#endregion
+		#region The Console Window
+		private ConsoleWindow WINDOW_console;
+		private ConsoleWindow Window {
+			get {
+				if( WINDOW_console==null ) {
+					NullError("Window can not be null!,(Input)", this, typeof(ConsoleWindow));
+				}
+				return WINDOW_console;
+			}
+		}
+		public MauronConsole SetWindow (ConsoleWindow window) {
+			WINDOW_console=window;
+			return this;
+		}
+		#endregion
 
-		#region Input
+		#region Input Controller
 		private ConsoleInput IN_keyboard;
 		private ConsoleInput Input {
 			get { 
@@ -97,6 +116,20 @@ namespace MauronAlpha.ConsoleApp {
 		#endregion
 
 		#region Output to window
+
+		private ConsoleOutput OUT_console;
+		private ConsoleOutput Output {
+			get {
+				if(OUT_console==null){
+					NullError("Output can not be null!,(Output)",this,typeof(ConsoleOutput));
+				}
+				return OUT_console;
+			}
+		}
+		public MauronConsole SetOutput(ConsoleOutput output) {
+			OUT_console=output;
+			return this;
+		}
 
 		//Output the TextBuffer
 		public MauronConsole OutputBuffer() {
@@ -122,7 +155,7 @@ namespace MauronAlpha.ConsoleApp {
 				output+=MakeLineStart(line);
 			}
 			output+=line.AsString;
-			Console.WriteLine(output);
+			Output.WriteLine(output);
 			return this;
 		}
 		#region Line Start (line number)
@@ -181,6 +214,7 @@ namespace MauronAlpha.ConsoleApp {
 			STR_title=title;
 			Header.Clear ();
 			Header.AddString (title);
+			Window.SetTitle(title);
 			return this;
 		}
 		#endregion
@@ -422,6 +456,9 @@ namespace MauronAlpha.ConsoleApp {
 			KeyPress key=e.KeyPress;
 			TextBuffer.AddChar(key.Key);
 			ResetScreen();
+			if(!CanExit){
+				Input.Listen();
+			}
 			return this;
 		}
 		#endregion
@@ -490,6 +527,7 @@ namespace MauronAlpha.ConsoleApp {
 			return ReceiveEvent (clock, e);
 		}
 		#endregion
+	
 	}
 
 	//Project Description
