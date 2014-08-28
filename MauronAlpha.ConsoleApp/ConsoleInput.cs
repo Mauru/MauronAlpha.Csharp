@@ -33,8 +33,10 @@ namespace MauronAlpha.ConsoleApp {
 			//Set the character 
 			input.SetKey(key.KeyChar);
 
+			Target.Debug(key.Key.ToString(),this);
+
 			//throw a new Keyboardevent
-			new Event_keyUp(this,input).Submit(Target.KeyPressCounter);
+			SendEvent(Target.KeyPressCounter, new Event_keyUp(this,input));
 			return this;
 		}
 	
@@ -43,7 +45,7 @@ namespace MauronAlpha.ConsoleApp {
 			return this;
 		}
 
-
+		#region The related Console
 		private MauronConsole C_target;
 		public MauronConsole Target {
 			get {
@@ -57,6 +59,7 @@ namespace MauronAlpha.ConsoleApp {
 			C_target=target;
 			return this;
 		}
+		#endregion
 
 		#region I_eventsender
 		I_eventSender I_eventSender.SendEvent(MauronCode_eventClock clock, MauronCode_event e){

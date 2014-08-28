@@ -74,6 +74,7 @@ namespace MauronAlpha.ConsoleApp {
 				OutputHeader();
 			}
 			OutputBuffer();
+			OutputDebug();
 			return this;
 		}
 
@@ -116,7 +117,6 @@ namespace MauronAlpha.ConsoleApp {
 		#endregion
 
 		#region Output to window
-
 		private ConsoleOutput OUT_console;
 		private ConsoleOutput Output {
 			get {
@@ -147,6 +147,14 @@ namespace MauronAlpha.ConsoleApp {
 			}
 			return this;
 		}
+		//Output the debug messages
+		public MauronConsole OutputDebug() {
+			for( int i=0; i<DebugBuffer.LineCount; i++ ) {
+				TextComponent_line line=DebugBuffer.LineByIndex(i);
+				OutputLine(line, false);
+			}
+			return this;
+		}
 
 		//Ourput a whole Line
 		private MauronConsole OutputLine(TextComponent_line line, bool makeLineStart) {
@@ -171,9 +179,14 @@ namespace MauronAlpha.ConsoleApp {
 		}
 
 		#endregion
+		#endregion
+
+		#region The Debug Message buffer
+		private TextComponent_text DebugBuffer=new TextComponent_text();
+		
 		//Write a Debug message
 		public new MauronConsole Debug (string msg, object obj) {
-			MauronCode.Debug(msg, obj);
+			DebugBuffer.AddString(msg);
 			return this;
 		}
 		#endregion
@@ -454,8 +467,10 @@ namespace MauronAlpha.ConsoleApp {
 		private MauronConsole HandleEvent_keyUp (Event_keyUp e) {
 			KeyPressCounter.AdvanceTime();
 			KeyPress key=e.KeyPress;
-			TextBuffer.AddChar(key.Key);
-			ResetScreen();
+			if(!key.IsFunction){
+				TextBuffer.AddChar(key.Key);
+				ResetScreen();
+			}
 			if(!CanExit){
 				Input.Listen();
 			}
@@ -465,9 +480,16 @@ namespace MauronAlpha.ConsoleApp {
 
 		#region Special Keys
 		
-		private KeyboardMap KEYS_map=new KeyboardMap_mauronConsole();
-		public KeyboardMap KeyMap { get { return KEYS_map; } }
-		public MauronConsole SetKeyboardMap(KeyboardMap map) {
+		private KeyMap KEYS_map;
+		public KeyMap KeyMap { 
+			get { 
+				if(KEYS_map==null){
+					KEYS_map=new KeyMap_mauronConsole(this);
+				}
+				return KEYS_map; 
+			} 
+		}
+		public MauronConsole SetKeyboardMap(KeyMap map) {
 			KEYS_map=map;
 			return this;
 		}

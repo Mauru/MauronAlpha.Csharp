@@ -6,15 +6,13 @@ namespace MauronAlpha.Input.Keyboard {
 		//constructor
 		public SpecialKey(
 			string name,
-			bool useShift,
-			bool useCtrl,
-			bool useAlt,
-			bool IsLineBreak,
-			bool IsSeperator,
-			bool IsScripted
+			Delegate_keyScript action
 		):base(DataType_maintaining.Instance){
 			SetName(name);
 		}
+
+		//The scripted action
+		public delegate void Delegate_keyScript(string code);
 
 		//name
 		private string STR_name;

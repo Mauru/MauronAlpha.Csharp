@@ -4,10 +4,10 @@ using System.Collections.Generic;
 namespace MauronAlpha.Input.Keyboard {
 
 	//A class that keeps information on KeyboardMappings
-	public class KeyboardMap:MauronCode_dataObject {
+	public class KeyMap:MauronCode_dataObject {
 
 		//constructor
-		public KeyboardMap ( )
+		public KeyMap ( )
 			: base(DataType_dispenser.Instance) {
 
 		}
@@ -22,7 +22,7 @@ namespace MauronAlpha.Input.Keyboard {
 				return DATA_specialKeys;
 			}
 		}
-		public KeyboardMap SetSpecialKeys(SpecialKeyMap keys){
+		public KeyMap SetSpecialKeys (SpecialKeyMap keys) {
 			DATA_specialKeys = keys;
 			return this;
 		}
@@ -37,7 +37,7 @@ namespace MauronAlpha.Input.Keyboard {
 				return DATA_KeyPressSequences;
 			}
 		}
-		public KeyboardMap SetKeyPressSequences(KeyPressSequenceMap map){
+		public KeyMap SetKeyPressSequences (KeyPressSequenceMap map) {
 			DATA_KeyPressSequences=map;
 			return this;
 		}

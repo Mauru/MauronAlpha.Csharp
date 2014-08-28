@@ -47,7 +47,7 @@
     <Compile Include="ConsoleSettings.cs" />
     <Compile Include="CaretPosition.cs" />
     <Compile Include="ConsoleWindow.cs" />
-    <Compile Include="KeyboardMap_mauronConsole.cs" />
+    <Compile Include="KeyMap_mauronConsole.cs" />
     <Compile Include="MauronConsole.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSHARP.Targets" />
