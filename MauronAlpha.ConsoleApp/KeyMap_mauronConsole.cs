@@ -1,5 +1,6 @@
 ﻿using MauronAlpha.Input.Keyboard;
 using MauronAlpha.HandlingData;
+using MauronAlpha.Forms;
 using System;
 
 
@@ -30,7 +31,12 @@ namespace MauronAlpha.ConsoleApp {
 		#endregion
 
 		#region the KeyScripts
+		MauronCode_dataMap<SpecialKey> FunctionKeys=new MauronCode_dataMap<SpecialKey>();
 		#endregion
+
+		public static void Key_RemoveLastChar(TextField text) {
+			text.RemoveCharacterAtOffset(1);
+		}
 	}
 
 }

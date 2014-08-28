@@ -15,3 +15,5 @@ C:\Projects\C#\Building a Usable Code-Tree\Attempt 1\Mauron\MauronAlpha.ConsoleA
 C:\Projects\C#\Building a Usable Code-Tree\Attempt 1\Mauron\MauronAlpha.ConsoleApp.Win\bin\Debug\MauronAlpha.Text.pdb
 C:\Projects\C#\Building a Usable Code-Tree\Attempt 1\Mauron\MauronAlpha.ConsoleApp.Win\bin\Debug\MauronAlpha.Geometry.dll
 C:\Projects\C#\Building a Usable Code-Tree\Attempt 1\Mauron\MauronAlpha.ConsoleApp.Win\bin\Debug\MauronAlpha.Geometry.pdb
+C:\Projects\C#\Building a Usable Code-Tree\Attempt 1\Mauron\MauronAlpha.ConsoleApp.Win\bin\Debug\MauronAlpha.Forms.dll
+C:\Projects\C#\Building a Usable Code-Tree\Attempt 1\Mauron\MauronAlpha.ConsoleApp.Win\bin\Debug\MauronAlpha.Forms.pdb
