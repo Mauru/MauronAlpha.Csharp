@@ -72,7 +72,7 @@ namespace MauronAlpha.Text.Units {
 		}
 
 		//Remove the last character
-		public TextComponent_word RemoveLastCharacter() {
+		private TextComponent_word RemoveLastCharacter() {
 			#region ReadOnly Check
 			if( IsReadOnly ) {
 				Error("Is protected!,(RemoveLastCharacter)", this, ErrorType_protected.Instance);
@@ -139,6 +139,17 @@ namespace MauronAlpha.Text.Units {
 				c.OffsetContext(context);
 			}
 			return this;
+		}
+		public bool ContainsContext(TextContext context){
+			if (
+				(Context.LineOffset != context.LineOffset)
+				|| (Context.WordOffset != context.WordOffset)
+				|| (FirstCharacter.Context.CharacterOffset > context.CharacterOffset)
+				|| (LastCharacter.Context.CharacterOffset < context.CharacterOffset)
+				) {
+				return false;
+			}
+			return true;
 		}
 		#endregion
 

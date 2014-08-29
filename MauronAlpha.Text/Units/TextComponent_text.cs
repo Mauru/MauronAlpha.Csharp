@@ -59,6 +59,15 @@ namespace MauronAlpha.Text.Units {
 			}
 			return this;
 		}
+		public TextComponent_text AddWordAtContext(TextContext context, TextComponent_word word){
+			#region ReadOnly Check
+			if( IsReadOnly ) {
+				Error("Is protected!,(AddWordAtContext)", this, ErrorType_protected.Instance);
+			}
+			#endregion
+
+
+		}
 		public TextComponent_text AddString (string str) {
 			#region ReadOnly Check
 			if( IsReadOnly ) {

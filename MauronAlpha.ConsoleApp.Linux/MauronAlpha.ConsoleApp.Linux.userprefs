@@ -1,0 +1,17 @@
+﻿<Properties>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="../MauronAlpha.Text/Units/TextComponent_word.cs">
+    <Files>
+      <File FileName="Program.cs" Line="8" Column="37" />
+      <File FileName="../MauronAlpha.Forms/TextField.cs" Line="21" Column="4" />
+      <File FileName="../MauronAlpha.Text/Units/TextComponent_word.cs" Line="148" Column="2" />
+      <File FileName="../MauronAlpha.Text/Units/TextComponent_text.cs" Line="51" Column="14" />
+      <File FileName="../MauronAlpha.Text/Utility/TextHelper.cs" Line="16" Column="3" />
+      <File FileName="../MauronAlpha.Text/TextContext.cs" Line="18" Column="24" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>
