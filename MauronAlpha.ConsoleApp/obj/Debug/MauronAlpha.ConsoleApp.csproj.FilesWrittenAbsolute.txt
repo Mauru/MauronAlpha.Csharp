@@ -11,3 +11,5 @@
 /#M/Projects/C#/CodeTree/MauronAlpha.ConsoleApp/bin/Debug/ClassLibrary.dll.mdb
 /#M/Projects/C#/CodeTree/MauronAlpha.ConsoleApp/bin/Debug/ClassLibrary.dll
 /#M/Projects/C#/CodeTree/MauronAlpha.ConsoleApp/obj/Debug/ClassLibrary.dll.mdb
+/#M/Projects/C#/CodeTree/MauronAlpha.ConsoleApp/bin/Debug/MauronAlpha.Forms.dll
+/#M/Projects/C#/CodeTree/MauronAlpha.ConsoleApp/bin/Debug/MauronAlpha.Geometry.dll

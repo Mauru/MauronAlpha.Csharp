@@ -32,6 +32,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'DontCompile|AnyCPU'">
     <OutputPath>bin\DontCompile\</OutputPath>
+    <WarningLevel>4</WarningLevel>
+    <Optimize>false</Optimize>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
