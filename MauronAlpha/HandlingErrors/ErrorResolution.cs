@@ -22,24 +22,30 @@ namespace MauronAlpha.HandlingErrors {
 
 		public static ErrorResolution DoNothing {
 			get {
-				return new ErrorResolution().SetDescription("Do Nothing, Error ignored");
+				return new ErrorResolution().SetDescription("Do Nothing, Error ignored.");
+			}
+		}
+
+		public static ErrorResolution ReturnEmpty {
+			get {
+				return new ErrorResolution().SetDescription("Return empty result.");
 			}
 		}
 
 		public static ErrorResolution Correct_minimum {
 			get {
-				return new ErrorResolution().SetDescription("Replace the property with the smallest valid value");
+				return new ErrorResolution().SetDescription("Replace the property with the smallest valid value.");
 			}
 		}
 
 		public static ErrorResolution Correct_maximum {
 			get {
-				return new ErrorResolution().SetDescription("Replace the property with the largest valid value");
+				return new ErrorResolution().SetDescription("Replace the property with the largest valid value.");
 			}
 		}
 
 		public static ErrorResolution Function(string functionName) {
-			return new ErrorResolution().SetDescription("Use alternative ("+functionName+")");
+			return new ErrorResolution().SetDescription("Use alternative ("+functionName+").");
 		}
 
 	}

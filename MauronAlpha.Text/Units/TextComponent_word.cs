@@ -69,22 +69,23 @@ namespace MauronAlpha.Text.Units {
 		}
 		#endregion
 
-		#region Add to the word
+		#region Add to word
 		/// <summary>Add a character to the end of the string
 		/// <remarks>Adding \0 (null) will throw an Exception</remarks>
 		/// </summary>
 		public TextComponent_word AddCharacter(TextComponent_character c){
+			#region ReadOnlyCheck : !Error
+			if( IsReadOnly ) {
+				Error("Is protected!,(AddCharacter)", this, ErrorType_protected.Instance);
+			}
+			#endregion
 			#region ExceptionCheck: c == \0 : do nothing
 			if(c.IsEmpty){
 				Exception("Can not add \0 to a word!",this,ErrorResolution.DoNothing);
 				return this;
 			}
 			#endregion
-			#region ReadOnlyCheck
-			if( IsReadOnly ) {
-				Error("Is protected!,(AddCharacter)", this, ErrorType_protected.Instance);
-			}
-			#endregion
+
 			#region If the last character is TextHelper.empty remove it
 			if(RealCount==1&&LastCharacter.IsEmpty){
 				RemoveLastCharacter();
@@ -96,26 +97,32 @@ namespace MauronAlpha.Text.Units {
 			Characters.AddValue(c);
 			return this;
 		}
-		public TextComponent_word AddCharacterAtIndex(TextComponent_character c, int index){
-			//if the word is empty
-			if(IsEmpty){
-				AddCharacter(c);
+		public TextComponent_word AddCharacterAtIndex(TextComponent_character c, int index) {
+			#region ReadOnlyCheck : !Error
+			if( IsReadOnly ) {
+				Error("Is protected!,(AddCharacterAtIndex)", this, ErrorType_protected.Instance);
 			}
-			#region ExceptionCheck: c == \0 : do nothing
+			#endregion
+			#region ExceptionCheck: empty !returns
+			if(IsEmpty){
+				Exception("Characters are empty!(AddCharacterAtIndex)",this, ErrorResolution.Function("AddCharacter"));
+				return AddCharacter(c);
+			}
+			#endregion
+			#region ExceptionCheck: c == \0 : do nothing !returns
 			if( c.IsEmpty ) {
 				Exception("Can not add \0 to a word!,(AddCharacterAtIndex)", this, ErrorResolution.DoNothing);
 				return this;
 			}
 			#endregion
 			
-			#region get all characters after index
-			#region ExceptionCheck: index out of Bounds
-			int startIndex=index;
+			#region Get all characters after index ?!returns
+			#region ExceptionCheck: index out of Bounds ?!returns
 			if(index<0){
 				Exception("Index out of Bounds!,{"+index+"},(AddCharacterByIndex)",this,ErrorResolution.Correct_minimum);
-				startIndex=0;
+				index=0;
 			}
-			if(index>Characters.NextIndex){
+			else if(index>Characters.NextIndex){
 				Exception("Index out of Bounds!,{"+index+"},(AddCharacterByIndex)",this,ErrorResolution.Function("AddCharacter"));
 				return AddCharacter(c);
 			}
@@ -123,28 +130,39 @@ namespace MauronAlpha.Text.Units {
 			MauronCode_dataList<TextComponent_character> characters=Characters.Range(index);
 			#endregion
 
-			//react to possible linebreak or wordend
-			if(characters.Count>0){
-				
-				//new character ends word
-				if(c.EndsWord){
-					//create new word
-					TextComponent_word newWord=Instance.SetCharacters(characters);
-					Parent.AddWordAtIndex(newWord,Context.LineOffset+1);
+			#region New character ends word !returns
+			if(characters.Count>0 && c.EndsWord){
+
+				//create new word
+				TextComponent_word newWord=Instance.SetCharacters(characters);
+				Parent.AddWordAtIndex(newWord,Context.LineOffset+1);
 					
-					//Remove the characters from this word
-					for(int n=0;n<characters.Count;n++){
-						RemoveCharacterAtIndex(n+index);
-					}
-
-
+				//Remove the character from this word
+				for(int n=0;n<characters.Count;n++){
+					RemoveCharacterAtIndex(n+index);
 				}
-			}
 
-		}
-		public MauronCode_dataList<TextComponent_character> CharactersByRange(int startIndex, int count){}
+				//Add new character
+				return AddCharacter(c);
+			}
+			#endregion
+
+			#region Insert character and offset following characters !returns
+
+			c.SetContext(Context.Instance.SetCharacterOffset(index));
+			Characters.InsertValueAt(index,c);
+			
+			//offset context of following characters
+			foreach(TextComponent_character ch in characters) {
+				c.Context.Add(new TextContext(0,0,1));
+			}
+			return this;
+			#endregion
+
+		}		
 		#endregion
 
+		#region Remove from word //TODO: potentially update parent, on empty remove word from parent
 		//Remove the last character
 		private TextComponent_word RemoveLastCharacter() {
 			#region ReadOnly Check
@@ -153,13 +171,14 @@ namespace MauronAlpha.Text.Units {
 			}
 			#endregion
 			#region Error Check
-			if(CharacterCount==0){
+			if(RealCount==0){
 				Error("Characters is empty (RemoveLastCharacter)",this, ErrorType_index.Instance);
 			}
 			#endregion
 			Characters.RemoveLastElement();
 			return this;
 		}
+		#endregion
 
 		#region The TextComponent_line this element belongs to
 		private TextComponent_line TXT_parent;
@@ -227,7 +246,7 @@ namespace MauronAlpha.Text.Units {
 		}
 		#endregion
 
-		#region The Content
+		#region The Content (Characters in this Word)
 		public TextComponent_character FirstCharacter {
 			get {
 				#region Error Check
@@ -238,14 +257,72 @@ namespace MauronAlpha.Text.Units {
 				return Characters.FirstElement;
 			}
 		}
+		/// <summary>
+		/// Get a character By Context
+		/// <remarks>Uses CharacterByIndex, can throw OutofBoundsError</remarks>
+		/// </summary>
 		public TextComponent_character CharacterByContext(TextContext context) {
-			#region Error Check
-			if(!Characters.ContainsKey(context.CharacterOffset)){
-				Error("Character Index out of bounds!,{"+context.CharacterOffset+"},(CharacterByContext)", this, ErrorType_index.Instance);
+			return CharacterByIndex(context.CharacterOffset);
+		}
+		/// <summary>
+		/// Character By Index
+		/// <remarks>Throws Error if Empty or out of bounds</remarks>
+		/// </summary>
+		public TextComponent_character CharacterByIndex(int index){
+			#region ErrorCheck: Empty
+			if(IsEmpty||!Characters.ContainsKey(index)){
+				Error("Index out of bounds!,{"+index+"},(CharacterByIndex)",this);
 			}
 			#endregion
-			return Characters.Value(context.CharacterOffset);
+			return Characters.Value(index);
 		}
+		#region Get a range of characters
+		/// <summary>
+		/// Get a range of characters
+		/// <remarks>Ignores Texthelper.Empty (null) characters</remarks>
+		/// </summary>
+		public MauronCode_dataList<TextComponent_character> CharactersByRange (int index, int count) {
+			MauronCode_dataList<TextComponent_character> result=new MauronCode_dataList<TextComponent_character>();
+
+			#region ExceptionCheck: empty !returns
+			if( IsEmpty ) {
+				Exception("Characters are empty!,{"+index+"},(CharactersByRange)", this, ErrorResolution.ReturnEmpty);
+				return result;
+			}
+			#endregion
+			#region ExceptionCheck: index out of bounds
+			if( index<0 ) {
+				Exception("Index out of bounds!,{"+index+"},(CharactersByRange)", this, ErrorResolution.Correct_minimum);
+				index=0;
+			}
+			if( index>CharacterCount ) {
+				Exception("Index out of bounds!,{"+index+"},(CharactersByRange)", this, ErrorResolution.Correct_maximum);
+				index=Characters.LastIndex;
+			}
+			#endregion
+			#region ExceptionCheck: count ?!returns
+			if( count<0 ) {
+				Exception("Invalid Count!,{"+count+"},(CharactersByRange)", this, ErrorResolution.ReturnEmpty);
+				return result;
+			}
+			if( index+count>=CharacterCount ) {
+				Exception("Invalid Count!,{"+count+"},(CharactersByRange)", this, ErrorResolution.Correct_maximum);
+				count=CharacterCount-index;
+			}
+			#endregion
+
+			for( int n=0; n<count; n++ ) {
+				int searchIndex=n+index;
+				if( Characters.ContainsKey(searchIndex) ) {
+					TextComponent_character c=Characters.Value(searchIndex);
+					if( !c.IsEmpty ) {
+						result.AddValue(c);
+					}
+				}
+			}
+			return result;
+		}
+		#endregion
 		public TextComponent_character LastCharacter {
 			get {
 				#region Error Check
@@ -258,6 +335,7 @@ namespace MauronAlpha.Text.Units {
 		}
 		#endregion
 
+		#region Count Characters in word
 		/// <summary>Number of characters in the word
 		public int CharacterCount {
 			get { 
@@ -273,6 +351,7 @@ namespace MauronAlpha.Text.Units {
 				return Characters.Count;
 			}
 		}
+		#endregion
 
 		#region Boolean States
 		public bool EndsLine {
