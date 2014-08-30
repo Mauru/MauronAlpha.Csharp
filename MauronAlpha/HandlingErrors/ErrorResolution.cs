@@ -26,6 +26,21 @@ namespace MauronAlpha.HandlingErrors {
 			}
 		}
 
+		public static ErrorResolution Correct_minimum {
+			get {
+				return new ErrorResolution().SetDescription("Replace the property with the smallest valid value");
+			}
+		}
+
+		public static ErrorResolution Correct_maximum {
+			get {
+				return new ErrorResolution().SetDescription("Replace the property with the largest valid value");
+			}
+		}
+
+		public static ErrorResolution Function(string functionName) {
+			return new ErrorResolution().SetDescription("Use alternative ("+functionName+")");
+		}
 
 	}
 

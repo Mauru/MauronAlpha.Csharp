@@ -40,7 +40,10 @@ namespace MauronAlpha.Text.Units {
 				return Context.Instance.SetCharacterOffset(CharacterCount);
 			}
 		}
-		private TextComponent_word SetCharacters(MauronCode_dataList<TextComponent_character> characters){
+
+		/// <summary>Set the characters of a word
+		/// <remarks>Clears Characters then applies AddCharacter to each</remarks></summary>
+		public TextComponent_word SetCharacters(MauronCode_dataList<TextComponent_character> characters){
 			#region ReadOnly Check
 			if( IsReadOnly ) {
 				Error("Is protected!,(SetCharacters)", this, ErrorType_protected.Instance);
@@ -104,8 +107,42 @@ namespace MauronAlpha.Text.Units {
 				return this;
 			}
 			#endregion
+			
+			#region get all characters after index
+			#region ExceptionCheck: index out of Bounds
+			int startIndex=index;
+			if(index<0){
+				Exception("Index out of Bounds!,{"+index+"},(AddCharacterByIndex)",this,ErrorResolution.Correct_minimum);
+				startIndex=0;
+			}
+			if(index>Characters.NextIndex){
+				Exception("Index out of Bounds!,{"+index+"},(AddCharacterByIndex)",this,ErrorResolution.Function("AddCharacter"));
+				return AddCharacter(c);
+			}
+			#endregion
+			MauronCode_dataList<TextComponent_character> characters=Characters.Range(index);
+			#endregion
+
+			//react to possible linebreak or wordend
+			if(characters.Count>0){
+				
+				//new character ends word
+				if(c.EndsWord){
+					//create new word
+					TextComponent_word newWord=Instance.SetCharacters(characters);
+					Parent.AddWordAtIndex(newWord,Context.LineOffset+1);
+					
+					//Remove the characters from this word
+					for(int n=0;n<characters.Count;n++){
+						RemoveCharacterAtIndex(n+index);
+					}
+
+
+				}
+			}
 
 		}
+		public MauronCode_dataList<TextComponent_character> CharactersByRange(int startIndex, int count){}
 		#endregion
 
 		//Remove the last character
