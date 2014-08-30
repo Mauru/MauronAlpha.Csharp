@@ -19,7 +19,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MauronAlpha.Text", "MauronA
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MauronAlpha.Geometry", "MauronAlpha.Geometry\MauronAlpha.Geometry.csproj", "{39D005F7-F334-470D-A660-A2A7DA65C456}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MauronAlpha.Forms", "MauronAlpha.Forms\MauronAlpha.Forms\MauronAlpha.Forms.csproj", "{0C180114-7CFC-45AE-BF4F-433C5F992B84}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MauronAlpha.Forms", "MauronAlpha.Forms\MauronAlpha.Forms.csproj", "{0C180114-7CFC-45AE-BF4F-433C5F992B84}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

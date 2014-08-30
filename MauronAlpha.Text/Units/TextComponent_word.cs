@@ -35,13 +35,22 @@ namespace MauronAlpha.Text.Units {
 				return DATA_characters;
 			}
 		}
+		private TextContext NextCharacterContext {
+			get {
+				return Context.Instance.SetCharacterOffset(CharacterCount);
+			}
+		}
 		private TextComponent_word SetCharacters(MauronCode_dataList<TextComponent_character> characters){
 			#region ReadOnly Check
 			if( IsReadOnly ) {
 				Error("Is protected!,(SetCharacters)", this, ErrorType_protected.Instance);
 			}
 			#endregion
-			DATA_characters=characters;
+			//1: reset internal list
+			DATA_characters=new MauronCode_dataList<TextComponent_character>();
+			foreach(TextComponent_character c in characters){
+				AddCharacter(c);
+			}
 			return this;
 		}
 		#endregion
@@ -57,19 +66,47 @@ namespace MauronAlpha.Text.Units {
 		}
 		#endregion
 
-		//Add a character, remove zerowidth (TextHelper.Empty)
+		#region Add to the word
+		/// <summary>Add a character to the end of the string
+		/// <remarks>Adding \0 (null) will throw an Exception</remarks>
+		/// </summary>
 		public TextComponent_word AddCharacter(TextComponent_character c){
-			#region ReadOnly Check
+			#region ExceptionCheck: c == \0 : do nothing
+			if(c.IsEmpty){
+				Exception("Can not add \0 to a word!",this,ErrorResolution.DoNothing);
+				return this;
+			}
+			#endregion
+			#region ReadOnlyCheck
 			if( IsReadOnly ) {
 				Error("Is protected!,(AddCharacter)", this, ErrorType_protected.Instance);
 			}
 			#endregion
-			if(CharacterCount>0&&LastCharacter.IsEmpty){
+			#region If the last character is TextHelper.empty remove it
+			if(RealCount==1&&LastCharacter.IsEmpty){
 				RemoveLastCharacter();
 			}
-			Characters.AddValue (c);
+			#endregion
+			#region Set new CharacterContext
+			c.SetContext(NextCharacterContext);
+			#endregion
+			Characters.AddValue(c);
 			return this;
 		}
+		public TextComponent_word AddCharacterAtIndex(TextComponent_character c, int index){
+			//if the word is empty
+			if(IsEmpty){
+				AddCharacter(c);
+			}
+			#region ExceptionCheck: c == \0 : do nothing
+			if( c.IsEmpty ) {
+				Exception("Can not add \0 to a word!,(AddCharacterAtIndex)", this, ErrorResolution.DoNothing);
+				return this;
+			}
+			#endregion
+
+		}
+		#endregion
 
 		//Remove the last character
 		private TextComponent_word RemoveLastCharacter() {
@@ -184,8 +221,18 @@ namespace MauronAlpha.Text.Units {
 		}
 		#endregion
 
+		/// <summary>Number of characters in the word
 		public int CharacterCount {
 			get { 
+				if(Characters.Count==1&&LastCharacter.IsEmpty){
+					return 0;
+				}
+				return Characters.Count;
+			}
+		}
+		/// <summary>Counts the real contents of the characters array (i.e. null)</summary>
+		internal int RealCount {
+			get {
 				return Characters.Count;
 			}
 		}
@@ -204,7 +251,7 @@ namespace MauronAlpha.Text.Units {
 				return (Characters.Count>0&&LastCharacter.EndsWord);
 			}
 		}
-		//this is important! empty can mean that charactercount is 0 or that the lastcharacter is TextHelper.Empty (zerowidth)!
+		///<summary>Is the word empty (no characters) or contains only a null character</summary>
 		public bool IsEmpty {
 			get {
 				if(CharacterCount<1) return true;

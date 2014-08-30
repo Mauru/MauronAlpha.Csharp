@@ -65,8 +65,7 @@ namespace MauronAlpha.Text.Units {
 				Error("Is protected!,(AddWordAtContext)", this, ErrorType_protected.Instance);
 			}
 			#endregion
-
-
+			
 		}
 		public TextComponent_text AddString (string str) {
 			#region ReadOnly Check

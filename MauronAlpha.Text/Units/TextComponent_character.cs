@@ -16,17 +16,6 @@ namespace MauronAlpha.Text.Units {
 			SetContext (context);
 		}
 
-		#region ReadOnly
-		private bool B_isReadOnly=false;
-		public bool IsReadOnly {
-			get { return B_isReadOnly; }
-		}
-		public TextComponent_character SetReadOnly (bool status) {
-			B_isReadOnly=status;
-			return this;
-		}
-		#endregion
-		
 		#region Get The TextComponent_text of this Object
 		public TextComponent_text Source {
 			get {
@@ -35,7 +24,10 @@ namespace MauronAlpha.Text.Units {
 		}
 		#endregion
 
-		#region Instance
+		#region Instance (parent is not instanced)
+		///<summary>Create a copy of the TextComponent 
+		///<remarks>(Parent is not cloned, everything else is)</remarks>
+		///</summary>
 		public TextComponent_character Instance {
 			get {
 				return new TextComponent_character(Parent,Context.Instance,Char);
@@ -44,47 +36,59 @@ namespace MauronAlpha.Text.Units {
 		#endregion
 
 		#region The Context
-		private TextContext TXT_context;
+		///<summary>The Position of a character in a text relative to its Parent
+		///<remarks>Do not modify the context directly!</remarks>
+		///</summary>
 		public TextContext Context {
-			get { 
+			get {
+				// We dont really need to check for null since the constructor requires a context
 				return TXT_context;
 			}
 		}
-		public bool HasContext {
+
+		private TextContext TXT_context;
+		internal bool HasContext {
 			get {
 				return TXT_context==null;
 			}
 		}
-		public TextComponent_character SetContext(TextContext context){
+		internal TextComponent_character SetContext(TextContext context){
 			TXT_context=context;
 			return this;
 		}
-		public TextComponent_character OffsetContext (TextContext context) {
+		internal TextComponent_character OffsetContext (TextContext context) {
 			Context.Add(context);
 			return this;
 		}
 		#endregion
 
 		#region The Parent
-		private TextComponent_word TXT_parent;
+		internal TextComponent_word TXT_parent;
+
+		/// <summary>The parent object of this TextComponent </summary>
 		public TextComponent_word Parent {
 			get { 
 				return TXT_parent;
 			}
 		}
-		public TextComponent_character SetParent(TextComponent_word context){
-			TXT_parent=context;
+		//this function does not modify the context!
+		internal TextComponent_character SetParent(TextComponent_word parent){
+			TXT_parent=parent;
 			return this;
 		}
 		#endregion
 
 		#region The Character (char)
-		private char CHAR_txt=TextHelper.Empty;
+		/// <summary>The Character code</summary>
 		public char Char {
-			get { 
+			get {
 				return CHAR_txt;
 			}
 		}
+		private char CHAR_txt=TextHelper.Empty;
+		/// <summary>Set the character (if not readonly)
+		/// <remarks>Will not change the context!!</remarks>
+		/// </summary>
 		public TextComponent_character SetChar(char c){
 			#region ReadOnly Check
 			if( IsReadOnly ) {
@@ -97,6 +101,16 @@ namespace MauronAlpha.Text.Units {
 		#endregion
 
 		#region Boolean States
+		#region ReadOnly
+		private bool B_isReadOnly=false;
+		public bool IsReadOnly {
+			get { return B_isReadOnly; }
+		}
+		public TextComponent_character SetReadOnly (bool status) {
+			B_isReadOnly=status;
+			return this;
+		}
+		#endregion
 		public bool EndsLine {
 			get {
 				if(IsEmpty){
