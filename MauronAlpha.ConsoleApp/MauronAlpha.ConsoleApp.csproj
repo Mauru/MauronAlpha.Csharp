@@ -9,8 +9,6 @@
     <AssemblyName>ClassLibrary</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <ProductVersion>8.0.30703</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -55,10 +53,6 @@
     <VisualStudio AllowExistingFolder="true" />
   </ProjectExtensions>
   <ItemGroup>
-    <ProjectReference Include="..\MauronAlpha.Forms\MauronAlpha.Forms.csproj">
-      <Project>{0C180114-7CFC-45AE-BF4F-433C5F992B84}</Project>
-      <Name>MauronAlpha.Forms</Name>
-    </ProjectReference>
     <ProjectReference Include="..\MauronAlpha\MauronAlpha.csproj">
       <Project>{6A046817-9F14-4781-97C9-F89FEBC2097B}</Project>
       <Name>MauronAlpha</Name>
@@ -67,17 +61,21 @@
       <Project>{425A4B94-31DF-4569-B68C-EDEAF82163A7}</Project>
       <Name>MauronAlpha.Events</Name>
     </ProjectReference>
-    <ProjectReference Include="..\MauronAlpha.Text\MauronAlpha.Text.csproj">
-      <Project>{8491848C-470B-4652-AEAE-547EAA8F2AD9}</Project>
-      <Name>MauronAlpha.Text</Name>
+    <ProjectReference Include="..\MauronAlpha.Forms\MauronAlpha.Forms.csproj">
+      <Project>{0C180114-7CFC-45AE-BF4F-433C5F992B84}</Project>
+      <Name>MauronAlpha.Forms</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MauronAlpha.Geometry\MauronAlpha.Geometry.csproj">
+      <Project>{39D005F7-F334-470D-A660-A2A7DA65C456}</Project>
+      <Name>MauronAlpha.Geometry</Name>
     </ProjectReference>
     <ProjectReference Include="..\MauronAlpha.Input\MauronAlpha.Input.csproj">
       <Project>{7135ED8B-1992-4170-B4A1-A0086686FEBF}</Project>
       <Name>MauronAlpha.Input</Name>
     </ProjectReference>
-    <ProjectReference Include="..\MauronAlpha.Geometry\MauronAlpha.Geometry.csproj">
-      <Project>{39D005F7-F334-470D-A660-A2A7DA65C456}</Project>
-      <Name>MauronAlpha.Geometry</Name>
+    <ProjectReference Include="..\MauronAlpha.Text\MauronAlpha.Text.csproj">
+      <Project>{8491848C-470B-4652-AEAE-547EAA8F2AD9}</Project>
+      <Name>MauronAlpha.Text</Name>
     </ProjectReference>
   </ItemGroup>
 </Project>

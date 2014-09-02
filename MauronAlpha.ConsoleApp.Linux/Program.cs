@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using MauronAlpha.ConsoleApp;
 
 namespace MauronAlpha.ConsoleApp.Linux
@@ -7,7 +7,7 @@ namespace MauronAlpha.ConsoleApp.Linux
 	{
 		public static void Main (string[] args)
 		{
-			MauronConsole m = new MauronConsole ("MauronConsole (Linux)");
+			MauronConsole m = new MauronConsole ("Linux Version");
 		}
 	}
 }

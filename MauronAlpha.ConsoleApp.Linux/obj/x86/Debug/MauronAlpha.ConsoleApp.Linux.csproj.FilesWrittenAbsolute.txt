@@ -1,0 +1,5 @@
+/#M/Projects/C#/CodeTree/MauronAlpha.ConsoleApp.Linux/obj/x86/Debug/.NETFramework,Version=v4.0.AssemblyAttribute.cs
+/#M/Projects/C#/CodeTree/MauronAlpha.ConsoleApp.Linux/bin/Debug/MauronAlpha.ConsoleApp.Linux.exe.mdb
+/#M/Projects/C#/CodeTree/MauronAlpha.ConsoleApp.Linux/bin/Debug/MauronAlpha.ConsoleApp.Linux.exe
+/#M/Projects/C#/CodeTree/MauronAlpha.ConsoleApp.Linux/obj/x86/Debug/MauronAlpha.ConsoleApp.Linux.exe
+/#M/Projects/C#/CodeTree/MauronAlpha.ConsoleApp.Linux/obj/x86/Debug/MauronAlpha.ConsoleApp.Linux.exe.mdb

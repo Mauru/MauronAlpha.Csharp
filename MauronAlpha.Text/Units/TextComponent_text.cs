@@ -65,6 +65,11 @@ namespace MauronAlpha.Text.Units {
 				Error("Is protected!,(AddWordAtContext)", this, ErrorType_protected.Instance);
 			}
 			#endregion
+			#ErrorCheck context
+			if(!ContainsContext(context)){
+				Error("Invalid Context!,{"+context.AsString+"},(AddWordAtContext)",this,ErrorType_bounds.Instance);
+			}
+			
 			
 		}
 		public TextComponent_text AddString (string str) {
@@ -163,6 +168,15 @@ namespace MauronAlpha.Text.Units {
 		#endregion
 
 		#region Getting portions of a text
+
+		#region Finding portions of text
+		public bool ContainsContext(TextContext context){
+			if (IsEmpty) {
+				return context.IsStart;
+			}
+
+		}
+		#endregion
 
 		#region Lines
 		public TextComponent_line FirstLine{
