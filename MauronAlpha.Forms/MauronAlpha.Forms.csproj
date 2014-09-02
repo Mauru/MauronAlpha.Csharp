@@ -3,8 +3,6 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>8.0.30703</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{0C180114-7CFC-45AE-BF4F-433C5F992B84}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
@@ -46,13 +44,13 @@
     <Compile Include="TextField.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\MauronAlpha.Text\MauronAlpha.Text.csproj">
-      <Project>{8491848C-470B-4652-AEAE-547EAA8F2AD9}</Project>
-      <Name>MauronAlpha.Text</Name>
-    </ProjectReference>
     <ProjectReference Include="..\MauronAlpha\MauronAlpha.csproj">
       <Project>{6A046817-9F14-4781-97C9-F89FEBC2097B}</Project>
       <Name>MauronAlpha</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MauronAlpha.Text\MauronAlpha.Text.csproj">
+      <Project>{8491848C-470B-4652-AEAE-547EAA8F2AD9}</Project>
+      <Name>MauronAlpha.Text</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

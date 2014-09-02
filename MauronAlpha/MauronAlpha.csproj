@@ -3,8 +3,6 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>8.0.30703</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{6A046817-9F14-4781-97C9-F89FEBC2097B}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
@@ -97,6 +95,7 @@
     <Compile Include="Settings\MauronCode_defaultSettingsObject.cs" />
     <Compile Include="ExplainingCode\Languages\CodeStyle.cs" />
     <Compile Include="HandlingData\Mauroncode_dataSet.cs" />
+    <Compile Include="HandlingErrors\ErrorType_bounds.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />
