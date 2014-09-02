@@ -1,0 +1,4 @@
+C:\Projects\C#\Building a Usable Code-Tree\Attempt 1\Mauron\MauronMe.Ideology\MauronMe.Ideology\bin\Debug\MauronMe.Ideology.dll
+C:\Projects\C#\Building a Usable Code-Tree\Attempt 1\Mauron\MauronMe.Ideology\MauronMe.Ideology\bin\Debug\MauronMe.Ideology.pdb
+C:\Projects\C#\Building a Usable Code-Tree\Attempt 1\Mauron\MauronMe.Ideology\MauronMe.Ideology\obj\Debug\MauronMe.Ideology.dll
+C:\Projects\C#\Building a Usable Code-Tree\Attempt 1\Mauron\MauronMe.Ideology\MauronMe.Ideology\obj\Debug\MauronMe.Ideology.pdb

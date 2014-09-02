@@ -11,7 +11,6 @@ namespace MauronAlpha.HandlingErrors {
 			MauronCode.Debug(message, source);
 			ErrorSource=source;
 		}
-
 	}
 
 }
