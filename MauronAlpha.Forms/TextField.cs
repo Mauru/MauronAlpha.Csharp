@@ -21,7 +21,8 @@ namespace MauronAlpha.Forms {
 		}
 
 		public TextField RemoveCharacterAtOffset(int n){
-
+			Text.RemoveCharacterAtOffset(n);
+			return this;
 		}
 
 		public TextField AddString(string txt){

@@ -7,7 +7,7 @@ namespace MauronAlpha.Text {
 
 	public class TextContext:MauronCode_dataObject, IEquatable<TextContext> {
 
-		//constructor
+		//region constructors
 		public TextContext():base(DataType_maintaining.Instance) {}
 		public TextContext(int line, int word, int character):this(){
 			SetLineOffset(line);
@@ -22,28 +22,10 @@ namespace MauronAlpha.Text {
 			SetLineOffset(line);
 		}
 
-		private TextComponent_text TXT_source;
-		public TextComponent_text Source {
-			get {
-				if(TXT_source==null){
-					SetSource(new TextComponent_text());
-				}
-				return TXT_source;
-			}
-		}
-		public TextContext SetSource(TextComponent_text source){
-			TXT_source=source;
-			return this;
-		}
-		public bool HasSource {
-			get {
-				return TXT_source==null;
-			}
-		}
-
+		#region cloning, instantiating
 		public TextContext Instance {
 			get {
-				return TextContext.New.SetSource(Source).SetLineOffset(LineOffset).SetWordOffset(WordOffset).SetCharacterOffset(CharacterOffset);
+				return TextContext.New.SetLineOffset(LineOffset).SetWordOffset(WordOffset).SetCharacterOffset(CharacterOffset);
 			}
 		}
 		public static TextContext New {
@@ -51,7 +33,9 @@ namespace MauronAlpha.Text {
 				return new TextContext();
 			}
 		}
+		#endregion
 
+		#region Context information
 		#region line
 		private int INT_lineOffset;
 		public int LineOffset {
@@ -62,7 +46,6 @@ namespace MauronAlpha.Text {
 			return this;
 		}
 		#endregion
-
 		#region word
 		private int INT_wordOffset;
 		public int WordOffset {
@@ -73,7 +56,6 @@ namespace MauronAlpha.Text {
 			return this;
 		}
 		#endregion
-
 		#region character
 		private int INT_characterOffset;
 		public int CharacterOffset {
@@ -84,7 +66,9 @@ namespace MauronAlpha.Text {
 			return this;
 		}
 		#endregion
+		#endregion
 
+		#region Static context
 		public static TextContext End {
 			get {
 				return new TextContext(-1,-1,-1);
@@ -95,27 +79,22 @@ namespace MauronAlpha.Text {
 				return new TextContext(0, 0, 0);
 			}
 		}
+		#endregion
 
+		#region Manipulate the context
 		public TextContext Add(TextContext context){
-			SetLineOffset(LineOffset+context.LineOffset);
-			SetWordOffset(WordOffset+context.WordOffset);
-			SetCharacterOffset(CharacterOffset+context.CharacterOffset);
+			return Add(context.LineOffset,context.WordOffset,context.CharacterOffset);
+		}
+		public TextContext Add(int line, int word, int character){
+			SetLineOffset(LineOffset+line);
+			SetWordOffset(WordOffset+word);
+			SetCharacterOffset(CharacterOffset+character);
 			return this;
 		}
+		#endregion
 
 		#region IEquatable<TextContext>
 		bool IEquatable<TextContext>.Equals (TextContext other) {
-			if(
-				HasSource&&!other.HasSource
-				||	!HasSource&&other.HasSource
-			){
-				return false;
-			}
-			else if(HasSource&&other.HasSource){
-				if(Source!=other.Source){
-					return false;
-				}
-			}
 			return 
 			LineOffset==other.LineOffset
 			&& WordOffset==other.WordOffset
@@ -123,6 +102,20 @@ namespace MauronAlpha.Text {
 		}
 		#endregion
 
+		public string AsString {
+			get {
+				return "{'"+LineOffset+"','"+WordOffset+"'+'"+CharacterOffset+"'}";
+			}
+		}
+	
+		public bool IsStart{
+			get {
+				return this.Equals(Start);
+			}
+		}
+		public bool IsEndOf(TextComponent_text txt){
+			return ContextOf(txt).Equals(txt.LastCharacter.Context);
+		}
 	}
 
 }

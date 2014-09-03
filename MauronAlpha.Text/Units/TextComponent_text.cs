@@ -65,10 +65,11 @@ namespace MauronAlpha.Text.Units {
 				Error("Is protected!,(AddWordAtContext)", this, ErrorType_protected.Instance);
 			}
 			#endregion
-			#ErrorCheck context
+			#region ErrorCheck context
 			if(!ContainsContext(context)){
 				Error("Invalid Context!,{"+context.AsString+"},(AddWordAtContext)",this,ErrorType_bounds.Instance);
 			}
+			#endregion
 			
 			
 		}
