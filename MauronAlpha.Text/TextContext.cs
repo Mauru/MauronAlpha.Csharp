@@ -113,8 +113,25 @@ namespace MauronAlpha.Text {
 				return this.Equals(Start);
 			}
 		}
-		public bool IsEndOf(TextComponent_text txt){
-			return ContextOf(txt).Equals(txt.LastCharacter.Context);
+		public bool IsEndOf(TextComponent_text text){
+			TextContext textContext = AbsoluteContextToText(text,this);
+			// TextContext context;
+		}
+
+		/// <summary>
+		/// Evalutes a context relative to a TextComponent, turning it to absolute numbers
+		/// </summary>
+		public static TextContext AbsoluteContextToText(TextComponent_text text,TextContext context){
+			
+			
+			//the line offset
+			if(text.IsEmpty){
+				return new TextContext(0,0,0);
+			}
+			if(context.LineOffset<0){
+				newLine=text.LineCount+context.LineOffset;
+				
+			}
 		}
 	}
 
