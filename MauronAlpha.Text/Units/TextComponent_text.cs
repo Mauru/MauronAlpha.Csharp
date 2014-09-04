@@ -168,6 +168,17 @@ namespace MauronAlpha.Text.Units {
 		}
 		#endregion
 
+		#region Context
+		public TextContext Context {
+			get {
+				if(IsEmpty){
+					return TextContext.Start;
+				}
+				return LastCharacter.Context;
+			}
+		}
+		#endregion
+
 		#region Getting portions of a text
 
 		#region Finding portions of text
@@ -316,13 +327,14 @@ namespace MauronAlpha.Text.Units {
 		}
 		#endregion
 
-		#region boolean states
+		#region Boolean states
 		public bool IsEmpty {
 			get {
 				return LineCount==0||FirstLine.IsEmpty;
 			}
 		}
 		#endregion
+	
 	}
 
 }

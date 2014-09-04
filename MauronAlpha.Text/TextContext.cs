@@ -1,11 +1,13 @@
 ﻿using MauronAlpha.HandlingData;
 using MauronAlpha.Text.Units;
+using MauronAlpha.HandlingErrors;
+
 
 using System;
 
 namespace MauronAlpha.Text {
 
-	public class TextContext:MauronCode_dataObject, IEquatable<TextContext> {
+	public class TextContext:MauronCode_dataObject, IEquatable<TextContext>,IComparable<TextComponent_text> {
 
 		//region constructors
 		public TextContext():base(DataType_maintaining.Instance) {}
@@ -81,26 +83,7 @@ namespace MauronAlpha.Text {
 		}
 		#endregion
 
-		#region Manipulate the context
-		public TextContext Add(TextContext context){
-			return Add(context.LineOffset,context.WordOffset,context.CharacterOffset);
-		}
-		public TextContext Add(int line, int word, int character){
-			SetLineOffset(LineOffset+line);
-			SetWordOffset(WordOffset+word);
-			SetCharacterOffset(CharacterOffset+character);
-			return this;
-		}
-		#endregion
 
-		#region IEquatable<TextContext>
-		bool IEquatable<TextContext>.Equals (TextContext other) {
-			return 
-			LineOffset==other.LineOffset
-			&& WordOffset==other.WordOffset
-			&& CharacterOffset==other.CharacterOffset;
-		}
-		#endregion
 
 		public string AsString {
 			get {
@@ -108,16 +91,6 @@ namespace MauronAlpha.Text {
 			}
 		}
 	
-		public bool IsStart{
-			get {
-				return this.Equals(Start);
-			}
-		}
-		public bool IsEndOf(TextComponent_text text){
-			TextContext textContext = AbsoluteContextToText(text,this);
-			// TextContext context;
-		}
-
 		/// <summary>
 		/// Evalutes a context relative to a TextComponent, turning it to absolute numbers
 		/// </summary>
@@ -129,17 +102,16 @@ namespace MauronAlpha.Text {
 				return new TextContext(0,0,0);
 			}
 
-			TextContext modified=new TextContext(0,0,0);
-			int newline=0;
-			int newChar=0;
-			int newWord=0;
+			context=context.Instance;
+			TextContext modified=context.Instance;
 
 			//1: characteroffset
-			if(context.CharacterOffset<0){
-				newChar=text.LastCharacter.Context.CharacterOffset+context.LineOffset;
-				if(newChar<0){
-				}
-				
+			TextComponent_word word = text.LastWord;
+			if(modified.CompareTo(text)>=0){
+				return text.LastWord.LastCharacter.Context;
+			}
+			while (context.CharacterOffset<0){
+				if(context.Normalized.)
 			}
 
 			if(context.LineOffset<0){
@@ -150,6 +122,267 @@ namespace MauronAlpha.Text {
 			}
 
 		}
+
+		#region Math (modification)
+
+		#region Add
+		public TextContext Add(int line, int word, int character){
+			SetLineOffset(LineOffset+line);
+			SetWordOffset(WordOffset+word);
+			SetCharacterOffset(CharacterOffset+character);
+			return this;
+		}
+		public TextContext Add(TextContext context){
+			return Add(context.LineOffset,context.WordOffset,context.CharacterOffset);
+		}
+		#endregion
+		#region Subtract
+		public TextContext Subtract(int line, int word, int character){
+			SetLineOffset(LineOffset-line);
+			SetWordOffset(WordOffset-word);
+			SetCharacterOffset(CharacterOffset-character);
+			return this;
+		}
+		public TextContext Subtract(TextContext context){
+			return Subtract(context.LineOffset,context.WordOffset,context.CharacterOffset);
+		}
+		#endregion
+		#region Multiply
+		/// <summary>
+		/// Multiply by value
+		/// <remarks>Ignores multiply by 0 (keeps original value)</remarks>
+		/// </summary>
+		public TextContext Multiply(int line, int word, int character, bool ignoreZero){
+			if( ignoreZero&&line==0 ) {
+				Exception("Ignoring Multiply by 0, {P:line},(Multiply)", this, ErrorResolution.DoNothing);
+			} else { SetLineOffset(LineOffset*line); }
+
+			if( ignoreZero&&word==0 ) {
+				Exception("Ignoring Multiply by 0, {P:word},(Multiply)", this, ErrorResolution.DoNothing);
+			}else{ SetWordOffset(WordOffset*word); }
+
+			if( ignoreZero&&character==0 ) {
+				Exception("Ignoring Multiply by 0, {P:character},(Multiply)", this, ErrorResolution.DoNothing);
+			}else{ SetCharacterOffset(CharacterOffset*character); }
+
+			return this;
+		}
+		public TextContext Multiply(int line, int word, int character){
+			return Multiply(line,word,character,false);
+		}
+		public TextContext Multiply (TextContext context, bool ignoreZero) {
+			return Multiply(context.LineOffset,context.WordOffset,context.CharacterOffset,ignoreZero);
+		}		
+		#endregion
+		#region Divide
+		public TextContext Divide(TextContext context){
+			return Divide(context.LineOffset,context.WordOffset,context.CharacterOffset);
+		}
+		/// <summary>
+		/// Divide by value
+		/// <remarks>Ignores divide by 0 (keeps original value)</remarks>
+		/// </summary>
+		public TextContext Divide(int line, int word, int character){
+
+			#region Line
+			if(line==0){
+				Exception("Can not divide by 0!, {P:line},(Divide)",this,ErrorResolution.DoNothing);
+			}else{ SetLineOffset(LineOffset/line); }
+			#endregion
+			#region word
+			if(word==0){
+				Exception("Can not divide by 0!, {P:word},(Divide)",this,ErrorResolution.DoNothing);
+			}else{ SetWordOffset(WordOffset/word); }
+			#endregion
+			#region character
+			if(character==0){
+				Exception("Can not divide by 0!, {P:character},(Divide)",this,ErrorResolution.DoNothing);
+			}else{ SetCharacterOffset(CharacterOffset*character); }
+			#endregion
+			
+			return this;
+		}
+		#endregion
+		
+		#endregion
+
+		#region Comparison and other refactorting
+		public TextContext Inverted {
+			get {
+				return Instance.Multiply(-1,-1,-1);
+			}
+		}
+
+		/// <summary>
+		/// Turns all negative properties into positives
+		/// </summary>
+		public TextContext Normalized {
+			get {
+				TextContext result=Instance;
+				if( result.LineOffset<0 ){ result.Multiply(-1,0,0,true); }
+				if( result.WordOffset<0 ) { result.Multiply(0, -1, 0, true); }
+				if( result.CharacterOffset<0 ) { result.Multiply(0, 0, -1, true); }
+				return result;
+
+			}
+		}
+
+		public TextContext SolveNegativeOffsetWith(TextComponent_text text){
+			
+			//negative lineOffset {}
+
+		}
+
+		public bool IsStart {
+			get {
+				return this.Equals(Start);
+			}
+		}
+		public bool IsEndOf (TextComponent_text text) {
+			//1: Get the last item of text
+			TextContext context=text.Context;
+			if( text.IsEmpty&&!IsStart ) {
+				return false;
+			}
+			if( text.IsEmpty&&IsStart ) {
+				return true;
+			}
+			if( Equals(-1, -1, -1) ) {
+				return true;
+			}
+			//solve edgecases
+			TextContext solved=SolveNegativeOffsetWith(text);
+			return text.LastCharacter.Context.Equals(solved);
+		}
+		public bool IsEnd {
+			get {
+				return Equals(-1,-1,-1);
+			}
+		}
+
+
+		/// <summary>
+		/// Checks if a context's numerical values equal another
+		/// <remarks> use ignoreZero to skip comparing parts of the context </remarks>
+		/// </summary>
+		public bool Equals (int line, int word, int ch, bool ignoreZero) {
+			
+			if(!ignoreZero){ return Equals(line,word,ch); }
+			
+			if( line!=0 && LineOffset!=line )	return false;
+			if( word!=0 && WordOffset!=word )	return false;
+			if( ch != 0 && CharacterOffset!=ch ) return false;
+			
+			return true;
+			
+		}
+		public bool Equals (int line, int word, int ch) {
+			if( LineOffset!=line )
+				return false;
+			if( WordOffset!=word )
+				return false;
+			if( CharacterOffset!=ch )
+				return false;
+			return true;
+		}
+		public bool Equals (TextContext other, bool ignoreZero) {
+			return
+			Equals(other.LineOffset, other.WordOffset, other.CharacterOffset, ignoreZero);
+		}
+
+				
+		/// <summary>
+		/// Checks how a context's numerical values equal another
+		/// <remarks> use ignoreZero to skip comparing parts of the context </remarks>
+		/// </summary>
+		public int CompareTo (int line, int word, int ch, bool ignoreZero ) {
+			if(!ignoreZero){
+				return CompareTo(line,word,ch);
+			}
+
+			if(Equals(0,0,0)){ return 0; }
+
+			if( line!=0 && line<LineOffset ) {
+				return -1;
+			}
+
+			if( line != 0 && line!=LineOffset ) {
+				return LineOffset.CompareTo(line);
+			}
+
+			if( word !=0 && word!=WordOffset ) {
+				return WordOffset.CompareTo(word);
+			}
+
+			if( ch != 0 && ch != CharacterOffset ) {
+				return CharacterOffset.CompareTo(ch);
+			}
+
+			return 0;
+		}
+		public int CompareTo(int line, int word, int ch){
+			if(line<LineOffset){
+				return -1;
+			}
+			if(line!=LineOffset){
+				return LineOffset.CompareTo(line);
+			}
+			if(word!=WordOffset){
+				return WordOffset.CompareTo(word);
+			}
+			return CharacterOffset.CompareTo(ch);
+		}
+		public int CompareTo(TextContext other, bool ignoreZero){
+			return CompareTo(other.LineOffset,other.WordOffset,other.CharacterOffset, ignoreZero);
+		}
+
+		public int CompareTo(TextComponent_text text){
+
+			//Flat comparison of values
+			if( text.LastCharacter.Context.Equals(this) ) {
+				return 0;
+			}
+
+			//Check if this is the lastPosition of text
+			if(IsEndOf(text)){
+				return 0;
+			}
+
+			
+
+			//Normalized values
+			TextContext inverted=Inverted;
+
+
+			//The line context is negative
+			if(LineOffset<0){
+				if(WordOffset<0){
+					//is the negative word offset "larger" (normalize) than text.WordCount
+				}
+
+				return -1;
+			}
+			//The line Context
+			if(LineOffset<text.LineCount){
+				return -1;
+			}
+			if(text.WordOffset<0){
+				return -1;
+			}
+			if(text.WordOffset<WordOffset&&text.WordOffset)		
+		}
+	
+		#region IComparable<TextComponent_text>
+		public int IComparable<TextComponent_text>.CompareTo (TextComponent_text other) {
+			return CompareTo(other);
+		}
+		#endregion
+		#region IEquatable<TextContext>
+		bool IEquatable<TextContext>.Equals (TextContext other) {
+			return Equals(other);
+		}
+		#endregion
+
 	}
 
 }
