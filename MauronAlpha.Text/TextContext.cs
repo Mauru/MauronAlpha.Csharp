@@ -128,10 +128,27 @@ namespace MauronAlpha.Text {
 			if(text.IsEmpty){
 				return new TextContext(0,0,0);
 			}
-			if(context.LineOffset<0){
-				newLine=text.LineCount+context.LineOffset;
+
+			TextContext modified=new TextContext(0,0,0);
+			int newline=0;
+			int newChar=0;
+			int newWord=0;
+
+			//1: characteroffset
+			if(context.CharacterOffset<0){
+				newChar=text.LastCharacter.Context.CharacterOffset+context.LineOffset;
+				if(newChar<0){
+				}
 				
 			}
+
+			if(context.LineOffset<0){
+				int newLine=text.LineCount+context.LineOffset;
+				if(newLine<0){
+					newLine=0;
+				}				
+			}
+
 		}
 	}
 

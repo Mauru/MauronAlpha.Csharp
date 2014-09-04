@@ -316,6 +316,13 @@ namespace MauronAlpha.Text.Units {
 		}
 		#endregion
 
+		#region boolean states
+		public bool IsEmpty {
+			get {
+				return LineCount==0||FirstLine.IsEmpty;
+			}
+		}
+		#endregion
 	}
 
 }
