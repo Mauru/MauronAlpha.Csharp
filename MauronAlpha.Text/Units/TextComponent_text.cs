@@ -179,18 +179,43 @@ namespace MauronAlpha.Text.Units {
 		}
 		#endregion
 
-		#region Getting portions of a text
-
-		#region Finding portions of text
-		public bool ContainsContext(TextContext context){
-			if(IsEmpty&&context.IsStart||context.Equals(-1,-1,-1)){
-			
-			}
+		#region Finding portions of text (R: boolean)
+		public bool ContainsContext (TextContext context) {
+			return Context.Equals(context.SolveWith(this), false);
 		}
-		public bool ContainsContext(int line, int word, int character) {
-			
+		public bool ContainsContext (int line, int word, int character) {
+			return ContainsContext(new TextContext(line, word, character));
+		}
+		public bool ContainsLineIndex(int line) {
+			return Lines.ContainsKey(line);
+		}
+		public bool ContainsWordContext (int line, int word) {
+			if( !ContainsLineIndex(line) ) {
+				return false;
+			}
+			return LineByIndex(line).ContainsWordIndex(word);
+		}
+		public bool ContainsCharacterContext (int line, int word, int character) {
+			if( !ContainsLineIndex(line) ) { return false; }
+			TextComponent_line pool=LineByIndex(line);
+			if( !pool.ContainsWordIndex(word) ) { return false; }
+			return pool.WordByIndex(word).ContainsCharacterIndex(character);
+		}
+		public bool ContainsCharacterOffset(int index) {
+			int count = CharacterCount;
+			//solve negative offset
+			if(index<0) {
+				index=count+index;
+			}
+			//still negative
+			if(index<0) {
+				return false;
+			}
+			return index<count;
 		}
 		#endregion
+
+		#region Getting portions of a text
 
 		#region Lines
 		public TextComponent_line FirstLine{
@@ -301,6 +326,22 @@ namespace MauronAlpha.Text.Units {
 
 		#endregion
 
+		#endregion
+
+		#region Removing portions from the text
+		public TextComponent_text RemoveCharacterByOffset(int index){
+			#region ReadOnlyCheck
+			if(IsReadOnly) {
+				Error("Is protected!,(RemoveCharacterByOffset)", this, ErrorType_protected.Instance);
+			}
+			#endregion
+			#region ErrorCheck Offset bounds
+			if(!ContainsCharacterOffset(index)) {
+				Error("CharacterOffset out of bounds!,{"+index+"},(RemoveCharacterByOffset)",this,ErrorType_bounds.Instance);
+			}
+			#endregion
+
+		}
 		#endregion
 
 		#region Counting the content

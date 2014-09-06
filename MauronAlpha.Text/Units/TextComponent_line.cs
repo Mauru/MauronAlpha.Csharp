@@ -93,6 +93,15 @@ namespace MauronAlpha.Text.Units {
 		}
 		#endregion
 
+		#region Checking if a line contains another TextComponent
+		public bool ContainsWordIndex(int n) {
+			if(n<0||n>=WordCount){
+				return false;
+			}
+			return true;
+		}
+		#endregion
+
 		#region Add a word to the Line
 		public TextComponent_line AddWord(TextComponent_word word){
 			#region ReadOnly Check
@@ -112,8 +121,22 @@ namespace MauronAlpha.Text.Units {
 			#endregion
 
 			Words.AddValue (word);
-			return this;
+			
 		}
+		#endregion
+
+		#region Get the Next Line, if it does not exist, create it
+		public TextComponent_line NextLine {
+			get {
+				if(!Parent.ContainsLineIndex(Context.LineOffset+1)){
+					Exception("Invalid lineIndex!,{"+Context.LineOffset+1+"},(NextLine)",this,ErrorResolution.Create);
+					Parent.NewLine;
+				}
+				return Parent.LineByIndex(Context.LineOffset+1);
+			}
+		}
+		#endregion
+
 		public TextComponent_line InsertWordAtIndex(int index, TextComponent_word word){
 			#region ReadOnly Check
 			if( IsReadOnly ) {
@@ -127,7 +150,7 @@ namespace MauronAlpha.Text.Units {
 			#endregion
 			if(word.EndsLine) {
 				
-				foreach(TextComponent_word oldWord in Words)
+				foreach(TextComponent_word oldWord in Words){
 					//move all words to next line
 					if(IsLastLine){
 						Text.NewLine;
@@ -145,8 +168,6 @@ namespace MauronAlpha.Text.Units {
 
 			//advance all following words
 		}
-		
-		#region Getting the content of this TextComponent
 
 		#region Words
 		public TextComponent_word FirstWord {
@@ -172,7 +193,6 @@ namespace MauronAlpha.Text.Units {
 			}
 		}
 		#endregion
-
 		#region Characters
 		public TextComponent_character FirstCharacter {
 			get {
@@ -204,8 +224,6 @@ namespace MauronAlpha.Text.Units {
 				return LastWord.LastCharacter;
 			}
 		}
-		#endregion
-
 		#endregion
 
 		#region Counting the contents
@@ -330,14 +348,6 @@ namespace MauronAlpha.Text.Units {
 		}
 		#endregion
 	
-		public TextComponent_line NextLine { 
-			get {
-				if(IsLastLine){
-					Exception("LineIndex out of bounds!,(NextLine)",this,ErrorResolution.Correct_maximum){
-					return this;	
-				}
-				return Parent.LineByIndex(Context.LineOffset+1);
-			}
-		}
+		
 	}
 }

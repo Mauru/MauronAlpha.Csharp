@@ -2,6 +2,7 @@
 using MauronAlpha.Text.Units;
 using MauronAlpha.Text;
 using MauronAlpha.Text.Utility;
+using MauronAlpha.HandlingErrors;
 
 
 namespace MauronAlpha.Forms {
@@ -20,8 +21,14 @@ namespace MauronAlpha.Forms {
 			}
 		}
 
-		public TextField RemoveCharacterAtOffset(int n){
-			Text.RemoveCharacterAtOffset(n);
+		public TextField RemoveCharacterByOffset(int n){
+			#region ExceptionCheck: bounds : !R;
+			if( !Text.ContainsCharacterOffset(n) ) {
+				Exception("CharacterOffset out of bounds!,{"+n+"},(RemoveCharacterByOffset)",this,ErrorResolution.DoNothing);
+				return this;
+			}
+			#endregion
+			Text.RemoveCharacterByOffset(n);
 			return this;
 		}
 

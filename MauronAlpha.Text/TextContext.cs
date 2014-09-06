@@ -101,7 +101,7 @@ namespace MauronAlpha.Text {
 		/// <summary>
 		/// Evalutes a context relative to a TextComponent, turning it to absolute numbers
 		/// </summary>
-		public static TextContext SolveContext(TextComponent_text text,TextContext context){
+		public static TextContext SolveContext(TextContext context,TextComponent_text text){
 			
 			
 			//the line offset
@@ -109,24 +109,7 @@ namespace MauronAlpha.Text {
 				return new TextContext(0,0,0);
 			}
 
-			context=context.Instance;
-			TextContext modified=context.Instance;
-
-			//1: characteroffset
-			TextComponent_word word = text.LastWord;
-			if(modified.CompareTo(text)>=0){
-				return text.LastWord.LastCharacter.Context;
-			}
-			while (context.CharacterOffset<0){
-				if(context.Normalized.)
-			}
-
-			if(context.LineOffset<0){
-				int newLine=text.LineCount+context.LineOffset;
-				if(newLine<0){
-					newLine=0;
-				}				
-			}
+			
 
 		}
 
@@ -235,84 +218,117 @@ namespace MauronAlpha.Text {
 
 			}
 		}
+		#endregion
 
-		public TextContext SolveLineOffset(TextComponent_text text){
+		#region Solving ContextOffsets
+		public TextContext SolveWith(TextComponent_text text){
+			//line
+			TextContext result = SolveLineOffset(text);
+			TextComponent_line line = text.LineByContext(result.LineOffset);
+			result = result.SolveWordOffset(line,false);
+
+
+		
+		}
+		public TextContext SolveLineOffset (TextComponent_text text) {
 
 			//text is empty
-			if(text.IsEmpty){
+			if( text.IsEmpty ) {
 				return Start;
 			}
 
 			TextContext result=Instance;
 
 			//Out of bounds positive
-			if(LineOffset>text.LineCount){
-				Exception("LineIndex out of bounds!,{"+LineOffset+"},(SolveLineOffset)",this,ErrorResolution.Correct_maximum);
+			if( LineOffset>text.LineCount ) {
+				Exception("LineIndex out of bounds!,{"+LineOffset+"},(SolveLineOffset)", this, ErrorResolution.Correct_maximum);
 				return text.LastCharacter.Context.Instance;
 			}
 
 			//Out of bounds negative
-			if(LineOffset<0) {
+			if( LineOffset<0 ) {
 
-				if( Math.Abs(LineOffset) >= text.LineCount ){
+				if( Math.Abs(LineOffset)>=text.LineCount ) {
 					Exception("LineIndex out of bounds!,{"+LineOffset+"},(SolveLineOffset)", this, ErrorResolution.Correct_minimum);
 					return Start;
 				}
 
-				result.SetLineOffset( text.LineCount+LineOffset );
-				
+				result.SetLineOffset(text.LineCount+LineOffset);
+
 			}
 
 			return result;
 		}
-
-		public TextContext SolveWordOffset(TextComponent_line line, Boolean stayOnLine ) {
+		public TextContext SolveWordOffset (TextComponent_line line, bool stayOnLine) {
 
 			//line is empty
-			if(line.IsEmpty){
+			if( line.IsEmpty ) {
 				return line.LastCharacter.Context.Instance;
 			}
 
 			TextContext result=Instance;
-		
+
 			//Out of bounds positive
-			if(WordOffset>line.WordCount){
-				
+			if( WordOffset>line.WordCount ) {
+
 				//we stay on the line, return last context of line
-				if(stayOnLine){
+				if( stayOnLine ) {
 					return line.LastCharacter.Context.Instance;
 				}
 				//Line ends Text, return last context
-				if(line.Index==line.Parent.LastLine.Index){
-					Exception("WordIndex out of bounds!,{"+WordOffset+"},(SolveWordOffset)",this,ErrorResolution.Correct_maximum);
+				if( line.Index==line.Parent.LastLine.Index ) {
+					Exception("WordIndex out of bounds!,{"+WordOffset+"},(SolveWordOffset)", this, ErrorResolution.Correct_maximum);
 					return line.LastCharacter.Context.Instance;
 				}
 
 				//Advance line count
-				result.Add(1,-line.WordCount,0);
+				result.Add(1, -line.WordCount, 0);
 				//cycle with new line and context
-				return result.SolveWordOffset(line.NextLine, positiveStaysOnLine);
+				return result.SolveWordOffset(line.NextLine, stayOnLine);
 
 			}
 
 			//Out of bounds negative
-			if(WordOffset<0) {
+			if( WordOffset<0 ) {
 
-				
-				if( Math.Abs(WordOffset) >= line.WordCount )
-					Exception("LineIndex out of bounds!,{"+WordOffset+"},(SolveNegativeOffset)", this, ErrorResolution.Correct_minimum);
-					result.Add(-1,-line.WordCount,0);
+				if( Math.Abs(WordOffset)>=line.WordCount ) {
+					Exception("LineIndex out of bounds!,{"+WordOffset+"},(SolveWordOffset)", this, ErrorResolution.Correct_minimum);
+					result.Add(-1, -line.WordCount, 0);
 				}
 
 				//Advance line count
-				result.Add(1,-line.WordCount,0);
+				result.Add(1, -line.WordCount, 0);
 
 				//cycle with new line and context
-				return result.SolveWordOffset(line.PreviousLine, positiveStaysOnLine);
+				return result.SolveWordOffset(line.PreviousLine, stayOnLine);
 
 			}
-
+			return result;
 		}
+		public TextContext SolveCharacterOffset(TextComponent_word word, bool stayOnWord){
+			//word is empty
+			if(word.IsEmpty) {
+				return word.LastCharacter.Context.Instance;
+			}
+
+			TextContext result = Instance;
+
+			//Out of bounds positive
+			if(CharacterOffset>word.CharacterCount) {
+				
+				//we stay on the word, return last context
+				if(stayOnWord) {
+					return word.LastCharacter.Context.Instance;
+				}
+				
+				//the word ends the line, cycle with the first word of the next line !R
+				if(word.IsLastOnLine){
+					result.Add(1,0,-word.CharacterCount);
+					return result.SolveCharacterOffset(word.Parent.NextLine.FirstWord,stayOnWord);
+				}
+			}
+		}
+		#endregion
 			
 
 		public bool IsStart {
@@ -333,7 +349,7 @@ namespace MauronAlpha.Text {
 				return true;
 			}
 			//solve edgecases
-			TextContext solved=SolveNegativeOffset(text);
+			TextContext solved=SolveWith(text);
 			return text.LastCharacter.Context.Equals(solved);
 		}
 		public bool IsEnd {
@@ -451,11 +467,13 @@ namespace MauronAlpha.Text {
 			if(text.WordOffset<0){
 				return -1;
 			}
-			if(text.WordOffset<WordOffset&&text.WordOffset)		
+			if(text.WordOffset<WordOffset&&text.WordOffset)	{
+			
+			}	
 		}
 	
 		#region IComparable<TextComponent_text>
-		public int IComparable<TextComponent_text>.CompareTo (TextComponent_text other) {
+		int IComparable<TextComponent_text>.CompareTo (TextComponent_text other) {
 			return CompareTo(other);
 		}
 		#endregion

@@ -369,7 +369,12 @@ namespace MauronAlpha.Text.Units {
 				}
 				return Characters.LastElement.EndsLine;
 			}
-		}		
+		}	
+		public bool IsLastOnLine {
+			get {
+				return Parent.ContainsWordIndex(Context.WordOffset+1);
+			}
+		}
 		public bool IsComplete {
 			get {
 				return (Characters.Count>0&&LastCharacter.EndsWord);

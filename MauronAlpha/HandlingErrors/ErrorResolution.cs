@@ -48,6 +48,12 @@ namespace MauronAlpha.HandlingErrors {
 			return new ErrorResolution().SetDescription("Use alternative ("+functionName+").");
 		}
 
+		public static ErrorResolution Create {
+			get {
+				return new ErrorResolution().SetDescription("Create a new object with valid properties.");
+			}
+		}
+
 	}
 
 	public sealed class CodeType_errorResolution:CodeType {
