@@ -85,27 +85,65 @@ namespace MauronAlpha.Text.Units {
 			return this;
 		}
 		#endregion
+		#region The Line Number (by context)
+		public int Index {
+			get {
+				return Context.LineOffset;
+			}
+		}
+		#endregion
 
+		#region Add a word to the Line
 		public TextComponent_line AddWord(TextComponent_word word){
 			#region ReadOnly Check
 			if( IsReadOnly ) {
 				Error("Is protected!,(AddWord)", this, ErrorType_protected.Instance);
 			}
 			#endregion
-			if(Words.Count>0&&Words.LastElement.EndsLine){
 
-				//Add to new line
-				TextContext context = Context.Instance;
-				context.SetLineOffset (context.LineOffset + 1)
-				.SetWordOffset (0)
-				.SetCharacterOffset(0);
+			//might want to do this elsewhere (InsertWordAtContext)
+			
+			#region  Line is full, add word to next line, R: the next line
+			if(Words.Count>0 && Words.LastElement.EndsLine){
 
-				Parent.AddLineAtContext (context);
-				return Parent.LineByContext(context).AddWord (word);
+				return NextLine.InsertWordAtIndex(0);
 
 			}
+			#endregion
+
 			Words.AddValue (word);
 			return this;
+		}
+		public TextComponent_line InsertWordAtIndex(int index, TextComponent_word word){
+			#region ReadOnly Check
+			if( IsReadOnly ) {
+				Error("Is protected!,(AddWord)", this, ErrorType_protected.Instance);
+			}
+			#endregion
+			#region ErrorCheck Empty
+			if(IsEmpty&&index!=0){
+				Error("Index Out of bounds!,{"+index+"},(InsertWordAtIndex)",this,ErrorType_bounds.Instance);
+			}
+			#endregion
+			if(word.EndsLine) {
+				
+				foreach(TextComponent_word oldWord in Words)
+					//move all words to next line
+					if(IsLastLine){
+						Text.NewLine;
+					}
+					NextLine.AddWord(oldWord);
+				}
+				//whipe words
+				Words.Clear();
+				
+				//set new word context
+				word.Context.SetOffset(Context.LineOffset,0,0);
+
+			}
+			//insert word
+
+			//advance all following words
 		}
 		
 		#region Getting the content of this TextComponent
@@ -198,6 +236,11 @@ namespace MauronAlpha.Text.Units {
 				return true;
 			}
 		}
+		public bool IsLastLine {
+			get {
+				return Parent.ContainsContext(Context.LineOffset+1,0,0);
+			}
+		}
 		public bool IsComplete {
 			get {
 				return (!IsEmpty && LastWord.EndsLine);
@@ -237,6 +280,8 @@ namespace MauronAlpha.Text.Units {
 			}
 		}
 		#endregion
+
+		
 
 		//Output as string
 		public string AsString {
@@ -284,5 +329,15 @@ namespace MauronAlpha.Text.Units {
 			get { return Instance; }
 		}
 		#endregion
+	
+		public TextComponent_line NextLine { 
+			get {
+				if(IsLastLine){
+					Exception("LineIndex out of bounds!,(NextLine)",this,ErrorResolution.Correct_maximum){
+					return this;	
+				}
+				return Parent.LineByIndex(Context.LineOffset+1);
+			}
+		}
 	}
 }

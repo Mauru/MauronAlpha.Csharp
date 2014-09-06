@@ -183,10 +183,12 @@ namespace MauronAlpha.Text.Units {
 
 		#region Finding portions of text
 		public bool ContainsContext(TextContext context){
-			if (IsEmpty) {
-				return context.IsStart;
+			if(IsEmpty&&context.IsStart||context.Equals(-1,-1,-1)){
+			
 			}
-
+		}
+		public bool ContainsContext(int line, int word, int character) {
+			
 		}
 		#endregion
 

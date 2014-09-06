@@ -245,6 +245,14 @@ namespace MauronAlpha.Text.Units {
 			return true;
 		}
 		#endregion
+		#region The Word Number (by context)
+		public int Index {
+			get {
+				return Context.WordOffset;
+			}
+		}
+		#endregion
+
 
 		#region The Content (Characters in this Word)
 		public TextComponent_character FirstCharacter {
