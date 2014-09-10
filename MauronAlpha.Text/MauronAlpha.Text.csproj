@@ -46,6 +46,7 @@
     <Compile Include="Units\TextComponent_line.cs" />
     <Compile Include="Units\TextComponent_text.cs" />
     <Compile Include="Units\TextComponent_word.cs" />
+    <Compile Include="TextContextRange.cs" />
     <Compile Include="Utility\TextHelper.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

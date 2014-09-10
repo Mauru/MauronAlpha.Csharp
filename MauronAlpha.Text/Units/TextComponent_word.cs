@@ -79,34 +79,19 @@ namespace MauronAlpha.Text.Units {
 				Error("Is protected!,(AddCharacter)", this, ErrorType_protected.Instance);
 			}
 			#endregion
-			#region ExceptionCheck: c == \0 : do nothing
-			if(c.IsEmpty){
-				Exception("Can not add \0 to a word!",this,ErrorResolution.DoNothing);
-				return this;
-			}
-			#endregion
-
-			#region If the last character is TextHelper.empty remove it
-			if(RealCount==1&&LastCharacter.IsEmpty){
-				RemoveLastCharacter();
-			}
-			#endregion
-			#region Set new CharacterContext
-			c.SetContext(NextCharacterContext);
-			#endregion
-			Characters.AddValue(c);
-			return this;
+			
+			return InsertCharacterAtIndex(CharacterCount,c);
 		}
-		public TextComponent_word AddCharacterAtIndex(TextComponent_character c, int index) {
+		public TextComponent_word InsertCharacterAtIndex(int index,TextComponent_character c) {
 			#region ReadOnlyCheck : !Error
 			if( IsReadOnly ) {
 				Error("Is protected!,(AddCharacterAtIndex)", this, ErrorType_protected.Instance);
 			}
 			#endregion
-			#region ExceptionCheck: empty !returns
+			#region ExceptionCheck: empty
 			if(IsEmpty){
 				Exception("Characters are empty!(AddCharacterAtIndex)",this, ErrorResolution.Function("AddCharacter"));
-				return AddCharacter(c);
+				index=CharacterCount;
 			}
 			#endregion
 			#region ExceptionCheck: c == \0 : do nothing !returns
@@ -130,12 +115,12 @@ namespace MauronAlpha.Text.Units {
 			MauronCode_dataList<TextComponent_character> characters=Characters.Range(index);
 			#endregion
 
-			#region New character ends word !returns
+			#region New character ends word
 			if(characters.Count>0 && c.EndsWord){
 
 				//create new word
 				TextComponent_word newWord=Instance.SetCharacters(characters);
-				Parent.AddWordAtIndex(newWord,Context.LineOffset+1);
+				Parent.InsertWordAtIndex(Context.LineOffset+1,newWord);
 					
 				//Remove the character from this word
 				for(int n=0;n<characters.Count;n++){
@@ -143,7 +128,7 @@ namespace MauronAlpha.Text.Units {
 				}
 
 				//Add new character
-				return AddCharacter(c);
+				index=0;
 			}
 			#endregion
 
@@ -209,7 +194,7 @@ namespace MauronAlpha.Text.Units {
 		private TextContext TXT_context;
 		public TextContext Context {
 			get {
-				#region Error Check
+				#region Error Check:null
 				if(TXT_context==null){
 					NullError("Context can not be null!,(Context)",this,typeof(TextContext));
 				}
@@ -230,6 +215,13 @@ namespace MauronAlpha.Text.Units {
 			Context.Add(context);
 			foreach( TextComponent_character c in Characters ) {
 				c.OffsetContext(context);
+			}
+			return this;
+		}
+		public TextComponent_word OffsetContext (int line, int word, int character) {
+			Context.Add(line, word, character);
+			foreach( TextComponent_character c in Characters ) {
+				c.OffsetContext(line, word, character);
 			}
 			return this;
 		}

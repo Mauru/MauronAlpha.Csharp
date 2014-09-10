@@ -60,6 +60,10 @@ namespace MauronAlpha.Text.Units {
 			Context.Add(context);
 			return this;
 		}
+		public TextComponent_character OffsetContext (int line, int word, int character) {
+			Context.Add(line, word, character);
+			return this;
+		}
 		#endregion
 
 		#region The Parent

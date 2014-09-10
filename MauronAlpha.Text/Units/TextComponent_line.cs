@@ -84,6 +84,13 @@ namespace MauronAlpha.Text.Units {
 			}
 			return this;
 		}
+		public TextComponent_line OffsetContext(int line, int word, int character) {
+			Context.Add(line,word,character);
+			foreach( TextComponent_word w in Words ) {
+				w.OffsetContext(line,word,character);
+			}
+			return this;
+		}
 		#endregion
 		#region The Line Number (by context)
 		public int Index {
@@ -110,17 +117,7 @@ namespace MauronAlpha.Text.Units {
 			}
 			#endregion
 
-			//might want to do this elsewhere (InsertWordAtContext)
-			
-			#region  Line is full, add word to next line, R: the next line
-			if(Words.Count>0 && Words.LastElement.EndsLine){
-
-				return NextLine.InsertWordAtIndex(0);
-
-			}
-			#endregion
-
-			Words.AddValue (word);
+			return InsertWordAtIndex(WordCount, word);
 			
 		}
 		#endregion
@@ -129,10 +126,21 @@ namespace MauronAlpha.Text.Units {
 		public TextComponent_line NextLine {
 			get {
 				if(!Parent.ContainsLineIndex(Context.LineOffset+1)){
-					Exception("Invalid lineIndex!,{"+Context.LineOffset+1+"},(NextLine)",this,ErrorResolution.Create);
-					Parent.NewLine;
+					Exception("Invalid lineIndex!,{"+(Context.LineOffset+1)+"},(NextLine)",this,ErrorResolution.Create);
+					TextComponent_line line = Parent.NewLine;
 				}
 				return Parent.LineByIndex(Context.LineOffset+1);
+			}
+		}
+		#endregion
+		#region Get the Previous Line, if it does not exist, create it
+		public TextComponent_line PreviousLine {
+			get {
+				if( !Parent.ContainsLineIndex(Context.LineOffset-1) ) {
+					Exception("Invalid lineIndex!,{"+(Context.LineOffset-1)+"},(PreviousLine)", this, ErrorResolution.Create);
+					TextComponent_line line=Parent.NewLine;
+				}
+				return Parent.LineByIndex(Context.LineOffset-1);
 			}
 		}
 		#endregion
@@ -148,12 +156,14 @@ namespace MauronAlpha.Text.Units {
 				Error("Index Out of bounds!,{"+index+"},(InsertWordAtIndex)",this,ErrorType_bounds.Instance);
 			}
 			#endregion
+			
+			#region word ends the current line !R
 			if(word.EndsLine) {
 				
 				foreach(TextComponent_word oldWord in Words){
 					//move all words to next line
 					if(IsLastLine){
-						Text.NewLine;
+						TextComponent_line line=Parent.NewLine;
 					}
 					NextLine.AddWord(oldWord);
 				}
@@ -163,10 +173,26 @@ namespace MauronAlpha.Text.Units {
 				//set new word context
 				word.Context.SetOffset(Context.LineOffset,0,0);
 
+				return this;
+
 			}
+			#endregion
+
+			//collect all following words
+			MauronCode_dataList<TextComponent_word> words = Words.Range(index);
+			
 			//insert word
+			Words.InsertValueAt(index,word);
 
 			//advance all following words
+			foreach(TextComponent_word w in words) {
+				w.OffsetContext(0,1,0);
+			}
+
+			//set new context of word
+			word.Context.SetOffset(Context.LineOffset,index,0);
+
+			return this;
 		}
 
 		#region Words
@@ -183,6 +209,14 @@ namespace MauronAlpha.Text.Units {
 				Error("Invalid Index {"+context.WordOffset+"}", this, ErrorType_index.Instance);
 			}
 			return Words.Value(context.WordOffset);
+		}
+		public TextComponent_word WordByIndex(int n){
+			#region ErrorCheck bounds
+			if(n<0||n>=CharacterCount){
+				Error("WordIndex out of bounds!,{"+n+"},(WordbyIndex)",this,ErrorType_bounds.Instance);
+			}
+			#endregion
+			return Words.Value(n);
 		}
 		public TextComponent_word LastWord {
 			get { 

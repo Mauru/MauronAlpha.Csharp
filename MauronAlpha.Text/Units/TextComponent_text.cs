@@ -40,13 +40,26 @@ namespace MauronAlpha.Text.Units {
 				Error("Is protected!,(AddLine)", this, ErrorType_protected.Instance);
 			}
 			#endregion
+			line.Context.SetOffset(LineCount,0,0);
 			Lines.AddValue (line);
 			return this;
 		}
-		public TextComponent_text AddLineAtContext(TextContext context){
+		public TextComponent_line NewLine{
+			get {
+				#region ReadOnly Check
+				if( IsReadOnly ) {
+					Error("Is protected!,(NewLine)", this, ErrorType_protected.Instance);
+				}
+				#endregion
+				TextComponent_line line = new TextComponent_line(this,new TextContext(LineCount,0,0));
+				Lines.AddValue(line);
+				return LastLine;
+			}
+		}
+		public TextComponent_text InsertLineAtContext(TextContext context){
 			#region ReadOnly Check
 			if( IsReadOnly ) {
-				Error("Is protected!,(AddLineAtContext)", this, ErrorType_protected.Instance);
+				Error("Is protected!,(InsertLineAtContext)", this, ErrorType_protected.Instance);
 			}
 			#endregion
 			TextComponent_line line = new TextComponent_line (this, context);
@@ -59,18 +72,44 @@ namespace MauronAlpha.Text.Units {
 			}
 			return this;
 		}
+		public TextComponent_text InsertLineAtIndex(int n, TextComponent_line line){
+			#region ReadOnly Check
+			if( IsReadOnly ) {
+				Error("Is protected!,(InsertLineAtIndex)", this, ErrorType_protected.Instance);
+			}
+			#endregion
+			#region ErrorCheck bounds
+			if(n<0||n>LineCount){
+				Error("LineIndex out of bounds!,{"+n+"},(InsertLineAtIndex)",this,ErrorType_bounds.Instance);
+			}
+			#endregion
+			line.Context.SetOffset(n,0,0);
+			
+			//offset the context
+			MauronCode_dataList<TextComponent_line> lines=Lines.Range(n);
+			foreach( TextComponent_line l in lines ) {
+				l.OffsetContext(1,0,0);
+			}
+
+			Lines.InsertValueAt(line.Index,line);
+
+			return this;
+			
+		}
+
 		public TextComponent_text AddWordAtContext(TextContext context, TextComponent_word word){
 			#region ReadOnly Check
 			if( IsReadOnly ) {
 				Error("Is protected!,(AddWordAtContext)", this, ErrorType_protected.Instance);
 			}
 			#endregion
+
+			TextContext contextIndex=context.Instance;
 			#region ErrorCheck context
-			if(!ContainsContext(context)){
+			if(!contextIndex.TrySolveWith(this)){
 				Error("Invalid Context!,{"+context.AsString+"},(AddWordAtContext)",this,ErrorType_bounds.Instance);
 			}
 			#endregion
-			
 			
 		}
 		public TextComponent_text AddString (string str) {
