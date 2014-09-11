@@ -1,15 +1,16 @@
 ﻿using MauronAlpha.HandlingData;
 using MauronAlpha.Text.Units;
 using MauronAlpha.HandlingErrors;
+using MauronAlpha.HandlingExceptions;
 
 using System;
 
 namespace MauronAlpha.Text {
 
-	public class TextContext:MauronCode_dataObject, IEquatable<TextContext> {
+	public class TextContext:MauronCode_textComponent, IEquatable<TextContext> {
 
 		//region constructors
-		public TextContext():base(DataType_maintaining.Instance) {}
+		public TextContext() {}
 		public TextContext(int line, int word, int character):this(){
 			SetLineOffset(line);
 			SetWordOffset(word);
@@ -210,6 +211,9 @@ namespace MauronAlpha.Text {
 		#endregion
 
 		#region Solving ContextOffsets
+		public bool TrySolveWith(TextComponent_text text){
+			
+		}
 		public TextContext SolveWith(TextComponent_text text){
 			
 			//line
@@ -229,6 +233,14 @@ namespace MauronAlpha.Text {
 			result = result.SolveCharacterOffset(word,false);
 
 								
+		}
+		public TextContext SolveWith(TextComponent_word word) {
+			
+		}
+		//generic solve as TextComponent_*
+		public T SolveAs<T,R>(R textComponent, TextContext offset) {
+			TextContext context=Instance.Add(offset).SolveWith(textComponent);
+
 		}
 
 		//Solve the LineOffset

@@ -7,7 +7,7 @@ using System;
 namespace MauronAlpha.Text.Units {
 	
 	//A character in a text
-	public class TextComponent_character:TextComponent,IEquatable<char>,IEquatable<string>, I_textComponent<TextComponent_character> {
+	public class TextComponent_character : MauronCode_textComponent, IEquatable<char>, IEquatable<string>, I_textComponent<TextComponent_character> {
 
 		//constructor
 		public TextComponent_character(TextComponent_word parent, TextContext context, char c){

@@ -6,7 +6,7 @@ using MauronAlpha.HandlingErrors;
 namespace MauronAlpha.Text.Units {
 
 	//A complete text
-	public class TextComponent_text:TextComponent {
+	public class TextComponent_text : MauronCode_textComponent {
 
 		private MauronCode_dataList<TextComponent_line> Lines=new MauronCode_dataList<TextComponent_line>();
 

@@ -3,7 +3,7 @@ using MauronAlpha.HandlingData;
 
 namespace MauronAlpha.Text {
 	//A class interacting with Text
-	public class TextComponent:MauronCode_dataObject {
-		public TextComponent():base(DataType_maintaining.Instance){}
+	public class MauronCode_textComponent:MauronCode_dataObject {
+		public MauronCode_textComponent( ) : base(DataType_maintaining.Instance) { }
 	}
 }

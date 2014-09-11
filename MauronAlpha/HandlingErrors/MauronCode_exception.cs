@@ -6,7 +6,7 @@ namespace MauronAlpha.HandlingErrors {
 
 		public object ErrorSource;
 
-		public MauronCode_exception (string message, object source)
+		public MauronCode_exception (string message, object source, ErrorResolution resolution)
 			: base(message) {
 			MauronCode.Debug(message, source);
 			ErrorSource=source;

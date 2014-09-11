@@ -8,7 +8,7 @@ using System;
 namespace MauronAlpha.Text.Units {
 
 	//A word
-	public class TextComponent_word:TextComponent, I_textComponent<TextComponent_word>,IEquatable<string> {
+	public class TextComponent_word : MauronCode_textComponent, I_textComponent<TextComponent_word>, IEquatable<string> {
 		
 		//constructor
 		public TextComponent_word(TextComponent_line parent, TextContext context) {}
@@ -244,7 +244,18 @@ namespace MauronAlpha.Text.Units {
 			}
 		}
 		#endregion
-
+		#region Neighboring Words
+		public TextComponent_word NextWord {
+			get {
+				#region ExceptionCheck: bounds !return
+				if(!Parent.ContainsWordIndex(Index+1)){
+					Exception("WordIndex out of bounds!,{"+(Index+1)+"},(NextWord)",this,ErrorResolution.Function("TextContext.SolveAs"));
+					return Context.Instance.SolveAs<TextComponent_word>(this,Index+1);
+				}
+				#endregion
+			}
+		}
+		#endregion
 
 		#region The Content (Characters in this Word)
 		public TextComponent_character FirstCharacter {

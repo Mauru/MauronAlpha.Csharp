@@ -4,7 +4,10 @@ using MauronAlpha.HandlingErrors;
 namespace MauronAlpha.Text.Units {	
 
 	//A range of text
-	public class TextContextRange:MauronCode_dataObject {
+	public class TextContextRange:MauronCode_textComponent {
+
+		//constructor
+		public TextContextRange() {}
 		
 		#region the Parent Text
 		private TextComponent_text TXT_parent;

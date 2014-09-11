@@ -30,8 +30,11 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="HandlingExceptions\ExceptionClock.cs" />
+    <Compile Include="HandlingExceptions\MauronCode_exceptionAwareObject.cs" />
     <Compile Include="I_eventReceiver.cs" />
     <Compile Include="I_eventSender.cs" />
+    <Compile Include="I_exceptionAwareObject.cs" />
     <Compile Include="MauronCode_event.cs" />
     <Compile Include="MauronCode_eventClock.cs" />
     <Compile Include="SystemTime.cs" />
@@ -43,9 +46,7 @@
     <Compile Include="Shedules\MauronCode_eventShedule.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-  <ItemGroup>
-    <Folder Include="Shedules\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\MauronAlpha\MauronAlpha.csproj">
       <Project>{6A046817-9F14-4781-97C9-F89FEBC2097B}</Project>
