@@ -1,7 +1,6 @@
 ﻿using MauronAlpha.HandlingData;
 using MauronAlpha.Text.Units;
 using MauronAlpha.HandlingErrors;
-using MauronAlpha.HandlingExceptions;
 
 using System;
 
@@ -211,26 +210,24 @@ namespace MauronAlpha.Text {
 		#endregion
 
 		#region Solving ContextOffsets
-		public bool TrySolveWith(TextComponent_text text){
-			
-		}
 		public TextContext SolveWith(TextComponent_text text){
 			
 			//line
 			TextContext result = SolveLineOffset(text);
 			TextComponent_line line = text.LineByIndex(result.LineOffset);
+			int lineIndex = result.LineOffset;
 
 			//word
-			result = result.SolveWordOffset(line,false).SolveLineOffset(text);
-			
+			result = result.SolveWordOffset(line,false);
+					
 			//did line number change?
-			if(result.LineOffset!=line.Index){
+			if(result.LineOffset!=lineIndex){
 				line=text.LineByIndex(result.LineOffset);
 			}
 			TextComponent_word word=line.WordByIndex(result.WordOffset);
 
 			//character
-			result = result.SolveCharacterOffset(word,false);
+			result = result.SolveCharacterOffset(word,false).SolveWordOffset();
 
 								
 		}
@@ -336,7 +333,7 @@ namespace MauronAlpha.Text {
 
 			TextContext result = Instance;
 
-			//Out of bounds positive
+			#region Out of bounds positive !return
 			if(CharacterOffset>word.CharacterCount) {
 				
 				//we stay on the word, return last context !return
@@ -352,7 +349,33 @@ namespace MauronAlpha.Text {
 
 				//simply solve with the next word !return
 				result.Add(0,1,-word.CharacterCount);
+				
+				#region ExceptionCheck next word? !return
+				//next word ends text
+				if(!word.Source.ContainsCharacterIndex(result.WordOffset)){
+					Exception("WordIndex out of Bounds!,{"+result.WordOffset+"},(SolveCharacterOffset)",this,ErrorResolution.Correct_maximum);
+					return word.Source.LastCharacter.Context.Instance;
+				}
+				#endregion
+				
 				return result.SolveCharacterOffset(word.NextWord,stayOnWord);
+
+			}
+			#endregion
+
+			//Out of bounds negative
+			if(CharacterOffset<0){
+
+				//negative offset larger than characterCount
+				if(Math.Abs(CharacterOffset)>=word.CharacterCount){
+					Exception("LineIndex out of bounds!,{"+CharacterOffset+"},(SolveCharacterOffset)", this, ErrorResolution.Correct_minimum);
+					result.Add(0, -1, -word.CharacterCount);
+
+					if(!word.Source.ContainsWordIndex(result.WordOffset)){
+						return word.Source.FirstWord.Context;
+					}
+					return result.SolveCharacterOffset(word.PreviousWord, stayOnWord);
+				}
 
 			}
 

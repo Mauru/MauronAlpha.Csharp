@@ -11,19 +11,9 @@ namespace MauronAlpha.Events.HandlingExceptions {
 		//constructor
 		public MauronCode_exceptionAwareObject(int overFlowLimit):base(DataType_exceptionAwareObject.Instance) {
 			SubscribeToEvents();
-		}
+		}		
 
-		private MauronCode_dataList<MauronCode_exception> DATA_exceptions;
-		public MauronCode_dataList<MauronCode_exception> Exceptions {
-			get {
-				if(DATA_exceptions==null){
-					DATA_exceptions=new MauronCode_dataList<MauronCode_exception>();
-				}
-				return DATA_exceptions;
-			}
-		}
-
-		#region send an Event
+		#region Send an Event
 		public MauronCode_exceptionAwareObject SendEvent(MauronCode_eventClock clock, MauronCode_event e) {
 			clock.SubmitEvent(e);
 			return this;
@@ -32,14 +22,14 @@ namespace MauronAlpha.Events.HandlingExceptions {
 			ExceptionClock.Instance.SubscribeToEvent("Exception",this);
 			return this;
 		}
-		public MauronCode_exceptionAwareObject SubscribeToEvent(string message, MauronCode_eventClock clock) {
+		public MauronCode_exceptionAwareObject SubscribeToEvent(MauronCode_eventClock clock, string message) {
 			clock.SubscribeToEvent("Exception",this);
 			return this;
 		}
-		public MauronCode_eventClock ExceptionHandler {
-			get {
-				return ExceptionClock.Instance;
-			}
+		#endregion
+		#region Receive an event
+		public MauronCode_exceptionAwareObject ReceiveEvent(MauronCode_eventClock clock, MauronCode_event e){
+			return this;
 		}
 		#endregion
 
@@ -52,6 +42,16 @@ namespace MauronAlpha.Events.HandlingExceptions {
 			HandleException(ExceptionClock.Instance, e,o);
 			return e;
 		}
+
+		private MauronCode_dataList<MauronCode_exception> DATA_exceptions;
+		public MauronCode_dataList<MauronCode_exception> Exceptions {
+			get {
+				if( DATA_exceptions==null ) {
+					DATA_exceptions=new MauronCode_dataList<MauronCode_exception>();
+				}
+				return DATA_exceptions;
+			}
+		}
 		#endregion
 
 		#region I_eventSender
@@ -59,18 +59,17 @@ namespace MauronAlpha.Events.HandlingExceptions {
 			return SendEvent(clock,e);
 		}
 		#endregion
-
+		#region I_eventReceiver
 		I_eventReceiver I_eventReceiver.SubscribeToEvents ( ) {
 			return SubscribeToEvents();
 		}
-
 		I_eventReceiver I_eventReceiver.SubscribeToEvent (MauronCode_eventClock clock, string message) {
 			return SubscribeToEvent(clock,message);
 		}
-
 		I_eventReceiver I_eventReceiver.ReceiveEvent (MauronCode_eventClock clock, MauronCode_event e) {
 			return ReceiveEvent(clock,e);
 		}
+		#endregion
 	}
 
 	// DataType description

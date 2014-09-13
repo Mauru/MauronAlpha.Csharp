@@ -234,6 +234,9 @@ namespace MauronAlpha.Text.Units {
 			}
 			return LineByIndex(line).ContainsWordIndex(word);
 		}
+		public bool ContainsWordIndex(int n){
+			return (n>=0&&n<WordCount);
+		}
 		public bool ContainsCharacterContext (int line, int word, int character) {
 			if( !ContainsLineIndex(line) ) { return false; }
 			TextComponent_line pool=LineByIndex(line);
@@ -251,6 +254,9 @@ namespace MauronAlpha.Text.Units {
 				return false;
 			}
 			return index<count;
+		}
+		public bool ContainsCharacterIndex(int n){
+			return (n>=0&&n<CharacterCount);
 		}
 		#endregion
 

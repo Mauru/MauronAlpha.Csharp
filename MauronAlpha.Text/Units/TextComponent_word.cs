@@ -40,6 +40,9 @@ namespace MauronAlpha.Text.Units {
 				return Context.Instance.SetCharacterOffset(CharacterCount);
 			}
 		}
+		public bool ContainsCharacterIndex (int n) {
+			return n>=0&&n<CharacterCount;
+		}
 
 		/// <summary>Set the characters of a word
 		/// <remarks>Clears Characters then applies AddCharacter to each</remarks></summary>
