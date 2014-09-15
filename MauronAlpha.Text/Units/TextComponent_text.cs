@@ -386,6 +386,13 @@ namespace MauronAlpha.Text.Units {
 			}
 			#endregion
 
+			if(Context.IsOffsetFor<TextComponent_text>(index,this)){
+			}
+
+			//get the character
+			TextComponent_character c = CharacterByIndex(index);
+
+
 		}
 		#endregion
 
@@ -415,6 +422,7 @@ namespace MauronAlpha.Text.Units {
 		}
 		#endregion
 
+		
 		#region Boolean states
 		public bool IsEmpty {
 			get {

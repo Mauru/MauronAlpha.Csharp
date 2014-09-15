@@ -8,7 +8,7 @@ namespace MauronAlpha.Text {
 
 	public class TextContext:MauronCode_textComponent, IEquatable<TextContext> {
 
-		//region constructors
+		#region Constructors
 		public TextContext() {}
 		public TextContext(int line, int word, int character):this(){
 			SetLineOffset(line);
@@ -22,8 +22,9 @@ namespace MauronAlpha.Text {
 		public TextContext (int line):this() {
 			SetLineOffset(line);
 		}
+		#endregion
 
-		#region cloning, instantiating
+		#region Cloning, instances
 		public TextContext Instance {
 			get {
 				return TextContext.New.SetLineOffset(LineOffset).SetWordOffset(WordOffset).SetCharacterOffset(CharacterOffset);
@@ -89,21 +90,20 @@ namespace MauronAlpha.Text {
 			SetCharacterOffset(character);
 			return this;
 		}
+		public TextContext SetOffset(TextContext context) {
+			SetOffset(context.LineOffset,context.WordOffset,context.CharacterOffset);
+			return this;
+		}
 		#endregion
 
+		#region Values as string
 		public string AsString {
 			get {
 				return "{'"+LineOffset+"','"+WordOffset+"'+'"+CharacterOffset+"'}";
 			}
 		}
+		#endregion
 	
-		/// <summary>
-		/// Evalutes a context relative to a TextComponent, turning it to absolute numbers
-		/// </summary>
-		public static TextContext SolveContext(TextContext context,TextComponent_text text){
-			return context.SolveWith(text);			
-		}
-
 		#region Math (modification)
 
 		#region Add
@@ -210,9 +210,38 @@ namespace MauronAlpha.Text {
 		#endregion
 
 		#region Solving ContextOffsets
-		public TextContext SolveWith(TextComponent_text text){
+		/// <summary>
+		/// Evalutes a context relative to a TextComponent, turning it to absolute numbers
+		/// </summary>
+		public static TextContext SolveContext (TextContext context, TextComponent_text text) {
+			return context.SolveWith(text);
+		}
+
+
+		public bool TrySolveWith(TextComponent_text text){
 			
-			//line
+			//set a backup
+			TextContext result = Instance;
+
+			//any preconditions- is the text empty? /!return
+			if(text.IsEmpty){
+				SetOffset(Start);
+				return true;
+			}
+
+			//are we talking about the end of the text?
+			if(IsEnd){
+				SetOffset(text.Context.Instance);
+				return true;
+			}
+
+
+			// 0: Starting off with the character, here it gets comlicated
+
+			//a: try and find a line
+			result.SolveLineOffset(text);
+
+			// 1: We start off with the line
 			TextContext result = SolveLineOffset(text);
 			TextComponent_line line = text.LineByIndex(result.LineOffset);
 			int lineIndex = result.LineOffset;
@@ -382,7 +411,7 @@ namespace MauronAlpha.Text {
 		}
 		#endregion
 			
-
+		#region Boolean States
 		public bool IsStart {
 			get {
 				return this.Equals(Start);
@@ -409,8 +438,9 @@ namespace MauronAlpha.Text {
 				return Equals(-1,-1,-1);
 			}
 		}
+		#endregion
 
-
+		#region Comparison Equals
 		/// <summary>
 		/// Checks if a context's numerical values equal another
 		/// <remarks> use ignoreZero to skip comparing parts of the context </remarks>
@@ -439,8 +469,9 @@ namespace MauronAlpha.Text {
 			return
 			Equals(other.LineOffset, other.WordOffset, other.CharacterOffset, ignoreZero);
 		}
-
-				
+		#endregion
+		
+		#region Comparison int
 		/// <summary>
 		/// Checks how a context's numerical values equal another
 		/// <remarks> use ignoreZero to skip comparing parts of the context </remarks>
@@ -485,6 +516,8 @@ namespace MauronAlpha.Text {
 		public int CompareTo(TextContext other, bool ignoreZero){
 			return CompareTo(other.LineOffset,other.WordOffset,other.CharacterOffset, ignoreZero);
 		}
+		#endregion
+
 		#region IEquatable<TextContext>
 		bool IEquatable<TextContext>.Equals (TextContext other) {
 			return Equals(other);

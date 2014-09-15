@@ -115,7 +115,7 @@ namespace MauronAlpha.Text.Units {
 			return this;
 		}
 		#endregion
-		public bool EndsLine {
+		public bool TerminatesLine {
 			get {
 				if(IsEmpty){
 					return false;

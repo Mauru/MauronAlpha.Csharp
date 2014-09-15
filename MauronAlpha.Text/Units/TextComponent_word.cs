@@ -35,30 +35,91 @@ namespace MauronAlpha.Text.Units {
 				return DATA_characters;
 			}
 		}
+		#endregion
+
+		#region Relatives By Context
 		private TextContext NextCharacterContext {
 			get {
 				return Context.Instance.SetCharacterOffset(CharacterCount);
 			}
 		}
-		public bool ContainsCharacterIndex (int n) {
-			return n>=0&&n<CharacterCount;
+
+		public TextComponent_word NextWord {
+			get {
+				
+				//The next Word is not on this line
+				if( IsAtLineEnd ) {
+
+					//There is no next word !return
+					if( Parent.IsLastLine ) {
+						Exception("No next Word!,{"+Context.AsString+"},(NextWord)", this, ErrorResolution.Correct_maximum);
+						return this;
+					}
+					
+					return Parent.Parent.LineByIndex(Parent.Index+1).FirstWord;
+				}
+				
+				return Parent.WordByIndex(Index+1);
+
+			}
+		}
+		public TextComponent_word PreviousWord {
+			get {
+				
+				//not on this Line
+				if( IsAtLineStart ){
+					
+					if(IsMultiWord){
+
+						//starts multiword
+						if( MultiWordIndex == 0 ){
+							
+							//Is there a previous Line
+							if( Parent.IsAtTextStart ) {
+								Exception("There is no previous word!,{"+Context.AsString+"}",this,ErrorResolution.Correct_minimum);
+								return this;
+							}
+
+							return Parent.Parent.LineByIndex(Parent.Index-1).LastWord;
+
+						}
+
+						//ends multiword
+						if( MultiWordIndex >= Partners.Count ){
+							
+							//there are other multiword parts before this part, return by offset
+							if( Parent.IsAtTextStart ) {
+								Error("There is no previous word! Also, the MultiWord is broken!,{"+Context.AsString+"}", this, ErrorType_bug.Instance);
+								return this;
+							}
+
+						}
+					}
+
+				}
+
+			}
 		}
 
-		/// <summary>Set the characters of a word
-		/// <remarks>Clears Characters then applies AddCharacter to each</remarks></summary>
-		public TextComponent_word SetCharacters(MauronCode_dataList<TextComponent_character> characters){
-			#region ReadOnly Check
-			if( IsReadOnly ) {
-				Error("Is protected!,(SetCharacters)", this, ErrorType_protected.Instance);
+		#endregion
+
+		#region Boolean States by Context
+
+		public bool IsAtLineEnd {
+			get {
+				if( Parent.WordCount==1 ){
+					return true;
+				}
+				if( TerminatesLine ) {
+					return true;
+				}
+				if( Parent.WordCount-1==Index ){
+					return true;
+				}
+				return false;
 			}
-			#endregion
-			//1: reset internal list
-			DATA_characters=new MauronCode_dataList<TextComponent_character>();
-			foreach(TextComponent_character c in characters){
-				AddCharacter(c);
-			}
-			return this;
 		}
+
 		#endregion
 
 		#region ReadOnly
@@ -72,7 +133,27 @@ namespace MauronAlpha.Text.Units {
 		}
 		#endregion
 
-		#region Add to word
+		#region Modification of the word
+
+		#region Set all Characters at once
+		/// <summary>Set the characters of a word
+		/// <remarks>Clears Characters then applies AddCharacter to each</remarks></summary>
+		public TextComponent_word SetCharacters (MauronCode_dataList<TextComponent_character> characters) {
+			#region ReadOnly Check
+			if( IsReadOnly ) {
+				Error("Is protected!,(SetCharacters)", this, ErrorType_protected.Instance);
+			}
+			#endregion
+			//1: reset internal list
+			DATA_characters=new MauronCode_dataList<TextComponent_character>();
+			foreach( TextComponent_character c in characters ) {
+				AddCharacter(c);
+			}
+			return this;
+		}
+		#endregion
+
+		#region Add a character to the word
 		/// <summary>Add a character to the end of the string
 		/// <remarks>Adding \0 (null) will throw an Exception</remarks>
 		/// </summary>
@@ -146,7 +227,6 @@ namespace MauronAlpha.Text.Units {
 			}
 			return this;
 			#endregion
-
 		}		
 		#endregion
 
@@ -166,6 +246,8 @@ namespace MauronAlpha.Text.Units {
 			Characters.RemoveLastElement();
 			return this;
 		}
+		#endregion
+
 		#endregion
 
 		#region The TextComponent_line this element belongs to
@@ -205,11 +287,7 @@ namespace MauronAlpha.Text.Units {
 				return TXT_context;
 			}
 		}
-		public bool HasContext {
-			get {
-				return TXT_context==null;
-			}
-		}
+
 		private TextComponent_word SetContext(TextContext context){
 			TXT_context=context;
 			return this;
@@ -228,39 +306,19 @@ namespace MauronAlpha.Text.Units {
 			}
 			return this;
 		}
-		public bool ContainsContext(TextContext context){
-			if (
-				(Context.LineOffset != context.LineOffset)
-				|| (Context.WordOffset != context.WordOffset)
-				|| (FirstCharacter.Context.CharacterOffset > context.CharacterOffset)
-				|| (LastCharacter.Context.CharacterOffset < context.CharacterOffset)
-				) {
-				return false;
-			}
-			return true;
-		}
 		#endregion
-		#region The Word Number (by context)
+
+		#region The Index {Word Number} (by context)
 		public int Index {
 			get {
 				return Context.WordOffset;
 			}
 		}
 		#endregion
-		#region Neighboring Words
-		public TextComponent_word NextWord {
-			get {
-				#region ExceptionCheck: bounds !return
-				if(!Parent.ContainsWordIndex(Index+1)){
-					Exception("WordIndex out of bounds!,{"+(Index+1)+"},(NextWord)",this,ErrorResolution.Function("TextContext.SolveAs"));
-					return Context.Instance.SolveAs<TextComponent_word>(this,Index+1);
-				}
-				#endregion
-			}
-		}
-		#endregion
 
 		#region The Content (Characters in this Word)
+
+		//Strict! First Character
 		public TextComponent_character FirstCharacter {
 			get {
 				#region Error Check
@@ -271,6 +329,19 @@ namespace MauronAlpha.Text.Units {
 				return Characters.FirstElement;
 			}
 		}
+		
+		//Strict! Last Character
+		public TextComponent_character LastCharacter {
+			get {
+				#region Error Check
+				if( CharacterCount<1 ) {
+					Error("Character Index out of bounds!,(LastCharacter)", this, ErrorType_index.Instance);
+				}
+				#endregion
+				return Characters.LastElement;
+			}
+		}
+
 		/// <summary>
 		/// Get a character By Context
 		/// <remarks>Uses CharacterByIndex, can throw OutofBoundsError</remarks>
@@ -290,6 +361,7 @@ namespace MauronAlpha.Text.Units {
 			#endregion
 			return Characters.Value(index);
 		}
+		
 		#region Get a range of characters
 		/// <summary>
 		/// Get a range of characters
@@ -337,20 +409,15 @@ namespace MauronAlpha.Text.Units {
 			return result;
 		}
 		#endregion
-		public TextComponent_character LastCharacter {
-			get {
-				#region Error Check
-				if(CharacterCount<1){
-					Error("Character Index out of bounds!,(LastCharacter)",this,ErrorType_index.Instance);
-				}
-				#endregion
-				return Characters.LastElement;
-			}
-		}
+
 		#endregion
 
 		#region Count Characters in word
-		/// <summary>Number of characters in the word
+		/// <summary> Number of characters in the word 
+		/// <remarks>
+		/// If the ONLY character in this word is TextHelper.Empty, this function will still return 0
+		/// </remarks>
+		/// </summary>
 		public int CharacterCount {
 			get { 
 				if(Characters.Count==1&&LastCharacter.IsEmpty){
@@ -367,15 +434,65 @@ namespace MauronAlpha.Text.Units {
 		}
 		#endregion
 
+		#region MultiWords (Partners)
+		
+		private MauronCode_dataList<TextComponent_word> MULTIWORD_partners;
+		public MauronCode_dataList<TextComponent_word> Partners {
+			get {
+				if(MULTIWORD_partners==null){
+					MULTIWORD_partners=new MauronCode_dataList<TextComponent_word>();
+				}
+				return MULTIWORD_partners;
+			}
+		}
+		
+		/// <summary>
+		/// Gets the Last Part of a Multiword
+		/// </summary>
+		public TextComponent_word LastPartner {
+			get {
+				if(Partners.Count<1){
+					Error("No Partners!",this,ErrorType_bounds.Instance);
+				}
+				return Partners.LastElement;
+			}
+		}
+		
+		#endregion
+
 		#region Boolean States
+		
+		public bool IsMultiWord {
+			get {
+				if(Parent.CanBreak){
+					return false;
+				}
+				return Partners.Count>0;
+			}
+		}
 		public bool EndsLine {
 			get {
 				if( Characters.Count<1 ) {
 					return false;
 				}
-				return Characters.LastElement.EndsLine;
+				if( IsMultiWord ){
+					if(!Parent.CanBreak){
+						return false;
+					}
+					return(LastPartner.Parent.Index==Parent.Index);
+				}
+				return ( TerminatesLine );
+
 			}
-		}	
+		}
+		public bool TerminatesLine {
+			get {
+				if( Characters.Count<1 ){
+					return false;
+				}
+				return Characters.LastElement.TerminatesLine;
+			}
+		}
 		public bool IsLastOnLine {
 			get {
 				return Parent.ContainsWordIndex(Context.WordOffset+1);
@@ -417,6 +534,29 @@ namespace MauronAlpha.Text.Units {
 				}
 				return false;	
 			}
+		}
+		#endregion
+		#region Boolean State checks involving Characters
+		public bool ContainsCharacterIndex (int n) {
+			return n>=0&&n<CharacterCount;
+		}
+		#endregion
+		#region Boolean States by context
+		public bool HasContext {
+			get {
+				return TXT_context==null;
+			}
+		}
+		public bool ContainsContext (TextContext context) {
+			if(
+				(Context.LineOffset!=context.LineOffset)
+				||(Context.WordOffset!=context.WordOffset)
+				||(FirstCharacter.Context.CharacterOffset>context.CharacterOffset)
+				||(LastCharacter.Context.CharacterOffset<context.CharacterOffset)
+				) {
+				return false;
+			}
+			return true;
 		}
 		#endregion
 

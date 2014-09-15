@@ -43,6 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="HandlingErrors\Copy of ErrorType_index.cs" />
     <Compile Include="HandlingErrors\ErrorResolution.cs" />
     <Compile Include="HandlingErrors\ErrorType.cs" />
     <Compile Include="HandlingErrors\ErrorType_exception.cs" />

@@ -277,6 +277,17 @@ namespace MauronAlpha.Text.Units {
 		}
 		#endregion
 
+		#region Boolean Behavior Switches
+		/// <summary>
+		/// Can this line be ended by things other than a linebreak?
+		/// </summary>
+		public bool CanBreak {
+			get {
+				return false;
+			}
+		}
+		#endregion
+
 		#region Boolean states
 		public bool IsEmpty {
 			get { 
@@ -286,6 +297,11 @@ namespace MauronAlpha.Text.Units {
 					}
 				}
 				return true;
+			}
+		}
+		public bool IsAtTextEnd {
+			get {
+				return IsLastLine;
 			}
 		}
 		public bool IsLastLine {
