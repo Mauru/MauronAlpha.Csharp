@@ -418,6 +418,71 @@ namespace MauronAlpha.Text {
 		#endregion
 			
 		#region Boolean States
+		public bool IsWordOffset(TextComponent_word word){
+			if(LineOffset!=word.Context.LineOffset){
+				return true;
+			}
+			if(WordOffset!=word.Index){
+				return true;
+			}
+			if(CharacterOffset<0||CharacterOffset>=word.CharacterCount){
+				return true;
+			}
+			return false;
+		}
+		public bool IsWordOffset(TextComponent_line line) {
+			if(LineOffset!=line.Index){ return true; }
+			if(WordOffset<0||CharacterOffset<0) {
+				return true;
+			}
+			if(WordOffset>=line.WordCount){
+				return true;
+			}
+			TextComponent_word word=line.WordByIndex(WordOffset);
+			if(CharacterOffset>=word.CharacterCount){
+				return true;
+			}
+			return false;			
+		}
+
+		public bool IsTextOffset(TextComponent_text text){
+			if(LineOffset<0){
+				return true;
+			}
+			if(LineOffset>=text.LineCount){
+				return true;
+			}
+			if(WordOffset<0||CharacterOffset<0) {
+				return true;
+			}
+			TextComponent_line line = text.LineByIndex(LineOffset);
+			if(WordOffset>=line.WordCount){
+				return true;
+			}
+			TextComponent_word word = line.WordByIndex(WordOffset);
+			if(word.CharacterCount>=CharacterOffset){
+				return true;
+			}
+			return false;
+		}
+		public bool IsCharacterOffset(TextComponent_character ch){
+			if(LineOffset<0){
+				return true;
+			}
+			if(LineOffset!=ch.Context.LineOffset){
+				return true;
+			}
+			if(WordOffset<0||CharacterOffset<0){
+				return true;
+			}
+			if(ch.Context.WordOffset!=WordOffset){
+				return true;
+			}
+			if(ch.Context.CharacterOffset!=CharacterOffset){
+				return true;
+			}
+			return false;
+		}
 		public bool IsStart {
 			get {
 				return this.Equals(Start);

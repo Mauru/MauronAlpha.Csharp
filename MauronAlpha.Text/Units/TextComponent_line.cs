@@ -289,6 +289,36 @@ namespace MauronAlpha.Text.Units {
 		#endregion
 
 		#region Boolean states
+		public bool HasOffsetNeighbor(int line, int word, int character){
+			TextContext query = Context.Instance.Add(line,word,character);
+			if(line!=0){
+				if(!Parent.ContainsLineIndex(query.LineOffset)){ return false; }
+			}
+			TextComponent_line l = Parent.LineByIndex(query.LineOffset);
+			if(!l.IsOffset(query)){
+				return true;
+			}
+			if(query.IsWordOffset(this)){}
+		}
+		public bool IsOffset(TextContext context){
+			if(context.Equals(0,0,0)){
+				return false;
+			}
+			if(Index!=context.LineOffset) {
+				return true;
+			}
+			if(context.LineOffset<0||context.WordOffset<0||context.CharacterOffset<0){
+				return true;
+			}
+			if(context.WordOffset>=WordCount) {
+				return true;
+			}
+			TextComponent_word word=WordByIndex(context.WordOffset);
+			if(context.CharacterOffset>=word.CharacterCount){
+				return true;
+			}
+			return false;
+		}
 		public bool IsEmpty {
 			get { 
 				foreach(TextComponent_word word in Words){
@@ -302,6 +332,11 @@ namespace MauronAlpha.Text.Units {
 		public bool IsAtTextEnd {
 			get {
 				return IsLastLine;
+			}
+		}
+		public bool IsAtTextStart {
+			get {
+				return Context.LineOffset==0;
 			}
 		}
 		public bool IsLastLine {

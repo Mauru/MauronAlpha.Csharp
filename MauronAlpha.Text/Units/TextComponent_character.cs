@@ -36,6 +36,8 @@ namespace MauronAlpha.Text.Units {
 		#endregion
 
 		#region The Context
+		
+		
 		///<summary>The Position of a character in a text relative to its Parent
 		///<remarks>Do not modify the context directly!</remarks>
 		///</summary>
@@ -43,6 +45,11 @@ namespace MauronAlpha.Text.Units {
 			get {
 				// We dont really need to check for null since the constructor requires a context
 				return TXT_context;
+			}
+		}
+		public int Index {
+			get {
+				return Context.CharacterOffset;
 			}
 		}
 

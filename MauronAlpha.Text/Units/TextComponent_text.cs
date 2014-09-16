@@ -386,13 +386,15 @@ namespace MauronAlpha.Text.Units {
 			}
 			#endregion
 
-			if(Context.IsOffsetFor<TextComponent_text>(index,this)){
+			if(index<0){
+				index=CharacterCount-index;
 			}
 
 			//get the character
 			TextComponent_character c = CharacterByIndex(index);
-
-
+			TextComponent_word word = c.Parent;
+			word.RemoveCharacterAtIndex(c.Index);
+			return this;
 		}
 		#endregion
 

@@ -69,6 +69,7 @@ namespace MauronAlpha.Text.Units {
 				//not on this Line
 				if( IsAtLineStart ){
 					
+					#region Is a MultiWord	
 					if(IsMultiWord){
 
 						//starts multiword
@@ -88,13 +89,17 @@ namespace MauronAlpha.Text.Units {
 						if( MultiWordIndex >= Partners.Count ){
 							
 							//there are other multiword parts before this part, return by offset
+
 							if( Parent.IsAtTextStart ) {
 								Error("There is no previous word! Also, the MultiWord is broken!,{"+Context.AsString+"}", this, ErrorType_bug.Instance);
 								return this;
 							}
 
+							return PreviousPartner.PreviousWord;
+
 						}
 					}
+					#endregion
 
 				}
 
@@ -244,6 +249,38 @@ namespace MauronAlpha.Text.Units {
 			}
 			#endregion
 			Characters.RemoveLastElement();
+			return this;
+		}
+		private TextComponent_word RemoveCharacterAtIndex(int n){
+			if(n<0||n>=CharacterCount){
+				Error("CharacterIndex out of bounds!,{"+n+"},(RemoveCharacterAtIndex)",this,ErrorType_bounds.Instance);
+			}
+
+			TextComponent_character ch=Characters.Value(n);
+
+			//all following characters
+			MauronCode_dataList<TextComponent_character> characters=Characters.Range(n);
+
+			//remove character
+			Characters.RemoveByKey(n);
+
+			foreach(TextComponent_character c in characters){
+				c.Context.Add(0,0,-1);
+			}
+
+			//character ends word
+			if(ch.EndsWord){
+				
+				//character ends line
+				if(ch.TerminatesLine){
+					//There is a next line
+					if(Parent.HasOffsetNeighbor(1,0,0)){
+					
+					}
+				}
+			
+			}
+
 			return this;
 		}
 		#endregion
@@ -436,6 +473,12 @@ namespace MauronAlpha.Text.Units {
 
 		#region MultiWords (Partners)
 		
+		private int INT_multiWordIndex=0;
+		public int MultiWordIndex {
+			get {
+				return INT_multiWordIndex;
+			}
+		}
 		private MauronCode_dataList<TextComponent_word> MULTIWORD_partners;
 		public MauronCode_dataList<TextComponent_word> Partners {
 			get {
@@ -457,7 +500,25 @@ namespace MauronAlpha.Text.Units {
 				return Partners.LastElement;
 			}
 		}
-		
+		public TextComponent_word PreviousPartner {
+			get {
+				if(!Partners.ContainsKey(MultiWordIndex-1)){
+					Error("MultiWordIndex out of bounds!{"+(MultiWordIndex-1)+"},(PreviousPartner)",this,ErrorType_bounds.Instance);
+					return this;
+				}
+				return Partners.Value(MultiWordIndex-1);
+			}
+		}
+		public TextComponent_word NextPartner {
+			get {
+				if(!Partners.ContainsKey(MultiWordIndex+1)){
+					Error("MultiWordIndex out of bounds!{"+(MultiWordIndex+1)+"},(NextPartner)", this, ErrorType_bounds.Instance);
+					return this;
+				}
+				return Partners.Value(MultiWordIndex+1);
+			}
+		}
+
 		#endregion
 
 		#region Boolean States
@@ -496,6 +557,16 @@ namespace MauronAlpha.Text.Units {
 		public bool IsLastOnLine {
 			get {
 				return Parent.ContainsWordIndex(Context.WordOffset+1);
+			}
+		}
+		public bool IsAtTextStart {
+			get {
+				return Context.LineOffset==0 && Context.WordOffset==0;
+			}
+		}
+		public bool IsAtLineStart {
+			get {
+				return Context.WordOffset==0;
 			}
 		}
 		public bool IsComplete {
