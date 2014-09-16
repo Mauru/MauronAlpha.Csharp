@@ -242,7 +242,7 @@ namespace MauronAlpha.Text {
 			result.SolveLineOffset(text);
 
 			// 1: We start off with the line
-			TextContext result = SolveLineOffset(text);
+			result = SolveLineOffset(text);
 			TextComponent_line line = text.LineByIndex(result.LineOffset);
 			int lineIndex = result.LineOffset;
 
@@ -259,6 +259,8 @@ namespace MauronAlpha.Text {
 			result = result.SolveCharacterOffset(word,false).SolveWordOffset();
 
 								
+		}
+		public TextContext SolveWith(TextComponent_text text){
 		}
 		public TextContext SolveWith(TextComponent_word word) {
 			
@@ -406,7 +408,11 @@ namespace MauronAlpha.Text {
 					return result.SolveCharacterOffset(word.PreviousWord, stayOnWord);
 				}
 
+				result.Add (0, 0, word.CharacterCount - WordOffset);
+				return result;
 			}
+
+			return this;
 
 		}
 		#endregion
