@@ -290,35 +290,56 @@ namespace MauronAlpha.Text.Units {
 
 		#region Boolean states
 		public bool HasOffsetNeighbor(int line, int word, int character){
+			//the context
 			TextContext query = Context.Instance.Add(line,word,character);
+
+			//Starting with the line offset
 			if(line!=0){
+				//negative
+				if(query.LineOffset<0){	return false; }
+		
+				//queried line does not exist
 				if(!Parent.ContainsLineIndex(query.LineOffset)){ return false; }
 			}
+
+			//we now know that the line does exist
+
+			//get the line
 			TextComponent_line l = Parent.LineByIndex(query.LineOffset);
-			if(!l.IsOffset(query)){
+			
+			//we are looking for the word...
+
+			//starting with the word offset
+			if(word!=0) {
+				
+				//is word an offset for the line?
+				if(l.IsLineOffset(0,word,0)){
+					
+				}
+
+				//the queried word does not exist
+
+
+			}
+
+			if(query.IsWordOffset(l)){
 				return true;
 			}
 			if(query.IsWordOffset(this)){}
 		}
 		public bool IsOffset(TextContext context){
-			if(context.Equals(0,0,0)){
-				return false;
-			}
-			if(Index!=context.LineOffset) {
-				return true;
-			}
-			if(context.LineOffset<0||context.WordOffset<0||context.CharacterOffset<0){
-				return true;
-			}
-			if(context.WordOffset>=WordCount) {
-				return true;
-			}
-			TextComponent_word word=WordByIndex(context.WordOffset);
-			if(context.CharacterOffset>=word.CharacterCount){
-				return true;
-			}
-			return false;
+			return context.IsLineOffset(this);
 		}
+		public bool IsOffset(int line, int word, int character){
+			return IsOffset(Context.New(line,word,character));
+		}
+		public bool IsLineOffset(TextContext context){
+			return context.IsLineOffset(this);
+		}
+		public bool IsLineOffset(int line, int word, int character){
+			return Context.New(line,word,character).IsLineOffset(this);
+		}
+
 		public bool IsEmpty {
 			get { 
 				foreach(TextComponent_word word in Words){

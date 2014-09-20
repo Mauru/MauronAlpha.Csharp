@@ -27,13 +27,16 @@ namespace MauronAlpha.Text {
 		#region Cloning, instances
 		public TextContext Instance {
 			get {
-				return TextContext.New.SetLineOffset(LineOffset).SetWordOffset(WordOffset).SetCharacterOffset(CharacterOffset);
+				return TextContext.NewEmpty.SetLineOffset(LineOffset).SetWordOffset(WordOffset).SetCharacterOffset(CharacterOffset);
 			}
 		}
-		public static TextContext New {
+		public static TextContext NewEmpty {
 			get {
 				return new TextContext();
 			}
+		}
+		public TextContext New(int line, int word, int character){
+			return new TextContext(line,word,character);
 		}
 		#endregion
 
@@ -425,7 +428,8 @@ namespace MauronAlpha.Text {
 			if(WordOffset!=word.Index){
 				return true;
 			}
-			if(CharacterOffset<0||CharacterOffset>=word.CharacterCount){
+			if(CharacterOffset<0&&Math.Abs(CharacterOffset)>word.CharacterCount) return true;
+			if(CharacterOffset>=word.CharacterCount){
 				return true;
 			}
 			return false;
@@ -443,6 +447,15 @@ namespace MauronAlpha.Text {
 				return true;
 			}
 			return false;			
+		}
+		public bool IsLineOffset(TextComponent_line line){
+			if(LineOffset!=line.Index) return true;
+			if(WordOffset<0&&Math.Abs(WordOffset)>line.WordCount) return true;
+			if(WordOffset>=line.WordCount) return true;
+			if(CharacterOffset<0&&Math.Abs(CharacterOffset)>line.CharacterCount) return true;
+			TextComponent_word word=line.WordByIndex(WordOffset);
+			if( CharacterOffset>=word.CharacterCount ) return true;
+			return false;
 		}
 
 		public bool IsTextOffset(TextComponent_text text){

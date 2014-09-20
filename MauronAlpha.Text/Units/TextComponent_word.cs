@@ -251,7 +251,7 @@ namespace MauronAlpha.Text.Units {
 			Characters.RemoveLastElement();
 			return this;
 		}
-		private TextComponent_word RemoveCharacterAtIndex(int n){
+		public TextComponent_word RemoveCharacterAtIndex(int n){
 			if(n<0||n>=CharacterCount){
 				Error("CharacterIndex out of bounds!,{"+n+"},(RemoveCharacterAtIndex)",this,ErrorType_bounds.Instance);
 			}
@@ -275,7 +275,8 @@ namespace MauronAlpha.Text.Units {
 				if(ch.TerminatesLine){
 					//There is a next line
 					if(Parent.HasOffsetNeighbor(1,0,0)){
-					
+						
+						MauronCode_dataList<TextComponent_word> words = Parent.NextLine.Words;
 					}
 				}
 			
