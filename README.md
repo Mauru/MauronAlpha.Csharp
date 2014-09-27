@@ -5,6 +5,10 @@ This is an attempt at creating a custom modular codebase for C# Projects that is
 
 Currently this code is horribly broken and highly unstable but you might find some interesting bits and pieces to reuse in your own projects.
 
+
+*DISCLAIMER* This is not a stable product. Feel free to contribute but be aware that this is not a stable codebase.
+
+
 The planned feature set includes:
 
 1. A command line interface
