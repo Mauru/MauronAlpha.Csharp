@@ -12,7 +12,11 @@ The planned feature set includes:
 
 2. A GUI interface
 
-3. A GameEngine with support for polygons that can be plugged into other game-Engines easily (monogame, unity, ...)
+3. A GameEngine Wrapper with support for polygons that can be plugged into other game-Engines easily (monogame, unity, ...)
 
 4. A context-sensitive Text-processor
+
+* Updates *
+
+Currently nothing works. But it once worked. Then I decided to make things better and broke something ;-) Which is good but also time-consuming.
 
