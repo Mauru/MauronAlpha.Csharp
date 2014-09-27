@@ -3,10 +3,7 @@ Author: contact@mauru.net
 
 This is an attempt at creating a custom modular codebase for C# Projects that is portable between Windows and Linux Environments.
 
-Currently this code is horribly broken and highly unstable but you might find some interesting bits and pieces to reuse in your own projects.
-
-
-*DISCLAIMER* This is not a stable product. Feel free to contribute but be aware that this is not a stable codebase.
+*DISCLAIMER* This is not a stable product. Feel free to contribute but be aware that this is not a static codebase and that any changes you make might get thrown out at any time (so fork away but don't expect me to try and maintain this constantly).
 
 
 The planned feature set includes:
