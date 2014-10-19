@@ -8,7 +8,7 @@ namespace MauronAlpha.HandlingData {
 	//A data array that maps a string to a generic
 	public class MauronCode_dataMap<T>:MauronCode_dataObject,IDictionary<string,T> {
 
-		public MauronCode_dataMap():base(DataType_dataSet.Instance){}
+		public MauronCode_dataMap():base(DataType_dataDictionary.Instance){}
 
 		//Data
 		private Dictionary<string,T> DIC_data=new Dictionary<string,T>();

@@ -16,8 +16,8 @@ namespace MauronAlpha.Text.Utility {
 		public static char Empty='\u0000'; //null
 
 		//parse a string into a text
-		public static TextComponent_text ParseString(string str) {
-			TextComponent_text text=new TextComponent_text();
+		public static TextUnit_text ParseString(string str) {
+			TextUnit_text text=new TextUnit_text();
 			return text.AddString(str);			
 		}
 		

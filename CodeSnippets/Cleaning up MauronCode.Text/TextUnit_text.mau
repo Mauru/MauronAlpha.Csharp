@@ -1,0 +1,21 @@
+		public TextUnit_text AddWordAtContext(TextContext context, TextUnit_word word){
+			#region ReadOnly Check
+			if( IsReadOnly ) {
+				Error(Is protected!,(AddWordAtContext), this, ErrorType_protected.Instance);
+			}
+			#endregion
+
+			TextContext contextIndex=context.Instance;
+
+			start at line - 
+			if(context.Validate.Line(this)) {
+			
+			}
+
+			#region ErrorCheck context
+			if(!contextIndex.TrySolveWith(this)){
+				Error(Invalid Context!,{+context.AsString+},(AddWordAtContext),this,ErrorType_bounds.Instance);
+			}
+			#endregion
+			
+		}

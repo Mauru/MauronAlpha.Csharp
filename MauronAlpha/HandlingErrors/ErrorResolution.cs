@@ -20,6 +20,12 @@ namespace MauronAlpha.HandlingErrors {
 			return this;
 		}
 
+		public static ErrorResolution Delayed {
+			get {
+				return new ErrorResolution().SetDescription("The Solution is delayed. This will most likely result in a Fatal Error.");
+			}
+		}
+
 		public static ErrorResolution DoNothing {
 			get {
 				return new ErrorResolution().SetDescription("Do Nothing, Error ignored.");
@@ -29,6 +35,12 @@ namespace MauronAlpha.HandlingErrors {
 		public static ErrorResolution ReturnEmpty {
 			get {
 				return new ErrorResolution().SetDescription("Return empty result.");
+			}
+		}
+
+		public static ErrorResolution ExpectedReturn {
+			get {
+				return new ErrorResolution().SetDescription("The Parameters were wrong, but the calling method knows how to react.");
 			}
 		}
 

@@ -22,11 +22,11 @@ namespace MauronAlpha.Settings {
 		}
 		
 		#region Default Settings
-		private MauronCode_dataSet DS_data;
-		internal MauronCode_dataSet Data { 
+		private MauronCode_dataDictionary DS_data;
+		internal MauronCode_dataDictionary Data { 
 			get { 
 				if(DS_data==null) {
-					DS_data=new MauronCode_dataSet(Name);
+					DS_data=new MauronCode_dataDictionary(Name);
 				}
 				return DS_data;
 			}
