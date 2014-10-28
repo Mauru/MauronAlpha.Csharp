@@ -1,4 +1,10 @@
-		#region Solving ContextOffsets
+#.Info {
+	This is my attempt at cleaning up the MauronCode.Text package to make it usable...
+}
+
+#.Code.Csharp;
+
+#region Solving ContextOffsets
 		
 		//Try to Solve a TextContext with a text - 
 		public bool TrySolveWith(TextUnit_text text, ErrorResolution conflictBehavior){
@@ -222,4 +228,114 @@
 
 		}
 		#endregion
+		
+#region @return: BOOL; Context, with TextComponent, is Offset ("leaves" the component range)
+		public bool IsWordOffset(TextUnit_word word){
+			if(LineOffset!=word.Context.LineOffset){
+				return true;
+			}
+			if(WordOffset!=word.Index){
+				return true;
+			}
+			if(CharacterOffset<0&&Math.Abs(CharacterOffset)>word.CharacterCount) return true;
+			if(CharacterOffset>=word.CharacterCount){
+				return true;
+			}
+			return false;
+		}
+		public bool IsWordOffset(TextUnit_line line) {
+			if(LineOffset!=line.Index){ return true; }
+			if(WordOffset<0||CharacterOffset<0) {
+				return true;
+			}
+			if(WordOffset>=line.WordCount){
+				return true;
+			}
+			TextUnit_word word=line.WordByIndex(WordOffset);
+			if(CharacterOffset>=word.CharacterCount){
+				return true;
+			}
+			return false;			
+		}
+		public bool IsLineOffset(TextUnit_line line){
+			if(LineOffset!=line.Index) return true;
+			if(WordOffset<0&&Math.Abs(WordOffset)>line.WordCount) return true;
+			if(WordOffset>=line.WordCount) return true;
+			if(CharacterOffset<0&&Math.Abs(CharacterOffset)>line.CharacterCount) return true;
+			TextUnit_word word=line.WordByIndex(WordOffset);
+			if( CharacterOffset>=word.CharacterCount ) return true;
+			return false;
+		}
+		public bool IsCharacterOffset (TextUnit_character ch) {
+			if( LineOffset<0 ) {
+				return true;
+			}
+			if( LineOffset!=ch.Context.LineOffset ) {
+				return true;
+			}
+			if( WordOffset<0||CharacterOffset<0 ) {
+				return true;
+			}
+			if( ch.Context.WordOffset!=WordOffset ) {
+				return true;
+			}
+			if( ch.Context.CharacterOffset!=CharacterOffset ) {
+				return true;
+			}
+			return false;
+		}
+		public bool IsTextOffset(TextUnit_text text){
+			if(LineOffset<0){
+				return true;
+			}
+			if(LineOffset>=text.LineCount){
+				return true;
+			}
+			if(WordOffset<0||CharacterOffset<0) {
+				return true;
+			}
+			TextUnit_line line = text.LineByIndex(LineOffset);
+			if(WordOffset>=line.WordCount){
+				return true;
+			}
+			TextUnit_word word = line.WordByIndex(WordOffset);
+			if(word.CharacterCount>=CharacterOffset){
+				return true;
+			}
+			return false;
+		}
+		#endregion
+#region @return: BOOL; STATIC; Check TextComponent for offset
+		public static bool IsLineOffset(TextUnit_line line, int lineOffset,int wordOffset, int characterOffset){
+			TextContextOffset offsetResult = new TextContextOffset(0,0,0);
+			if(lineOffset<0) {
+				
+			}
+		}
+		#endregion
 
+#region Comparison and other refactorting
+/// <summary>
+/// Inverts all properties
+/// </summary>
+public TextContext Inverted {
+	get {
+		return Instance.Multiply(-1,-1,-1,-1);
+	}
+}
+
+/// <summary>
+/// Turns all negative properties into positives
+/// </summary>
+public TextContext Normalized {
+	get {
+		TextContext result=Instance;
+		if( result.Paragraph<0 ) { result.Multiply(-1, 0, 0, 0, true); }
+		if( result.Line<0 ){ result.Multiply(0, -1, 0, 0, true); }
+		if( result.Word<0 ) { result.Multiply(0, 0, -1, 0, true); }
+		if( result.Character<0 ) { result.Multiply(0, 0, 0, -1, true); }
+		return result;
+
+	}
+}
+#endregion

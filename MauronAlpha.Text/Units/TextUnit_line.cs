@@ -9,7 +9,10 @@ namespace MauronAlpha.Text.Units {
 	public class TextUnit_line : TextComponent_unit,I_textUnit<TextUnit_line> {
 
 		//constructor
-		public TextUnit_line (TextUnit_text parent, TextContext context) {}
+		public TextUnit_line (TextUnit_paragraph parent, TextContext context):base() {
+			TXT_parent=parent;
+			TXT_context=context;
+		}
 
 		#region Instance (clone)
 		public TextUnit_line Instance {
@@ -37,9 +40,9 @@ namespace MauronAlpha.Text.Units {
 		//The words in this line
 		private MauronCode_dataList<TextUnit_word> Words = new MauronCode_dataList<TextUnit_word>();
 
-		#region The TextUnit_text this line belongs to
-		private TextUnit_text TXT_parent;
-		public TextUnit_text Parent {
+		#region PARENT - The TextUnit_paragraph this line belongs to
+		private TextUnit_paragraph TXT_parent;
+		public TextUnit_paragraph Parent {
 			get {
 				if(TXT_parent==null) {
 					NullError("Parent can't be null", this, typeof(TextUnit_text));
@@ -47,15 +50,16 @@ namespace MauronAlpha.Text.Units {
 				return TXT_parent;
 			}
 		}
-		private TextUnit_line SetParent(TextUnit_text parent){
+		private TextUnit_paragraph SetParent (TextUnit_paragraph parent) {
 			TXT_parent=parent;
 			return this;	
 		}
 		#endregion
+
 		#region Same as above (as Source)
 		public TextUnit_text Source {
 			get { 
-				return Parent;
+				return Parent.Parent;
 			}
 		}
 		#endregion
@@ -296,7 +300,7 @@ namespace MauronAlpha.Text.Units {
 			if(result<0) {
 				return false;
 			}
-			if(result>Parent.LineCount){
+			if(result>Parent.ChildCount){
 				return false;
 			}
 			return true;

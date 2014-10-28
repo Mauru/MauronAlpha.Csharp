@@ -3,17 +3,17 @@
 namespace MauronAlpha.HandlingErrors {
 
 	//A fatal error condition
-	public sealed class ErrorType_protected : ErrorType {
+	public sealed class ErrorType_limit : ErrorType {
 		#region Singleton
-		private static volatile ErrorType_protected instance=new ErrorType_protected();
+		private static volatile ErrorType_limit instance=new ErrorType_limit();
 		private static object syncRoot=new Object();
 		//constructor singleton multithread safe
-		static ErrorType_protected ( ) { }
+		static ErrorType_limit ( ) { }
 		public static ErrorType Instance {
 			get {
 				if( instance==null ) {
 					lock( syncRoot ) {
-						instance=new ErrorType_protected();
+						instance=new ErrorType_limit();
 					}
 				}
 				return instance;
@@ -22,7 +22,7 @@ namespace MauronAlpha.HandlingErrors {
 		#endregion
 
 		public override string Name {
-			get { return "protected"; }
+			get { return "limit"; }
 		}
 	}
 

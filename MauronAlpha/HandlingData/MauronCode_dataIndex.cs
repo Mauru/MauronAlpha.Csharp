@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 
+using MauronAlpha.HandlingErrors;
+
 namespace MauronAlpha.HandlingData {
 
 	//A data index is a numerical index of generics - it does not reindex its element like dataList
@@ -20,6 +22,9 @@ namespace MauronAlpha.HandlingData {
 			}
 		}
 		public MauronCode_dataIndex<T> SetData(Dictionary<long,T> data){
+			if( IsReadOnly ) {
+				Error("Is Read Only!", this, ErrorType_protected.Instance);
+			}
 			DIC_data=data;
 			return this;
 		}
@@ -36,12 +41,20 @@ namespace MauronAlpha.HandlingData {
 			return Data[key];
 		}
 		public MauronCode_dataIndex<T> SetValue(long key, T value){
+			if(IsReadOnly) {
+				Error("Is Read Only!",this,ErrorType_protected.Instance);
+			}
 			Data.Add(key,value);
 			return this;
 		}
 
 		//is the index ReadOnly
-		public bool IsReadOnly { get { return false; } }
+		private bool B_isReadOnly = false;
+		public bool IsReadOnly { get { return B_isReadOnly; } }
+		public MauronCode_dataIndex<T> SetIsReadOnly(bool state) {
+			B_isReadOnly=state;
+			return this;
+		}
 
 		//Does data contain a key
 		public bool ContainsKey(long key){
@@ -67,12 +80,18 @@ namespace MauronAlpha.HandlingData {
 
 		//Remove a value by Key
 		public MauronCode_dataIndex<T> RemoveByKey(long key){
+			if( IsReadOnly ) {
+				Error("Is Read Only!", this, ErrorType_protected.Instance);
+			}
 			Data.Remove(key);
 			return this;
 		}
 
 		//Clear
 		public MauronCode_dataIndex<T> Clear() {
+			if( IsReadOnly ) {
+				Error("Is Read Only!", this, ErrorType_protected.Instance);
+			}
 			SetData(new Dictionary<long,T>());
 			return this;
 		}
@@ -113,7 +132,7 @@ namespace MauronAlpha.HandlingData {
 					return d.Key;
 				}
 			}
-			Error("Item is not in index",this);
+			Error("Item is not in index!",this,ErrorType_index.Instance);
 			return index;
 		}
 

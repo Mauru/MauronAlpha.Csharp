@@ -1,22 +1,52 @@
-﻿using MauronAlpha.Text.Context;
+﻿using MauronAlpha.HandlingData;
+
+using MauronAlpha.Text.Context;
+using MauronAlpha.Text.Collections;
+
+using System;
+
 
 namespace MauronAlpha.Text.Units {
 
-	public interface I_textUnit<T> {
+	//Interface
+	public interface I_textUnit<T>:IEquatable<T> where T:TextComponent_unit {
+
 		string AsString {get;}
+		TextUnitType UnitType { get; }
 
 		bool IsEmpty {get;}
-		bool IsComplete {get;}
+		bool IsReadOnly { get; }
+		T SetIsReadOnly (bool b_isReadOnly);
+
+		bool HasMultiWord { get; }
 		bool HasWhiteSpace {get;}
-		bool HasWordBreak {get;}
 		bool HasLineBreak {get;}
+		bool HasLimit {get;}
+		bool HasReachedLimit {get;}
+
+		bool IsFirstChild {get;}
+		bool IsLastChild {get;}
 		
-		bool HasContext {get;}
-		T SetContext(TextContext context);
 		TextContext Context { get; }
 
-		TextUnit_text Source { get; }
-		
-		T Instance { get; }
+		int Index { get; }
+		int Limit { get; }
+		int ChildCount { get; }
+
+		I_textUnit<T> Instance { get; }
+		I_textUnit<TextComponent_unit> Parent { get; }
+		I_textUnit<TextUnit_text> Source { get; }
+
+		MauronCode_dataList<TextComponent_unit> Children { get; }
+		I_textUnit<TextComponent_unit> FirstChild { get; }
+		I_textUnit<TextComponent_unit> LastChild { get; }
+		I_textUnit<TextComponent_unit> NewChild { get; }
+		I_textUnit<TextComponent_unit> ChildByIndex (int index);
+
+		MauronCode_dataIndex<TextComponent_unit> Neighbors { get; }
+
+		TextUnit_character FirstCharacter { get; }
+		TextUnit_character LastCharacter { get; }
+
 	}
 }

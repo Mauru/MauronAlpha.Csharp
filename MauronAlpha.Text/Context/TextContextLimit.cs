@@ -3,20 +3,20 @@ using MauronAlpha.HandlingData;
 using MauronAlpha.Text.Units;
 
 namespace MauronAlpha.Text.Context {
-	//An object tracking how many textcomponents are in a component
-	public class TextContextCount : TextComponent_context {
+	//An object tracking how many textcomponents can be in a TextUnit
+	public class TextContextLimit : TextComponent_context {
 
 		//DataTrees
-		private MauronCode_dataTree<string, int> TREE_count=new MauronCode_dataTree<string, int>(SharedDataKeys, SharedDataDefaults);
+		private MauronCode_dataTree<string, int> TREE_limit=new MauronCode_dataTree<string, int>(SharedDataKeys, SharedDataDefaults);
 		//DataKeys
 		private static string[] SharedDataKeys=new string[] { "paragraph", "line", "word", "character" };
 		//Default Values
 		private static int[] SharedDataDefaults=new int[] { 0, 0, 0, 0 };
 
 		//constructor
-		private TextContextCount ( ) { }
-		public TextContextCount (int paragraph, int line, int word, int character) {
-			TREE_count.SetValues(new int[]{
+		private TextContextLimit ( ) { }
+		public TextContextLimit (int paragraph, int line, int word, int character) {
+			TREE_limit.SetValues(new int[]{
 				paragraph,line, word, character
 			});
 		}
@@ -34,22 +34,22 @@ namespace MauronAlpha.Text.Context {
 		//get individual positions
 		public int Paragraph {
 			get {
-				return TREE_count.Value("paragraph");
+				return TREE_limit.Value("paragraph");
 			}
 		}
 		public int Line {
 			get {
-				return TREE_count.Value("line");
+				return TREE_limit.Value("line");
 			}
 		}
 		public int Word {
 			get {
-				return TREE_count.Value("word");
+				return TREE_limit.Value("word");
 			}
 		}
 		public int Character {
 			get {
-				return TREE_count.Value("character");
+				return TREE_limit.Value("character");
 			}
 		}
 
