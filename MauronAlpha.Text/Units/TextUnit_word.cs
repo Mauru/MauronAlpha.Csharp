@@ -1,693 +1,346 @@
+using System;
+
 using MauronAlpha.HandlingData;
 using MauronAlpha.HandlingErrors;
 
-using MauronAlpha.Text.Utility;
 using MauronAlpha.Text.Context;
-
-using System.Collections.Generic;
-using System;
+using MauronAlpha.Text.Collections;
 
 namespace MauronAlpha.Text.Units {
 
-	//A word
-	public class TextUnit_word : TextComponent_unit, I_textUnit<TextUnit_word>, IEquatable<string> {
-		
+	//A Paragraph in a text
+	public class TextUnit_word : TextComponent_unit, I_textUnit<TextUnit_word> {
+
 		//constructor
-		public TextUnit_word(TextUnit_line parent, TextContext context) {}
-	
-		#region Instance (creates clone)
-		public TextUnit_word Instance {
-			get {
-				TextUnit_word result = new TextUnit_word(Parent,Context.Instance);
-				foreach(TextUnit_character c in Characters){
-					result.AddCharacter(c.Instance);
-				}
-				return this;
-			}
+		public TextUnit_word (TextUnit_line parent, TextContext context)
+			: base(TextUnitType_word.Instance) {
+			TXT_parent=parent;
+			CTX_context=context;
+			SETUP_Utility(parent);
 		}
+		public TextUnit_word (TextUnit_line parent, TextContext context, MauronCode_dataList<TextUnit_character> children)
+			: this(parent, context) {
+			DATA_children=children.Instance;
+		}
+
+		//DataTress
+		private MauronCode_dataList<TextUnit_character> DATA_children=new MauronCode_dataList<TextUnit_character>();
+
+		#region Specific to this TextUnit
+			public bool HasWordBreak {
+				get {
+					if( Utility.RangeCompare<TextUnit_character>(DATA_children, 0, 1, Encoding.WordBreaks) ) {
+						return true;	
+					}
+					return false;
+				}
+			}
 		#endregion
 
-		#region The Characters in this Word
-		private MauronCode_dataList<TextUnit_character> DATA_characters;
-		public MauronCode_dataList<TextUnit_character> Characters {
+		#region Implementing I_textUnit
+
+		//Representation as string
+		public string AsString {
 			get {
-				if(DATA_characters==null){
-					DATA_characters = new MauronCode_dataList<TextUnit_character>();
+				if( IsEmpty ) {
+					return null;
 				}
-				return DATA_characters;
-			}
-		}
-		#endregion
-
-		#region Relatives By Context
-		private TextContext NextCharacterContext {
-			get {
-				return Context.Instance.SetCharacterOffset(CharacterCount);
-			}
-		}
-
-		public TextUnit_word NextWord {
-			get {
-				
-				//The next Word is not on this line
-				if( IsAtLineEnd ) {
-
-					//There is no next word !return
-					if( Parent.IsLastLine ) {
-						Exception("No next Word!,{"+Context.AsString+"},(NextWord)", this, ErrorResolution.Correct_maximum);
-						return this;
-					}
-
-					if( IsMultiWord && MultiWordIndex < PartnerCount ) {
-						return LastPartner.NextWord;
-					}	
-									
-					return Parent.Parent.LineByIndex(Parent.Index+1).FirstWord;
+				string result="";
+				foreach( TextUnit_character unit in DATA_children ) {
+					result+=unit.AsString;
 				}
-				
-				return Parent.WordByIndex(Index+1);
-
+				return result;
 			}
 		}
-		public TextUnit_word PreviousWord {
+		//!Inherited(base) UnitType
+
+		#region Boolean Checks
+
+		public bool IsEmpty {
 			get {
-				
-				//not on this Line
-				if( IsAtLineStart ){
-
-					if( Parent.IsAtTextStart ) {
-						Exception("No previous word! {"+Context.AsString+"}", this, ErrorResolution.Correct_minimum);
-						return this;
-					}
-					
-					#region Is a MultiWord	
-					if(IsMultiWord && MultiWordIndex > 0 ){
-						return FirstPartner.PreviousWord;
-					}
-					#endregion
-
-					return Parent.Parent.LineByIndex(Parent.Index-1).LastWord;
-
-				}
-
-				return Parent.WordByIndex(Index-1);
-
-			}
-		}
-
-		#endregion
-
-		#region Boolean States by Context
-
-		public bool IsAtLineEnd {
-			get {
-				if( Parent.WordCount==1 ){
+				if( DATA_children.Count==0 )
 					return true;
-				}
-				if( TerminatesLine ) {
+				if( FirstChild.IsEmpty )
 					return true;
-				}
-				if( Parent.WordCount-1==Index ){
-					return true;
-				}
+
 				return false;
 			}
 		}
-
-		#endregion
-
-		#region ReadOnly
-		private bool B_isReadOnly=false;
-		public bool IsReadOnly {
-			get { return B_isReadOnly; }
-		}
-		public TextUnit_word SetReadOnly (bool status) {
-			B_isReadOnly=status;
+		//!Inherited(base) IsReadOnly
+		public TextUnit_word SetIsReadOnly (bool b_isReadOnly) {
+			B_isReadOnly=b_isReadOnly;
 			return this;
 		}
-		#endregion
-
-		#region Modification of the word
-
-		#region Set all Characters at once
-		/// <summary>Set the characters of a word
-		/// <remarks>Clears Characters then applies AddCharacter to each</remarks></summary>
-		public TextUnit_word SetCharacters (MauronCode_dataList<TextUnit_character> characters) {
-			#region ReadOnly Check
-			if( IsReadOnly ) {
-				Error("Is protected!,(SetCharacters)", this, ErrorType_protected.Instance);
-			}
-			#endregion
-			//1: reset internal list
-			DATA_characters=new MauronCode_dataList<TextUnit_character>();
-			foreach( TextUnit_character c in characters ) {
-				AddCharacter(c);
-			}
-			return this;
+		public override bool IsFirstChild {
+			get { return Parent.FirstChild.Context.Equals(Context); }
 		}
-		#endregion
-
-		#region Add a character to the word
-		/// <summary>Add a character to the end of the string
-		/// <remarks>Adding \0 (null) will throw an Exception</remarks>
-		/// </summary>
-		public TextUnit_word AddCharacter(TextUnit_character c){
-			#region ReadOnlyCheck : !Error
-			if( IsReadOnly ) {
-				Error("Is protected!,(AddCharacter)", this, ErrorType_protected.Instance);
-			}
-			#endregion
-			
-			return InsertCharacterAtIndex(CharacterCount,c);
+		public override bool IsLastChild {
+			get { return Parent.LastChild.Context.Equals(Context); }
 		}
-		public TextUnit_word InsertCharacterAtIndex(int index,TextUnit_character c) {
-			#region ReadOnlyCheck : !Error
-			if( IsReadOnly ) {
-				Error("Is protected!,(AddCharacterAtIndex)", this, ErrorType_protected.Instance);
-			}
-			#endregion
-			#region ExceptionCheck: empty
-			if(IsEmpty){
-				Exception("Characters are empty!(AddCharacterAtIndex)",this, ErrorResolution.Function("AddCharacter"));
-				index=CharacterCount;
-			}
-			#endregion
-			#region ExceptionCheck: c == \0 : do nothing !returns
-			if( c.IsEmpty ) {
-				Exception("Can not add \0 to a word!,(AddCharacterAtIndex)", this, ErrorResolution.DoNothing);
-				return this;
-			}
-			#endregion
-			
-			#region Get all characters after index ?!returns
-			#region ExceptionCheck: index out of Bounds ?!returns
-			if(index<0){
-				Exception("Index out of Bounds!,{"+index+"},(AddCharacterByIndex)",this,ErrorResolution.Correct_minimum);
-				index=0;
-			}
-			else if(index>Characters.NextIndex){
-				Exception("Index out of Bounds!,{"+index+"},(AddCharacterByIndex)",this,ErrorResolution.Function("AddCharacter"));
-				return AddCharacter(c);
-			}
-			#endregion
-			MauronCode_dataList<TextUnit_character> characters=Characters.Range(index);
-			#endregion
 
-			#region New character ends word
-			if(characters.Count>0 && c.EndsWord){
-
-				//create new word
-				TextUnit_word newWord=Instance.SetCharacters(characters);
-				Parent.InsertWordAtIndex(Context.LineOffset+1,newWord);
-					
-				//Remove the character from this word
-				for(int n=0;n<characters.Count;n++){
-					RemoveCharacterAtIndex(n+index);
-				}
-
-				//Add new character
-				index=0;
-			}
-			#endregion
-
-			#region Insert character and offset following characters !returns
-
-			c.SetContext(Context.Instance.SetCharacterOffset(index));
-			Characters.InsertValueAt(index,c);
-			
-			//offset context of following characters
-			foreach(TextUnit_character ch in characters) {
-				c.Context.Add(new TextContext(0,0,1));
-			}
-			return this;
-			#endregion
-		}		
-		#endregion
-
-		#region Remove from word //TODO: potentially update parent, on empty remove word from parent
-		//Remove the last character
-		private TextUnit_word RemoveLastCharacter() {
-			#region ReadOnly Check
-			if( IsReadOnly ) {
-				Error("Is protected!,(RemoveLastCharacter)", this, ErrorType_protected.Instance);
-			}
-			#endregion
-			#region Error Check
-			if(RealCount==0){
-				Error("Characters is empty (RemoveLastCharacter)",this, ErrorType_index.Instance);
-			}
-			#endregion
-			Characters.RemoveLastElement();
-			return this;
-		}
-		public TextUnit_word RemoveCharacterAtIndex(int n){
-			if(n<0||n>=CharacterCount){
-				Error("CharacterIndex out of bounds!,{"+n+"},(RemoveCharacterAtIndex)",this,ErrorType_bounds.Instance);
-			}
-
-			TextUnit_character ch=Characters.Value(n);
-
-			//all following characters
-			MauronCode_dataList<TextUnit_character> characters=Characters.Range(n);
-
-			//remove character
-			Characters.RemoveByKey(n);
-
-			foreach(TextUnit_character c in characters){
-				c.Context.Add(0,0,-1);
-			}
-
-			//character ends word
-			if(ch.EndsWord){
-				
-				//character ends line
-				if(ch.TerminatesLine){
-					
-					//There is a next line
-					if(Parent.HasOffsetNeighbor(1,0,0)){						
-						MauronCode_dataList<TextUnit_word> words = Parent.NextLine.Words;
-					}
-
-				}
-			
-			}
-
-			return this;
-		}
-		#endregion
-
-		#endregion
-
-		#region The TextUnit_line this element belongs to
-		private TextUnit_line TXT_parent;
-		public TextUnit_line Parent {
+		public bool HasMultiWord {
 			get {
-				#region Error Check
-				if(TXT_parent==null){
-					NullError("Parent can not be null!,(Parent)",this,typeof(TextUnit_line));
-				}
-				#endregion
-				return TXT_parent;
+				return HasWordBreak;
 			}
 		}
-		private TextUnit_word SetParent(TextUnit_line line){
-			TXT_parent=line;
-			return this;
-		}
-		#endregion
-		#region The TextUnit_text this element belongs to
-		public TextUnit_text Source {
+		public bool HasWhiteSpace {
 			get {
-				return Parent.Source;
-			}
-		}
-		#endregion
-
-		#region The Context of this TextComponent
-		private TextContext TXT_context;
-		public TextContext Context {
-			get {
-				#region Error Check:null
-				if(TXT_context==null){
-					NullError("Context can not be null!,(Context)",this,typeof(TextContext));
-				}
-				#endregion
-				return TXT_context;
-			}
-		}
-
-		private TextUnit_word SetContext(TextContext context){
-			TXT_context=context;
-			return this;
-		}
-		public TextUnit_word OffsetContext (TextContext context) {
-			Context.Add(context);
-			foreach( TextUnit_character c in Characters ) {
-				c.OffsetContext(context);
-			}
-			return this;
-		}
-		public TextUnit_word OffsetContext (int line, int word, int character) {
-			Context.Add(line, word, character);
-			foreach( TextUnit_character c in Characters ) {
-				c.OffsetContext(line, word, character);
-			}
-			return this;
-		}
-		#endregion
-
-		#region The Index {Word Number} (by context)
-		public int Index {
-			get {
-				return Context.WordOffset;
-			}
-		}
-		#endregion
-
-		#region The Content (Characters in this Word)
-
-		//Strict! First Character
-		public TextUnit_character FirstCharacter {
-			get {
-				#region Error Check
-				if( CharacterCount<1 ) {
-					Error("Character Index out of bounds!,(FirstCharacter)", this, ErrorType_index.Instance);
-				}
-				#endregion
-				return Characters.FirstElement;
-			}
-		}
-		
-		//Strict! Last Character
-		public TextUnit_character LastCharacter {
-			get {
-				#region Error Check
-				if( CharacterCount<1 ) {
-					Error("Character Index out of bounds!,(LastCharacter)", this, ErrorType_index.Instance);
-				}
-				#endregion
-				return Characters.LastElement;
-			}
-		}
-
-		/// <summary>
-		/// Get a character By Context
-		/// <remarks>Uses CharacterByIndex, can throw OutofBoundsError</remarks>
-		/// </summary>
-		public TextUnit_character CharacterByContext(TextContext context) {
-			return CharacterByIndex(context.CharacterOffset);
-		}
-		/// <summary>
-		/// Character By Index
-		/// <remarks>Throws Error if Empty or out of bounds</remarks>
-		/// </summary>
-		public TextUnit_character CharacterByIndex(int index){
-			#region ErrorCheck: Empty
-			if(IsEmpty||!Characters.ContainsKey(index)){
-				Error("Index out of bounds!,{"+index+"},(CharacterByIndex)",this);
-			}
-			#endregion
-			return Characters.Value(index);
-		}
-		
-		#region Get a range of characters
-		/// <summary>
-		/// Get a range of characters
-		/// <remarks>Ignores Texthelper.Empty (null) characters</remarks>
-		/// </summary>
-		public MauronCode_dataList<TextUnit_character> CharactersByRange (int index, int count) {
-			MauronCode_dataList<TextUnit_character> result=new MauronCode_dataList<TextUnit_character>();
-
-			#region ExceptionCheck: empty !returns
-			if( IsEmpty ) {
-				Exception("Characters are empty!,{"+index+"},(CharactersByRange)", this, ErrorResolution.ReturnEmpty);
-				return result;
-			}
-			#endregion
-			#region ExceptionCheck: index out of bounds
-			if( index<0 ) {
-				Exception("Index out of bounds!,{"+index+"},(CharactersByRange)", this, ErrorResolution.Correct_minimum);
-				index=0;
-			}
-			if( index>CharacterCount ) {
-				Exception("Index out of bounds!,{"+index+"},(CharactersByRange)", this, ErrorResolution.Correct_maximum);
-				index=Characters.LastIndex;
-			}
-			#endregion
-			#region ExceptionCheck: count ?!returns
-			if( count<0 ) {
-				Exception("Invalid Count!,{"+count+"},(CharactersByRange)", this, ErrorResolution.ReturnEmpty);
-				return result;
-			}
-			if( index+count>=CharacterCount ) {
-				Exception("Invalid Count!,{"+count+"},(CharactersByRange)", this, ErrorResolution.Correct_maximum);
-				count=CharacterCount-index;
-			}
-			#endregion
-
-			for( int n=0; n<count; n++ ) {
-				int searchIndex=n+index;
-				if( Characters.ContainsKey(searchIndex) ) {
-					TextUnit_character c=Characters.Value(searchIndex);
-					if( !c.IsEmpty ) {
-						result.AddValue(c);
+				foreach( TextUnit_character unit in Children ) {
+					if( unit.HasWhiteSpace ) {
+						return true;
 					}
 				}
-			}
-			return result;
-		}
-		#endregion
-
-		#endregion
-
-		#region Count Characters in word
-		/// <summary> Number of characters in the word 
-		/// <remarks>
-		/// If the ONLY character in this word is TextHelper.Empty, this function will still return 0
-		/// </remarks>
-		/// </summary>
-		public int CharacterCount {
-			get { 
-				if(Characters.Count==1&&LastCharacter.IsEmpty){
-					return 0;
-				}
-				return Characters.Count;
-			}
-		}
-		/// <summary>Counts the real contents of the characters array (i.e. null)</summary>
-		internal int RealCount {
-			get {
-				return Characters.Count;
-			}
-		}
-		#endregion
-
-		#region MultiWords (Partners)
-		
-		private int INT_multiWordIndex=0;
-		public int MultiWordIndex {
-			get {
-				return INT_multiWordIndex;
-			}
-		}
-		private MauronCode_dataList<TextUnit_word> MULTIWORD_partners;
-		public MauronCode_dataList<TextUnit_word> Partners {
-			get {
-				if(MULTIWORD_partners==null){
-					MULTIWORD_partners=new MauronCode_dataList<TextUnit_word>();
-				}
-				return MULTIWORD_partners;
-			}
-		}
-		
-		/// <summary>
-		/// Gets the Last Part of a Multiword
-		/// </summary>
-		public TextUnit_word LastPartner {
-			get {
-				if(Partners.Count<1){
-					Error("No Partners!,(LastPartner)",this,ErrorType_bounds.Instance);
-				}
-				return Partners.LastElement;
-			}
-		}
-		public TextUnit_word FirstPartner {
-			get {
-				if(Partners.Count<1) {
-					Error("No Partners!,(NextPartner)", this, ErrorType_bounds.Instance);
-				}
-				return Partners.FirstElement;
-			}
-		}
-		public TextUnit_word PreviousPartner {
-			get {
-				if(!Partners.ContainsKey(MultiWordIndex-1)){
-					Error("MultiWordIndex out of bounds!{"+(MultiWordIndex-1)+"},(PreviousPartner)",this,ErrorType_bounds.Instance);
-					return this;
-				}
-				return Partners.Value(MultiWordIndex-1);
-			}
-		}
-		public TextUnit_word NextPartner {
-			get {
-				if(!Partners.ContainsKey(MultiWordIndex+1)){
-					Error("MultiWordIndex out of bounds!{"+(MultiWordIndex+1)+"},(NextPartner)", this, ErrorType_bounds.Instance);
-					return this;
-				}
-				return Partners.Value(MultiWordIndex+1);
-			}
-		}
-		public int PartnerCount {
-			get {
-				return MULTIWORD_partners.Count;
-			}
-		}
-
-		#endregion
-
-		#region Boolean States
-		
-		public bool IsMultiWord {
-			get {
-				if(Parent.CanBreak){
-					return false;
-				}
-				return Partners.Count>0;
-			}
-		}
-		public bool EndsLine {
-			get {
-				if( Characters.Count<1 ) {
-					return false;
-				}
-				if( IsMultiWord ){
-					if(!Parent.CanBreak){
-						return false;
-					}
-					return(LastPartner.Parent.Index==Parent.Index);
-				}
-				return ( TerminatesLine );
-
-			}
-		}
-		public bool TerminatesLine {
-			get {
-				if( Characters.Count<1 ){
-					return false;
-				}
-				return Characters.LastElement.TerminatesLine;
-			}
-		}
-		public bool IsLastOnLine {
-			get {
-				return Parent.ContainsWordIndex(Context.WordOffset+1);
-			}
-		}
-		public bool IsAtTextStart {
-			get {
-				return Context.LineOffset==0 && Context.WordOffset==0;
-			}
-		}
-		public bool IsAtLineStart {
-			get {
-				return Context.WordOffset==0;
-			}
-		}
-		public bool IsComplete {
-			get {
-				return (Characters.Count>0&&LastCharacter.EndsWord);
-			}
-		}
-		///<summary>Is the word empty (no characters) or contains only a null character</summary>
-		public bool IsEmpty {
-			get {
-				if(CharacterCount<1) return true;
-				if(LastCharacter.Equals(TextHelper.Empty)) return true;
 				return false;
 			}
 		}
 		public bool HasLineBreak {
 			get {
-				foreach(TextUnit_character c in Characters){
-					if(c.IsLineBreak){ return true; }
-				}
-				return false;
-			}
-		}
-		public bool HasWhiteSpace {
-			get {
-				foreach( TextUnit_character c in Characters ) {
-					if( c.IsWhiteSpace ) { return true; }
-				}
-				return false;	
-			}
-		}
-		public bool HasWordBreak {
-			get {
-				foreach(TextUnit_character c in Characters){
-					if(c.IsWordBreak){ return true; }
-				}
-				return false;	
-			}
-		}
-		#endregion
-		#region Boolean State checks involving Characters
-		public bool ContainsCharacterIndex (int n) {
-			return n>=0&&n<CharacterCount;
-		}
-		#endregion
-		#region Boolean States by context
-		public bool HasContext {
-			get {
-				return TXT_context==null;
-			}
-		}
-		public bool ContainsContext (TextContext context) {
-			if(
-				(Context.LineOffset!=context.LineOffset)
-				||(Context.WordOffset!=context.WordOffset)
-				||(FirstCharacter.Context.CharacterOffset>context.CharacterOffset)
-				||(LastCharacter.Context.CharacterOffset<context.CharacterOffset)
-				) {
-				return false;
-			}
-			return true;
-		}
-		#endregion
-
-		//Output as string, ignore TextHelper.Empty
-		public string AsString {
-			get {
-				string result="";
-				foreach( TextUnit_character c in Characters ) {
-					if(!c.IsEmpty){
-						result+=c.AsString;
+				foreach( TextUnit_character unit in Children ) {
+					if( unit.HasLineBreak ) {
+						return true;
 					}
 				}
-				return result;
+				return false;
+			}
+		}
+		//!Inherited(base) HasLimit
+		//!Inherited(base) HasReachedLimit
+
+		#endregion
+
+		//!Inherited(base) Context
+
+		#region INT queries
+		public override int Index {
+			get { return 0; }
+		}
+		//!Inherited(base) Limit
+		public override int ChildCount {
+			get {
+				return DATA_children.Count;
+			}
+		}
+		#endregion
+
+		#region Instancing, Parents
+		public TextUnit_word Instance {
+			get {
+				return new TextUnit_word(Parent, Context, DATA_children);
+			}
+		}
+		private TextUnit_line TXT_parent;
+		public TextUnit_line Parent {
+			get { return TXT_parent; }
+		}
+		public TextUnit_text Source {
+			get { return TXT_parent.Source; }
+		}
+		#endregion
+
+		#region Children
+
+		public MauronCode_dataList<TextUnit_character> Children {
+			get {
+				return DATA_children.Instance.SetIsReadOnly(true);
+			}
+		}
+		public TextUnit_character FirstChild {
+			get {
+				if( ChildCount<1 ) {
+					Exception("No Children!", this, ErrorResolution.Create);
+					return NewChild;
+				}
+				return DATA_children.FirstElement;
+			}
+		}
+		public TextUnit_character LastChild {
+			get {
+				if( ChildCount<1 ) {
+					Exception("No Children!", this, ErrorResolution.Create);
+					return NewChild;
+				}
+				return DATA_children.LastElement;
+			}
+		}
+		public TextUnit_character NewChild {
+			get {
+				if( IsReadOnly ) {
+					throw Error("Is Protected!,(NewChild)", this, ErrorType_protected.Instance);
+				}
+				if( HasLimit&&HasReachedLimit ) {
+					throw Error("ChildLimit reached!,{"+Limit+"},(NewChild)", this, ErrorType_limit.Instance);
+				}
+				TextUnit_character unit=new TextUnit_character(this, new TextContext(Context.Paragraph, Context.Line, Index, ChildCount));
+				DATA_children.Add(unit);
+				return unit;
+			}
+		}
+		public TextUnit_character ChildByIndex (int index) {
+			if( index<0 ) {
+				throw Error("Invalid Index!,{"+index+"},ChildByIndex", this, ErrorType_bounds.Instance);
+			}
+			if( index>=ChildCount ) {
+				throw Error("Invalid Index!,{"+index+"},ChildByIndex", this, ErrorType_bounds.Instance);
+			}
+			return DATA_children.Value(index);
+		}
+
+		#endregion
+
+		public MauronCode_dataIndex<TextUnit_word> Neighbors {
+			get {
+				MauronCode_dataIndex<TextUnit_word> result=new MauronCode_dataIndex<TextUnit_word>().SetIsReadOnly(true);
+				result.SetValue(0, this);
+				foreach( TextUnit_word unit in Parent.Children ) {
+					if( unit.Index!=Index ) {
+						int newIndex=unit.Index-Index;
+						result.SetValue(newIndex, this);
+					}
+				}
+				return result.SetIsReadOnly(true);
 			}
 		}
 
-		#region I_textUnit
+		public override TextUnit_character FirstCharacter {
+			get {
+				return FirstChild;
+			}
+		}
+		public override TextUnit_character LastCharacter {
+			get {
+				return LastChild;
+			}
+		}
+
+		#endregion
+
+		#region I_textUnit, IEquatable<>, IEquatable<TextComponent_unit>
+
 		string I_textUnit<TextUnit_word>.AsString {
 			get { return AsString; }
 		}
+
 		bool I_textUnit<TextUnit_word>.IsEmpty {
 			get { return IsEmpty; }
 		}
-		bool I_textUnit<TextUnit_word>.IsComplete {
-			get { return IsComplete; }
+		bool I_textUnit<TextUnit_word>.IsReadOnly {
+			get { return IsReadOnly; }
+		}
+		bool I_textUnit<TextUnit_word>.IsLastChild {
+			get { return IsLastChild; }
+		}
+		bool I_textUnit<TextUnit_word>.IsFirstChild {
+			get {
+				return IsFirstChild;
+			}
+		}
+
+		bool I_textUnit<TextUnit_word>.HasMultiWord {
+			get { return HasMultiWord; }
 		}
 		bool I_textUnit<TextUnit_word>.HasWhiteSpace {
 			get { return HasWhiteSpace; }
 		}
-		bool I_textUnit<TextUnit_word>.HasWordBreak {
-			get { return HasWordBreak; }
-		}
 		bool I_textUnit<TextUnit_word>.HasLineBreak {
 			get { return HasLineBreak; }
 		}
-		bool I_textUnit<TextUnit_word>.HasContext {
-			get { return HasContext; }
+		bool I_textUnit<TextUnit_word>.HasLimit {
+			get { return HasLimit; }
 		}
-		TextUnit_word I_textUnit<TextUnit_word>.SetContext (TextContext context) {
-			return SetContext(context);
+		bool I_textUnit<TextUnit_word>.HasReachedLimit {
+			get {
+				return HasReachedLimit;
+			}
 		}
+
 		TextContext I_textUnit<TextUnit_word>.Context {
 			get { return Context; }
 		}
-		TextUnit_text I_textUnit<TextUnit_word>.Source {
-			get { return Source; }
+
+		int I_textUnit<TextUnit_word>.Index {
+			get { return Index; }
 		}
-		TextUnit_word I_textUnit<TextUnit_word>.Instance {
+		int I_textUnit<TextUnit_word>.Limit {
+			get { return Limit; }
+		}
+		int I_textUnit<TextUnit_word>.ChildCount {
+			get { return ChildCount; }
+		}
+
+		I_textUnit<TextUnit_word> I_textUnit<TextUnit_word>.Instance {
 			get { return Instance; }
 		}
-		#endregion
-		#region IEquatable<string>
-		bool IEquatable<string>.Equals (string other) {
-			return other.Equals(other);
+		TextComponent_unit I_textUnit<TextUnit_word>.Parent {
+			get { return Parent; }
 		}
+		I_textUnit<TextUnit_text> I_textUnit<TextUnit_word>.Source {
+			get { return Source; }
+		}
+
+		MauronCode_dataList<TextComponent_unit> I_textUnit<TextUnit_word>.Children {
+			get { return Utility.INTERFACE_CovertToUnitList<TextUnit_character>(Children); }
+		}
+		TextComponent_unit I_textUnit<TextUnit_word>.FirstChild {
+			get {
+				return FirstChild;
+			}
+		}
+		TextComponent_unit I_textUnit<TextUnit_word>.LastChild {
+			get {
+				return LastChild;
+			}
+		}
+		TextComponent_unit I_textUnit<TextUnit_word>.ChildByIndex (int index) {
+			return ChildByIndex(index);
+		}
+
+		TextComponent_unit I_textUnit<TextUnit_word>.NewChild {
+			get {
+				return NewChild;
+			}
+		}
+
+		MauronCode_dataIndex<TextComponent_unit> I_textUnit<TextUnit_word>.Neighbors {
+			get { return Utility.INTERFACE_CovertToUnitIndex<TextUnit_word>(Neighbors); }
+		}
+
+		TextUnit_character I_textUnit<TextUnit_word>.FirstCharacter {
+			get { return FirstCharacter; }
+		}
+		TextUnit_character I_textUnit<TextUnit_word>.LastCharacter {
+			get { return LastCharacter; }
+		}
+
+		bool IEquatable<TextUnit_word>.Equals (TextUnit_word other) {
+			return Equals(other);
+		}
+
 		#endregion
 
 	}
+
+	//Description of the codeType
+	public sealed class TextUnitType_word : TextUnitType {
+		#region Singleton
+		private static volatile TextUnitType_word instance=new TextUnitType_word();
+		private static object syncRoot=new Object();
+		//constructor singleton multithread safe
+		static TextUnitType_word ( ) { }
+		public static TextUnitType Instance {
+			get {
+				if( instance==null ) {
+					lock( syncRoot ) {
+						instance=new TextUnitType_word();
+					}
+				}
+				return instance;
+			}
+		}
+		#endregion
+
+		public override string Name {
+			get { return "word"; }
+		}
+	}
+
 }

@@ -14,18 +14,7 @@ namespace MauronAlpha.Text.Context {
 		private static int[] SharedDataDefaults=new int[] { 0, 0, 0, 0 };
 
 		//constructor
-		private TextContextCount () { }
-		public TextContextCount(TextUnit_text unit) {
-			if(!unit.IsEmpty){
-				TextContextResult context = unit.LastCharacter.Context.Index;
-				TREE_count.SetValues(new int[]{
-					context.Paragraph,
-					context.Line,
-					context.Word,
-					context.Character
-				});
-			}
-		}
+		private TextContextCount ( ) { }
 		public TextContextCount (int paragraph, int line, int word, int character) {
 			TREE_count.SetValues(new int[]{
 				paragraph,line, word, character

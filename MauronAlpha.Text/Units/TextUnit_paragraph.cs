@@ -16,6 +16,7 @@ namespace MauronAlpha.Text.Units {
 			: base(TextUnitType_paragraph.Instance) {
 			TXT_parent=parent;
 			CTX_context=context;
+			SETUP_Utility(parent);
 		}
 		public TextUnit_paragraph (TextUnit_text parent, TextContext context, MauronCode_dataList<TextUnit_line> children)
 			: this(parent, context) {
@@ -24,11 +25,6 @@ namespace MauronAlpha.Text.Units {
 
 		//DataTress
 		private MauronCode_dataList<TextUnit_line> DATA_children = new MauronCode_dataList<TextUnit_line>();
-		private MauronCode_dataList<TextUnit_line> Lines {
-			get {
-				return DATA_children.Instance.SetIsReadOnly(true);
-			}
-		}
 
 		#region Implementing I_textUnit
 
@@ -268,7 +264,7 @@ namespace MauronAlpha.Text.Units {
 		I_textUnit<TextUnit_paragraph> I_textUnit<TextUnit_paragraph>.Instance {
 			get { return Instance; }
 		}
-		I_textUnit<TextComponent_unit> I_textUnit<TextUnit_paragraph>.Parent {
+		TextComponent_unit I_textUnit<TextUnit_paragraph>.Parent {
 			get { return Parent; }
 		}
 		I_textUnit<TextUnit_text> I_textUnit<TextUnit_paragraph>.Source {
@@ -276,30 +272,34 @@ namespace MauronAlpha.Text.Units {
 		}
 
 		MauronCode_dataList<TextComponent_unit> I_textUnit<TextUnit_paragraph>.Children {
-			get { return Children; }
+			get { 
+				return Utility.INTERFACE_CovertToUnitList<TextUnit_line>(Children); 
+			}
 		}
-		I_textUnit<TextComponent_unit> I_textUnit<TextUnit_paragraph>.FirstChild {
+		TextComponent_unit I_textUnit<TextUnit_paragraph>.FirstChild {
 			get {
 				return FirstChild;
 			}
 		}
-		I_textUnit<TextComponent_unit> I_textUnit<TextUnit_paragraph>.LastChild {
+		TextComponent_unit I_textUnit<TextUnit_paragraph>.LastChild {
 			get {
 				return LastChild;
 			}
 		}
-		I_textUnit<TextComponent_unit> I_textUnit<TextUnit_paragraph>.ChildByIndex (int index) {
+		TextComponent_unit I_textUnit<TextUnit_paragraph>.ChildByIndex (int index) {
 			return ChildByIndex(index);
 		}
 
-		I_textUnit<TextComponent_unit> I_textUnit<TextUnit_paragraph>.NewChild {
+		TextComponent_unit I_textUnit<TextUnit_paragraph>.NewChild {
 			get {
 				return NewChild;
 			}
 		}
 
 		MauronCode_dataIndex<TextComponent_unit> I_textUnit<TextUnit_paragraph>.Neighbors {
-			get { return Neighbors; }
+			get { 
+				return Utility.INTERFACE_CovertToUnitIndex<TextUnit_paragraph>(Neighbors);
+			}
 		}
 
 		TextUnit_character I_textUnit<TextUnit_paragraph>.FirstCharacter {

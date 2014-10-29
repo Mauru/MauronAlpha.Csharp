@@ -34,14 +34,14 @@ namespace MauronAlpha.Text.Units {
 		int ChildCount { get; }
 
 		I_textUnit<T> Instance { get; }
-		I_textUnit<TextComponent_unit> Parent { get; }
+		TextComponent_unit Parent { get; }
 		I_textUnit<TextUnit_text> Source { get; }
 
 		MauronCode_dataList<TextComponent_unit> Children { get; }
-		I_textUnit<TextComponent_unit> FirstChild { get; }
-		I_textUnit<TextComponent_unit> LastChild { get; }
-		I_textUnit<TextComponent_unit> NewChild { get; }
-		I_textUnit<TextComponent_unit> ChildByIndex (int index);
+		TextComponent_unit FirstChild { get; }
+		TextComponent_unit LastChild { get; }
+		TextComponent_unit NewChild { get; }
+		TextComponent_unit ChildByIndex (int index);
 
 		MauronCode_dataIndex<TextComponent_unit> Neighbors { get; }
 

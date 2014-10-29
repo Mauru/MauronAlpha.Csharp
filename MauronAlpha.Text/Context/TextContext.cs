@@ -58,11 +58,11 @@ namespace MauronAlpha.Text.Context {
 		
 		public TextContext Instance {
 			get {
-				return new TextContext(Index.Paragraph,Index.Line,Index.Word,Index.Character);
+				return new TextContext(Index.Paragraph, Index.Line, Index.Word, Index.Character);
 			}
 		}
-		public TextContext New(int paragraph, int line, int word, int character){
-			return new TextContext(paragraph, line, word,character);
+		public static TextContext New(int paragraph, int line, int word, int character){
+			return new TextContext(paragraph, line, word, character);
 		}
 
 		public static TextContext Empty {
@@ -72,7 +72,7 @@ namespace MauronAlpha.Text.Context {
 		}
 		public static TextContext Start {
 			get {
-				return New(0,0,0,0);
+				return TextContext.New(0,0,0,0);
 			}
 		}
 

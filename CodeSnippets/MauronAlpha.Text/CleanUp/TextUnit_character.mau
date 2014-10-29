@@ -1,0 +1,221 @@
+using MauronAlpha.HandlingErrors;
+
+using MauronAlpha.Text.Utility;
+using MauronAlpha.Text.Context;
+
+using System;
+
+
+namespace MauronAlpha.Text.Units {
+	
+	//A character in a text
+	public class TextUnit_character : TextComponent_unit, IEquatable<char>, IEquatable<string>, I_textUnit<TextUnit_character> {
+
+		//constructor
+		public TextUnit_character(TextUnit_word parent, TextContext context, char c){
+			SetChar(c);
+			SetParent (parent);
+			SetContext (context);
+		}
+
+		#region Get The TextUnit_text of this Object
+		public TextUnit_text Source {
+			get {
+				return Parent.Source;
+			}
+		}
+		#endregion
+
+		#region Instance (parent is not instanced)
+		///<summary>Create a copy of the TextComponent 
+		///<remarks>(Parent is not cloned, everything else is)</remarks>
+		///</summary>
+		public TextUnit_character Instance {
+			get {
+				return new TextUnit_character(Parent,Context.Instance,Char);
+			}
+		}
+		#endregion
+
+		#region The Context
+		
+		
+		///<summary>The Position of a character in a text relative to its Parent
+		///<remarks>Do not modify the context directly!</remarks>
+		///</summary>
+		public TextContext Context {
+			get {
+				// We dont really need to check for null since the constructor requires a context
+				return TXT_context;
+			}
+		}
+		public int Index {
+			get {
+				return Context.CharacterOffset;
+			}
+		}
+
+		private TextContext TXT_context;
+		internal bool HasContext {
+			get {
+				return TXT_context==null;
+			}
+		}
+		internal TextUnit_character SetContext(TextContext context){
+			TXT_context=context;
+			return this;
+		}
+		internal TextUnit_character OffsetContext (TextContext context) {
+			Context.Add(context);
+			return this;
+		}
+		public TextUnit_character OffsetContext (int line, int word, int character) {
+			Context.Add(line, word, character);
+			return this;
+		}
+		#endregion
+
+		#region The Parent
+		internal TextUnit_word TXT_parent;
+
+		/// <summary>The parent object of this TextComponent </summary>
+		public TextUnit_word Parent {
+			get { 
+				return TXT_parent;
+			}
+		}
+		//this function does not modify the context!
+		internal TextUnit_character SetParent(TextUnit_word parent){
+			TXT_parent=parent;
+			return this;
+		}
+		#endregion
+
+		#region The Character (char)
+		/// <summary>The Character code</summary>
+		public char Char {
+			get {
+				return CHAR_txt;
+			}
+		}
+		private char CHAR_txt=TextHelper.Empty;
+		/// <summary>Set the character (if not readonly)
+		/// <remarks>Will not change the context!!</remarks>
+		/// </summary>
+		public TextUnit_character SetChar(char c){
+			#region ReadOnly Check
+			if( IsReadOnly ) {
+				Error("Is protected!,(SetChar)", this, ErrorType_protected.Instance);
+			}
+			#endregion
+			CHAR_txt=c;
+			return this;
+		}
+		#endregion
+
+		#region Boolean States
+		#region ReadOnly
+		private bool B_isReadOnly=false;
+		public bool IsReadOnly {
+			get { return B_isReadOnly; }
+		}
+		public TextUnit_character SetReadOnly (bool status) {
+			B_isReadOnly=status;
+			return this;
+		}
+		#endregion
+		public bool TerminatesLine {
+			get {
+				if(IsEmpty){
+					return false;
+				}
+				return TextHelper.IsLineBreak(Char);
+			}
+		}
+		public bool EndsWord {
+			get {
+				if(IsEmpty){
+					return false;
+				}
+				return TextHelper.IsWordEnd(Char);
+			}
+		}
+		public bool IsEmpty {
+			get {
+				return CHAR_txt==TextHelper.Empty;
+			}
+		}
+		public bool IsLineBreak {
+			get {	return TextHelper.IsLineBreak(Char); }
+		}
+		public bool IsWhiteSpace {
+			get {
+				return TextHelper.IsWhiteSpace(Char);
+			}
+		}
+		public bool IsWordBreak {
+			get {
+				return TextHelper.IsWordBreak(Char);
+			}
+		}
+		#endregion
+
+		//Output as string
+		public string AsString {
+			get {
+				if(IsEmpty){
+					return "";
+				}
+				return ""+Char;
+			}
+		}
+
+		#region IEquatable<char>
+		bool IEquatable<char>.Equals (char other) {
+			return other.Equals(Char);
+		}
+		#endregion
+		#region IEquatable<string>
+		bool IEquatable<string>.Equals (string other) {
+			return AsString.Equals(other);
+		}
+		#endregion
+		#region I_textUnit
+		string I_textUnit<TextUnit_character>.AsString {
+			get { return AsString; }
+		}
+		bool I_textUnit<TextUnit_character>.IsEmpty {
+			get { return IsEmpty; }
+		}
+		bool I_textUnit<TextUnit_character>.IsComplete {
+			get { return IsEmpty; }
+		}
+		bool I_textUnit<TextUnit_character>.HasWhiteSpace {
+			get { return IsWhiteSpace; }
+		}
+		bool I_textUnit<TextUnit_character>.HasWordBreak {
+			get { return IsWordBreak; }
+		}
+		bool I_textUnit<TextUnit_character>.HasLineBreak {
+			get { return IsLineBreak; }
+		}
+		bool I_textUnit<TextUnit_character>.HasContext {
+			get { return HasContext; }
+		}
+		TextUnit_character I_textUnit<TextUnit_character>.SetContext (TextContext context) {
+			return SetContext(context);
+		}
+		TextContext I_textUnit<TextUnit_character>.Context {
+			get { return Context; }
+		}
+		TextUnit_text I_textUnit<TextUnit_character>.Source {
+			get { return Source; }
+		}
+		TextUnit_character I_textUnit<TextUnit_character>.Instance {
+			get { return Instance; }
+		}
+		#endregion
+
+	}
+
+}

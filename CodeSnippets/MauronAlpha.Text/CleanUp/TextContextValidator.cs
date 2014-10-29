@@ -29,7 +29,7 @@ namespace MauronAlpha.Text.Context {
 				return false;
 			}
 
-			if( Context.Index.Line > text.ChildCount ) {
+			if( Context.Index.Line > text.LineCount ) {
 				return false;
 			}
 

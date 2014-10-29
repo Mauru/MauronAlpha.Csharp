@@ -40,17 +40,22 @@
   <ItemGroup>
     <Compile Include="Collections\TextUnit_collection.cs" />
     <Compile Include="Collections\TextUnit_neighbors.cs" />
-    <Compile Include="Context\TextContextLimit.cs" />
     <Compile Include="Context\TextComponent_context.cs" />
+    <Compile Include="Context\TextContextCount.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Context\TextContextException.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Context\TextContextResult.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Context\TextContextValidator.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TextComponent.cs" />
     <Compile Include="Context\TextContext.cs" />
-    <Compile Include="Context\TextContextCount.cs" />
-    <Compile Include="Context\TextContextException.cs" />
-    <Compile Include="Context\TextContextResult.cs" />
-    <Compile Include="Context\TextContextValidator.cs" />
-    <Compile Include="Context\TextContextOffset.cs" />
-    <Compile Include="Context\TextContextSolver.cs" />
     <Compile Include="Units\I_textUnit.cs" />
     <Compile Include="Units\TextComponent_unit.cs" />
     <Compile Include="Units\TextUnitType.cs" />
@@ -59,8 +64,10 @@
     <Compile Include="Units\TextUnit_paragraph.cs" />
     <Compile Include="Units\TextUnit_text.cs" />
     <Compile Include="Units\TextUnit_word.cs" />
-    <Compile Include="Context\TextContextRange.cs" />
-    <Compile Include="Utility\TextHelper.cs" />
+    <Compile Include="Utility\TextEncoding_UTF8.cs" />
+    <Compile Include="Utility\TextUtility.cs" />
+    <Compile Include="Utility\TextUtility_encoding.cs" />
+    <Compile Include="Utility\TextUtility_text.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

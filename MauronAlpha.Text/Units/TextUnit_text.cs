@@ -12,21 +12,19 @@ namespace MauronAlpha.Text.Units {
 	public class TextUnit_text : TextComponent_unit, I_textUnit<TextUnit_text> {
 
 		//constructor
-		public TextUnit_text():base(TextUnitType_text.Instance){
+		public TextUnit_text(TextUtility_text utility, TextUtility_encoding encoding):base(TextUnitType_text.Instance){
+			UTILITY_text = utility;
+			UTILITY_encoding = encoding;
 			CTX_context = TextContext.Start;
 		}
-		public TextUnit_text(MauronCode_dataList<TextUnit_paragraph> children):this() {
+		public TextUnit_text (TextUtility_text utility, TextUtility_encoding encoding, MauronCode_dataList<TextUnit_paragraph> children)
+			: this(utility,encoding) {
 			DATA_children = children.Instance;			
 		}
 
-		//DataTrees
+		//Data
 		private MauronCode_dataList<TextUnit_paragraph> DATA_children = new MauronCode_dataList<TextUnit_paragraph>();
-		private MauronCode_dataList<TextUnit_paragraph> Paragraphs {
-			get {
-				return DATA_children.Instance.SetIsReadOnly(true);
-			}
-		}
-
+		
 		#region implementing I_textUnit
 		
 		//As String
@@ -124,15 +122,20 @@ namespace MauronAlpha.Text.Units {
 		#region Instancing, Parents
 		public TextUnit_text Instance {
 			get {
-				return new TextUnit_text(DATA_children);
+				return new TextUnit_text(Utility,Encoding,DATA_children);
 			}
 		}
 		public TextUnit_text Parent {
-			get { throw Error("Unit can not have a Parent!,(Parent)",this,ErrorType_nullError.Instance); }
+			get {
+				return this;
+			}
 		}
 		public TextUnit_text Source {
-			get { throw Error("Unit can not have a Source!,(Parent)",this,ErrorType_nullError.Instance); }
+			get {
+				return this;
+			}
 		}
+		//!Inherited Source
 		#endregion
 
 		#region Children
@@ -258,7 +261,7 @@ namespace MauronAlpha.Text.Units {
 		I_textUnit<TextUnit_text> I_textUnit<TextUnit_text>.Instance {
 			get { return Instance; }
 		}
-		I_textUnit<TextComponent_unit> I_textUnit<TextUnit_text>.Parent {
+		TextComponent_unit I_textUnit<TextUnit_text>.Parent {
 			get { return Parent; }
 		}
 		I_textUnit<TextUnit_text> I_textUnit<TextUnit_text>.Source {
@@ -266,30 +269,32 @@ namespace MauronAlpha.Text.Units {
 		}
 
 		MauronCode_dataList<TextComponent_unit> I_textUnit<TextUnit_text>.Children {
-			get { return Children; }
+			get { return Utility.INTERFACE_CovertToUnitList<TextUnit_paragraph>(Children); }
 		}
-		I_textUnit<TextComponent_unit> I_textUnit<TextUnit_text>.FirstChild {
+		TextComponent_unit I_textUnit<TextUnit_text>.FirstChild {
 			get {
 				return FirstChild;
 			}
 		}
-		I_textUnit<TextComponent_unit> I_textUnit<TextUnit_text>.LastChild {
+		TextComponent_unit I_textUnit<TextUnit_text>.LastChild {
 			get {
 				return LastChild;
 			}
 		}
-		I_textUnit<TextComponent_unit> I_textUnit<TextUnit_text>.ChildByIndex (int index) {
+		TextComponent_unit I_textUnit<TextUnit_text>.ChildByIndex (int index) {
 			return ChildByIndex(index);
 		}
 
-		I_textUnit<TextComponent_unit> I_textUnit<TextUnit_text>.NewChild {
+		TextComponent_unit I_textUnit<TextUnit_text>.NewChild {
 			get {
 				return NewChild;
 			}
 		}
 
 		MauronCode_dataIndex<TextComponent_unit> I_textUnit<TextUnit_text>.Neighbors {
-			get { return Neighbors; }
+			get { 
+				return Utility.INTERFACE_CovertToUnitIndex<TextUnit_text>(Neighbors); 
+			}
 		}
 
 		TextUnit_character I_textUnit<TextUnit_text>.FirstCharacter {

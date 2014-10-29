@@ -72,7 +72,7 @@ namespace MauronAlpha.Text.Context {
 		#region Boolean States
 		//Check if a context "Fits" into a textcomponent
 		public bool Fits(TextUnit_text text){
-			return new TextContextCount(text).Fits(this);
+			return text.Count.Fits(this);
 		}
 		#endregion
 	}
