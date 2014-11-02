@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+
 
 namespace MauronAlpha.HandlingData {
 
@@ -10,6 +9,18 @@ namespace MauronAlpha.HandlingData {
 
 		//constructor
 		public MauronCode_dataRegistry():base(DataType_dataRegistry.Instance) {}
+
+		public MauronCode_dataRegistry<T> Instance { 
+			get {
+				MauronCode_dataRegistry<T> instance = new MauronCode_dataRegistry<T>();
+				instance.SetDefaultKey(STR_defaultKey);
+				foreach(string key in DATA_registry.Keys) {
+					MauronCode_dataList<T> values = DATA_registry.Value(key);
+					instance.SetValue(key,values);
+				}
+				return instance;
+			}
+		}
 
 		//The Data
 		private MauronCode_dataMap<MauronCode_dataList<T>> DATA_registry;
@@ -21,6 +32,7 @@ namespace MauronAlpha.HandlingData {
 				return DATA_registry;
 			}
 		}
+		
 		public MauronCode_dataRegistry<T> SetData(MauronCode_dataMap<MauronCode_dataList<T>> data){
 			DATA_registry=data;
 			return this;

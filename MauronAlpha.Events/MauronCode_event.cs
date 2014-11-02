@@ -1,16 +1,13 @@
-﻿using System;
-
-using MauronAlpha.ExplainingCode;
-using MauronAlpha.HandlingData;
+﻿using MauronAlpha.HandlingData;
 using MauronAlpha.Events.Units;
 
 namespace MauronAlpha.Events {
 	
 	//A Event
-	public class MauronCode_event:MauronCode {
+	public class MauronCode_event:MauronCode_eventComponent {
 
 		#region Constructors
-		private MauronCode_event():base(CodeType_event.Instance){}
+		private MauronCode_event():base(){}
 		public MauronCode_event(I_eventSender sender, string code):this() {
 			SetMessage(code);			
 			SetSender(sender);
@@ -59,25 +56,4 @@ namespace MauronAlpha.Events {
 	
 	}
 
-
-	//Class decription for an event
-	public sealed class CodeType_event : CodeType {
-		#region singleton
-		private static volatile CodeType_event instance=new CodeType_event();
-		private static object syncRoot=new Object();
-		//constructor singleton multithread safe
-		static CodeType_event ( ) { }
-		public static CodeType Instance {
-			get {
-				if( instance==null ) {
-					lock( syncRoot ) {
-						instance=new CodeType_event();
-					}
-				}
-				return instance;
-			}
-		}
-		#endregion
-		public override string Name { get { return "event"; } }
-	}
 }

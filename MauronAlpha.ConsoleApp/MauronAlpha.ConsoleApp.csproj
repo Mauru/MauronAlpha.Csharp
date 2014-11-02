@@ -53,6 +53,10 @@
     <VisualStudio AllowExistingFolder="true" />
   </ProjectExtensions>
   <ItemGroup>
+    <ProjectReference Include="..\MauronAlpha.Forms\MauronAlpha.Forms.csproj">
+      <Project>{528992A7-2184-4F0F-85BD-D8ECD1414DB9}</Project>
+      <Name>MauronAlpha.Forms</Name>
+    </ProjectReference>
     <ProjectReference Include="..\MauronAlpha\MauronAlpha.csproj">
       <Project>{6A046817-9F14-4781-97C9-F89FEBC2097B}</Project>
       <Name>MauronAlpha</Name>
@@ -60,10 +64,6 @@
     <ProjectReference Include="..\MauronAlpha.Events\MauronAlpha.Events.csproj">
       <Project>{425A4B94-31DF-4569-B68C-EDEAF82163A7}</Project>
       <Name>MauronAlpha.Events</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\MauronAlpha.Forms\MauronAlpha.Forms.csproj">
-      <Project>{0C180114-7CFC-45AE-BF4F-433C5F992B84}</Project>
-      <Name>MauronAlpha.Forms</Name>
     </ProjectReference>
     <ProjectReference Include="..\MauronAlpha.Geometry\MauronAlpha.Geometry.csproj">
       <Project>{39D005F7-F334-470D-A660-A2A7DA65C456}</Project>

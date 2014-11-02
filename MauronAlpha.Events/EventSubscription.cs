@@ -80,6 +80,7 @@ namespace MauronAlpha.Events {
 			HISTORY_events=h;
 			return this;
 		}
+	
 	}
 
 }

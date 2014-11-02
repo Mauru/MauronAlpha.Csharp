@@ -43,7 +43,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ExplainingCode\MauronCode_component.cs" />
     <Compile Include="HandlingData\MauronCode_dataTree.cs" />
+    <Compile Include="HandlingErrors\ErrorType_precision.cs" />
+    <Compile Include="HandlingErrors\ErrorType_scope.cs" />
     <Compile Include="HandlingErrors\ErrorType_limit.cs" />
     <Compile Include="HandlingErrors\ErrorType_divideByZero.cs" />
     <Compile Include="HandlingErrors\ErrorType_bug.cs" />

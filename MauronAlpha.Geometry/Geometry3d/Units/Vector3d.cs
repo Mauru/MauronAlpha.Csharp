@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace MauronAlpha.Geometry.Geometry3d {
+namespace MauronAlpha.Geometry.Geometry3d.Units {
 
 	public class Vector3d : GeometryComponent3d {
 		public double X=0;

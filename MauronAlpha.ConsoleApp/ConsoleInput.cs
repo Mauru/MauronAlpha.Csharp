@@ -10,9 +10,13 @@ namespace MauronAlpha.ConsoleApp {
 	public class ConsoleInput:SystemInterface, I_eventSender {
 
 		//constructor
-		public ConsoleInput(MauronConsole console){
-			SetTarget (console);
+		public ConsoleInput(MauronConsole console):base(){
+			
 		}
+
+		private MauronCode_eventClock CLOCK_events=new MauronCode_eventClock();
+		public MauronCode_eventClock Events;
+
 
 		public ConsoleInput Listen() {
 			ConsoleKeyInfo key=System.Console.ReadKey(false);
@@ -33,10 +37,8 @@ namespace MauronAlpha.ConsoleApp {
 			//Set the character 
 			input.SetKey(key.KeyChar);
 
-			Target.Debug(key.Key.ToString(),this);
-
 			//throw a new Keyboardevent
-			SendEvent(Target.KeyPressCounter, new Event_keyUp(this,input));
+			SendEvent(CLOCK_events, new Event_keyUp(this, input));
 			return this;
 		}
 	

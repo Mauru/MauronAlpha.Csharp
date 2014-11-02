@@ -7,7 +7,7 @@ using MauronAlpha.HandlingErrors;
 namespace MauronAlpha.Geometry.Geometry2d.Units {
 
 	//coordinates
-	public class Vector2d : GeometryComponent2d, I_mathComponent {
+	public class Vector2d : GeometryComponent2d_unit, I_mathComponent {
 
 		#region Constructors
 		public Vector2d ( ) { }

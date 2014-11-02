@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace MauronAlpha.HandlingData {
 
@@ -151,7 +149,6 @@ namespace MauronAlpha.HandlingData {
 			return Data.GetEnumerator();
 		}
 		#endregion
-
 
 	}	
 }

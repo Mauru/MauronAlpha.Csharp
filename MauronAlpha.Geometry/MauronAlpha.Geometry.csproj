@@ -43,14 +43,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Geometry2d\Units\Vector2dList.cs" />
+    <Compile Include="Geometry2d\Units\GeometryComponent2d_unit.cs" />
+    <Compile Include="Geometry2d\Collections\Vector2dList.cs" />
     <Compile Include="Geometry2d\Utility\Geometry2d.cs" />
     <Compile Include="Geometry2d\GeometryComponent2d.cs" />
     <Compile Include="Geometry2d\Units\Line2d.cs" />
     <Compile Include="Geometry2d\Transformation\Matrix2d.cs" />
     <Compile Include="Geometry2d\Shapes\Polygon2d.cs" />
-    <Compile Include="Geometry2d\Shapes\Shape2d.cs" />
-    <Compile Include="Geometry3d\Geometry3d.cs" />
+    <Compile Include="Geometry2d\Shapes\GeometryComponent2d_shape.cs" />
     <Compile Include="Geometry3d\GeometryComponent3d.cs" />
     <Compile Include="GeometryComponent.cs" />
     <Compile Include="GeometryHelper.cs" />
@@ -58,7 +58,7 @@
     <Compile Include="Geometry2d\Shapes\Rectangle2d.cs" />
     <Compile Include="Geometry2d\Units\Segment2d.cs" />
     <Compile Include="Geometry2d\Units\Vector2d.cs" />
-    <Compile Include="Geometry3d\Vector3d.cs" />
+    <Compile Include="Geometry3d\Units\Vector3d.cs" />
     <Compile Include="Shapes\ShapeType.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -69,7 +69,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Geometry3d\Shapes\" />
-    <Folder Include="Geometry3d\Units\" />
     <Folder Include="Geometry3d\Utility\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

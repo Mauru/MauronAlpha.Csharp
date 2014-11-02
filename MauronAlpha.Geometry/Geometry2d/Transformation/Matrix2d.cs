@@ -7,7 +7,7 @@ namespace MauronAlpha.Geometry.Geometry2d.Transformation {
 	//Keeps track of all applied transforms
 	public class Matrix2d : GeometryComponent2d {
 		//constructor
-		public Matrix2d(Shape2d shape) {}
+		public Matrix2d(GeometryComponent2d_shape shape) {}
 
 		#region Rotation relative to center
 		protected double INT_rotation=0;

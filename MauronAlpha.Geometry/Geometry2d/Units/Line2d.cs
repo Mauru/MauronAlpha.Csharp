@@ -1,7 +1,7 @@
 ﻿namespace MauronAlpha.Geometry.Geometry2d.Units {
 
 	//A line in 2d Space
-	public class Line2d : GeometryComponent2d {
+	public class Line2d : GeometryComponent2d_unit {
 		double a;
 		double b;
 		double c;

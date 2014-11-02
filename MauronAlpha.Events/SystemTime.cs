@@ -1,4 +1,5 @@
 ﻿using System;
+
 using MauronAlpha.Events.Units;
 
 namespace MauronAlpha.Events {
@@ -22,13 +23,15 @@ namespace MauronAlpha.Events {
 		}
 
 		//Is this clock the System Time
-		public override bool IsSytemTime { get { return true; } }
+		public override bool IsSystemTime { get { return true; } }
 		public override MauronCode_timeUnit Time { get {
-			return new MauronCode_timeUnit(System.DateTime.Now.Ticks,Instance);
+			return new MauronCode_timeUnit(System.DateTime.Now.Ticks, Instance);
+		} }
+		public override MauronCode_timeStamp TimeStamp { get {
+			return new MauronCode_timeStamp(this,Time);
 		} }
 
 		#endregion
-		
 	}
 
 }

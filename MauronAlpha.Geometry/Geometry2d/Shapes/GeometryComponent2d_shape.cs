@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-using MauronAlpha.Geometry.Geometry2d.Units;
+﻿using MauronAlpha.Geometry.Geometry2d.Units;
 using MauronAlpha.Geometry.Shapes;
 using MauronAlpha.Geometry.Geometry2d.Transformation;
 
@@ -8,17 +6,17 @@ using MauronAlpha.Geometry.Geometry2d.Transformation;
 namespace MauronAlpha.Geometry.Geometry2d.Shapes {
 
 	//A Shape in 2d Polygon Space
-	public abstract class Shape2d:GeometryComponent2d {
+	public abstract class GeometryComponent2d_shape:GeometryComponent2d {
 
 		//constructor
-		public Shape2d(ShapeType shapeType){
+		public GeometryComponent2d_shape(ShapeType shapeType){
 			SetShapeType(shapeType);
 		}
 		
 		//The Type of the shape
 		protected ShapeType ST_shapeType;
 		public ShapeType ShapeType { get { return ST_shapeType; } }
-		public Shape2d SetShapeType(ShapeType shapeType) {
+		public GeometryComponent2d_shape SetShapeType(ShapeType shapeType) {
 			ST_shapeType=shapeType;
 			return this;
 		}

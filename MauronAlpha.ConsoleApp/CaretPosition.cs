@@ -8,7 +8,7 @@ namespace MauronAlpha.ConsoleApp {
 	public class CaretPosition:MauronCode_dataObject {
 		
 		//constructor
-		public CaretPosition(TextComponent_text text)
+		public CaretPosition(TextUnit_text text)
 			: base(DataType_object.Instance) {
 		}
 		

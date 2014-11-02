@@ -9,7 +9,7 @@ using MauronAlpha.Geometry.Geometry2d.Utility;
 namespace MauronAlpha.Geometry.Geometry2d.Shapes {
 
 	//A concave or convex Polygon in 2d Space
-	public class Polygon2d:Shape2d {
+	public class Polygon2d:GeometryComponent2d_shape {
 
 		#region Comparison { Polygon2d }
 		public bool Equals (Polygon2d p) {

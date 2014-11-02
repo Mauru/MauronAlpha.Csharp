@@ -1,38 +1,69 @@
 ﻿using System;
-using MauronAlpha.ExplainingCode;
+
 using MauronAlpha.Events.Units;
 using MauronAlpha.Events.Shedules;
+using MauronAlpha.Events.Utility;
+
 using MauronAlpha.HandlingData;
+using MauronAlpha.HandlingErrors;
 
 namespace MauronAlpha.Events {
 
 	//A class keeping Time
-	public class MauronCode_eventClock:MauronCode {
+	public class MauronCode_eventClock : MauronCode_eventComponent, IEquatable<MauronCode_eventClock> {
+
 
 		//Is this clock the System Time
 		public MauronCode_timeUnit SystemTime {
 			get { return MauronAlpha.Events.SystemTime.Instance.Time; }
 		}
-		public virtual bool IsSytemTime { get { return false; } }
+		public virtual bool IsSystemTime { get { return false; } }
+		public virtual bool IsExceptionClock {
+			get { return false;	}
+		}
 		
+		private EventUtility_synchronization UTILITY_synchronize;
+		public EventUtility_synchronization SynchronizationHandler {
+			get { return UTILITY_synchronize; }
+		}
+		public MauronCode_eventClock SYNCHRONIZE_fromTimeUnit(MauronCode_timeUnit time) {
+			MauronCode_eventClock result = EventUtility_synchronization.SetClockFromTimeUnit(this,time,PrecisionHandler);
+			return result;
+		}
+
+		private EventUtility_precision UTILITY_precision;
+		public EventUtility_precision PrecisionHandler {
+			get { return UTILITY_precision; }
+		}
+
 		//constructor
-		public MauronCode_eventClock():base(CodeType_eventClock.Instance) {}
-		public MauronCode_eventClock (MauronCode_eventClock clock) : this() { 
+		protected MauronCode_eventClock() {
+			if(!IsSystemTime) {
+				throw Error("Only the systemTime can have a empty constructor!",this,ErrorType_constructor.Instance);
+			}
+			UTILITY_precision = new EventUtility_precision(EventPrecisionRuleSet.SystemTime);
+			UTILITY_synchronize = new EventUtility_synchronization(UTILITY_precision);
+		}
+		public MauronCode_eventClock (EventUtility_synchronization synchronizationHandler, EventUtility_precision precision) : base() {
+			UTILITY_precision=precision;
+			UTILITY_synchronize=synchronizationHandler;	
+		}
+		public MauronCode_eventClock (MauronCode_eventClock clock) : this(clock.SynchronizationHandler, clock.PrecisionHandler) { 
 			SetMasterClock(clock);
 		}
 
 		//MasterClock
-		private MauronCode_eventClock EC_masterClock;
+		private MauronCode_eventClock CLOCK_master;
 		public MauronCode_eventClock MasterClock {
 			get {
-				if(EC_masterClock==null) {
+				if(CLOCK_master==null) {
 					return MauronAlpha.Events.SystemTime.Instance;
 				}
-				return EC_masterClock;
+				return CLOCK_master;
 			}
 		}
 		public MauronCode_eventClock SetMasterClock(MauronCode_eventClock clock) {
-			EC_masterClock=clock;
+			CLOCK_master=clock;
 			return this;
 		}
 
@@ -48,7 +79,7 @@ namespace MauronAlpha.Events {
 		}
 		public MauronCode_eventClock SetTime(MauronCode_timeUnit time) {
 			if(IsSytemTime) {
-				Error("Can not set System Time",this);
+				throw Error("SystemTime is out of scope!,(SetTime)", this, ErrorType_scope.Instance);
 			}
 			TU_time=time;
 			return this;
@@ -57,8 +88,18 @@ namespace MauronAlpha.Events {
 			return SetTime(new MauronCode_timeUnit(n,this));
 		}
 
+		//Get a TimeStamp
+		public virtual MauronCode_timeStamp TimeStamp { 
+			get {
+				return new MauronCode_timeStamp(this,Time);
+			}
+		}
+
 		//Advance the internal Time by one
 		public MauronCode_eventClock AdvanceTime() {
+			if(IsSystemTime) {
+				throw Error("SystemTime is out of scope!,(AdvanceTime)",this,ErrorType_scope.Instance);
+			}
 			SetTime(Time.Ticks+1);
 			ExecuteShedules();
 			return this;
@@ -121,6 +162,7 @@ namespace MauronAlpha.Events {
 		private MauronCode_eventClock ExecuteShedules(){
 			foreach (MauronCode_eventShedule shedule in ShedulesByTick(Time.Ticks)) {
 				//DO SOMETHING HERE
+				if(shedule.Clock.Equals(this)){}
 
 			}
 			return this;
@@ -141,28 +183,12 @@ namespace MauronAlpha.Events {
 			return this;
 		}
 
-	}
-
-	//Code Description
-	public sealed class CodeType_eventClock:CodeType {
-		#region singleton
-		private static volatile CodeType_eventClock instance=new CodeType_eventClock();
-		private static object syncRoot=new Object();
-		//constructor singleton multithread safe
-		static CodeType_eventClock ( ) { }
-		public static CodeType Instance {
-			get {
-				if( instance==null ) {
-					lock( syncRoot ) {
-						instance=new CodeType_eventClock();
-					}
-				}
-				return instance;
-			}
+		public bool Equals(MauronCode_eventClock other) {
+			return UTILITY_synchronize.EVENTCLOCK_Equals(this, other, UTILITY_precision);
 		}
-		#endregion
 
-		public override string Name { get { return "eventClock"; } }
+		bool IEquatable<MauronCode_eventClock>.Equals (MauronCode_eventClock other) {
+			return Equals(other);
+		}
 	}
-
 }

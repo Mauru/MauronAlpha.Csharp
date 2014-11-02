@@ -1,0 +1,9 @@
+C:\Projects\C#\Building a Usable Code-Tree\Attempt 1\Mauron\MauronAlpha.Forms\bin\Debug\MauronAlpha.Forms.dll
+C:\Projects\C#\Building a Usable Code-Tree\Attempt 1\Mauron\MauronAlpha.Forms\bin\Debug\MauronAlpha.Forms.pdb
+C:\Projects\C#\Building a Usable Code-Tree\Attempt 1\Mauron\MauronAlpha.Forms\bin\Debug\MauronAlpha.dll
+C:\Projects\C#\Building a Usable Code-Tree\Attempt 1\Mauron\MauronAlpha.Forms\bin\Debug\MauronAlpha.pdb
+C:\Projects\C#\Building a Usable Code-Tree\Attempt 1\Mauron\MauronAlpha.Forms\obj\Debug\MauronAlpha.Forms.dll
+C:\Projects\C#\Building a Usable Code-Tree\Attempt 1\Mauron\MauronAlpha.Forms\obj\Debug\MauronAlpha.Forms.pdb
+C:\Projects\C#\Building a Usable Code-Tree\Attempt 1\Mauron\MauronAlpha.Forms\obj\Debug\MauronAlpha.Forms.csprojResolveAssemblyReference.cache
+C:\Projects\C#\Building a Usable Code-Tree\Attempt 1\Mauron\MauronAlpha.Forms\bin\Debug\MauronAlpha.Text.dll
+C:\Projects\C#\Building a Usable Code-Tree\Attempt 1\Mauron\MauronAlpha.Forms\bin\Debug\MauronAlpha.Text.pdb

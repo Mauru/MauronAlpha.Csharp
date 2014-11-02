@@ -1,11 +1,14 @@
 ﻿using MauronAlpha;
 using MauronAlpha.HandlingData;
+using MauronAlpha.ExplainingCode;
 
 namespace MauronAlpha.Geometry {
 
 	//base class for Geometry components
-	public abstract class GeometryComponent : MauronCode_dataObject {
-		public GeometryComponent ( ) : base(DataType_object.Instance) { }
+	public abstract class GeometryComponent : MauronCode_component {
+		
+		//constructor
+		public GeometryComponent ( ) : base() { }
 	}
 
 }

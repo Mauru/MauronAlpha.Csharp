@@ -8,7 +8,7 @@ namespace MauronAlpha.Events.HandlingExceptions {
 		private static volatile ExceptionClock instance=new ExceptionClock();
 		private static object syncRoot=new Object();
 		//constructor singleton multithread safe
-		static ExceptionClock ( ) { }
+		static ExceptionClock () { }
 
 		public static ExceptionClock Instance {
 			get {
@@ -22,7 +22,8 @@ namespace MauronAlpha.Events.HandlingExceptions {
 		}
 
 		//Is this clock the System Time
-		public override bool IsSytemTime { get { return false; } }
+		public override bool IsExceptionClock { get { return true; } }
+		public override bool IsSystemTime { get { return true; } }
 		public override MauronCode_timeUnit Time {
 			get {
 				return new MauronCode_timeUnit(System.DateTime.Now.Ticks, Instance);
@@ -30,6 +31,5 @@ namespace MauronAlpha.Events.HandlingExceptions {
 		}
 
 		#endregion
-
 	}
 }

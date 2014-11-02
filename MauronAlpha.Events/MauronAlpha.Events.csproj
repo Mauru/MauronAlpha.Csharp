@@ -32,11 +32,13 @@
   <ItemGroup>
     <Compile Include="HandlingExceptions\ExceptionClock.cs" />
     <Compile Include="HandlingExceptions\MauronCode_exceptionAwareObject.cs" />
+    <Compile Include="I_eventHandler.cs" />
     <Compile Include="I_eventReceiver.cs" />
     <Compile Include="I_eventSender.cs" />
     <Compile Include="I_exceptionAwareObject.cs" />
     <Compile Include="MauronCode_event.cs" />
     <Compile Include="MauronCode_eventClock.cs" />
+    <Compile Include="MauronCode_eventComponent.cs" />
     <Compile Include="SystemTime.cs" />
     <Compile Include="Units\MauronCode_timeSpan.cs" />
     <Compile Include="Units\MauronCode_timeStamp.cs" />
@@ -44,6 +46,9 @@
     <Compile Include="EventSubscription.cs" />
     <Compile Include="Units\EventHistory.cs" />
     <Compile Include="Shedules\MauronCode_eventShedule.cs" />
+    <Compile Include="Utility\EventUtility_precision.cs" />
+    <Compile Include="Utility\EventUtility.cs" />
+    <Compile Include="Utility\EventUtility_synchronization.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup />

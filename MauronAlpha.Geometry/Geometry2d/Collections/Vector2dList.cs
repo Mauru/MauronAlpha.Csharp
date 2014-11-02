@@ -1,6 +1,8 @@
 ﻿using MauronAlpha.HandlingData;
 
-namespace MauronAlpha.Geometry.Geometry2d.Units {
+using MauronAlpha.Geometry.Geometry2d.Units;
+
+namespace MauronAlpha.Geometry.Geometry2d.Collections {
 
 	public class Vector2dList:MauronCode_dataList<Vector2d> {
 		

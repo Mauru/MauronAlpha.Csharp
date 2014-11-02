@@ -6,7 +6,7 @@ using MauronAlpha.Mathematics;
 namespace MauronAlpha.Geometry.Geometry2d.Units {
 	
 	//A line segment
-	public class Segment2d : GeometryComponent2d, I_mathComponent {
+	public class Segment2d : GeometryComponent2d_unit, I_mathComponent {
 
 		//constructors
 		public Segment2d (Vector2d a, Vector2d b) {
