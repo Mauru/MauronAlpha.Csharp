@@ -36,8 +36,16 @@ namespace MauronAlpha.Events {
 			get { return UTILITY_precision; }
 		}
 
+		private MauronCode_timeStamp TIME_created;
+		public MauronCode_timeStamp Time_created {
+			get {
+				return TIME_created;
+			}
+		}
+
 		//constructor
-		protected MauronCode_eventClock() {
+		protected MauronCode_eventClock():base() {
+			TIME_created = MauronAlpha.Events.SystemTime.TimeStamp;
 			if(!IsSystemTime) {
 				throw Error("Only the systemTime can have a empty constructor!",this,ErrorType_constructor.Instance);
 			}
@@ -45,10 +53,12 @@ namespace MauronAlpha.Events {
 			UTILITY_synchronize = new EventUtility_synchronization(UTILITY_precision);
 		}
 		public MauronCode_eventClock (EventUtility_synchronization synchronizationHandler, EventUtility_precision precision) : base() {
+			TIME_created = MauronAlpha.Events.SystemTime.TimeStamp;
 			UTILITY_precision=precision;
 			UTILITY_synchronize=synchronizationHandler;	
 		}
-		public MauronCode_eventClock (MauronCode_eventClock clock) : this(clock.SynchronizationHandler, clock.PrecisionHandler) { 
+		public MauronCode_eventClock (MauronCode_eventClock clock) : this(clock.SynchronizationHandler, clock.PrecisionHandler) {
+			TIME_created = clock.Time_created.Instance;
 			SetMasterClock(clock);
 		}
 

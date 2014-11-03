@@ -24,12 +24,16 @@ namespace MauronAlpha.Events {
 
 		//Is this clock the System Time
 		public override bool IsSystemTime { get { return true; } }
-		public override MauronCode_timeUnit Time { get {
-			return new MauronCode_timeUnit(System.DateTime.Now.Ticks, Instance);
-		} }
-		public override MauronCode_timeStamp TimeStamp { get {
-			return new MauronCode_timeStamp(this,Time);
-		} }
+		public new static MauronCode_timeUnit Time { 
+			get {
+				return new MauronCode_timeUnit(System.DateTime.Now.Ticks, Instance);
+			}
+		}
+		public new static MauronCode_timeStamp TimeStamp { 
+			get {
+				return new MauronCode_timeStamp( Instance , Time);
+			}
+		}
 
 		#endregion
 	}

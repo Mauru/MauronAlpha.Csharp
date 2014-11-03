@@ -55,34 +55,59 @@ namespace MauronAlpha.Events.Utility {
 					
 		}
 
-		public static bool EVENTCLOCK_Equals(MauronCode_eventClock source, MauronCode_eventClock other, EventUtility_precision precisionHandler) {
+		public static bool EQUALS_EventClock_TimeCreated(MauronCode_eventClock source, MauronCode_eventClock other, EventUtility_precision precisionHandler) {
+			return precisionHandler.EQUALS_long(
+				source.Time_created.Created.Ticks,
+				other.Time_created.Created.Ticks
+			);
+		}
+		public static bool EQUALS_EventClock_Ticks (MauronCode_eventClock source, MauronCode_eventClock other, EventUtility_precision precisionHandler) {
+			return precisionHandler.EQUALS_long(
+				source.TimeStamp.Created.Ticks,
+				other.TimeStamp.Created.Ticks
+			);
+		}
+
+
+		public static bool EQUALS_EventClock(MauronCode_eventClock source, MauronCode_eventClock other, EventUtility_precision precisionHandler) {
 			
+			//Create a timestamp
+			MauronCode_timeStamp timeStamp_source	= new MauronCode_timeStamp(source,source.Time);
+			MauronCode_timeStamp timeStamp_other	= new MauronCode_timeStamp(other,other.Time);
+
 			//create a instance of this handler...
 			///<remarks> ...just in case we need to share the following complex information mid-calculation (you never know)</remarks>
 			EventUtility_synchronization handler = new EventUtility_synchronization(precisionHandler);
 			
 			//We are dealing with exceptions or system time - these are shortcuts
-			if(source.IsSystemTime && other.IsSystemTime) {
+			if(	source.IsSystemTime 
+				&& other.IsSystemTime
+			){				
+				#region Try to find out if we are dealing with an exception-clock [return true|false]
 				if(source.IsExceptionClock == other.IsExceptionClock)
-					Exception("Comparing two ExceptionClocks... Could create an infinite loop!!,(EVENTCLOCK_Equals)",handler,ErrorResolution.Delayed);
+					Exception("Comparing two ExceptionClocks... Could create an infinite loop!!,(EVENTCLOCK_Equals)", handler , ErrorResolution.Delayed);
 					return true;
-				if(source.IsExceptionClock)
-					return false;
-				if(other.IsExceptionClock)
-					return false;
+				
+				//Either is an exception clock, the other is SystemTime
+				if(
+					source.IsExceptionClock
+					|| other.IsExceptionClock
+				)
+				return false;
+
+				#endregion
 			}
 
-			//create a timestamp of both
-			MauronCode_timeStamp timeStamp_source	= new MauronCode_timeStamp(source,source.Time);
-			MauronCode_timeStamp timeStamp_other	= new MauronCode_timeStamp(other,other.Time);
+			//Comare creation-time of the EventClock and ticks
+			if(
+				!EQUALS_EventClock_Ticks(source, other, precisionHandler)
+				&&!EQUALS_EventClock_TimeCreated(source, other, precisionHandler)
+			)
+			return false;
 
-			long ticks_source	= timeStamp_source.Created.Ticks;
-			long min_source		= ticks_source - precisionHandler.RuleSet.Limit_past;
-			long max_source		= ticks_source + precisionHandler.RuleSet.Limit_future;
-
+			//Compare EventSubscriptions
+			long ticks_source	= timeStamp_source.Created.Ticks;			
 			long ticks_other	= timeStamp_other.Created.Ticks;
-			long min_other		= ticks_other - precisionHandler.RuleSet.Limit_past;
-			long max_other		= ticks_other + precisionHandler.RuleSet.Limit_future;
 
 			#region //now we need to dig down (comparison by eventsubscription)
 			//These are the subscriptions we are measuring, just need to fill them
@@ -118,10 +143,10 @@ namespace MauronAlpha.Events.Utility {
 			}
 			#endregion
 
-			//Do a superbasic comparison of ticks
-			if(ticks_source==ticks_other)
+			
 
 
+			
 
 		}
 

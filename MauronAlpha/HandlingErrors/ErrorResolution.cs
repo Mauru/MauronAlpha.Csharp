@@ -7,67 +7,110 @@ namespace MauronAlpha.HandlingErrors {
 	public class ErrorResolution:MauronCode {
 		
 		//constructor
-		public ErrorResolution():base(CodeType_errorResolution.Instance) {}
+		private ErrorResolution(string name, string description):base(CodeType_errorResolution.Instance) {
+			STR_name = name;
+			STR_description=description;
+		}
 		
+		#region properties
+		private string STR_name;
+		public string Name {
+			get {
+				return STR_name;
+			}
+		}
+
 		private string STR_description;
 		public string Description {
 			get {
 				return STR_description;
 			}
 		}
-		public ErrorResolution SetDescription(string description){
-			STR_description=description;
-			return this;
-		}
+		#endregion
 
+		#region Static Defaults
 		public static ErrorResolution Delayed {
 			get {
-				return new ErrorResolution().SetDescription("The Solution is delayed. This will most likely result in a Fatal Error.");
+				return new ErrorResolution(
+					"Delayed",
+					"The Solution is delayed. This will most likely result in a Fatal Error."
+				);
 			}
 		}
 
 		public static ErrorResolution DoNothing {
 			get {
-				return new ErrorResolution().SetDescription("Do Nothing, Error ignored.");
+				return new ErrorResolution(
+					"DoNothing",
+					"Do Nothing, Error ignored."
+				);
 			}
 		}
 
 		public static ErrorResolution ReturnEmpty {
 			get {
-				return new ErrorResolution().SetDescription("Return empty result.");
+				return new ErrorResolution(
+					"ReturnEmpty",
+					"Return an empty version of the expected result, (probably a default or instance)."
+				);
 			}
 		}
 
 		public static ErrorResolution ExpectedReturn {
 			get {
-				return new ErrorResolution().SetDescription("The Parameters were wrong, but the calling method knows how to react.");
+				return new ErrorResolution(
+					"ExpectedReturn",
+					"The Parameters were wrong, but the calling method knows how to react."
+				);
 			}
 		}
 
 		public static ErrorResolution Correct_minimum {
 			get {
-				return new ErrorResolution().SetDescription("Replace the property with the smallest valid value.");
+				return new ErrorResolution(
+					"Correct_minimum",
+					"Replace the property with the smallest valid value."
+				);
 			}
 		}
-
 		public static ErrorResolution Correct_maximum {
 			get {
-				return new ErrorResolution().SetDescription("Replace the property with the largest valid value.");
+				return new ErrorResolution(
+					"Correct_maximum",
+					"Replace the property with the largest valid value."
+				);
 			}
-		}
-
-		public static ErrorResolution Function(string functionName) {
-			return new ErrorResolution().SetDescription("Use alternative ("+functionName+").");
 		}
 
 		public static ErrorResolution Create {
 			get {
-				return new ErrorResolution().SetDescription("Create a new object with valid properties.");
+				return new ErrorResolution(
+					"Create",
+					"Create a new object with valid properties."
+				);
 			}
 		}
+		public static ErrorResolution Create_unreliable {
+			get {
+				return new ErrorResolution(
+					"Create_unreliable",
+					"We create a new Object but mark it as unreliable."
+				);
+			}
+		}
+		#endregion
 
+		#region Dynamic Defaults
+		public static ErrorResolution Function(string functionName) {
+			return new ErrorResolution(
+				"Function",
+				"Use alternative ("+functionName+")."
+			);
+		}
+		#endregion
 	}
 
+	//Code Description of this class
 	public sealed class CodeType_errorResolution:CodeType {
 		#region Singleton
 		private static volatile CodeType_errorResolution instance=new CodeType_errorResolution();
