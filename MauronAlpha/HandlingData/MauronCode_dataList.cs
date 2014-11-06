@@ -50,7 +50,7 @@ namespace MauronAlpha.HandlingData {
 		public MauronCode_dataList<T> SetData(List<T> data) {
 			#region ReadOnly Check
 			if( IsReadOnly ) {
-				Error("ReadOnly!,(SetData)", this, ErrorType_protected.Instance);
+				throw Error("ReadOnly!,(SetData)", this, ErrorType_protected.Instance);
 			}
 			#endregion
 			L_data=data;
@@ -106,7 +106,7 @@ namespace MauronAlpha.HandlingData {
 		public MauronCode_dataList<T> Add(T obj){
 			#region ReadOnly Check
 			if( IsReadOnly ) {
-				Error("ReadOnly!,(Add)", this, ErrorType_protected.Instance);
+				throw Error("ReadOnly!,(Add)", this, ErrorType_protected.Instance);
 			}
 			#endregion
 			return AddValue(obj);
@@ -114,7 +114,7 @@ namespace MauronAlpha.HandlingData {
 		public MauronCode_dataList<T> AddValue(T obj) {
 			#region ReadOnly Check
 			if( IsReadOnly ) {
-				Error("ReadOnly!,(AddValue)", this, ErrorType_protected.Instance);
+				throw Error("ReadOnly!,(AddValue)", this, ErrorType_protected.Instance);
 			}
 			#endregion
 			return SetValue(NextIndex, obj);
@@ -128,7 +128,7 @@ namespace MauronAlpha.HandlingData {
 			#endregion
 			#region Error Check
 			if(!ContainsKey(key)){				
-				Error("Invalid Index! {"+key+"},(SetValue)",this, ErrorType_index.Instance);
+				throw Error("Invalid Index! {"+key+"},(SetValue)",this, ErrorType_index.Instance);
 
 			}
 			#endregion
@@ -138,7 +138,7 @@ namespace MauronAlpha.HandlingData {
 		public MauronCode_dataList<T> AddValuesFrom(ICollection<T> collection){
 			#region ReadOnly Check
 			if( IsReadOnly ) {
-				Error("ReadOnly!,(AddValuesFrom)", this, ErrorType_protected.Instance);
+				throw Error("ReadOnly!,(AddValuesFrom)", this, ErrorType_protected.Instance);
 			}
 			#endregion
 			foreach(T obj in collection) {
@@ -151,7 +151,7 @@ namespace MauronAlpha.HandlingData {
 		public MauronCode_dataList<T> InsertValueAt(int key, T obj){
 			#region ReadOnly Check
 			if( IsReadOnly ) {
-				Error("ReadOnly!,(InsertValueAt)", this, ErrorType_protected.Instance);
+				throw Error("ReadOnly!,(InsertValueAt)", this, ErrorType_protected.Instance);
 			}
 			#endregion
 			Data.InsertRange(key, new T[1]{obj});
@@ -162,7 +162,7 @@ namespace MauronAlpha.HandlingData {
 		public MauronCode_dataList<T> RemoveByValue (T obj) {
 			#region ReadOnly Check
 			if( IsReadOnly ) {
-				Error("ReadOnly!,(RemoveByValue)", this, ErrorType_protected.Instance);
+				throw Error("ReadOnly!,(RemoveByValue)", this, ErrorType_protected.Instance);
 			}
 			#endregion
 			Data.Remove(obj);
@@ -171,12 +171,12 @@ namespace MauronAlpha.HandlingData {
 		public MauronCode_dataList<T> RemoveByKey (int key) {
 			#region ReadOnly Check
 			if( IsReadOnly ) {
-				Error("ReadOnly!,(RemoveByKey)", this, ErrorType_protected.Instance);
+				throw Error("ReadOnly!,(RemoveByKey)", this, ErrorType_protected.Instance);
 			}
 			#endregion
 			#region Error Check
 			if( !ContainsKey(key) ) {
-				Error("Index out of bounds! {"+key+"},(RemoveByKey)", this, ErrorType_index.Instance);
+				throw Error("Index out of bounds!,{"+key+"},(RemoveByKey)", this, ErrorType_index.Instance);
 			}
 			#endregion
 			Data.RemoveAt(key);
@@ -185,15 +185,15 @@ namespace MauronAlpha.HandlingData {
 		public MauronCode_dataList<T> RemoveByRange (int start, int end) {
 			#region ReadOnly Check
 			if( IsReadOnly ) {
-				Error("ReadOnly!,(RemoveByRange)", this, ErrorType_protected.Instance);
+				throw Error("ReadOnly!,(RemoveByRange)", this, ErrorType_protected.Instance);
 			}
 			#endregion
 			#region Error Check
 			if( start<0||start>=Count ) {
-				Error("Range start out of bounds! {"+start+"},(RemoveByRange)", this, ErrorType_index.Instance);
+				throw Error("Range start out of bounds! {"+start+"},(RemoveByRange)", this, ErrorType_index.Instance);
 			}
 			if( end<0||end>=Count||end<start ) {
-				Error("Range end out of bounds! {"+end+"},(RemoveByRange)", this, ErrorType_index.Instance);
+				throw Error("Range end out of bounds! {"+end+"},(RemoveByRange)", this, ErrorType_index.Instance);
 			}
 			#endregion
 			for( int n=start; n<=end; n++ ) {
@@ -204,12 +204,12 @@ namespace MauronAlpha.HandlingData {
 		public MauronCode_dataList<T> RemoveLastElement ( ) {
 			#region ReadOnly Check
 			if( IsReadOnly ) {
-				Error("ReadOnly!,(RemoveByValue)", this, ErrorType_protected.Instance);
+				throw Error("ReadOnly!,(RemoveByValue)", this, ErrorType_protected.Instance);
 			}
 			#endregion
 			#region Error Check
 			if( Count==0 ) {
-				Error("Data is empty!,(RemovelastElement)", this, ErrorType_index.Instance);
+				throw Error("Data is empty!,(RemovelastElement)", this, ErrorType_index.Instance);
 			}
 			#endregion
 			return RemoveByKey(Count-1);
@@ -219,7 +219,7 @@ namespace MauronAlpha.HandlingData {
 		public MauronCode_dataList<T> Clear ( ) {
 			#region ReadOnly Check
 			if( IsReadOnly ) {
-				Error("ReadOnly!,(Clear)", this, ErrorType_protected.Instance);
+				throw Error("ReadOnly!,(Clear)", this, ErrorType_protected.Instance);
 			}
 			#endregion
 			L_data=new List<T>();
@@ -231,10 +231,10 @@ namespace MauronAlpha.HandlingData {
 		//Get a range of results
 		public MauronCode_dataList<T> Range (int start, int end) {
 			if( start<0||start>=Count ) {
-				Error("Range start out of bounds! {"+start+"}", this, ErrorType_index.Instance);
+				throw Error("Range start out of bounds! {"+start+"}", this, ErrorType_index.Instance);
 			}
 			if( end<0||end>=Count||end<start ) {
-				Error("Range end out of bounds! {"+end+"}", this, ErrorType_index.Instance);
+				throw Error("Range end out of bounds! {"+end+"}", this, ErrorType_index.Instance);
 			}
 			MauronCode_dataList<T> result=new MauronCode_dataList<T>();
 			for( int n=start; n<=end; n++ ) {
@@ -250,7 +250,7 @@ namespace MauronAlpha.HandlingData {
 		public T Value(int key){
 			#region Error Check
 			if(!ContainsKey(key)){
-				Error("Invalid key {"+key+"},(Value)",this,ErrorType_index.Instance);
+				throw Error("Invalid key {"+key+"},(Value)",this,ErrorType_index.Instance);
 			}
 			#endregion
 			return Data[key];
@@ -263,7 +263,7 @@ namespace MauronAlpha.HandlingData {
 		public MauronCode_dataList<T> SetValues(ICollection<T> values){
 			#region ReadOnly Check
 			if( IsReadOnly ) {
-				Error("ReadOnly!,(SetValues)", this, ErrorType_protected.Instance);
+				throw Error("ReadOnly!,(SetValues)", this, ErrorType_protected.Instance);
 			}
 			#endregion
 			SetData(new List<T>(values));

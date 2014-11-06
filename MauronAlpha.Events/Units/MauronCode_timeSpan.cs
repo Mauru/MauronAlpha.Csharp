@@ -13,7 +13,7 @@ namespace MauronAlpha.Events.Units {
 		private MauronCode_eventClock CLOCK_clock;
 		public MauronCode_eventClock Clock { get {
 			if(CLOCK_clock==null){
-				Error("MauronCode_eventClock can not be null!", this);
+				throw NullError("MauronCode_eventClock can not be null!", this,typeof(MauronCode_eventClock));
 			}
 			return CLOCK_clock;
 		} }
@@ -27,7 +27,7 @@ namespace MauronAlpha.Events.Units {
 		public MauronCode_timeUnit Start {
 			get {
 				if(TU_start==null){
-					NullError("Start can not be null!",this,typeof(MauronCode_timeUnit));
+					throw NullError("Start can not be null!",this,typeof(MauronCode_timeUnit));
 				}
 				return TU_start;
 			}

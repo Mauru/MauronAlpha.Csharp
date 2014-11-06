@@ -1,14 +1,16 @@
 ﻿using MauronAlpha.HandlingData;
-using MauronAlpha.Events.Units;
 using MauronAlpha.HandlingErrors;
+
+using MauronAlpha.Events.Units;
+using MauronAlpha.Events.Collections;
 
 namespace MauronAlpha.Events {
 
 	//A subscription to an event
-	public class EventSubscription:MauronCode_dataObject {
+	public class EventSubscription : MauronCode_eventComponent {
 
 		//constructor
-		public EventSubscription(MauronCode_eventClock clock, string message, I_eventReceiver receiver):base(DataType_locked.Instance){
+		public EventSubscription(MauronCode_eventClock clock, string message, I_eventReceiver receiver) : base(){
 			SetClock(clock);
 			SetMessage(message);
 			SetReceiver(receiver);
@@ -56,10 +58,10 @@ namespace MauronAlpha.Events {
 			if (e.Message != Message) {
 				return this;
 			}
-			History.SetLastChecked (Clock.Time);
+			History.SetLastChecked (Clock.TimeStamp);
 
 			//condition
-			History.SetLastExecuted (Clock.Time);
+			History.SetLastExecuted (Clock.TimeStamp);
 			Receiver.ReceiveEvent (Clock,e);
 			History.SetExecutionCount (History.ExecutionCount + 1);
 

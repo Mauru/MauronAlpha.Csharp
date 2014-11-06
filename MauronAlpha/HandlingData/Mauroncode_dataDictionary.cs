@@ -3,6 +3,8 @@ using System.Collections.Generic;
 
 using MauronAlpha.ExplainingCode;
 
+using MauronAlpha.HandlingErrors;
+
 namespace MauronAlpha.HandlingData {
 
 	//Base class for variable data storrage (i.e. storing object by string keys, retrieving by type)
@@ -85,13 +87,13 @@ namespace MauronAlpha.HandlingData {
 		//get the value of a dataset by key
 		public object Value(string key) {
 			if(!Data.ContainsKey(key)){
-				Error("Key not found {"+key+"}!",this);
+				throw Error("Key not found!,{"+key+"}!",this,ErrorType_index.Instance);
 			}
 			return Data[key].Key;
 		}
 		public T Value<T>(string key){
 			if(!Data.ContainsKey(key)){
-				Error("Key not found {"+key+"}!",this);
+				throw Error("Key not found!,{"+key+"}!",this,ErrorType_index.Instance);
 			}
 			return (T) Data[key].Key;
 		}
@@ -117,7 +119,7 @@ namespace MauronAlpha.HandlingData {
 		}
 		public MauronCode_dataDictionary SetValue(ICollection<string> keys, ICollection<object> values) {
 			if(keys.Count!=values.Count) {
-				Error("Keys and Values need Same Length! {"+keys.Count+","+values.Count+"}",this);
+				throw Error("Keys and Values need Same Length!,(SetValue),{"+keys.Count+","+values.Count+"}",this,ErrorType_outOfSynch.Instance);
 			}
 			object[] v=new object[values.Count];
 			string[] k=new string[keys.Count];
@@ -169,136 +171,6 @@ namespace MauronAlpha.HandlingData {
 			return this;
 		}
 		#endregion
-
-
-		/*
-		//stores data and type
-		private Dictionary<string, object> Data=new Dictionary<string, object>();
-		private Dictionary<string, Type> TypeKey=new Dictionary<string, Type>();
-
-		//Length
-		public int Length { get { return Data.Count; } }
-
-		//Remove an item from the dataset
-		public object Remove(string s){
-			if(!Data.ContainsKey(s)){
-				return null;
-			}
-			object o=Data[s];
-			Data.Remove(s);
-			TypeKey.Remove(s);
-			return o;
-		}
-
-		//return the Data ordered by String
-		public List<KeyValuePair<string,object>> OrderByString {
-			get {
-				List<KeyValuePair<string,object>>data=AsList;
-				data.Sort(
-					delegate(KeyValuePair<string, object> firstPair,
-					KeyValuePair<string, object> nextPair) {
-						return firstPair.Key.CompareTo(nextPair.Key);
-					}
-				);
-				return data;
-			}
-		}
-		public List<KeyValuePair<string,object>> AsList { get {
-			List<KeyValuePair<string,object>> ret = new List<KeyValuePair<string,object>>();
-			foreach(string key in Data.Keys){
-				ret.Add(new KeyValuePair<string,object>(key,Data[key]));
-			}
-			return ret;
-		} }
-
-		//data[s]
-		public object this[string s] {
-			get {
-				if( !Data.ContainsKey(s) ) {
-					return null;
-				}
-				return s;
-			}
-			set {
-				TypeKey[s]=value.GetType();
-				Data[s]=value;
-			}
-		}
-		public object Get(string s) {
-			return Data[s];
-		}
-		public MauronCode_dataDictionary Store(string s, object o){
-			this[s]=o;
-			return this;
-		}
-		public MauronCode_dataDictionary Store(KeyValuePair<string,object> o){
-			return Store(o.Key,o.Value);
-		}
-		public MauronCode_dataDictionary Store(KeyValuePair<string,object>[] values){
-			foreach(KeyValuePair<string,object> val in values){
-				Store(val);
-			}
-			return this;
-		}
-		public T Get<T>(string s) {
-			Type t = typeof(T);
-			if(typeof(T)!=TypeOf(s)){
-				Error("Invalid Type Cast for key {"+s+"}",this);
-			}
-			return (T) Get(s);
-		}
-
-#region things involving Type
-		//TypeKey[s]
-		public Type TypeOf (string s) {
-			return TypeKey[s];
-		}
-		//TypeKey[s]
-		public Type GetType (string s) {
-			return TypeKey[s];
-		}
-		//data[s],null if typeKey[s]=t
-		public object this[Type t, string s] {
-			get {
-				if( TypeKey[s]!=t ) {
-					return null;
-				}
-				return this[s];
-			}
-			set {
-				TypeKey[s]=value.GetType();
-				this[s]=value;
-			}
-		}
-		//Get by Type
-		public Stack<object> ByType (Type t) {
-			Stack<object> r=new Stack<object>();
-			foreach( string s in TypeKey.Keys ) {
-				if( TypeKey[s]==t ) {
-					r.Push(Data[s]);
-				}
-			}
-			return r;
-		}
-#endregion
-
-#region boolean checks
-		//Has [s]
-		public bool HasKey (string s) {
-			return Data.ContainsKey(s);
-		}
-
-		//Has data[s]
-		public bool HasValue (object o) {
-			return Data.ContainsValue(o);
-		}
-
-		//Has type t
-		public bool HasType (Type t) {
-			return TypeKey.ContainsValue(t);
-		}
-#endregion
-		*/
 
 		//Add to the dictionary
 		MauronCode_dataDictionary Add (KeyValuePair<string, KeyValuePair<object, Type>> value) {
@@ -468,6 +340,7 @@ namespace MauronAlpha.HandlingData {
 		System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator ( ) {
 			return Data.GetEnumerator();
 		}
+	
 	}
 
 	//A class that offers exclusively static functions

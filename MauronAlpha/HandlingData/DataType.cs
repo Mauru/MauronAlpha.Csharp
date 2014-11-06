@@ -18,8 +18,8 @@ namespace MauronAlpha.HandlingData {
 			return false;
 		}
 		public virtual T Convert<T>(MauronCode_dataObject obj){
-			Error("Can not convert dataObject!,(Covert<T>)",this,ErrorType_fatal.Instance);
-			return default(T);
+			throw Error("Can not convert dataObject!,(Covert<T>)",this,ErrorType_scope.Instance);
+			//return default(T);
 		}
 	}
 

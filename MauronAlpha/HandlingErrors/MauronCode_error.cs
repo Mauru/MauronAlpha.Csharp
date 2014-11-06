@@ -4,6 +4,7 @@ using System.Diagnostics;
 
 namespace MauronAlpha.HandlingErrors {
 
+	//A ErrorHandler
 	public class MauronCode_error : Exception {
 
 		public object ErrorSource;
@@ -39,6 +40,20 @@ namespace MauronAlpha.HandlingErrors {
 			return this;
 		}
 
+		//called on error creation by MauronCode
+		public MauronCode_error TriggerCreationEvent(bool b_isRuntime) {
+			if(ErrorType.ThrowOnCreation){
+				throw Instance;
+			}
+			return this;
+		}
+
+		public MauronCode_error Instance {
+			get {
+				return new MauronCode_error(Message,ErrorSource,ErrorType);
+			}
+		}
+	
 	}
 
 	

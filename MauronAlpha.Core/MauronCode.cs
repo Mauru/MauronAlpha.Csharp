@@ -1,10 +1,13 @@
 ﻿using System;
-using MauronAlpha.HandlingErrors;
 using MauronAlpha.ExplainingCode;
+using MauronAlpha.HandlingErrors;
+
 
 namespace MauronAlpha {
 
-    public class MauronCode:MauronAlphaCode {
+	//Base Class of 
+    public class MauronCode:MauronAlphaCode, I_MauronCode {
+
 		public CodeType CodeType;
 		public MauronCode(CodeType codetype){
 			CodeType=codetype;

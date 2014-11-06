@@ -25,7 +25,7 @@ namespace MauronAlpha.HandlingData {
 		public object Source {
 			get{
 				if( OBJ_source==null ) {
-					Error("Source can not be null!",this);
+					throw NullError("Source can not be null!,(Source)",this,typeof(object));
 				}
 				return OBJ_source;
 			}
@@ -39,7 +39,7 @@ namespace MauronAlpha.HandlingData {
 		private object OBJ_target;
 		public object Target { get {
 			if(OBJ_target==null) {
-				Error("Target can not be null!",this);
+				throw NullError("Target can not be null!,(Target)", this, typeof(object));
 			}
 			return OBJ_target;
 		} }
@@ -52,7 +52,7 @@ namespace MauronAlpha.HandlingData {
 		private Type T_sourceType;
 		public Type SourceType { get {
 			if(T_sourceType==null) {
-				Error("SourceType can not be null!", this);
+				throw NullError("SourceType can not be null!,(SourceType)", this, typeof(Type));
 			}
 			return T_sourceType;
 		} }
@@ -65,7 +65,7 @@ namespace MauronAlpha.HandlingData {
 		private Type T_targetType;
 		public Type TargetType{ get {
 			if(T_targetType==null) {
-				Error("TargetType can not be null!", this);
+				throw NullError("TargetType an not be null!,(TargetType)", this, typeof(Type));
 			}
 			return T_targetType;
 		} }

@@ -24,6 +24,10 @@ namespace MauronAlpha.HandlingErrors {
 		public override string Name {
 			get { return "bounds"; }
 		}
+
+		public override bool IsFatal {
+			get { return true; }
+		}
 	}
 }
 

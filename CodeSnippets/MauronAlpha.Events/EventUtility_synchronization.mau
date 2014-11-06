@@ -1,0 +1,79 @@
+//Attempt to "FastForward" time of a clock in relation to another
+		public static MauronCode_eventClock SetClockFromTimeUnit(MauronCode_eventClock targetClock, MauronCode_timeUnit time, EventUtility_precision precisionHandler) {
+
+			//generate an instance
+			EventUtility_synchronization handler=new EventUtility_synchronization(precisionHandler);
+
+			//unwrap to eventClock
+			MauronCode_eventClock sourceClock=time.Clock;
+			
+			//We are comparing SystemTime which is always equal, so no setting of any clocks needs to happen
+			if(sourceClock.IsSystemTime && targetClock.IsSystemTime)
+				return sourceClock;
+
+			if( !targetClock.PrecisionHandler.IsCompatibleWith(precisionHandler) ) {
+				//The clocks do NOT share the same precision
+				throw Error("Differing PrecisionHandlers!", precisionHandler, ErrorType_precision.Instance);
+			}
+
+			//We know the precision is compatible...
+
+			//Are the two clocks the same
+			if(sourceClock.Equals(targetClock)) {
+				
+				//we at least know they are synchronous
+								
+			}
+		
+		}
+
+
+
+
+
+
+
+
+
+
+
+
+//We coudl return true here for a fast check
+
+			//Compare EventSubscriptions
+			long ticks_source	= timeStamp_source.Created.Ticks;			
+			long ticks_other	= timeStamp_other.Created.Ticks;
+
+			#region //now we need to dig down (comparison by eventsubscription)
+			//These are the subscriptions we are measuring, just need to fill them
+			MauronCode_dataIndex<MauronCode_dataList<EventSubscription>> source_subscriptions;
+			MauronCode_dataIndex<MauronCode_dataList<EventSubscription>> other_subscriptions;
+
+			
+			// These are CURRENTLY ACTIVE eventSubscriptions.
+			/// <remark> ... which could end up out of synch because they might get calculated at the same time as this check.</remark>
+			MauronCode_dataList<EventSubscription> source_active;
+			MauronCode_dataList<EventSubscription> other_active;
+
+			
+			foreach(MauronCode_dataIndex<EventSubscription> index in source.Subscriptions.AsIndexRange()){
+				//We now have a LIST of EventSubscriptions of the source for an unknown key
+
+				//we want to extract the LAST few Subscriptions
+				MauronCode_dataIndex<EventSubscription> minValues_source = index.Range((int) minBounds, (int) sourceTicks);
+				MauronCode_dataIndex<EventSubscription> maxValues_source = index.Range((int) sourceTicks+1, (int) EndMax);
+
+				TODO("DO THE SAME FOR TARGETTICKS");
+
+				minLimit = timestamp_other.Created.Ticks - precisionHandler.RuleSet.Limit_past;
+				startMin=timestamp_other.Created.Ticks;
+				maxLimit=timestamp_other.Created.Ticks+precisionHandler.RuleSet.Limit_future;
+				EndMax=timestamp_other.Created.Ticks;
+
+				long otherTicks=timestamp_other.Created.Ticks;
+
+				MauronCode_dataList<EventSubscription> minValues_other=list.Range((int) startMin, (int) otherTicks);
+				MauronCode_dataList<EventSubscription> maxValues_other=list.Range((int) otherTicks+1, (int) EndMax);
+
+			}
+			#endregion

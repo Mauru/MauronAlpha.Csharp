@@ -1,0 +1,4 @@
+C:\Projects\C#\Building a Usable Code-Tree\Attempt 1\Mauron\MauronAlpha.Core\bin\Debug\MauronAlpha.Core.dll
+C:\Projects\C#\Building a Usable Code-Tree\Attempt 1\Mauron\MauronAlpha.Core\bin\Debug\MauronAlpha.Core.pdb
+C:\Projects\C#\Building a Usable Code-Tree\Attempt 1\Mauron\MauronAlpha.Core\obj\Debug\MauronAlpha.Core.dll
+C:\Projects\C#\Building a Usable Code-Tree\Attempt 1\Mauron\MauronAlpha.Core\obj\Debug\MauronAlpha.Core.pdb

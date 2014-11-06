@@ -1,5 +1,7 @@
 ﻿using System;
+
 using MauronAlpha.HandlingData;
+using MauronAlpha.HandlingErrors;
 
 namespace MauronAlpha.Files {
 
@@ -22,7 +24,7 @@ namespace MauronAlpha.Files {
         public String Content { 
 			get {
 				if (!Loaded) {
-					Error("FileReference has not loaded yet",this);
+					throw Error( "FileReference has not loaded yet!,(Content)", this, ErrorType_outOfSynch.Instance );
 				}
 				return STR_content;
 			}

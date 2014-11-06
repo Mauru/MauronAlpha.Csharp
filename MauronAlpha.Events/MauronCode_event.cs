@@ -20,7 +20,7 @@ namespace MauronAlpha.Events {
 		public I_eventSender Sender {
 			get {
 			if(IE_sender==null) {
-				Error("Event Sender can not be null", this);
+				throw NullError("Event Sender can not be null", this, typeof(I_eventSender));
 			}
 			return IE_sender;
 		} }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 using MauronAlpha.ExplainingCode;
 using MauronAlpha.HandlingData;
+using MauronAlpha.HandlingErrors;
 
 namespace MauronAlpha.Settings {
 	
@@ -34,7 +35,7 @@ namespace MauronAlpha.Settings {
 		
 		public virtual object GetDefault(string key, object obj) {
 			if(!Data.ContainsKey(key)){
-				Error("Invalid Default Key { string "+key+" }",this);
+				throw Error("Invalid Default Key!,{ string "+key+" },(GetDefault)",this,ErrorType_index.Instance);
 			}
 			return Data.Value(key);
 		}

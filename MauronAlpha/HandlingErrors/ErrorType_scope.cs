@@ -2,7 +2,8 @@
 
 namespace MauronAlpha.HandlingErrors {
 
-	//A fatal error condition
+	/// <summary>Performing an action is outside of the capabilities of the executing code.</summary>
+	/// <remarks>EXAMPLE: tring to set SystemTime</remarks>
 	public sealed class ErrorType_scope : ErrorType {
 		#region Singleton
 		private static volatile ErrorType_scope instance=new ErrorType_scope();
@@ -24,6 +25,7 @@ namespace MauronAlpha.HandlingErrors {
 		public override string Name {
 			get { return "scope"; }
 		}
+
 	}
 
 }

@@ -40,11 +40,12 @@
     <Compile Include="MauronCode_eventClock.cs" />
     <Compile Include="MauronCode_eventComponent.cs" />
     <Compile Include="SystemTime.cs" />
+    <Compile Include="Units\EventComponent_unit.cs" />
     <Compile Include="Units\MauronCode_timeSpan.cs" />
     <Compile Include="Units\MauronCode_timeStamp.cs" />
     <Compile Include="Units\MauronCode_timeUnit.cs" />
     <Compile Include="EventSubscription.cs" />
-    <Compile Include="Units\EventHistory.cs" />
+    <Compile Include="Collections\EventHistory.cs" />
     <Compile Include="Shedules\MauronCode_eventShedule.cs" />
     <Compile Include="Utility\EventUtility_precision.cs" />
     <Compile Include="Utility\EventUtility.cs" />

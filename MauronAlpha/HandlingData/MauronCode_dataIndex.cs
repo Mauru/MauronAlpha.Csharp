@@ -23,7 +23,7 @@ namespace MauronAlpha.HandlingData {
 		}
 		public MauronCode_dataIndex<T> SetData(Dictionary<long,T> data){
 			if( IsReadOnly ) {
-				Error("Is Read Only!", this, ErrorType_protected.Instance);
+				throw Error("Is Read Only!,(SetData)", this, ErrorType_protected.Instance);
 			}
 			DIC_data=data;
 			return this;
@@ -42,7 +42,7 @@ namespace MauronAlpha.HandlingData {
 		}
 		public MauronCode_dataIndex<T> SetValue(long key, T value){
 			if(IsReadOnly) {
-				Error("Is Read Only!",this,ErrorType_protected.Instance);
+				throw Error("Is Read Only!,(SetValue)",this,ErrorType_protected.Instance);
 			}
 			Data.Add(key,value);
 			return this;
@@ -81,7 +81,7 @@ namespace MauronAlpha.HandlingData {
 		//Remove a value by Key
 		public MauronCode_dataIndex<T> RemoveByKey(long key){
 			if( IsReadOnly ) {
-				Error("Is Read Only!", this, ErrorType_protected.Instance);
+				throw Error("Is Read Only!,(RemovebyKey)", this, ErrorType_protected.Instance);
 			}
 			Data.Remove(key);
 			return this;
@@ -90,7 +90,7 @@ namespace MauronAlpha.HandlingData {
 		//Clear
 		public MauronCode_dataIndex<T> Clear() {
 			if( IsReadOnly ) {
-				Error("Is Read Only!", this, ErrorType_protected.Instance);
+				throw Error("Is Read Only!,(Clear)", this, ErrorType_protected.Instance);
 			}
 			SetData(new Dictionary<long,T>());
 			return this;
@@ -126,14 +126,14 @@ namespace MauronAlpha.HandlingData {
 			}
 		}
 		public long IndexOf(T item){
-			long index=-1;
+			///long index=-1;
 			foreach(KeyValuePair<long,T> d in Data) {
 				if(d.Value.Equals(item)){
 					return d.Key;
 				}
 			}
-			Error("Item is not in index!",this,ErrorType_index.Instance);
-			return index;
+			throw Error("Item is not in index!,(IndexOf)",this,ErrorType_index.Instance);
+			///return index;
 		}
 
 		#endregion

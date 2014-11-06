@@ -18,7 +18,7 @@ namespace MauronAlpha.HandlingData {
 			//TODO("Finish each on each check");
 			DelegateHandler_equals<TKey> D = new DelegateHandler_equals<TKey>();
 			if( ForEachKeys_bool(DATA_keys, D.D_objectEquals,1) ) {
-				Error("Duplicate Keys Detected!",this,ErrorType_constructor.Instance);
+				throw Error("Duplicate Keys Detected!",this,ErrorType_constructor.Instance);
 			}
 			
 			keys.CopyTo(DATA_keys,0);
@@ -32,7 +32,7 @@ namespace MauronAlpha.HandlingData {
 		}
 		public MauronCode_dataTree(ICollection<TKey> keys, ICollection<TValue> values):this(keys){
 			if(keys.Count!=values.Count){
-				Error("Keys/Values have different length!",this,ErrorType_constructor.Instance);
+				throw Error("Keys/Values have different length!",this,ErrorType_constructor.Instance);
 			}
 
 			TKey[] v_key = new TKey[keys.Count];
@@ -186,7 +186,7 @@ namespace MauronAlpha.HandlingData {
 
 			//Error Check
 			if( !ContainsIndex(index) ) {
-				Error("Index out of Bounds!,{"+index+"}", this, ErrorType_bounds.Instance);
+				throw Error("Index out of Bounds!,{"+index+"}", this, ErrorType_bounds.Instance);
 			}
 
 			//Form temporary Data Sets
@@ -241,7 +241,7 @@ namespace MauronAlpha.HandlingData {
 		}
 		public TKey KeyByIndex (int index) {
 			if( !ContainsIndex(index) ) {
-				Error("Index out of Bounds!,{"+index+"},(KeyByIndex)", this, ErrorType_bounds.Instance);
+				throw Error("Index out of Bounds!,{"+index+"},(KeyByIndex)", this, ErrorType_bounds.Instance);
 			}
 			return DATA_keys[index];
 		}
@@ -256,7 +256,7 @@ namespace MauronAlpha.HandlingData {
 
 		public MauronCode_dataTree<TKey,TValue> AddKey(TKey key) {
 			if(ContainsKey(key)){
-				Error("Key is allready set!",this,ErrorType_protected.Instance);
+				throw Error("Key is allready set!",this,ErrorType_protected.Instance);
 			}
 			
 			//Create instance of DataSet with new Length
@@ -283,7 +283,7 @@ namespace MauronAlpha.HandlingData {
 		//Remove a key and its values
 		public MauronCode_dataTree<TKey,TValue> RemoveKey(TKey key) {
 			if(!ContainsKey(key)) {
-				Error("Invalid key!",this,ErrorType_index.Instance);
+				throw Error("Invalid key!",this,ErrorType_index.Instance);
 			}
 			RemoveDataByIndex(IndexByKey(key),true);
 			return this;
@@ -306,14 +306,14 @@ namespace MauronAlpha.HandlingData {
 
 		public TValue Value (TKey key) {
 			if( !IsSet(key) ) {
-				Error("No Value set! {"+key.ToString()+"},(Value)", this, ErrorType_index.Instance);
+				throw Error("No Value set! {"+key.ToString()+"},(Value)", this, ErrorType_index.Instance);
 			}
 			return DATA_values[IndexByKey(key)];
 		}
 		public MauronCode_dataTree<TKey, TValue> SetValue (TKey key, TValue value) {
 			int index=IndexByKey(key);
 			if( index<0 ) {
-				Error("Invalid Key!", this, ErrorType_index.Instance);
+				throw Error("Invalid Key!", this, ErrorType_index.Instance);
 			}
 			DATA_values[index]=value;
 			DATA_wasSet[index]=true;
@@ -321,7 +321,7 @@ namespace MauronAlpha.HandlingData {
 		}
 		public MauronCode_dataTree<TKey, TValue> SetValues(TValue[] values) {
 			if(values.Length!=Count) {
-				Error("Values must be same length as keys!,(SetValues)",this,ErrorType_bounds.Instance);
+				throw Error("Values must be same length as keys!,(SetValues)",this,ErrorType_bounds.Instance);
 			}
 			for(int n=0;n<values.Length;n++){
 				DATA_values[n]=values[n];

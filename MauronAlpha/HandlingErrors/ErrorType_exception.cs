@@ -2,8 +2,9 @@
 
 namespace MauronAlpha.HandlingErrors {
 
-	//A fatal error condition
+	//A "Warning" : Code Execution found an "Edge"-Event which could result in a fatal error
 	public sealed class ErrorType_exception : ErrorType {
+
 		#region Singleton
 		private static volatile ErrorType_exception instance=new ErrorType_exception();
 		private static object syncRoot=new Object();
@@ -24,6 +25,21 @@ namespace MauronAlpha.HandlingErrors {
 		public override string Name {
 			get { return "exception"; }
 		}
+
+		public override bool IsFatal {
+			get {
+				return false;
+			}
+		}
+
+		public override bool IsException {
+			get {
+				return true;
+			}
+		}
+
+		public override bool ThrowOnCreation { get { return false; } }
+	
 	}
 
 }

@@ -43,8 +43,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ExplainingCode\I_MauronCode.cs" />
     <Compile Include="ExplainingCode\MauronCode_component.cs" />
+    <Compile Include="HandlingData\I_protectable.cs" />
     <Compile Include="HandlingData\MauronCode_dataTree.cs" />
+    <Compile Include="HandlingErrors\ErrorType_outOfSynch.cs" />
     <Compile Include="HandlingErrors\ErrorType_precision.cs" />
     <Compile Include="HandlingErrors\ErrorType_scope.cs" />
     <Compile Include="HandlingErrors\ErrorType_limit.cs" />
@@ -75,11 +78,12 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="HandlingErrors\ExceptionHandler.cs" />
+    <Compile Include="ExplainingCode\I_MauronAlphaCode.cs" />
     <Compile Include="Projects\ProjectSettings.cs" />
     <Compile Include="Settings\I_hasDefaultSettings.cs" />
     <Compile Include="HandlingData\MauronCode_data.cs" />
     <Compile Include="HandlingErrors\MauronCode_error.cs" />
-    <Compile Include="ExplainingCode\MauronCode.cs" />
+    <Compile Include="MauronCode.cs" />
     <Compile Include="ExplainingCode\Languages\CSharp\CodeStyle_MauronAlpha_CSharp.cs" />
     <Compile Include="ExplainingCode\CodeType.cs" />
     <Compile Include="Devices\Hardware.cs" />
@@ -114,7 +118,9 @@
   <ItemGroup>
     <None Include="Documentation\How Events Work.mau" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Interfaces\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

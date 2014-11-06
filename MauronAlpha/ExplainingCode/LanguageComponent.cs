@@ -1,5 +1,9 @@
 ﻿using MauronAlpha;
-namespace MauronAlpha {
-    public class LanguageComponent:MauronAlpha.Definition {
+
+namespace MauronAlpha.ExplainingCode {
+
+	
+    public class LanguageComponent : MauronAlpha.ExplainingCode.Definition {
     }
+
 }
