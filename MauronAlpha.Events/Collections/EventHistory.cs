@@ -127,7 +127,6 @@ namespace MauronAlpha.Events.Collections {
 		}
 		#endregion
 
-
 	}
 
 }

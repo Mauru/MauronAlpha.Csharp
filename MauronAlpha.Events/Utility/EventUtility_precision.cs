@@ -48,6 +48,7 @@
 			return Name==other.Name;
 		}
 
+		#region Shortcuts to Event Precision Prefabs
 		public static EventPrecisionRuleSet SystemTime {
 			get { return new EventPrecisionRuleSet_systemTime(); }
 		}
@@ -56,19 +57,30 @@
 				return new EventPrecisionRuleSet_absolute();
 			}
 		}
+		public static EventPrecisionRuleSet Counter {
+			get {
+				return new EventPrecisionRuleSet_counter();
+			}
+		}
+		#endregion
 		
+		//How far into the past do we check events when comparing
 		public abstract long Range_past { get; }
+
+		//How far into the future do we check events when comparing
 		public abstract long Range_future { get; }
 
+		//How much can values "vary" from a result to still return true
 		public abstract long Limit_min { get; }
 		public abstract long Limit_max { get; }
 
+		//How many digits are compared from a number to get a valid result
 		public abstract long Numeric_length_min { get; }
 		public abstract long Numeric_length_max { get; }
 		
 	}
 
-
+	//A Precision RuleSet that has absolute values
 	public class EventPrecisionRuleSet_absolute:EventPrecisionRuleSet {
 
 		public override string Name { get { return "absolute"; } }
@@ -102,4 +114,35 @@
 		public override long Numeric_length_max { get { return -1; } }
 
 	}
+
+	//A recision ruleset made for counters
+	public class EventPrecisionRuleSet_counter : EventPrecisionRuleSet {
+
+		public override string Name {
+			get { return "counter"; }
+		}
+
+		public override long Range_past {
+			get { return 0; }
+		}
+
+		public override long Range_future {
+			get { return -1; }
+		}
+
+		public override long Limit_min {
+			get { return 0; }
+		}
+		public override long Limit_max {
+			get { return 0; }
+		}
+
+		public override long Numeric_length_min {
+			get { return -1; }
+		}
+		public override long Numeric_length_max {
+			get { return -1; }
+		}
+	}
+
 }

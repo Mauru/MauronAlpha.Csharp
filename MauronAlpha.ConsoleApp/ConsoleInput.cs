@@ -1,8 +1,11 @@
 ﻿using System;
+
 using MauronAlpha.Input;
 using MauronAlpha.Input.Keyboard;
 using MauronAlpha.Input.Keyboard.Events;
+
 using MauronAlpha.Events;
+using MauronAlpha.Events.Utility;
 
 namespace MauronAlpha.ConsoleApp {
 	
@@ -10,11 +13,9 @@ namespace MauronAlpha.ConsoleApp {
 	public class ConsoleInput:SystemInterface, I_eventSender {
 
 		//constructor
-		public ConsoleInput(MauronConsole console):base(){
-			
-		}
+		public ConsoleInput(MauronConsole console):base(){}
 
-		private MauronCode_eventClock CLOCK_events=new MauronCode_eventClock();
+		private MauronCode_eventClock CLOCK_events = new MauronCode_eventClock(PrecisionHandler_consoleInput.Instance);
 		public MauronCode_eventClock Events;
 
 
@@ -68,6 +69,22 @@ namespace MauronAlpha.ConsoleApp {
 			return SendEvent (clock, e);
 		}
 		#endregion
+	}
+
+	//The precision handler for the console input
+	public class PrecisionHandler_consoleInput : EventUtility_precision {
+		
+		//constructor
+		public PrecisionHandler_consoleInput():base(EventPrecisionRuleSet.Counter) {
+			
+		}
+
+		public static PrecisionHandler_consoleInput Instance {
+			get {
+				return new PrecisionHandler_consoleInput();
+			}
+		}
+
 	}
 
 }
