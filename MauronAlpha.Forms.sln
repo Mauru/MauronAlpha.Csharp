@@ -11,7 +11,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MauronAlpha.Events", "Mauro
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MauronAlpha.Geometry", "MauronAlpha.Geometry\MauronAlpha.Geometry.csproj", "{39D005F7-F334-470D-A660-A2A7DA65C456}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MauronAlpha.Layout", "..\MauronAlpha.Layout\MauronAlpha.Layout.csproj", "{507B82BF-B5CA-44C5-8520-8984D79685AB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MauronAlpha.Layout", "MauronAlpha.Layout\MauronAlpha.Layout.csproj", "{507B82BF-B5CA-44C5-8520-8984D79685AB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

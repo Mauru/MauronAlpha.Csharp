@@ -1,6 +1,7 @@
 ﻿using MauronAlpha.HandlingData;
 
 using MauronAlpha.Layout.Layout2d.Context;
+using MauronAlpha.Layout.Layout2d.Utility;
 
 namespace MauronAlpha.Layout.Layout2d.Units {	
 	
@@ -33,9 +34,6 @@ namespace MauronAlpha.Layout.Layout2d.Units {
 
 		public abstract MauronCode_dataIndex<Layout2d_unitReference> Children { get; }
 		
-		
-		
-
 		public abstract Layout2d_unitReference Parent { get; }
 		public abstract Layout2d_unitReference ChildByIndex (int index);
 		public abstract Layout2d_unitReference AsReference { get; }
@@ -46,6 +44,8 @@ namespace MauronAlpha.Layout.Layout2d.Units {
 		public abstract int Index { get; }
 
 		public abstract Layout2d_context Context {get;}
+
+		public abstract Layout2d_eventHandler EventHandler { get; }
 
 	}
 

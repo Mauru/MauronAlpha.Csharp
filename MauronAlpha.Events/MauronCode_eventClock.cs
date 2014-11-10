@@ -3,6 +3,7 @@
 using MauronAlpha.Events.Units;
 using MauronAlpha.Events.Shedules;
 using MauronAlpha.Events.Utility;
+using MauronAlpha.Events.Singletons;
 
 using MauronAlpha.HandlingData;
 using MauronAlpha.HandlingErrors;
@@ -14,7 +15,7 @@ namespace MauronAlpha.Events {
 
 		//Is this clock the System Time
 		public MauronCode_timeUnit SystemTime {
-			get { return MauronAlpha.Events.SystemTime.Instance.Time; }
+			get { return SharedEventSystem.Instance.SystemTime.TimeFor(this); }
 		}
 
 		#region Event Precision
@@ -38,31 +39,41 @@ namespace MauronAlpha.Events {
 		#endregion
 
 		//constructor
-		protected MauronCode_eventClock() : base() {
-			TIME_created = MauronAlpha.Events.SystemTime.TimeStamp;
-
-			if(!IsSystemTime) {
-				throw Error("Only the systemTime can have a empty constructor!",this,ErrorType_constructor.Instance);
-			}
-			UTILITY_precision = new EventUtility_precision(EventPrecisionRuleSet.SystemTime);
+		public MauronCode_eventClock(bool IsSystemTime) : base() {
+			SetAsSystemTime();
 		}
 		public MauronCode_eventClock (EventUtility_precision precision) : base() {
-			TIME_created = MauronAlpha.Events.SystemTime.TimeStamp;
-
+			TIME_created = SharedEventSystem.Instance.SystemTime.TimeStampFor(this);
 			UTILITY_precision=precision;
 		}
 		public MauronCode_eventClock (MauronCode_eventClock clock) : this(clock.PrecisionHandler) {
 			TIME_created = clock.Time_created.Instance;
-
 			SetMasterClock(clock);
 		}
+
+		public MauronCode_eventClock SetAsSystemTime() {
+			TIME_created = TimeStamp;
+			B_isSystemTime = true;
+			UTILITY_precision=new EventUtility_precision(EventPrecisionRuleSet.SystemTime);
+
+			return this;
+		}
+		public MauronCode_eventClock SetAsExeceptionCounter() {
+			TIME_created = TimeStamp;
+			B_isSystemTime = true;
+			B_isExceptionHandler = true;
+			UTILITY_precision = new EventUtility_precision(EventPrecisionRuleSet.ExceptionHandler);
+
+			return this;
+		}
+
 
 		#region MasterClock (Usually SystemTime)
 		private MauronCode_eventClock CLOCK_master;
 		public MauronCode_eventClock MasterClock {
 			get {
 				if(CLOCK_master==null) {
-					return MauronAlpha.Events.SystemTime.Instance;
+					return SharedEventSystem.Instance.SystemTime;
 				}
 				return CLOCK_master;
 			}
@@ -194,7 +205,6 @@ namespace MauronAlpha.Events {
 		}
 		#endregion
 
-
 		//Trigger an event at the time of the clock
 		public MauronCode_eventClock SubmitEvent(MauronCode_event e){
 			foreach (EventSubscription subscription in Subscriptions) {
@@ -206,9 +216,11 @@ namespace MauronAlpha.Events {
 		#region Equality Checks, Boolean Interaction
 
 		#region SystemClock, ExceptionClock
-		public virtual bool IsSystemTime { get { return false; } }
+		private bool B_isSystemTime = false;
+		public virtual bool IsSystemTime { get { return B_isSystemTime; } }
+		private bool B_isExceptionHandler = false;
 		public virtual bool IsExceptionClock {
-			get { return false; }
+			get { return B_isExceptionHandler; }
 		}
 		#endregion
 
@@ -277,4 +289,5 @@ namespace MauronAlpha.Events {
 	
 		#endregion
 	}
+
 }

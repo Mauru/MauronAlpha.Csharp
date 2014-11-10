@@ -27,10 +27,14 @@
     <ConsolePause>false</ConsolePause>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="MauronAlpha, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\MauronAlpha\bin\Debug\MauronAlpha.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="HandlingExceptions\ExceptionClock.cs" />
+    <Compile Include="HandlingExceptions\Clock_exceptions.cs" />
     <Compile Include="HandlingExceptions\MauronCode_exceptionAwareObject.cs" />
     <Compile Include="I_eventHandler.cs" />
     <Compile Include="I_eventReceiver.cs" />
@@ -39,7 +43,8 @@
     <Compile Include="MauronCode_event.cs" />
     <Compile Include="MauronCode_eventClock.cs" />
     <Compile Include="MauronCode_eventComponent.cs" />
-    <Compile Include="SystemTime.cs" />
+    <Compile Include="Clock_systemTime.cs" />
+    <Compile Include="Singletons\SharedEventSystem.cs" />
     <Compile Include="Units\EventComponent_unit.cs" />
     <Compile Include="Units\MauronCode_timeSpan.cs" />
     <Compile Include="Units\MauronCode_timeStamp.cs" />
@@ -47,16 +52,11 @@
     <Compile Include="EventSubscription.cs" />
     <Compile Include="Collections\EventHistory.cs" />
     <Compile Include="Shedules\MauronCode_eventShedule.cs" />
+    <Compile Include="Utility\EventPrecisionRuleSets.cs" />
     <Compile Include="Utility\EventUtility_precision.cs" />
     <Compile Include="Utility\EventUtility.cs" />
     <Compile Include="Utility\EventUtility_synchronization.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup />
-  <ItemGroup>
-    <ProjectReference Include="..\MauronAlpha\MauronAlpha.csproj">
-      <Project>{6A046817-9F14-4781-97C9-F89FEBC2097B}</Project>
-      <Name>MauronAlpha</Name>
-    </ProjectReference>
-  </ItemGroup>
 </Project>

@@ -34,6 +34,13 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="MauronAlpha, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\MauronAlpha\bin\Debug\MauronAlpha.dll</HintPath>
+    </Reference>
+    <Reference Include="MauronAlpha.Events">
+      <HintPath>..\..\MauronAlpha.Events\bin\Debug\MauronAlpha.Events.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />

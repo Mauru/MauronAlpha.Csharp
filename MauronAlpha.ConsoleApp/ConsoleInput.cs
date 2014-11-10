@@ -18,7 +18,6 @@ namespace MauronAlpha.ConsoleApp {
 		private MauronCode_eventClock CLOCK_events = new MauronCode_eventClock(PrecisionHandler_consoleInput.Instance);
 		public MauronCode_eventClock Events;
 
-
 		public ConsoleInput Listen() {
 			ConsoleKeyInfo key=System.Console.ReadKey(false);
 			KeyPress input = new KeyPress ();
@@ -75,9 +74,7 @@ namespace MauronAlpha.ConsoleApp {
 	public class PrecisionHandler_consoleInput : EventUtility_precision {
 		
 		//constructor
-		public PrecisionHandler_consoleInput():base(EventPrecisionRuleSet.Counter) {
-			
-		}
+		public PrecisionHandler_consoleInput():base(EventPrecisionRuleSet.Counter) {}
 
 		public static PrecisionHandler_consoleInput Instance {
 			get {

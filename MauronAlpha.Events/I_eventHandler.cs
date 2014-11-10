@@ -8,8 +8,6 @@ namespace MauronAlpha.Events {
 		MauronCode_timeUnit Time { get; }
 		MauronCode_timeStamp TimeStamp { get; }
 
-
-
 	}
 
 }

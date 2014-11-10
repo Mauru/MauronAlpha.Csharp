@@ -7,3 +7,9 @@ C:\Projects\C#\Building a Usable Code-Tree\Attempt 1\Mauron\MauronAlpha.Forms\ob
 C:\Projects\C#\Building a Usable Code-Tree\Attempt 1\Mauron\MauronAlpha.Forms\obj\Debug\MauronAlpha.Forms.csprojResolveAssemblyReference.cache
 C:\Projects\C#\Building a Usable Code-Tree\Attempt 1\Mauron\MauronAlpha.Forms\bin\Debug\MauronAlpha.Text.dll
 C:\Projects\C#\Building a Usable Code-Tree\Attempt 1\Mauron\MauronAlpha.Forms\bin\Debug\MauronAlpha.Text.pdb
+C:\Projects\C#\Building a Usable Code-Tree\Attempt 1\Mauron\MauronAlpha.Forms\bin\Debug\MauronAlpha.Events.dll
+C:\Projects\C#\Building a Usable Code-Tree\Attempt 1\Mauron\MauronAlpha.Forms\bin\Debug\MauronAlpha.Geometry.dll
+C:\Projects\C#\Building a Usable Code-Tree\Attempt 1\Mauron\MauronAlpha.Forms\bin\Debug\MauronAlpha.Layout.dll
+C:\Projects\C#\Building a Usable Code-Tree\Attempt 1\Mauron\MauronAlpha.Forms\bin\Debug\MauronAlpha.Events.pdb
+C:\Projects\C#\Building a Usable Code-Tree\Attempt 1\Mauron\MauronAlpha.Forms\bin\Debug\MauronAlpha.Geometry.pdb
+C:\Projects\C#\Building a Usable Code-Tree\Attempt 1\Mauron\MauronAlpha.Forms\bin\Debug\MauronAlpha.Layout.pdb

@@ -1,16 +1,18 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using MauronAlpha.Events;
+
 
 namespace Test.ConsoleApp {
+
 	class Program {
-		static void Main (string[] args) {
+
+		static void Main (string[] args) {			
+			SystemTime system = SystemTime.Instance;
 		}
 
-		
 	}
 
+	/*
 	private class SampleCodeGenericDelegates {
 
 		delegate void StackEventHandler<T, U> (T sender, U eventArgs);
@@ -33,5 +35,5 @@ namespace Test.ConsoleApp {
 			SampleClass o=new SampleClass();
 			s.stackEvent+=o.HandleStackChange;
 		}
-	}
+	}*/
 }

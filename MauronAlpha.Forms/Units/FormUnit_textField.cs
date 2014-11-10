@@ -1,14 +1,14 @@
 ﻿using MauronAlpha.Text.Units;
 using MauronAlpha.Text.Utility;
-using MauronAlpha.Layout.Position;
+using MauronAlpha.Layout.Layout2d.Position;
 
 namespace MauronAlpha.Forms.Units {
 	
 	//A entity waiting for user input
-	public class FormUnit_textField:FormComponent_unit {
+	public class FormUnit_textField : FormComponent_unit {
 		
 		//constructor
-		public FormUnit_textField():base() {}
+		public FormUnit_textField(Layout2d_container parent):base() {}
 
 		private TextUnit_text TXT_text;
 
@@ -16,7 +16,7 @@ namespace MauronAlpha.Forms.Units {
 
 		private bool B_isReadOnly = false;
 
-		private LayoutPosition XY_position;
+		private Layout2d_position XY_position;
 
 	}
 }

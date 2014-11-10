@@ -7,22 +7,30 @@ using MauronAlpha.Events;
 using MauronAlpha.Events.Units;
 
 using MauronAlpha.Layout.Layout2d.Context;
+using MauronAlpha.Layout.Layout2d.Utility;
 
 namespace MauronAlpha.Layout.Layout2d.Units {
 	
 	//A "Reference" to a unit in the Layout2d Context
-	public class Layout2d_unitReference:Layout2d_unit {
+	public class Layout2d_unitReference : Layout2d_unit {
 
 		//constructor
-		public Layout2d_unitReference (EVENTHANDLER_unitReference handler, Layout2d_unit unit, Layout2d_unitReference parent, MauronCode_dataIndex<Layout2d_unitReference> children)
+		public Layout2d_unitReference (Layout2d_eventHandler handler, Layout2d_unit unit, Layout2d_unitReference parent, MauronCode_dataIndex<Layout2d_unitReference> children)
 			: base(UnitType_reference.Instance) {
 			UNIT_source = unit;
 			EVENTHANDLER_unitReference=handler;
 			CONTEXT_lastValid = new Layout2d_contextSnapShot(handler.TimeStamp, unit.Context);
 		}
 
-		private EVENTHANDLER_unitReference EVENTHANDLER_unitReference;
+		//The EventHandler for this unit
+		private Layout2d_eventHandler EVENTHANDLER_unitReference;
+		public override Layout2d_eventHandler EventHandler {
+			get {
+				return EVENTHANDLER_unitReference;
+			}
+		}
 
+		//The unit this class is referencing
 		private Layout2d_unit UNIT_source;
 
 		//Convert a Layout2d_unit DataIndex to a unitReference Index
@@ -30,7 +38,7 @@ namespace MauronAlpha.Layout.Layout2d.Units {
 			MauronCode_dataIndex<Layout2d_unitReference> result = new MauronCode_dataIndex<Layout2d_unitReference>();
 			foreach(int key in dataIndex.Keys) {
 				Layout2d_unit original = dataIndex.Value(key);
-				Layout2d_unitReference reference = new Layout2d_unitReference(HANDLER_event, original, original.Parent, original.Children);
+				Layout2d_unitReference reference=new Layout2d_unitReference(original.EventHandler, original, original.Parent, original.Children);
 				result.SetValue(key,reference);
 			}
 			return result;
@@ -159,7 +167,7 @@ namespace MauronAlpha.Layout.Layout2d.Units {
 
 		public override Layout2d_unitReference Instance {
 			get { 
-				return new Layout2d_unitReference(UNIT_source,UNIT_source.Parent,UNIT_source.Children); 
+				return new Layout2d_unitReference(EventHandler,UNIT_source,UNIT_source.Parent,UNIT_source.Children); 
 			}
 		}
 
@@ -197,23 +205,6 @@ namespace MauronAlpha.Layout.Layout2d.Units {
 
 		#endregion
 
-	}
-
-	public class EVENTHANDLER_unitReference:I_eventHandler {
-
-		private MauronCode_eventClock CLOCK_master;
-
-		MauronCode_eventClock I_eventHandler.MasterClock {
-			get { return CLOCK_master; }
-		}
-
-		MauronCode_timeUnit I_eventHandler.Time {
-			get { return CLOCK_master.Time; }
-		}
-
-		MauronCode_timeStamp I_eventHandler.TimeStamp {
-			get { return CLOCK_master.TimeStamp; }
-		}
 	}
 
 	//Description

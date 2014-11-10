@@ -14,3 +14,5 @@ C:\Projects\C#\Building a Usable Code-Tree\Attempt 1\Mauron\MauronAlpha.Layout\b
 C:\Projects\C#\Building a Usable Code-Tree\Attempt 1\Mauron\MauronAlpha.Layout\bin\Debug\MauronAlpha.Geometry.dll
 C:\Projects\C#\Building a Usable Code-Tree\Attempt 1\Mauron\MauronAlpha.Layout\bin\Debug\MauronAlpha.Geometry.pdb
 C:\Projects\C#\Building a Usable Code-Tree\Attempt 1\Mauron\MauronAlpha.Layout\bin\Debug\MauronAlpha.pdb
+C:\Projects\C#\Building a Usable Code-Tree\Attempt 1\Mauron\MauronAlpha.Layout\bin\Debug\MauronAlpha.Events.dll
+C:\Projects\C#\Building a Usable Code-Tree\Attempt 1\Mauron\MauronAlpha.Layout\bin\Debug\MauronAlpha.Events.pdb

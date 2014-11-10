@@ -3,6 +3,8 @@ using MauronAlpha.ExplainingCode;
 using MauronAlpha.HandlingErrors;
 using MauronAlpha.HandlingData;
 
+using MauronAlpha.Events.Singletons;
+
 namespace MauronAlpha.Events.HandlingExceptions {
 	
 	//A object with built in Exception Awareness
@@ -19,7 +21,7 @@ namespace MauronAlpha.Events.HandlingExceptions {
 			return this;
 		}
 		public MauronCode_exceptionAwareObject SubscribeToEvents() {
-			ExceptionClock.Instance.SubscribeToEvent("Exception",this);
+			SharedEventSystem.Instance.ExceptionHandler.SubscribeToEvent("Exception",this);
 			return this;
 		}
 		public MauronCode_exceptionAwareObject SubscribeToEvent(MauronCode_eventClock clock, string message) {
@@ -34,12 +36,12 @@ namespace MauronAlpha.Events.HandlingExceptions {
 		#endregion
 
 		#region Handle an exception
-		public static  void HandleException(ExceptionClock clock, MauronCode_exception e, MauronCode_exceptionAwareObject source) {
+		public static void HandleException (Clock_exceptionHandler clock, MauronCode_exception e, MauronCode_exceptionAwareObject source) {
 			clock.SubmitEvent(new MauronCode_event(source,"Exception"));
 		}
 		public static MauronCode_exception Exception (string msg, MauronCode_exceptionAwareObject o, ErrorResolution resolution) {
 			MauronCode_exception e=new MauronCode_exception(msg, o, resolution);
-			HandleException(ExceptionClock.Instance, e,o);
+			HandleException(SharedEventSystem.Instance.ExceptionHandler, e, o);
 			return e;
 		}
 

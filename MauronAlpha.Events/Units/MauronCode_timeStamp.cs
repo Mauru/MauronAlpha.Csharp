@@ -3,6 +3,8 @@
 using MauronAlpha.HandlingData;
 using MauronAlpha.HandlingErrors;
 
+using MauronAlpha.Events.Singletons;
+
 
 namespace MauronAlpha.Events.Units {
 	
@@ -12,6 +14,12 @@ namespace MauronAlpha.Events.Units {
 		//DataTrees
 		private static string[] KEYS_default = new string[]{"created","updated","instanced"};
 		private MauronCode_dataTree<string,MauronCode_timeUnit> TREE_timeUnits = new MauronCode_dataTree<string,MauronCode_timeUnit>(KEYS_default);
+
+		public Clock_systemTime SystemTime {
+			get {
+				return SharedEventSystem.Instance.SystemTime;
+			}
+		}
 
 /*==========================================================================================
 Properties
@@ -63,7 +71,7 @@ Properties
 		public MauronCode_eventClock Clock {
 			get {
 				if(CLOCK_event == null) {
-					CLOCK_event = new MauronCode_eventClock(SystemTime.Instance);
+					CLOCK_event= new MauronCode_eventClock(true);
 				}	
 				return CLOCK_event;
 			}
