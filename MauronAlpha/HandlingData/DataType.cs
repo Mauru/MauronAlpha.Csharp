@@ -17,6 +17,7 @@ namespace MauronAlpha.HandlingData {
 		public virtual bool IsConvertibleTo(Type t){
 			return false;
 		}
+
 		public virtual T Convert<T>(MauronCode_dataObject obj){
 			throw Error("Can not convert dataObject!,(Covert<T>)",this,ErrorType_scope.Instance);
 			//return default(T);

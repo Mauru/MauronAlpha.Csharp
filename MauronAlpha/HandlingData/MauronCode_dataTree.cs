@@ -6,7 +6,7 @@ using MauronAlpha.HandlingErrors;
 namespace MauronAlpha.HandlingData {
 
 	//An associative array with a fixed size, tracks if values have been set or not
-	public class MauronCode_dataTree<TKey,TValue> : MauronCode_dataObject {
+	public class MauronCode_dataTree<TKey, TValue> : MauronCode_dataObject, I_instantiable {
 
 		#region Constructors
 		private MauronCode_dataTree() : base(DataType_dataTree.Instance) {}
@@ -14,20 +14,22 @@ namespace MauronAlpha.HandlingData {
 			//initialize keys
 			DATA_keys=new TKey[keys.Count];
 			
-			//we need to check if the keys are unique unfortunately
-			//TODO("Finish each on each check");
-			DelegateHandler_equals<TKey> D = new DelegateHandler_equals<TKey>();
-			if( ForEachKeys_bool(DATA_keys, D.D_objectEquals,1) ) {
-				throw Error("Duplicate Keys Detected!",this,ErrorType_constructor.Instance);
-			}
+			if(keys.Count>0) {
+				//we need to check if the keys are unique unfortunately
+				//TODO("Finish each on each check");
+				DelegateHandler_equals<TKey> D = new DelegateHandler_equals<TKey>();
+				if( ForEachKeys_bool(DATA_keys, D.D_objectEquals,1) ) {
+					throw Error("Duplicate Keys Detected!",this,ErrorType_constructor.Instance);
+				}
 			
-			keys.CopyTo(DATA_keys,0);
+				keys.CopyTo(DATA_keys,0);
 
-			//initialize empty values
-			DATA_values=new TValue[keys.Count];
+				//initialize empty values
+				DATA_values=new TValue[keys.Count];
 
-			//initialize the boolean set counter
-			DATA_wasSet=new bool[keys.Count];
+				//initialize the boolean set counter
+				DATA_wasSet=new bool[keys.Count];
+			}
 
 		}
 		public MauronCode_dataTree(ICollection<TKey> keys, ICollection<TValue> values):this(keys){
@@ -41,7 +43,7 @@ namespace MauronAlpha.HandlingData {
 			TValue[] v_value = new TValue[keys.Count];
 			values.CopyTo(v_value,0);
 
-			for(int n=0; n<values.Count ; n++) {
+			for(long n=0; n<values.Count ; n++) {
 				SetValue(v_key[n],v_value[n]);
 			}
 		}
@@ -52,13 +54,13 @@ namespace MauronAlpha.HandlingData {
 		///<summary>Cycle through each component of a array and test tem against each other</summary>
 		///<remarks>Does not test against itself.</remarks>
 		///<param name="limitTrue">0: Test for all, >0: Test until true has been returned n times</param>
-		private bool ForEachKeys_bool(TKey[] keys, DelegateMethod_objectInteraction_bool<TKey> comparer, int limitTrue) {
+		private bool ForEachKeys_bool(TKey[] keys, DelegateMethod_objectInteraction_bool<TKey> comparer, long limitTrue) {
 			TKey origin;
 			TKey target;
-			int countTrue = 0;
-			for(int i=0; i<keys.Length; i++) {
+			long countTrue = 0;
+			for(long i=0; i<keys.Length; i++) {
 				origin = keys[i];
-				for(int b=0; b<keys.Length; b++) {
+				for(long b=0; b<keys.Length; b++) {
 					if(i!=b){
 						target=keys[b];
 						if(comparer(origin,target)) {
@@ -75,10 +77,10 @@ namespace MauronAlpha.HandlingData {
 		
 		///<summary>Cycle through each component of a array and test against target</summary>
 		///<param name="limitTrue">0: Test for all, >0: Test until true has been returned n times</param>
-		private bool ForEachKeys_compare_bool(TKey[] keys, TKey target, DelegateMethod_objectInteraction_bool<TKey> comparer, int limitTrue) {
+		private bool ForEachKeys_compare_bool(TKey[] keys, TKey target, DelegateMethod_objectInteraction_bool<TKey> comparer, long limitTrue) {
 			TKey origin;
-			int countTrue=0;
-			for( int i=0; i<keys.Length; i++ ) {
+			long countTrue=0;
+			for( long i=0; i<keys.Length; i++ ) {
 				origin=keys[i];
 				if( comparer(origin, target) ) {
 					countTrue++;
@@ -92,12 +94,12 @@ namespace MauronAlpha.HandlingData {
 
 		///<summary>Cycle through each component of a array and test against target</summary>
 		///<param name="limitTrue">0: Test for all, >0: Test until true has been returned n times</param>
-		private TValue[] ForEachValues_compare_return(TValue[] values, TValue target, DelegateMethod_objectInteraction_bool<TValue> comparer, int limitTrue){
+		private TValue[] ForEachValues_compare_return(TValue[] values, TValue target, DelegateMethod_objectInteraction_bool<TValue> comparer, long limitTrue){
 			TValue[] result=new TValue[0];
 			if(CountValidValues==0){
 				return result;
 			}
-			for(int n=0; n<Count; n++){
+			for(long n=0; n<CountKeys; n++){
 				if(IndexIsSet(n)){
 					TValue candidate = DATA_values[n];
 					if(comparer(candidate,target)) {
@@ -113,14 +115,14 @@ namespace MauronAlpha.HandlingData {
 			}
 			return result;
 		}
-		private int[] ForEachValues_compare_returnIndex(TValue[] values, TValue target, DelegateMethod_objectInteraction_bool<TValue> comparer, int limitTrue) {
-			int[] result=new int[0];
-			for(int index=0;index<Count;index++){
+		private long[] ForEachValues_compare_returnIndex(TValue[] values, TValue target, DelegateMethod_objectInteraction_bool<TValue> comparer, long limitTrue) {
+			long[] result=new long[0];
+			for(long index=0;index<Count;index++){
 				if(IndexIsSet(index)) {
 					TValue candidate = DATA_values[index];
 					if(comparer(candidate,target)){
-						int newIndex=result.Length;
-						int[] tmp_result = new int[newIndex];
+						long newIndex=result.Length;
+						long[] tmp_result = new long[newIndex];
 						result.CopyTo(tmp_result,0);
 						tmp_result[newIndex]=index;
 						result=tmp_result;
@@ -139,9 +141,9 @@ namespace MauronAlpha.HandlingData {
 				return new DelegateHandler_equals<TKey>();
 			}
 		}
-		private DelegateHandler_equals<int> DelegateIndexHandler {
+		private DelegateHandler_equals<long> DelegateIndexHandler {
 			get {
-				return new DelegateHandler_equals<int>();
+				return new DelegateHandler_equals<long>();
 			}
 		}
 		private DelegateHandler_equals<TValue> DelegateValueHandler {
@@ -182,7 +184,7 @@ namespace MauronAlpha.HandlingData {
 
 		#region Working with the DataSet
 		//Actively remove a data Entry from the DataSets, either completely or only the value
-		private MauronCode_dataTree<TKey, TValue> RemoveDataByIndex (int index, bool b_removeKey) {
+		private MauronCode_dataTree<TKey, TValue> RemoveDataByIndex (long index, bool b_removeKey) {
 
 			//Error Check
 			if( !ContainsIndex(index) ) {
@@ -205,8 +207,8 @@ namespace MauronAlpha.HandlingData {
 			}
 
 			//populate tmp arrays with values
-			for( int n=0; n<Count; n++ ) {
-				int newIndex=tmp_keys.Length;
+			for( long n=0; n<Count; n++ ) {
+				long newIndex=tmp_keys.Length;
 				//not the index
 				if( n!=index ) {
 					tmp_keys[newIndex]=DATA_keys[n];
@@ -231,22 +233,39 @@ namespace MauronAlpha.HandlingData {
 		#endregion
 
 		#region Working with keys
-		public int IndexByKey (TKey key) {
-			for( int index=0; index<DATA_keys.Length; index++ ) {
+		public long IndexByKey (TKey key) {
+			for( long index=0; index<DATA_keys.Length; index++ ) {
 				if( KeyByIndex(index).Equals(key) ) {
 					return index;
 				}
 			}
 			return -1;
 		}
-		public TKey KeyByIndex (int index) {
+		public TKey KeyByIndex (long index) {
 			if( !ContainsIndex(index) ) {
 				throw Error("Index out of Bounds!,{"+index+"},(KeyByIndex)", this, ErrorType_bounds.Instance);
 			}
 			return DATA_keys[index];
 		}
 
-		public int Count { get { return DATA_keys.Length; } }
+		/// <summary>
+		/// Returns the number of KEYS in the dataTree
+		/// <remarks>Note that this does not mean valid values!</remarks>
+		/// </summary>
+		public long Count { get { return DATA_keys.Length; } }
+
+		public long CountKeys { get { return DATA_keys.Length; } }
+		public long CountValidKeys {
+			get {
+				long result=0;
+				for( long index=0; index<Keys.Count; index++ ) {
+					if( IndexIsSet(index) ) {
+						result++;
+					}
+				}
+				return result;
+			}
+		}
 
 		public MauronCode_dataList<TKey> Keys {
 			get {
@@ -260,12 +279,12 @@ namespace MauronAlpha.HandlingData {
 			}
 			
 			//Create instance of DataSet with new Length
-			int newIndex = Count;
+			long newIndex = Count;
 			TKey[] tmp_keys = new TKey[newIndex];
 			TValue[] tmp_values = new TValue[newIndex];
 			bool[] tmp_wasSet = new bool[newIndex];
 
-			for(int n=0; n<newIndex; n++) {
+			for(long n=0; n<newIndex; n++) {
 				tmp_keys[n]=DATA_keys[n];
 				if(IndexIsSet(n)){
 					tmp_values[n]=DATA_values[n];
@@ -295,7 +314,7 @@ namespace MauronAlpha.HandlingData {
 		public MauronCode_dataIndex<TValue> Values {
 			get {
 				MauronCode_dataIndex<TValue> result=new MauronCode_dataIndex<TValue>();
-				for(int n = 0; n < DATA_values.Length; n++) {
+				for(long n = 0; n < DATA_values.Length; n++) {
 					if(IndexIsSet(n)){
 						result.SetValue(n,DATA_values[n]);
 					}
@@ -311,8 +330,8 @@ namespace MauronAlpha.HandlingData {
 			return DATA_values[IndexByKey(key)];
 		}
 		public MauronCode_dataTree<TKey, TValue> SetValue (TKey key, TValue value) {
-			int index=IndexByKey(key);
-			if( index<0 ) {
+			long index=IndexByKey(key);
+			if( index < 0 ) {
 				throw Error("Invalid Key!", this, ErrorType_index.Instance);
 			}
 			DATA_values[index]=value;
@@ -323,19 +342,32 @@ namespace MauronAlpha.HandlingData {
 			if(values.Length!=Count) {
 				throw Error("Values must be same length as keys!,(SetValues)",this,ErrorType_bounds.Instance);
 			}
-			for(int n=0;n<values.Length;n++){
+			for(long n=0;n<values.Length;n++){
 				DATA_values[n]=values[n];
 				DATA_wasSet[n]=true;
 			}
 			return this;
 		}
 
+		public ICollection<TKey> ValidKeys {
+			get {
+				TKey[] result=new TKey[CountValidKeys];
+				for( long index=0; index<Count; index++ ) {
+					if( IndexIsSet(index) ) {
+						long newIndex=result.Length;
+						result[newIndex]=DATA_keys[index];
+					}
+				}
+				return result;
+			}
+		}
+
 		public ICollection<TValue> ValidValues {
 			get {
 				TValue[] result=new TValue[CountValidValues];
-				for( int index=0; index<Count; index++ ) {
+				for( long index=0; index<Count; index++ ) {
 					if( IndexIsSet(index) ) {
-						int newIndex=result.Length;
+						long newIndex=result.Length;
 						result[newIndex]=DATA_values[index];
 					}
 				}
@@ -343,10 +375,10 @@ namespace MauronAlpha.HandlingData {
 			}
 		}
 
-		public int CountValidValues {
+		public long CountValidValues {
 			get {
-				int result=0;
-				for( int index=0; index<Count; index++ ) {
+				long result=0;
+				for( long index=0; index<Count; index++ ) {
 					if( IndexIsSet(index) ) {
 						result++;
 					}
@@ -355,32 +387,31 @@ namespace MauronAlpha.HandlingData {
 			}
 		}
 
+
 		//Unset value by Key
 		public MauronCode_dataTree<TKey, TValue> UnsetByKey (TKey key) {
 			if( !IsSet(key) ) {
 				Exception("Value not set!,(UnsetValue)", this, ErrorResolution.DoNothing);
 				return this;
 			}
-			int index=IndexByKey(key);
+			long index=IndexByKey(key);
 			RemoveDataByIndex(index, false);
 			return this;
 		}
 
 		//Unset value by value
 		public MauronCode_dataTree<TKey, TValue> UnsetByValue (TValue value) {
-			int[] indexes=ForEachValues_compare_returnIndex(DATA_values, value, DelegateValueHandler.DEL_objectEquals, 0);
-			foreach( int index in indexes ) {
+			long[] indexes=ForEachValues_compare_returnIndex(DATA_values, value, DelegateValueHandler.DEL_objectEquals, 0);
+			foreach( long index in indexes ) {
 				RemoveDataByIndex(index, false);
 			}
 			return this;
 		}
 		#endregion
 
-
-
 		#region Boolean States
 
-		private bool IndexIsSet(int index){
+		private bool IndexIsSet(long index){
 			if(index<0||index>=Count) {
 				Exception("Index out of Bounds!,{"+index+"}",this,ErrorResolution.ExpectedReturn);
 				return false;
@@ -398,7 +429,15 @@ namespace MauronAlpha.HandlingData {
 		//is the index ReadOnly
 		public bool IsReadOnly { get { return false; } }
 
-		public bool ContainsIndex(int n) {
+		/// <summary>
+		/// Checks
+		/// </summary>
+		/// <param name="index"></param>
+		/// <returns></returns>
+		public bool ContainsValueAtIndex(long index) {
+			return IndexIsSet(index);
+		}
+		public bool ContainsIndex(long n) {
 			return (n>-1&&n<DATA_keys.Length);
 		}
 		public bool IsSet(TKey key){
@@ -415,6 +454,22 @@ namespace MauronAlpha.HandlingData {
 		}				
 
 		#endregion
+
+		public MauronCode_dataTree<TKey,TValue> Instance {
+			get {
+				MauronCode_dataTree<TKey,TValue> instance = new MauronCode_dataTree<TKey,TValue>(Keys);
+				foreach(TKey key in ValidKeys) {
+					if(IsSet(key)){
+						instance.SetValue(key, Value(key));
+					}
+				}
+				return Instance;
+			}
+		}
+
+		object ICloneable.Clone ( ) {
+			return Instance;
+		}
 	}
 
 	//A Description of the DataType

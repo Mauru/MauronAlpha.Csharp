@@ -2,6 +2,8 @@
 using MauronAlpha.Text.Utility;
 using MauronAlpha.Layout.Layout2d.Position;
 
+using MauronAlpha.Layout.Layout2d.Units;
+
 namespace MauronAlpha.Forms.Units {
 	
 	//A entity waiting for user input

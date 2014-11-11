@@ -8,6 +8,7 @@ using MauronAlpha.Events.Units;
 
 using MauronAlpha.Layout.Layout2d.Context;
 using MauronAlpha.Layout.Layout2d.Utility;
+using MauronAlpha.Layout.Layout2d.Collections;
 
 namespace MauronAlpha.Layout.Layout2d.Units {
 	
@@ -15,7 +16,7 @@ namespace MauronAlpha.Layout.Layout2d.Units {
 	public class Layout2d_unitReference : Layout2d_unit {
 
 		//constructor
-		public Layout2d_unitReference (Layout2d_eventHandler handler, Layout2d_unit unit, Layout2d_unitReference parent, MauronCode_dataIndex<Layout2d_unitReference> children)
+		public Layout2d_unitReference (Layout2d_eventHandler handler, Layout2d_unit unit, Layout2d_unitReference parent, Layout2d_unitCollection children)
 			: base(UnitType_reference.Instance) {
 			UNIT_source = unit;
 			EVENTHANDLER_unitReference=handler;
@@ -137,11 +138,13 @@ namespace MauronAlpha.Layout.Layout2d.Units {
 			}
 		}
 
-		public override MauronCode_dataIndex<Layout2d_unitReference> Children {
+		public override bool IsReference { get { return true; } } 
+
+		public override Layout2d_unitCollection Children {
 			get {
 				if( !Exists ) {
 					Exception("ReferenceUnit does not exist!,(Children)", this, ErrorResolution.ExpectedReturn);
-					return new MauronCode_dataIndex<Layout2d_unitReference>();
+					return new Layout2d_unitCollection();
 				}
 				return UNIT_source.Children;
 			}
@@ -243,6 +246,7 @@ namespace MauronAlpha.Layout.Layout2d.Units {
 		public override bool IsDynamic {
 			get { return true; }
 		}
+
 	}
 
 }

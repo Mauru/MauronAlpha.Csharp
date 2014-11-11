@@ -6,45 +6,57 @@ using MauronAlpha.HandlingErrors;
 namespace MauronAlpha.HandlingData {
 
 	//A data index is a numerical index of generics - it does not reindex its element like dataList
-	public class MauronCode_dataIndex<T>:MauronCode_dataObject,IDictionary<long,T>,ICollection<T> {
+	public class MauronCode_dataIndex<T>:MauronCode_dataObject, ICollection<T> {
 		
 		//constructor
 		public MauronCode_dataIndex():base(DataType_dataIndex.Instance) {}
 
+		private static long[] EmptyKeySet = new long[0]{};
+
 		//The data
-		private Dictionary<long,T> DIC_data;
-		public Dictionary<long,T> Data {
-			get {
-				if(DIC_data==null) {
-					SetData(new Dictionary<long,T>());
-				}
-				return DIC_data;
-			}
-		}
-		public MauronCode_dataIndex<T> SetData(Dictionary<long,T> data){
-			if( IsReadOnly ) {
-				throw Error("Is Read Only!,(SetData)", this, ErrorType_protected.Instance);
-			}
-			DIC_data=data;
-			return this;
-		}
+		private MauronCode_dataTree<long,T> DATA_values = new MauronCode_dataTree<long,T>(MauronCode_dataIndex<T>.EmptyKeySet);
 
 		#region Custom DataObject functions
 
 		//Set a value
 		public ICollection<T> Values {
 			get {
-				return Data.Values;
+				return DATA_values.Values;
 			}
 		}
 		public T Value(long key) {
-			return Data[key];
-		}
-		public MauronCode_dataIndex<T> SetValue(long key, T value){
-			if(IsReadOnly) {
-				throw Error("Is Read Only!,(SetValue)",this,ErrorType_protected.Instance);
+			if( !DATA_values.IsSet(key) ) {
+				throw NullError("Value not Set!,{"+key+"},(Value),",this,typeof(T));
 			}
-			Data.Add(key,value);
+			return DATA_values.Value(key);
+		}
+		/// <summary>
+		/// Sets a Value by Key
+		/// </summary>
+		/// <param name="key">the key to set</param>
+		/// <param name="value">the value to set</param>
+		/// <remarks>TODO: This operation SHOULD be volatile.</remarks>
+		/// <remarks>You should theoretically lock this object while expanding...</remarks>
+		/// <returns>returns self</returns>
+		public MauronCode_dataIndex<T> SetValue(long key, T value){
+			
+			if(IsReadOnly) {
+				throw Error("Is ReadOnly!,(SetValue)",this,ErrorType_protected.Instance);
+			}
+
+			//creating an instance to preserve functionality for as long as possible
+			MauronCode_dataTree<long,T> tree_new =  DATA_values.Instance;
+			if( !DATA_values.ContainsValueAtIndex(key)) {
+				if(!DATA_values.ContainsKey(key)){
+					tree_new.AddKey(key);	
+				}else{
+					//throw an exception
+					Exception("Replacing existing Value!,{"+key+"},(SetValue)", this, ErrorResolution.ExpectedReturn);
+				}
+				tree_new.SetValue(key, value);
+			}
+			DATA_values = tree_new;
+
 			return this;
 		}
 
@@ -55,35 +67,72 @@ namespace MauronAlpha.HandlingData {
 			B_isReadOnly=state;
 			return this;
 		}
+		public bool IsEmpty {
+			get {
+				foreach(long key in Keys){
+					if(ContainsValueAtKey(key)) {
+						return true;
+					}
+				}
+				return false;
+			}
+		}
 
 		//Does data contain a key
 		public bool ContainsKey(long key){
-			return Data.ContainsKey(key);
+			return DATA_values.ContainsKey(key);
 		}
 
 		//Does data contain the specified object
 		public bool ContainsValue(T item){
-			return Data.ContainsValue(item);
+			foreach(T candidate in DATA_values.ValidValues){
+				if(candidate.Equals(item)){
+					return true;
+				}
+			}
+			return false;
+		}
+
+		public bool ContainsValueAtKey(long key) {
+			return DATA_values.IsSet(key);
 		}
 
 		//The keys of Data
 		public ICollection<long> Keys { get {
-			return Data.Keys;
+			return DATA_values.Keys;
 		} }
 
 		//The number of T in collection
-		public int Count {
+		public long CountValidValues {
 			get {
-				return Data.Values.Count;
+				return DATA_values.CountValidValues;
+			}
+		}
+		public long CountKeys {
+			get {
+				return DATA_values.CountKeys;
+			}
+		}
+		public long CountValidKeys {
+			get {
+				return DATA_values.CountValidKeys;
 			}
 		}
 
-		//Remove a value by Key
+		/// <summary>
+		/// Removes a value by key
+		/// </summary>
+		/// <param name="key">the key to remove</param>
+		/// <remarks>Throws an Error if the key is not set</remarks>
+		/// <returns>self</returns>
 		public MauronCode_dataIndex<T> RemoveByKey(long key){
 			if( IsReadOnly ) {
 				throw Error("Is Read Only!,(RemovebyKey)", this, ErrorType_protected.Instance);
 			}
-			Data.Remove(key);
+			if(! DATA_values.ContainsKey(key)){
+				throw Error("Invalid index!,{"+key+"},(RemoveByKey)",this,ErrorType_index.Instance);
+			}
+			DATA_values.RemoveKey(key);
 			return this;
 		}
 
@@ -92,7 +141,7 @@ namespace MauronAlpha.HandlingData {
 			if( IsReadOnly ) {
 				throw Error("Is Read Only!,(Clear)", this, ErrorType_protected.Instance);
 			}
-			SetData(new Dictionary<long,T>());
+			DATA_values=new MauronCode_dataTree<long,T>(EmptyKeySet);
 			return this;
 		}
 
@@ -100,132 +149,22 @@ namespace MauronAlpha.HandlingData {
 
 		public long NextIndex { 
 			get {
-				List<long> indexes = new List<long>(Data.Keys);
-				if( indexes.Count>0 ) {
-					return indexes[indexes.Count-1]+1;
-				}
-				return 0;
+				return DATA_values.Keys.Count;
 			}		
 		}
 		public long LastIndex {
 			get{
-				List<long> indexes = new List<long>(Keys);
-				if(indexes.Count>0) {
-					return indexes[indexes.Count-1];
-				}
-				return 0;
+				long result = DATA_values.Keys.Count-1;
+				return LastIndex;
 			}
 		}
 		public long FirstIndex {
 			get {
-				List<long> indexes = new List<long>(Keys);
-				if(indexes.Count>0) {
-					return indexes[0];
-				}
-				return 0;
+				return(DATA_values.Keys.FirstElement);
 			}
 		}
-		public long IndexOf(T item){
-			///long index=-1;
-			foreach(KeyValuePair<long,T> d in Data) {
-				if(d.Value.Equals(item)){
-					return d.Key;
-				}
-			}
-			throw Error("Item is not in index!,(IndexOf)",this,ErrorType_index.Instance);
-			///return index;
-		}
-
 		#endregion
 
-		#endregion
-
-		#region IDictionary<long,T>
-		void IDictionary<long, T>.Add (long key, T value) {
-			SetValue(key, value);
-		}
-
-		bool IDictionary<long, T>.ContainsKey (long key) {
-			return ContainsKey(key);
-		}
-
-		ICollection<long> IDictionary<long, T>.Keys {
-			get { return Keys; }
-		}
-
-		bool IDictionary<long, T>.Remove (long key) {
-			if(!ContainsKey(key)){
-				return false;
-			}
-			RemoveByKey(key);
-			return true;
-		}
-
-		bool IDictionary<long, T>.TryGetValue (long key, out T value) {
-			if(ContainsKey(key)){
-				value=Value(key);
-				return true;
-			}
-			value=default(T);
-			return false;
-		}
-
-		ICollection<T> IDictionary<long, T>.Values {
-			get { return Values; }
-		}
-
-		T IDictionary<long, T>.this[long key] {
-			get {
-				return Value(key);
-			}
-			set {
-				SetValue(key,value);
-			}
-		}
-
-		void ICollection<KeyValuePair<long, T>>.Add (KeyValuePair<long, T> item) {
-			SetValue(item.Key,item.Value);
-		}
-
-		void ICollection<KeyValuePair<long, T>>.Clear ( ) {
-			Clear();
-		}
-
-		bool ICollection<KeyValuePair<long, T>>.Contains (KeyValuePair<long, T> item) {
-			return ContainsKey(item.Key);
-		}
-
-		void ICollection<KeyValuePair<long, T>>.CopyTo (KeyValuePair<long, T>[] array, int arrayIndex) {
-			long index=arrayIndex;
-			foreach(KeyValuePair<long,T> d in Data){
-				array[index]=d;
-				index++;
-			}
-		}
-
-		int ICollection<KeyValuePair<long, T>>.Count {
-			get { return Count; }
-		}
-
-		bool ICollection<KeyValuePair<long, T>>.IsReadOnly {
-			get { return IsReadOnly; }
-		}
-
-		bool ICollection<KeyValuePair<long, T>>.Remove (KeyValuePair<long, T> item) {
-			if(!ContainsKey(item.Key)){
-				return false;
-			}
-			RemoveByKey(item.Key);
-			return true;
-		}
-
-		IEnumerator<KeyValuePair<long, T>> IEnumerable<KeyValuePair<long, T>>.GetEnumerator ( ) {
-			return Data.GetEnumerator();
-		}
-
-		System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator ( ) {
-			return Data.GetEnumerator();
-		}
 		#endregion
 	
 		#region ICollection<T>
@@ -251,7 +190,7 @@ namespace MauronAlpha.HandlingData {
 		}
 
 		int ICollection<T>.Count {
-			get { return Count; }
+			get { return Convert.ToInt32(CountValidValues); }
 		}
 
 		bool ICollection<T>.IsReadOnly {
@@ -259,19 +198,19 @@ namespace MauronAlpha.HandlingData {
 		}
 
 		bool ICollection<T>.Remove (T item) {
-			if(!ContainsValue(item)){
-				return false;
-			}
-			RemoveByKey(IndexOf(item));
+			DATA_values.UnsetByValue(item);
 			return true;
 		}
 
 		IEnumerator<T> IEnumerable<T>.GetEnumerator ( ) {
-			return Values.GetEnumerator();
+			return DATA_values.ValidValues.GetEnumerator();
 		}
 
 		#endregion
-	
+
+		System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator ( ) {
+			return DATA_values.ValidValues.GetEnumerator();
+		}
 	}
 
 	//A description of the dataType
@@ -294,7 +233,19 @@ namespace MauronAlpha.HandlingData {
 		#endregion
 
 		public override string Name { get { return "dataIndex"; } }
-
+		public override bool IsProtectable {
+			get {
+				return true;
+			}
+		}
+		/// <summary>
+		/// Is the item locked during modification?
+		/// </summary>
+		public bool IsLockedDuringModification {
+			get {
+				return false;
+			}
+		}
 	}
 
 }

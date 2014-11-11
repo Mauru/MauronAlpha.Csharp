@@ -2,6 +2,7 @@
 
 using MauronAlpha.Layout.Layout2d.Context;
 using MauronAlpha.Layout.Layout2d.Utility;
+using MauronAlpha.Layout.Layout2d.Collections;
 
 namespace MauronAlpha.Layout.Layout2d.Units {	
 	
@@ -31,8 +32,9 @@ namespace MauronAlpha.Layout.Layout2d.Units {
 		public abstract bool IsDynamic { get; }
 		public abstract bool IsParent { get; }
 		public abstract bool IsChild { get; }
+		public abstract bool IsReference { get; }
 
-		public abstract MauronCode_dataIndex<Layout2d_unitReference> Children { get; }
+		public abstract Layout2d_unitCollection Children { get; }
 		
 		public abstract Layout2d_unitReference Parent { get; }
 		public abstract Layout2d_unitReference ChildByIndex (int index);

@@ -1,5 +1,10 @@
 ﻿using System;
 
+using MauronAlpha.HandlingData;
+using MauronAlpha.HandlingErrors;
+
+using MauronAlpha.Layout.Layout2d.Collections;
+
 namespace MauronAlpha.Layout.Layout2d.Units {
 	
 	//A display container
@@ -7,13 +12,28 @@ namespace MauronAlpha.Layout.Layout2d.Units {
 
 		//Constructor
 		public Layout2d_container():base(UnitType_container.Instance) {
-		
+			
+		}
+
+		//Properties
+		private Layout2d_unitReference LAYOUT_parent;
+		public override Layout2d_unitReference Parent {
+			get {
+				if( LAYOUT_parent==null ) {
+					throw NullError("LAYOUT_parent can not be null!", this, typeof(Layout2d_unitReference));
+				}
+				return LAYOUT_parent;
+			}
+		}
+		private Layout2d_container SetParent(Layout2d_unitReference parent) {
+			LAYOUT_parent = parent;
+			return this;
 		}
 
 
-
+		//Implementing Layout2d_unit
 		public override bool Exists {
-			get { throw new NotImplementedException(); }
+			get { return true; }
 		}
 
 		public override bool CanHaveParent {
@@ -25,38 +45,44 @@ namespace MauronAlpha.Layout.Layout2d.Units {
 		}
 
 		public override bool HasParent {
-			get { throw new NotImplementedException(); }
+			get { return (LAYOUT_parent!=null && LAYOUT_parent.Exists); }
 		}
-
+				
 		public override bool HasChildren {
-			get { throw new NotImplementedException(); }
+			get { return LAYOUT_children.IsEmpty; }
 		}
 
 		public override bool IsDynamic {
-			get { throw new NotImplementedException(); }
+			get { return true; }
 		}
 
 		public override bool IsParent {
-			get { throw new NotImplementedException(); }
+			get { return !LAYOUT_children.IsEmpty; }
 		}
 
 		public override bool IsChild {
-			get { throw new NotImplementedException(); }
+			get { return (LAYOUT_parent==null); }
 		}
 
-		public override HandlingData.MauronCode_dataIndex<Layout2d_unitReference> Children {
-			get { throw new NotImplementedException(); }
-		}
-
-		public override Layout2d_unitReference Parent {
-			get { throw new NotImplementedException(); }
+		private Layout2d_unitCollection LAYOUT_children=new Layout2d_unitCollection();
+		public override Layout2d_unitCollection Children {
+			get {
+				return LAYOUT_children.Instance.SetIsReadOnly(true);
+			}
 		}
 
 		public override Layout2d_unitReference ChildByIndex (int index) {
-			throw new NotImplementedException();
+			if(!LAYOUT_children.IsEmpty || !LAYOUT_children.ContainsIndex(index)){
+				throw Error("Invalid index!,{"+index+"},(ChildByIndex)",this,ErrorType_index.Instance);
+			}
+			return LAYOUT_children.UnitByIndex(index);
 		}
 
 		public override Layout2d_unitReference AsReference {
+			get { throw new NotImplementedException(); }
+		}
+
+		public override bool IsReference {
 			get { throw new NotImplementedException(); }
 		}
 
@@ -103,11 +129,11 @@ namespace MauronAlpha.Layout.Layout2d.Units {
 		public override string Name { get { return "container"; } }
 
 		public override bool CanHaveChildren {
-			get { return false; }
+			get { return true; }
 		}
 
 		public override bool CanHaveParent {
-			get { return false; }
+			get { return true; }
 		}
 
 		public override bool CanHide {

@@ -29,11 +29,21 @@ namespace MauronAlpha.HandlingErrors {
 		#endregion
 
 		#region Static Defaults
+
+		public static ErrorResolution Replaced {
+			get {
+				return new ErrorResolution(
+					"Replaced",
+					"The Item In an Object is allready assigned to. Its Pointer is being replaced. This might be expected behavior."
+				);
+			}
+		}
+
 		public static ErrorResolution Delayed {
 			get {
 				return new ErrorResolution(
 					"Delayed",
-					"The Solution is delayed. This will most likely result in a Fatal Error."
+					"The Solution is delayed until a later point in the script. This will most likely result in a Fatal Error."
 				);
 			}
 		}
