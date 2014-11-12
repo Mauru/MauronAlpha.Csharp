@@ -2,6 +2,8 @@
 
 using MauronAlpha.Events.HandlingExceptions;
 
+using MauronAlpha.Events.Units;
+
 namespace MauronAlpha.Events.Singletons {
 
 	// Keeps track of the ExceptionHandler and SystemTime
@@ -26,17 +28,28 @@ namespace MauronAlpha.Events.Singletons {
 		Clock_exceptionHandler CLOCK_exceptionHandler;
 		public Clock_exceptionHandler ExceptionHandler { get {
 			if(CLOCK_exceptionHandler == null) {
-				CLOCK_exceptionHandler = new Clock_exceptionHandler(SystemTime);
+				CLOCK_exceptionHandler = new Clock_exceptionHandler(SystemClock);
 			}
 			return CLOCK_exceptionHandler;
 		} }
 		Clock_systemTime CLOCK_systemTime;
-		public Clock_systemTime SystemTime { 
+		public Clock_systemTime SystemClock { 
 			get {
 				if(CLOCK_systemTime == null) {
 					CLOCK_systemTime = new Clock_systemTime(this);
 				}
 				return CLOCK_systemTime;
+			}
+		}
+
+		public static long SystemTicks {
+			get {
+				return Clock_systemTime.Ticks;
+			}
+		}
+		public static EventUnit_timeStamp SystemTimeStamp {
+			get {
+				return Clock_systemTime.TimeStamp;
 			}
 		}
 

@@ -7,7 +7,7 @@ using MauronAlpha.Events.Singletons;
 namespace MauronAlpha.Events {
 	
 	//The time of the active computer
-	public class Clock_systemTime : MauronCode_eventClock {
+	public class Clock_systemTime : EventUnit_clock {
 		
 		private SharedEventSystem SYSTEM_clocks;
 
@@ -26,12 +26,28 @@ namespace MauronAlpha.Events {
 				return CLOCK_exceptions;
 			}
 		}
-	
-		public MauronCode_timeUnit TimeFor(MauronCode_eventClock clock) {
-			return new MauronCode_timeUnit(System.DateTime.Now.Ticks,this);
+
+		public static long Ticks {
+			get {
+				return System.DateTime.Now.Ticks;
+			}
 		}
-		public MauronCode_timeStamp TimeStampFor (MauronCode_eventClock clock) {
-			return new MauronCode_timeStamp(this, TimeFor(clock));
+
+		public new static EventUnit_timeStamp TimeStamp {
+			get {
+				return new EventUnit_timeStamp(Time);
+			}
+		}
+		public new static EventUnit_systemTime Time {
+			get {
+				return new EventUnit_systemTime(Ticks);
+			}
+		}
+	
+		public static Clock_systemTime Instance {
+			get {
+				return new Clock_systemTime(SharedEventSystem.Instance);
+			}
 		}
 
 	}

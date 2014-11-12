@@ -48,7 +48,7 @@ namespace MauronAlpha.Events {
 		#endregion
 
 		#region Let an event submit itself to an event clock
-		public MauronCode_event Submit(MauronCode_eventClock clock) {
+		public MauronCode_event Submit(EventUnit_clock clock) {
 			clock.SubmitEvent (this);
 			return this;
 		}

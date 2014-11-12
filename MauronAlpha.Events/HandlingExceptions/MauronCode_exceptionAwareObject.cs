@@ -16,7 +16,7 @@ namespace MauronAlpha.Events.HandlingExceptions {
 		}		
 
 		#region Send an Event
-		public MauronCode_exceptionAwareObject SendEvent(MauronCode_eventClock clock, MauronCode_event e) {
+		public MauronCode_exceptionAwareObject SendEvent(EventUnit_clock clock, MauronCode_event e) {
 			clock.SubmitEvent(e);
 			return this;
 		}
@@ -24,13 +24,13 @@ namespace MauronAlpha.Events.HandlingExceptions {
 			SharedEventSystem.Instance.ExceptionHandler.SubscribeToEvent("Exception",this);
 			return this;
 		}
-		public MauronCode_exceptionAwareObject SubscribeToEvent(MauronCode_eventClock clock, string message) {
+		public MauronCode_exceptionAwareObject SubscribeToEvent(EventUnit_clock clock, string message) {
 			clock.SubscribeToEvent("Exception",this);
 			return this;
 		}
 		#endregion
 		#region Receive an event
-		public MauronCode_exceptionAwareObject ReceiveEvent(MauronCode_eventClock clock, MauronCode_event e){
+		public MauronCode_exceptionAwareObject ReceiveEvent(EventUnit_clock clock, MauronCode_event e){
 			return this;
 		}
 		#endregion
@@ -57,7 +57,7 @@ namespace MauronAlpha.Events.HandlingExceptions {
 		#endregion
 
 		#region I_eventSender
-		I_eventSender I_eventSender.SendEvent (MauronCode_eventClock clock, MauronCode_event e) {
+		I_eventSender I_eventSender.SendEvent (EventUnit_clock clock, MauronCode_event e) {
 			return SendEvent(clock,e);
 		}
 		#endregion
@@ -65,10 +65,10 @@ namespace MauronAlpha.Events.HandlingExceptions {
 		I_eventReceiver I_eventReceiver.SubscribeToEvents ( ) {
 			return SubscribeToEvents();
 		}
-		I_eventReceiver I_eventReceiver.SubscribeToEvent (MauronCode_eventClock clock, string message) {
+		I_eventReceiver I_eventReceiver.SubscribeToEvent (EventUnit_clock clock, string message) {
 			return SubscribeToEvent(clock,message);
 		}
-		I_eventReceiver I_eventReceiver.ReceiveEvent (MauronCode_eventClock clock, MauronCode_event e) {
+		I_eventReceiver I_eventReceiver.ReceiveEvent (EventUnit_clock clock, MauronCode_event e) {
 			return ReceiveEvent(clock,e);
 		}
 		#endregion

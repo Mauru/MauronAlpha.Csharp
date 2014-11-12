@@ -9,21 +9,21 @@ using System;
 namespace MauronAlpha.Events.Collections {
 	
 	//A class keeping track of event firings etc
-	public class EventHistory : MauronCode_eventComponent, IEquatable<MauronCode_timeStamp>	{
+	public class EventHistory : MauronCode_eventComponent, IEquatable<EventUnit_timeStamp>	{
 
 		//constructors
 		private EventHistory () : base () {}
-		public EventHistory (MauronCode_eventClock clock) : this () {
+		public EventHistory (EventUnit_clock clock) : this () {
 			CLOCK_events=clock;
 			TREE_timeUnits.SetValue("created",clock.TimeStamp);
 		}
 		
 		//The Clock
-		private MauronCode_eventClock CLOCK_events;
-		public MauronCode_eventClock Clock {
+		private EventUnit_clock CLOCK_events;
+		public EventUnit_clock Clock {
 			get { 
 				if(CLOCK_events==null){
-					throw NullError("Clock can not be null!",this,typeof(MauronCode_eventClock));
+					throw NullError("Clock can not be null!",this,typeof(EventUnit_clock));
 				}
 				return CLOCK_events; 
 			}
@@ -31,21 +31,21 @@ namespace MauronAlpha.Events.Collections {
 
 		//DataTrees
 		private static string[] KEYS_default = new string[]{"created","updated","checked","executed"};
-		private MauronCode_dataTree<string, MauronCode_timeStamp> TREE_timeUnits=new MauronCode_dataTree<string, MauronCode_timeStamp>(KEYS_default);
+		private MauronCode_dataTree<string, EventUnit_timeStamp> TREE_timeUnits=new MauronCode_dataTree<string, EventUnit_timeStamp>(KEYS_default);
 
 		//Created
-		public MauronCode_timeStamp LastCreated {
+		public EventUnit_timeStamp LastCreated {
 			get {
 				return TREE_timeUnits.Value("created");
 			}
 		}
-		public EventHistory SetCreated (MauronCode_timeStamp time) {
+		public EventHistory SetCreated (EventUnit_timeStamp time) {
 			TREE_timeUnits.SetValue("created", time);
 			return this;
 		}
 
 		//Checked
-		public MauronCode_timeStamp LastChecked {
+		public EventUnit_timeStamp LastChecked {
 			get {
 				//never:lastCreated
 				if(!TREE_timeUnits.IsSet("checked")){ 
@@ -55,7 +55,7 @@ namespace MauronAlpha.Events.Collections {
 				return TREE_timeUnits.Value("checked");
 			}
 		}
-		public EventHistory SetLastChecked (MauronCode_timeStamp time) {
+		public EventHistory SetLastChecked (EventUnit_timeStamp time) {
 			TREE_timeUnits.SetValue("checked", time);
 			return this;
 		}
@@ -64,7 +64,7 @@ namespace MauronAlpha.Events.Collections {
 		}
 
 		//Updated
-		public MauronCode_timeStamp TimeUpdated {
+		public EventUnit_timeStamp TimeUpdated {
 			get {
 				//never: created
 				if(!TREE_timeUnits.IsSet("updated")){
@@ -73,7 +73,7 @@ namespace MauronAlpha.Events.Collections {
 				return TREE_timeUnits.Value("updated");
 			}
 		}
-		public EventHistory SetTimeUpdated (MauronCode_timeStamp time) {
+		public EventHistory SetTimeUpdated (EventUnit_timeStamp time) {
 			TREE_timeUnits.SetValue("updated",time);
 			return this;
 		}
@@ -82,16 +82,16 @@ namespace MauronAlpha.Events.Collections {
 		}
 
 		//Executed
-		public MauronCode_timeStamp LastExecuted {
+		public EventUnit_timeStamp LastExecuted {
 			get {
 				//return never
 				if( !TREE_timeUnits.IsSet("executed")) {
-					return new MauronCode_timeStamp(Clock,new MauronCode_timeUnit(-1,Clock));
+					return new EventUnit_timeStamp(Clock,new EventUnit_time(-1,Clock));
 				}
 				return TREE_timeUnits.Value("excuted");
 			}
 		}
-		public EventHistory SetLastExecuted (MauronCode_timeStamp time) {
+		public EventHistory SetLastExecuted (EventUnit_timeStamp time) {
 			TREE_timeUnits.SetValue("executed", time);
 			return this;
 		}
@@ -111,18 +111,18 @@ namespace MauronAlpha.Events.Collections {
 			return this;
 		}
 
-		public bool Equals(MauronCode_timeStamp other, EventUtility_precision precisionHandler) {
-			if( !MauronCode_eventClock.EQUALS(Clock, other.Clock, precisionHandler) )
+		public bool Equals(EventUnit_timeStamp other, EventUtility_precision precisionHandler) {
+			if( !EventUnit_clock.EQUALS(Clock, other.Clock, precisionHandler) )
 				return false;
 			return true;
 		}
-		public bool Equals(MauronCode_timeStamp other){
+		public bool Equals(EventUnit_timeStamp other){
 			EventUtility_precision handler = Clock.PrecisionHandler;
-			return MauronCode_eventClock.EQUALS(Clock, other.Clock, Clock.PrecisionHandler);
+			return EventUnit_clock.EQUALS(Clock, other.Clock, Clock.PrecisionHandler);
 		}
 
 		#region IEquatable
-		bool IEquatable<MauronCode_timeStamp>.Equals (MauronCode_timeStamp other) {
+		bool IEquatable<EventUnit_timeStamp>.Equals (EventUnit_timeStamp other) {
 			return Equals(other, Clock.PrecisionHandler);
 		}
 		#endregion

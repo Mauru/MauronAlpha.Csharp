@@ -157,6 +157,10 @@ namespace MauronAlpha.HandlingData {
 
 			//Perform "Equals()" Comparison for two objects
 			public bool DEL_objectEquals(varType origin, varType target) {
+				if(target == null && origin == null)
+					return true;
+				if(target == null || origin == null)
+					return false;
 				return origin.Equals(target);
 			}
 

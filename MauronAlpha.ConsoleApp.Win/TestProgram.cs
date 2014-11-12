@@ -18,6 +18,8 @@ namespace MauronAlpha.ConsoleApp.Win {
 				
 				SharedEventSystem synchronizer = SharedEventSystem.Instance;
 
+				
+
 				//Set up the console
 				MauronConsole M = new MauronConsole("MauronConsole (Windows)");
 

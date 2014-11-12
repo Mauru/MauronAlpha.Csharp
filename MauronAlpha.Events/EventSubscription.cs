@@ -10,7 +10,7 @@ namespace MauronAlpha.Events {
 	public class EventSubscription : MauronCode_eventComponent {
 
 		//constructor
-		public EventSubscription(MauronCode_eventClock clock, string message, I_eventReceiver receiver) : base(){
+		public EventSubscription(EventUnit_clock clock, string message, I_eventReceiver receiver) : base(){
 			SetClock(clock);
 			SetMessage(message);
 			SetReceiver(receiver);
@@ -40,14 +40,14 @@ namespace MauronAlpha.Events {
 		}
 
 		//The related event clock
-		private MauronCode_eventClock CLOCK_events;
-		public MauronCode_eventClock Clock { get {
+		private EventUnit_clock CLOCK_events;
+		public EventUnit_clock Clock { get {
 			if (CLOCK_events == null) {
-				NullError ("Clock can not be null!", this, typeof(MauronCode_eventClock));
+				NullError ("Clock can not be null!", this, typeof(EventUnit_clock));
 			}
 			return CLOCK_events;
 		}}
-		public EventSubscription SetClock(MauronCode_eventClock clock){
+		public EventSubscription SetClock(EventUnit_clock clock){
 			CLOCK_events = clock;
 			return this;
 		}

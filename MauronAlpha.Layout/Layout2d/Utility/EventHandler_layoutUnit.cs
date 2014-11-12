@@ -9,7 +9,7 @@ namespace MauronAlpha.Layout.Layout2d.Utility {
 	public class Layout2d_eventHandler : Layout2d_component, I_eventHandler {
 
 		//Constructor
-		public Layout2d_eventHandler (Layout2d_unit unit, MauronCode_eventClock clock) {
+		public Layout2d_eventHandler (Layout2d_unit unit, EventUnit_clock clock) {
 			CLOCK_master = clock;
 			UNIT_source = unit;
 		}
@@ -21,31 +21,31 @@ namespace MauronAlpha.Layout.Layout2d.Utility {
 			}
 		}
 
-		private MauronCode_eventClock CLOCK_master;
-		public MauronCode_eventClock MasterClock {
+		private EventUnit_clock CLOCK_master;
+		public EventUnit_clock MasterClock {
 			get {
 				return CLOCK_master;
 			}
 		}
 
-		public MauronCode_timeStamp TimeStamp { get { return CLOCK_master.TimeStamp; } }
+		public EventUnit_timeStamp TimeStamp { get { return CLOCK_master.TimeStamp; } }
 
-		public MauronCode_timeUnit Time {
+		public EventUnit_time Time {
 			get {
 				return CLOCK_master.Time;
 			}
 		}
 
 		#region explicit I_eventHandler
-		MauronCode_eventClock I_eventHandler.MasterClock {
+		EventUnit_clock I_eventHandler.MasterClock {
 			get { return MasterClock; }
 		}
 
-		MauronCode_timeUnit I_eventHandler.Time {
+		EventUnit_time I_eventHandler.Time {
 			get { return Time; }
 		}
 
-		MauronCode_timeStamp I_eventHandler.TimeStamp {
+		EventUnit_timeStamp I_eventHandler.TimeStamp {
 			get { return TimeStamp; }
 		}
 		#endregion

@@ -11,11 +11,11 @@ using MauronAlpha.HandlingErrors;
 namespace MauronAlpha.Events {
 
 	//A class keeping Time
-	public class MauronCode_eventClock : MauronCode_eventComponent, I_protectable , IEquatable<MauronCode_eventClock> {
+	public class EventUnit_clock : EventComponent_unit, I_protectable , IEquatable<EventUnit_clock> {
 
 		//Is this clock the System Time
-		public MauronCode_timeUnit SystemTime {
-			get { return SharedEventSystem.Instance.SystemTime.TimeFor(this); }
+		public EventUnit_time SystemTime {
+			get { return Clock_systemTime.Time; }
 		}
 
 		#region Event Precision
@@ -26,59 +26,51 @@ namespace MauronAlpha.Events {
 		#endregion
 
 		#region Stores a SystemTimeStamp of when the eventclock was created
-		private MauronCode_timeStamp TIME_created;
-		public MauronCode_timeStamp Time_created {
+		private EventUnit_timeStamp TIME_created;
+		public EventUnit_timeStamp Time_created {
 			get {
 				return TIME_created;
 			}
 		}
-		private MauronCode_eventClock SetTime_created (MauronCode_timeStamp time) {
+		private EventUnit_clock SetTime_created (EventUnit_timeStamp time) {
 			TIME_created=time;
 			return this;
 		}
 		#endregion
 
-		//constructor
-		public MauronCode_eventClock(bool IsSystemTime) : base() {
-			SetAsSystemTime();
+		//constructors
+		public EventUnit_clock():base() {
+			if(IsSystemTime) {
+				TIME_created = SystemTime.TimeStamp;
+			}
 		}
-		public MauronCode_eventClock (EventUtility_precision precision) : base() {
-			TIME_created = SharedEventSystem.Instance.SystemTime.TimeStampFor(this);
-			UTILITY_precision=precision;
-		}
-		public MauronCode_eventClock (MauronCode_eventClock clock) : this(clock.PrecisionHandler) {
-			TIME_created = clock.Time_created.Instance;
-			SetMasterClock(clock);
-		}
-
-		public MauronCode_eventClock SetAsSystemTime() {
-			TIME_created = TimeStamp;
-			B_isSystemTime = true;
+		public EventUnit_clock(bool IsSystemTime) : base() {
+			B_isSystemTime=true;
 			UTILITY_precision=new EventUtility_precision(EventPrecisionRuleSet.SystemTime);
 
-			return this;
+			TIME_created = SystemTime.TimeStamp;
+
 		}
-		public MauronCode_eventClock SetAsExeceptionCounter() {
-			TIME_created = TimeStamp;
-			B_isSystemTime = true;
-			B_isExceptionHandler = true;
-			UTILITY_precision = new EventUtility_precision(EventPrecisionRuleSet.ExceptionHandler);
-
-			return this;
+		public EventUnit_clock (EventUtility_precision precision) : base() {
+			TIME_created = Clock_systemTime.TimeStamp;
+			UTILITY_precision=precision;
 		}
-
-
+		public EventUnit_clock (EventUnit_clock clock) : this(clock.PrecisionHandler) {
+			/*TIME_created = clock.Time_created.Instance;
+			//SetMasterClock(clock);*/
+		}
+		
 		#region MasterClock (Usually SystemTime)
-		private MauronCode_eventClock CLOCK_master;
-		public MauronCode_eventClock MasterClock {
+		private EventUnit_clock CLOCK_master;
+		public EventUnit_clock MasterClock {
 			get {
 				if(CLOCK_master==null) {
-					return SharedEventSystem.Instance.SystemTime;
+					return SharedEventSystem.Instance.SystemClock;
 				}
 				return CLOCK_master;
 			}
 		}
-		public MauronCode_eventClock SetMasterClock(MauronCode_eventClock clock) {
+		public EventUnit_clock SetMasterClock(EventUnit_clock clock) {
 			CLOCK_master=clock;
 			return this;
 		}
@@ -86,20 +78,20 @@ namespace MauronAlpha.Events {
 
 		#region Get The Time
 		//As TimeUnit
-		private MauronCode_timeUnit TU_time; 
-		public virtual MauronCode_timeUnit Time {
+		private EventUnit_time TU_time; 
+		public virtual EventUnit_time Time {
 			get { 
 				if(TU_time==null) {
-					TU_time=new MauronCode_timeUnit(0, this);
+					TU_time=new EventUnit_time(0, this);
 				}
 				return TU_time; 
 			}
 		}
 
 		//As TimeStamp
-		public virtual MauronCode_timeStamp TimeStamp {
+		public virtual EventUnit_timeStamp TimeStamp {
 			get {
-				return new MauronCode_timeStamp(this, Time);
+				return new EventUnit_timeStamp(this, Time);
 			}
 		}
 		#endregion
@@ -107,7 +99,7 @@ namespace MauronAlpha.Events {
 		#region Modify The Time
 
 		//Set the Time
-		public MauronCode_eventClock SetTime(MauronCode_timeUnit time) {
+		public EventUnit_clock SetTime(EventUnit_time time) {
 			if(IsSystemTime) {
 				throw Error("SystemTime is out of scope!,(SetTime)", this, ErrorType_scope.Instance);
 			}
@@ -117,12 +109,12 @@ namespace MauronAlpha.Events {
 			TU_time=time;
 			return this;
 		}
-		public MauronCode_eventClock SetTime (long n) {
-			return SetTime(new MauronCode_timeUnit(n,this));
+		public EventUnit_clock SetTime (long n) {
+			return SetTime(new EventUnit_time(n,this));
 		}
 
 		//Advance the internal Time by one
-		public MauronCode_eventClock AdvanceTime ( ) {
+		public EventUnit_clock AdvanceTime ( ) {
 			SetTime(Time.Ticks+1);
 
 			//ExecuteShedules();
@@ -142,13 +134,13 @@ namespace MauronAlpha.Events {
 				return DATA_subscriptions;
 			}
 		}
-		private MauronCode_eventClock SetSubscriptions (MauronCode_dataRegistry<EventSubscription> subscriptions) {
+		private EventUnit_clock SetSubscriptions (MauronCode_dataRegistry<EventSubscription> subscriptions) {
 			DATA_subscriptions=subscriptions;
 			return this;
 		}
 
 		//Subscribe to a event
-		public MauronCode_eventClock SubscribeToEvent(string message, I_eventReceiver receiver){
+		public EventUnit_clock SubscribeToEvent(string message, I_eventReceiver receiver){
 			EventSubscription s = new EventSubscription(this,message,receiver);
 			Subscriptions.AddValue(message,s);
 			return this;
@@ -166,7 +158,7 @@ namespace MauronAlpha.Events {
 				return INDEX_shedules;
 			}
 		}
-		private MauronCode_eventClock SetShedulesByTick (MauronCode_dataIndex<MauronCode_dataList<MauronCode_eventShedule>> shedules) {
+		private EventUnit_clock SetShedulesByTick (MauronCode_dataIndex<MauronCode_dataList<MauronCode_eventShedule>> shedules) {
 			INDEX_shedules=shedules;
 			return this;
 		}
@@ -180,7 +172,7 @@ namespace MauronAlpha.Events {
 		}
 
 		//Execute any event shedules for the current tick
-		private MauronCode_eventClock ExecuteShedules ( ) {
+		private EventUnit_clock ExecuteShedules ( ) {
 			foreach( MauronCode_eventShedule shedule in ShedulesByTick(Time.Ticks) ) {
 				//DO SOMETHING HERE
 				if( shedule.Clock.Equals(this) ) { }
@@ -199,14 +191,14 @@ namespace MauronAlpha.Events {
 				return DATA_eventShedules;
 			}
 		}
-		public MauronCode_eventClock SetShedules (MauronCode_dataList<MauronCode_eventShedule> shedules) {
+		public EventUnit_clock SetShedules (MauronCode_dataList<MauronCode_eventShedule> shedules) {
 			DATA_eventShedules=shedules;
 			return this;
 		}
 		#endregion
 
 		//Trigger an event at the time of the clock
-		public MauronCode_eventClock SubmitEvent(MauronCode_event e){
+		public EventUnit_clock SubmitEvent(MauronCode_event e){
 			foreach (EventSubscription subscription in Subscriptions) {
 				subscription.CheckAgainst (e);
 			}
@@ -230,29 +222,29 @@ namespace MauronAlpha.Events {
 				return B_isReadOnly;
 			}
 		}
-		protected MauronCode_eventClock SetIsReadOnly(bool state) {
+		protected EventUnit_clock SetIsReadOnly(bool state) {
 			B_isReadOnly = state;
 			return this;
 		}
 
 		#region Equality, I_Equatable<T>	
-		public bool Equals(MauronCode_eventClock other) {
+		public bool Equals(EventUnit_clock other) {
 			return EQUALS(this, other, UTILITY_precision);
 		}
 		
-		public static bool EQUALS_TimeCreated (MauronCode_eventClock source, MauronCode_eventClock other, EventUtility_precision precisionHandler) {
+		public static bool EQUALS_TimeCreated (EventUnit_clock source, EventUnit_clock other, EventUtility_precision precisionHandler) {
 			return precisionHandler.EQUALS_long(
 				source.Time_created.Created.Ticks,
 				other.Time_created.Created.Ticks
 			);
 		}
-		public static bool EQUALS_Ticks (MauronCode_eventClock source, MauronCode_eventClock other, EventUtility_precision precisionHandler) {
+		public static bool EQUALS_Ticks (EventUnit_clock source, EventUnit_clock other, EventUtility_precision precisionHandler) {
 			return precisionHandler.EQUALS_long(
 				source.Time.Ticks,
 				other.Time.Ticks
 			);
 		}
-		public static bool EQUALS (MauronCode_eventClock source, MauronCode_eventClock other, EventUtility_precision precisionHandler) {
+		public static bool EQUALS (EventUnit_clock source, EventUnit_clock other, EventUtility_precision precisionHandler) {
 
 			//create a instance of this handler...
 			///<remarks> ...just in case we need to share the following complex information mid-calculation (you never know)</remarks>
@@ -282,7 +274,7 @@ namespace MauronAlpha.Events {
 			return true;
 		}
 
-		bool IEquatable<MauronCode_eventClock>.Equals (MauronCode_eventClock other) {
+		bool IEquatable<EventUnit_clock>.Equals (EventUnit_clock other) {
 			return Equals(other);
 		}
 		#endregion

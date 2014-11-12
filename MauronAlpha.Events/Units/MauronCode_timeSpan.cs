@@ -10,36 +10,36 @@ namespace MauronAlpha.Events.Units {
 		public MauronCode_timeSpan():base(DataType_timeSpan.Instance) {}
 
 		//The masterclock for the timespan
-		private MauronCode_eventClock CLOCK_clock;
-		public MauronCode_eventClock Clock { get {
+		private EventUnit_clock CLOCK_clock;
+		public EventUnit_clock Clock { get {
 			if(CLOCK_clock==null){
-				throw NullError("MauronCode_eventClock can not be null!", this,typeof(MauronCode_eventClock));
+				throw NullError("MauronCode_eventClock can not be null!", this,typeof(EventUnit_clock));
 			}
 			return CLOCK_clock;
 		} }
-		public MauronCode_timeSpan SetClock(MauronCode_eventClock clock) {
+		public MauronCode_timeSpan SetClock(EventUnit_clock clock) {
 			CLOCK_clock=clock;
 			return this;
 		}
 
 		//start of the timespan
-		private MauronCode_timeUnit TU_start;
-		public MauronCode_timeUnit Start {
+		private EventUnit_time TU_start;
+		public EventUnit_time Start {
 			get {
 				if(TU_start==null){
-					throw NullError("Start can not be null!",this,typeof(MauronCode_timeUnit));
+					throw NullError("Start can not be null!",this,typeof(EventUnit_time));
 				}
 				return TU_start;
 			}
 		}
-		public MauronCode_timeSpan SetStart(MauronCode_timeUnit tu){
+		public MauronCode_timeSpan SetStart(EventUnit_time tu){
 			TU_start=tu;
 			return this;
 		}
 
 		//end of the timespan
-		private MauronCode_timeUnit TU_end;
-		public MauronCode_timeUnit End {
+		private EventUnit_time TU_end;
+		public EventUnit_time End {
 			get {
 				if(TU_end==null){
 					return Start;
@@ -47,7 +47,7 @@ namespace MauronAlpha.Events.Units {
 				return TU_end;
 			}
 		}
-		public MauronCode_timeSpan SetEnd(MauronCode_timeUnit tu){
+		public MauronCode_timeSpan SetEnd(EventUnit_time tu){
 			TU_end=tu;
 			return this;
 		}

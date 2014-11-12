@@ -3,11 +3,16 @@ using MauronAlpha.Events.Units;
 
 namespace MauronAlpha.Events.HandlingExceptions {
 	//The time of the active computer
-	public class Clock_exceptionHandler : MauronCode_eventClock {
+	public class Clock_exceptionHandler : EventUnit_clock {
 		
 		//constructor
 		public Clock_exceptionHandler (Clock_systemTime systemTime ) : base(systemTime) {
-			SetAsExeceptionCounter();
+			/*TIME_created = TimeStamp;
+			B_isSystemTime = true;
+			B_isExceptionHandler = true;
+			UTILITY_precision = new EventUtility_precision(EventPrecisionRuleSet.ExceptionHandler);
+
+			return this;*/
 		}		
 
 		//Is this clock the System Time

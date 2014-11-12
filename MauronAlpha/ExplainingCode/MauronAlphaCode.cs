@@ -3,7 +3,7 @@
 namespace MauronAlpha.ExplainingCode {
 
 	//Base class for all code
-    public class MauronAlphaCode:object, I_MauronAlphaCode {
+    public class MauronAlphaCode : object, I_MauronAlphaCode {
 		//Debug
 		public static void Debug(string msg, object obj){
 			if(obj==null) {

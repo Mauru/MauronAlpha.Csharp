@@ -19,7 +19,7 @@ namespace MauronAlpha.Layout.Layout2d.Units {
 		public Layout2d_unitReference (Layout2d_eventHandler handler, Layout2d_unit unit, Layout2d_unitReference parent, Layout2d_unitCollection children)
 			: base(UnitType_reference.Instance) {
 			UNIT_source = unit;
-			EVENTHANDLER_unitReference=handler;
+			EVENTHANDLER_unitReference = handler;
 			CONTEXT_lastValid = new Layout2d_contextSnapShot(handler.TimeStamp, unit.Context);
 		}
 

@@ -15,8 +15,8 @@ namespace MauronAlpha.ConsoleApp {
 		//constructor
 		public ConsoleInput(MauronConsole console):base(){}
 
-		private MauronCode_eventClock CLOCK_events = new MauronCode_eventClock(PrecisionHandler_consoleInput.Instance);
-		public MauronCode_eventClock Events;
+		private EventUnit_clock CLOCK_events = new EventUnit_clock(PrecisionHandler_consoleInput.Instance);
+		public EventUnit_clock Events;
 
 		public ConsoleInput Listen() {
 			ConsoleKeyInfo key=System.Console.ReadKey(false);
@@ -42,7 +42,7 @@ namespace MauronAlpha.ConsoleApp {
 			return this;
 		}
 	
-		public ConsoleInput SendEvent(MauronCode_eventClock clock, MauronCode_event e){
+		public ConsoleInput SendEvent(EventUnit_clock clock, MauronCode_event e){
 			clock.SubmitEvent (e);
 			return this;
 		}
@@ -64,7 +64,7 @@ namespace MauronAlpha.ConsoleApp {
 		#endregion
 
 		#region I_eventsender
-		I_eventSender I_eventSender.SendEvent(MauronCode_eventClock clock, MauronCode_event e){
+		I_eventSender I_eventSender.SendEvent(EventUnit_clock clock, MauronCode_event e){
 			return SendEvent (clock, e);
 		}
 		#endregion

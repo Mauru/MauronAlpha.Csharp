@@ -7,10 +7,10 @@
 		I_eventReceiver SubscribeToEvents();
 
 		//Subscribe to a single Event
-		I_eventReceiver SubscribeToEvent(MauronCode_eventClock clock, string message);
+		I_eventReceiver SubscribeToEvent(EventUnit_clock clock, string message);
 
 		//Receive an event
-		I_eventReceiver ReceiveEvent(MauronCode_eventClock clock, MauronCode_event e);
+		I_eventReceiver ReceiveEvent(EventUnit_clock clock, MauronCode_event e);
 	}
 
 }

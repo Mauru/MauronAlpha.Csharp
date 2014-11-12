@@ -8,7 +8,7 @@ namespace MauronAlpha.Events.Shedules {
 	public class MauronCode_eventShedule:MauronCode {
 
 		//constructor
-		public MauronCode_eventShedule (MauronCode_eventClock clock, MauronCode_timeSpan interval):base(CodeType_eventShedule.Instance){
+		public MauronCode_eventShedule (EventUnit_clock clock, MauronCode_timeSpan interval):base(CodeType_eventShedule.Instance){
 			SetClock (clock);
 			SetInterval (interval);
 		}
@@ -29,16 +29,16 @@ namespace MauronAlpha.Events.Shedules {
 		}
 		#endregion
 		#region The EventClock this shedule belongs to
-		private MauronCode_eventClock CLOCK_events;
-		public MauronCode_eventClock Clock {
+		private EventUnit_clock CLOCK_events;
+		public EventUnit_clock Clock {
 			get { 
 				if (CLOCK_events==null) {
-					NullError ("Clock can not be null!", this, typeof(MauronCode_eventClock));
+					NullError ("Clock can not be null!", this, typeof(EventUnit_clock));
 				}
 				return CLOCK_events;
 			}
 		}
-		public MauronCode_eventShedule SetClock(MauronCode_eventClock clock){
+		public MauronCode_eventShedule SetClock(EventUnit_clock clock){
 			CLOCK_events = clock;
 			return this;
 		}
