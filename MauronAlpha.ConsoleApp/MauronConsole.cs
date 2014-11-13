@@ -15,15 +15,15 @@ namespace MauronAlpha.ConsoleApp {
 		
 		//constructor
 		public MauronConsole(string name):base(ProjectType_mauronConsole.Instance, name){
-
 			//Define Event System
-			EventUnit_clock clock = new EventUnit_clock();
-			EventUnit_time time = new EventUnit_time(SharedEventSystem.SystemTicks,SharedEventSystem.Instance.SystemClock);
+			CLOCK_master = new EventUnit_clock();
+			CLOCK_events = new EventUnit_clock(CLOCK_master);
 
 			//Define Window
-			//WindowController = new Layout2d_window(name,CLOCK_events);
-
+			WindowController = new Layout2d_window(name, CLOCK_events);
 		}
+
+		private EventUnit_clock CLOCK_master;
 
 		private EventUnit_clock CLOCK_events;
 

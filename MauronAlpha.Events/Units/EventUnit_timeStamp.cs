@@ -16,10 +16,10 @@ namespace MauronAlpha.Events.Units {
 		private MauronCode_dataTree<string, long> TREE_timeUnits=new MauronCode_dataTree<string, long>(KEYS_default);
 
 		//constructor
-		public EventUnit_timeStamp (EventUnit_clock clock, EventUnit_time time)
+		public EventUnit_timeStamp (EventUnit_clock clock, long ticks)
 			: base() {
 			CLOCK_event=clock;
-			SetCreated(time.Ticks);
+			SetCreated(ticks);
 		}
 		private EventUnit_timeStamp (EventUnit_timeStamp instance) {
 			CLOCK_event=instance.Clock;
@@ -27,20 +27,15 @@ namespace MauronAlpha.Events.Units {
 			SetUpdated(instance.Updated.Ticks);
 			SetInstanced(SystemTime.Ticks);
 		}
-		public EventUnit_timeStamp(EventUnit_time time):this(time.Clock,time) {}
+		public EventUnit_timeStamp(EventUnit_time time):this(time.Clock,time.Ticks) {}
 
 		public EventUnit_timeStamp Instance {
 			get {
 				return new EventUnit_timeStamp(this);
 			}
 		}
-	
-
-
-
-		public EventUnit_systemTime SystemTime {
+		public EventUnit_time SystemTime {
 			get {
-				Clock_systemTime systemClock = SharedEventSystem.Instance.SystemClock;
 				return Clock_systemTime.Time;
 			}
 		}
@@ -59,7 +54,7 @@ Properties
 		//the time when this unit was created
 		public EventUnit_time Created {
 			get {
-				return new EventUnit_time(TREE_timeUnits.Value("created"),Clock);
+				return new EventUnit_time(Clock,TREE_timeUnits.Value("created"));
 			}
 		}
 		private EventUnit_timeStamp SetCreated (long ticks) {
@@ -73,7 +68,7 @@ Properties
 				if(!TREE_timeUnits.IsSet("updated") ) {
 					return (IsInstance)? Instanced:Created;
 				}
-				return new EventUnit_time(TREE_timeUnits.Value("updated"), Clock);
+				return new EventUnit_time(Clock,TREE_timeUnits.Value("updated"));
 			}
 		}
 		protected EventUnit_timeStamp SetUpdated(long ticks) {
@@ -87,7 +82,7 @@ Properties
 					Exception("TIME_instanced not set!,(Instanced)",this,ErrorResolution.Create_unreliable);
 					return Created;
 				}
-				return new EventUnit_time(TREE_timeUnits.Value("instanced"), Clock);
+				return new EventUnit_time(Clock,TREE_timeUnits.Value("instanced"));
 			}
 		}
 		public bool IsInstance {
@@ -102,7 +97,7 @@ Properties
 		public EventUnit_clock Clock {
 			get {
 				if(CLOCK_event == null) {
-					CLOCK_event= new EventUnit_clock(true);
+					CLOCK_event= new EventUnit_clock();
 				}	
 				return CLOCK_event;
 			}

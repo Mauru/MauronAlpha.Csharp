@@ -7,12 +7,12 @@ using MauronAlpha.Events.Singletons;
 namespace MauronAlpha.Events {
 	
 	//The time of the active computer
-	public class Clock_systemTime : EventUnit_clock {
+	public class Clock_systemTime : MauronCode_eventComponent {
 		
 		private SharedEventSystem SYSTEM_clocks;
 
 		//constructor
-		public Clock_systemTime(SharedEventSystem eventSystem):base(true) {
+		public Clock_systemTime(SharedEventSystem eventSystem):base() {
 			SYSTEM_clocks = eventSystem;
 		}
 
@@ -33,14 +33,14 @@ namespace MauronAlpha.Events {
 			}
 		}
 
-		public new static EventUnit_timeStamp TimeStamp {
+		public static EventUnit_timeStamp TimeStamp {
 			get {
 				return new EventUnit_timeStamp(Time);
 			}
 		}
-		public new static EventUnit_systemTime Time {
+		public static EventUnit_time Time {
 			get {
-				return new EventUnit_systemTime(Ticks);
+				return new EventUnit_time(Ticks);
 			}
 		}
 	

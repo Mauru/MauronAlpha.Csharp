@@ -20,21 +20,22 @@ namespace MauronAlpha.Events.Units {
 			}*/
 		#endregion
 		
-		//Feature Complete constructors
-		protected EventUnit_time():base() {
-		
+		//constructors
+		public EventUnit_time(long Ticks):base() {
+			B_isSystemTime = true;
 		}
-		public EventUnit_time(long ticks, EventUnit_clock clock):base(){
+		public EventUnit_time (EventUnit_clock clock, long ticks):base() {
 			SetTicks(ticks);
 			SetClock(clock);
-		}
-		
+		}		
 
 		//clonable
 		public EventUnit_time (EventUnit_time tu)
 			: base() {
 			SetTicks(tu.Ticks);
-			SetClock(tu.Clock);
+			if(!IsSystemTime) {
+				SetClock(tu.Clock);
+			}
 		}
 
 		//The clock
@@ -52,6 +53,13 @@ namespace MauronAlpha.Events.Units {
 			return this;
 		}
 
+		private bool B_isSystemTime = false;
+		public bool IsSystemTime {
+			get {
+				return B_isSystemTime;
+			}
+		}
+
 		//Manual Ticks
 		private long INT_ticks=0;
 		public long Ticks { 
@@ -67,7 +75,7 @@ namespace MauronAlpha.Events.Units {
 		//Create a timestamp
 		public EventUnit_timeStamp TimeStamp {
 			get {
-				return new EventUnit_timeStamp(Clock,this);
+				return new EventUnit_timeStamp(Clock,Ticks);
 			}
 		}
 

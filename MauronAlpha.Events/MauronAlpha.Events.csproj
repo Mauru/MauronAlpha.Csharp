@@ -46,7 +46,6 @@
     <Compile Include="Clock_systemTime.cs" />
     <Compile Include="Singletons\SharedEventSystem.cs" />
     <Compile Include="Units\EventComponent_unit.cs" />
-    <Compile Include="Units\EventUnit_systemTime.cs" />
     <Compile Include="Units\MauronCode_timeSpan.cs" />
     <Compile Include="Units\EventUnit_timeStamp.cs" />
     <Compile Include="Units\EventUnit_time.cs" />

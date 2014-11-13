@@ -6,7 +6,7 @@ namespace MauronAlpha.Events.HandlingExceptions {
 	public class Clock_exceptionHandler : EventUnit_clock {
 		
 		//constructor
-		public Clock_exceptionHandler (Clock_systemTime systemTime ) : base(systemTime) {
+		public Clock_exceptionHandler (Clock_systemTime systemTime ) : base() {
 			/*TIME_created = TimeStamp;
 			B_isSystemTime = true;
 			B_isExceptionHandler = true;

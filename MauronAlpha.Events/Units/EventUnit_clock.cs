@@ -13,7 +13,43 @@ namespace MauronAlpha.Events {
 	//A class keeping Time
 	public class EventUnit_clock : EventComponent_unit, I_protectable , IEquatable<EventUnit_clock> {
 
-		//Is this clock the System Time
+		//constructors
+		public EventUnit_clock ( )
+			: base() {
+			TICKS_created=SystemTime.Ticks;
+			UTILITY_precision=new EventUtility_precision(EventPrecisionRuleSet.SystemTime);
+			B_isSystemTime=true;
+		}
+		public EventUnit_clock (EventUtility_precision precision)
+			: base() {
+			TICKS_created=SystemTime.Ticks;
+			UTILITY_precision=precision;
+
+			B_isSystemTime=true;
+		}
+		public EventUnit_clock (EventUnit_clock masterClock)
+			: this(masterClock.PrecisionHandler) {
+			TICKS_created=SystemTime.Ticks;
+			CLOCK_master=masterClock;
+		}
+
+		//Does the depend on another clock?
+		private EventUnit_clock CLOCK_master;
+		public EventUnit_clock MasterClock {
+			get {
+				if( CLOCK_master==null ) {
+					throw NullError("MasterClock can not be null!,(MasterClock)", this, typeof(EventUnit_clock));
+				}
+				return CLOCK_master;
+			}
+		}
+		public bool HasMasterClock {
+			get {
+				return CLOCK_master == null;
+			}
+		}
+
+		//Get the system-time
 		public EventUnit_time SystemTime {
 			get { return Clock_systemTime.Time; }
 		}
@@ -25,54 +61,12 @@ namespace MauronAlpha.Events {
 		}
 		#endregion
 
-		#region Stores a SystemTimeStamp of when the eventclock was created
-		private EventUnit_timeStamp TIME_created;
+		#region Stores when this clock was created
+		private long TICKS_created = 0;
 		public EventUnit_timeStamp Time_created {
 			get {
-				return TIME_created;
+				return new EventUnit_timeStamp(this,TICKS_created);
 			}
-		}
-		private EventUnit_clock SetTime_created (EventUnit_timeStamp time) {
-			TIME_created=time;
-			return this;
-		}
-		#endregion
-
-		//constructors
-		public EventUnit_clock():base() {
-			if(IsSystemTime) {
-				TIME_created = SystemTime.TimeStamp;
-			}
-		}
-		public EventUnit_clock(bool IsSystemTime) : base() {
-			B_isSystemTime=true;
-			UTILITY_precision=new EventUtility_precision(EventPrecisionRuleSet.SystemTime);
-
-			TIME_created = SystemTime.TimeStamp;
-
-		}
-		public EventUnit_clock (EventUtility_precision precision) : base() {
-			TIME_created = Clock_systemTime.TimeStamp;
-			UTILITY_precision=precision;
-		}
-		public EventUnit_clock (EventUnit_clock clock) : this(clock.PrecisionHandler) {
-			/*TIME_created = clock.Time_created.Instance;
-			//SetMasterClock(clock);*/
-		}
-		
-		#region MasterClock (Usually SystemTime)
-		private EventUnit_clock CLOCK_master;
-		public EventUnit_clock MasterClock {
-			get {
-				if(CLOCK_master==null) {
-					return SharedEventSystem.Instance.SystemClock;
-				}
-				return CLOCK_master;
-			}
-		}
-		public EventUnit_clock SetMasterClock(EventUnit_clock clock) {
-			CLOCK_master=clock;
-			return this;
 		}
 		#endregion
 
@@ -81,17 +75,20 @@ namespace MauronAlpha.Events {
 		private EventUnit_time TU_time; 
 		public virtual EventUnit_time Time {
 			get { 
+				if(IsSystemTime) {
+					return new EventUnit_time(this,Clock_systemTime.Ticks);
+				}
 				if(TU_time==null) {
-					TU_time=new EventUnit_time(0, this);
+					TU_time=new EventUnit_time(this,0);
 				}
 				return TU_time; 
 			}
 		}
-
+		
 		//As TimeStamp
 		public virtual EventUnit_timeStamp TimeStamp {
 			get {
-				return new EventUnit_timeStamp(this, Time);
+				return new EventUnit_timeStamp(this, Time.Ticks);
 			}
 		}
 		#endregion
@@ -110,7 +107,7 @@ namespace MauronAlpha.Events {
 			return this;
 		}
 		public EventUnit_clock SetTime (long n) {
-			return SetTime(new EventUnit_time(n,this));
+			return SetTime(new EventUnit_time(this,n));
 		}
 
 		//Advance the internal Time by one
@@ -207,9 +204,55 @@ namespace MauronAlpha.Events {
 
 		#region Equality Checks, Boolean Interaction
 
+		#region STATIC Equality Checks
+		public static bool EQUALS_TimeCreated (EventUnit_clock source, EventUnit_clock other, EventUtility_precision precisionHandler) {
+			return precisionHandler.EQUALS_long(
+				source.Time_created.Created.Ticks,
+				other.Time_created.Created.Ticks
+			);
+		}
+		public static bool EQUALS_Ticks (EventUnit_clock source, EventUnit_clock other, EventUtility_precision precisionHandler) {
+			return precisionHandler.EQUALS_long(
+				source.Time.Ticks,
+				other.Time.Ticks
+			);
+		}
+		public static bool EQUALS (EventUnit_clock source, EventUnit_clock other, EventUtility_precision precisionHandler) {
+
+			//create a instance of this handler...
+			///<remarks> ...just in case we need to share the following complex information mid-calculation (you never know)</remarks>
+			EventUtility_synchronization handler=new EventUtility_synchronization(precisionHandler);
+
+			//We are dealing with exceptions or system time - these are shortcuts
+			if( source.IsSystemTime&&other.IsSystemTime ) {
+				#region Try to find out if we are dealing with an exception-clock [return true|false]
+				if( source.IsExceptionClock==other.IsExceptionClock ) {
+					Exception("Comparing two ExceptionClocks... Could create an infinite loop!!,(EVENTCLOCK_Equals)",
+					source, ErrorResolution.Delayed);
+					return true;
+				}
+
+				//Either is an exception clock, the other is SystemTime
+				if( source.IsExceptionClock||other.IsExceptionClock )
+					return false;
+
+				#endregion
+			}
+
+			//Compare creation-time of the EventClock and ticks
+			if( !EQUALS_Ticks(source, other, precisionHandler)
+				&&!EQUALS_TimeCreated(source, other, precisionHandler)
+			)
+				return false;
+
+			return true;
+		}
+		#endregion
+
 		#region SystemClock, ExceptionClock
 		private bool B_isSystemTime = false;
 		public virtual bool IsSystemTime { get { return B_isSystemTime; } }
+		
 		private bool B_isExceptionHandler = false;
 		public virtual bool IsExceptionClock {
 			get { return B_isExceptionHandler; }
@@ -231,49 +274,6 @@ namespace MauronAlpha.Events {
 		public bool Equals(EventUnit_clock other) {
 			return EQUALS(this, other, UTILITY_precision);
 		}
-		
-		public static bool EQUALS_TimeCreated (EventUnit_clock source, EventUnit_clock other, EventUtility_precision precisionHandler) {
-			return precisionHandler.EQUALS_long(
-				source.Time_created.Created.Ticks,
-				other.Time_created.Created.Ticks
-			);
-		}
-		public static bool EQUALS_Ticks (EventUnit_clock source, EventUnit_clock other, EventUtility_precision precisionHandler) {
-			return precisionHandler.EQUALS_long(
-				source.Time.Ticks,
-				other.Time.Ticks
-			);
-		}
-		public static bool EQUALS (EventUnit_clock source, EventUnit_clock other, EventUtility_precision precisionHandler) {
-
-			//create a instance of this handler...
-			///<remarks> ...just in case we need to share the following complex information mid-calculation (you never know)</remarks>
-			EventUtility_synchronization handler=new EventUtility_synchronization(precisionHandler);
-
-			//We are dealing with exceptions or system time - these are shortcuts
-			if( source.IsSystemTime	&& other.IsSystemTime ) {
-				#region Try to find out if we are dealing with an exception-clock [return true|false]
-				if( source.IsExceptionClock==other.IsExceptionClock ){
-					Exception("Comparing two ExceptionClocks... Could create an infinite loop!!,(EVENTCLOCK_Equals)",
-					source, ErrorResolution.Delayed);
-					return true;
-				}
-
-				//Either is an exception clock, the other is SystemTime
-				if(	source.IsExceptionClock	|| other.IsExceptionClock )	return false;
-
-				#endregion
-			}
-
-			//Compare creation-time of the EventClock and ticks
-			if(	!EQUALS_Ticks(source, other, precisionHandler)
-				&&!EQUALS_TimeCreated(source, other, precisionHandler)
-			)
-			return false;
-
-			return true;
-		}
-
 		bool IEquatable<EventUnit_clock>.Equals (EventUnit_clock other) {
 			return Equals(other);
 		}

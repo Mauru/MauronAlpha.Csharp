@@ -86,7 +86,7 @@ namespace MauronAlpha.Events.Collections {
 			get {
 				//return never
 				if( !TREE_timeUnits.IsSet("executed")) {
-					return new EventUnit_timeStamp(Clock,new EventUnit_time(-1,Clock));
+					return new EventUnit_timeStamp(Clock,-1);
 				}
 				return TREE_timeUnits.Value("excuted");
 			}
