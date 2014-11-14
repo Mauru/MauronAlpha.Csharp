@@ -16,6 +16,11 @@ namespace MauronAlpha.Layout.Layout2d.Units {
 		//constructor
 		public Layout2d_window(string name, EventUnit_clock clock, Layout2d_context context):base(UnitType_window.Instance) {
 			CLOCK_events = new EventUnit_clock(clock);
+
+			//make sure we set the anchor
+			if( !context.HasAnchor ) {
+				context.SetAnchor(AsReference);
+			}
 		}
 
 		private EventUnit_clock CLOCK_events;
@@ -66,7 +71,7 @@ namespace MauronAlpha.Layout.Layout2d.Units {
 			get { throw Error("Windows can not have a parent!,(Parent)",this,ErrorType_nullError.Instance); }
 		}
 		public override Layout2d_unitReference AsReference {
-			get { return new Layout2d_unitReference(EventHandler,this,AsReference,LAYOUT_children); }
+			get { return new Layout2d_unitReference(EventHandler,this); }
 		}
 		public override Layout2d_unitReference Instance {
 			get { return AsReference; }

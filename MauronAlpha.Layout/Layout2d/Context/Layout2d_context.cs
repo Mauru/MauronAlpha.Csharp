@@ -10,8 +10,8 @@ namespace MauronAlpha.Layout.Layout2d.Context {
 
 		//constructor
 		public Layout2d_context():base() {}
-		public Layout2d_context(Layout2d_unitReference parent,Vector2d position, Vector2d size, bool b_isStatic):this() {
-			LAYOUT_position = new Layout2d_position(parent,position, b_isStatic);
+		public Layout2d_context(Layout2d_unitReference anchor, Vector2d position, Vector2d size, bool b_isStatic):this() {
+			LAYOUT_position=new Layout2d_position(anchor, position, b_isStatic);
 			LAYOUT_size = new Layout2d_size(size, b_isStatic);
 			B_isStatic = b_isStatic;
 		}
@@ -22,7 +22,24 @@ namespace MauronAlpha.Layout.Layout2d.Context {
 			B_isStatic=b_isStatic;
 		}
 
-		private Layout2d_unitReference LAYOUT_parent;
+		private Layout2d_unitReference LAYOUT_anchor;
+		public bool HasAnchor {
+			get {
+				return (LAYOUT_anchor!=null);
+			}
+		}
+		public Layout2d_unitReference Anchor {
+			get {
+				if(LAYOUT_anchor==null){
+					throw NullError("Anchor can not be null!,(Anchor)",this,typeof(Layout2d_unitReference));
+				}
+				return LAYOUT_anchor;
+			}
+		}
+		public Layout2d_context SetAnchor(Layout2d_unitReference unit){
+			LAYOUT_anchor = unit;
+			return this;
+		}
 
 		private Layout2d_position LAYOUT_position;
 		private Layout2d_size LAYOUT_size;

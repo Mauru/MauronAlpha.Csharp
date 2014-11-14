@@ -16,7 +16,7 @@ namespace MauronAlpha.Layout.Layout2d.Units {
 	public class Layout2d_unitReference : Layout2d_unit {
 
 		//constructor
-		public Layout2d_unitReference (Layout2d_eventHandler handler, Layout2d_unit unit, Layout2d_unitReference parent, Layout2d_unitCollection children)
+		public Layout2d_unitReference (Layout2d_eventHandler handler, Layout2d_unit unit)
 			: base(UnitType_reference.Instance) {
 			UNIT_source = unit;
 			EVENTHANDLER_unitReference = handler;
@@ -39,7 +39,7 @@ namespace MauronAlpha.Layout.Layout2d.Units {
 			MauronCode_dataIndex<Layout2d_unitReference> result = new MauronCode_dataIndex<Layout2d_unitReference>();
 			foreach(int key in dataIndex.Keys) {
 				Layout2d_unit original = dataIndex.Value(key);
-				Layout2d_unitReference reference=new Layout2d_unitReference(original.EventHandler, original, original.Parent, original.Children);
+				Layout2d_unitReference reference=new Layout2d_unitReference(original.EventHandler, original);
 				result.SetValue(key,reference);
 			}
 			return result;
@@ -54,6 +54,25 @@ namespace MauronAlpha.Layout.Layout2d.Units {
 				}
 				return CONTEXT_lastValid;
 			}
+		}
+
+		public bool IsEmpty {
+			get { return UNIT_source==null; }
+		}
+
+		public bool Equals(Layout2d_unitReference other) {
+			if(IsEmpty && !other.IsEmpty)
+				return false;
+			if(IsEmpty && other.IsEmpty)
+				return true;
+			return other.Equals(UNIT_source);
+		}
+		public bool Equals(Layout2d_unit other){
+			if(IsEmpty&&!other.IsReference)
+				return false;
+			if(other.IsReference)
+				return other.Equals(UNIT_source);
+			return UNIT_source.Equals(other);
 		}
 
 		#region implementing Layout2d_unit
@@ -170,7 +189,7 @@ namespace MauronAlpha.Layout.Layout2d.Units {
 
 		public override Layout2d_unitReference Instance {
 			get { 
-				return new Layout2d_unitReference(EventHandler,UNIT_source,UNIT_source.Parent,UNIT_source.Children); 
+				return new Layout2d_unitReference(EventHandler,UNIT_source); 
 			}
 		}
 

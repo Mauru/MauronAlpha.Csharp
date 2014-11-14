@@ -39,6 +39,17 @@ namespace MauronAlpha.Layout.Layout2d.Position {
 				return B_isStatic;
 			}
 		}
+
+		private bool B_isReadOnly=false;
+		public bool IsReadOnly {
+			get {
+				return B_isReadOnly;
+			}
+		}
+		public Layout2d_size SetIsReadOnly (bool b_isReadOnly) {
+			B_isReadOnly=b_isReadOnly;
+			return this;
+		}
 	
 	}
 
