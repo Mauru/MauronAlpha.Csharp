@@ -44,6 +44,7 @@
     <Compile Include="Layout2d\Context\Layout2d_context.cs" />
     <Compile Include="Layout2d\Context\Layout2d_contextSnapShot.cs" />
     <Compile Include="Layout2d\Layout2d_component.cs" />
+    <Compile Include="Layout2d\Position\Layout2d_size.cs" />
     <Compile Include="Layout2d\Units\Layout2d_container.cs" />
     <Compile Include="Layout2d\Units\Layout2d_unitReference.cs" />
     <Compile Include="Layout2d\Units\Layout2d_unitType.cs" />

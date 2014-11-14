@@ -7,6 +7,7 @@ using MauronAlpha.Events.Units;
 using MauronAlpha.Events.Singletons;
 
 using MauronAlpha.Layout.Layout2d.Units;
+using MauronAlpha.Layout.Layout2d.Context;
 
 namespace MauronAlpha.ConsoleApp {
 
@@ -14,13 +15,13 @@ namespace MauronAlpha.ConsoleApp {
 	public class MauronConsole : MauronCode_project {
 		
 		//constructor
-		public MauronConsole(string name):base(ProjectType_mauronConsole.Instance, name){
+		public MauronConsole(string name, Layout2d_context context):base(ProjectType_mauronConsole.Instance, name){
 			//Define Event System
 			CLOCK_master = new EventUnit_clock();
 			CLOCK_events = new EventUnit_clock(CLOCK_master);
 
 			//Define Window
-			WindowController = new Layout2d_window(name, CLOCK_events);
+			WindowController = new Layout2d_window(name, CLOCK_events, context);
 		}
 
 		private EventUnit_clock CLOCK_master;

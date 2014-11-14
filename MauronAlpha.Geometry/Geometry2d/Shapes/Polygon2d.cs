@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System;
 
+using MauronAlpha.HandlingErrors;
+
 using MauronAlpha.Geometry.Geometry2d.Transformation;
 using MauronAlpha.Geometry.Geometry2d.Units;
 using MauronAlpha.Geometry.Shapes;
@@ -10,6 +12,17 @@ namespace MauronAlpha.Geometry.Geometry2d.Shapes {
 
 	//A concave or convex Polygon in 2d Space
 	public class Polygon2d:GeometryComponent2d_shape {
+
+		private bool B_isReadOnly = false;
+		public bool IsReadOnly {
+			get {
+				return B_isReadOnly;
+			}
+		}
+		public Polygon2d SetIsReadOnly(bool state) {
+			B_isReadOnly = state;
+			return this;			
+		}
 
 		#region Comparison { Polygon2d }
 		public bool Equals (Polygon2d p) {
@@ -34,10 +47,14 @@ namespace MauronAlpha.Geometry.Geometry2d.Shapes {
 				if (M_matrix==null) { 
 					M_matrix = new Matrix2d(this);
 				}
-				return M_matrix; 
+				return M_matrix.SetIsReadOnly(IsReadOnly);
 			}
 		}
 		protected Polygon2d SetMatrix(Matrix2d m) {
+			if(IsReadOnly) {
+				throw Error("Is Protected!,(SetMatrix)",this,ErrorType_protected.Instance);
+			}
+
 			//Reset Points to original
 			Matrix.RemoveFrom(this);
 
@@ -61,6 +78,9 @@ namespace MauronAlpha.Geometry.Geometry2d.Shapes {
 			get { return A_points.ToArray(); }
 		}
 		public Polygon2d SetPoints (Vector2d[] points) {
+			if(IsReadOnly) {
+				throw Error("Is Protected!,(SetPoints)", this, ErrorType_protected.Instance);
+			}
 			//get the distance of the first point
 			if(points.Length>0){
 				Vector2d offset = new Vector2d().Difference(points[0]);
@@ -104,6 +124,9 @@ namespace MauronAlpha.Geometry.Geometry2d.Shapes {
 			return a_segments;
 		}
 		private Polygon2d SetSegments(Segment2d[] s) {
+			if( IsReadOnly ) {
+				throw Error("Is Protected!,(SetSegments)", this, ErrorType_protected.Instance);
+			}
 			A_segments=new List<Segment2d>(s);
 			return this;
 		}
@@ -118,6 +141,9 @@ namespace MauronAlpha.Geometry.Geometry2d.Shapes {
 		public Polygon2d():base(ShapeType_polygon.Instance) {}
 		public Polygon2d (Polygon2d s) : base(ShapeType_polygon.Instance) { }
 		public Polygon2d FromShape(Polygon2d s) {
+			if( IsReadOnly ) {
+				throw Error("Is Protected!,(FromShape)", this, ErrorType_protected.Instance);
+			}
 			foreach(Vector2d p in s.Points) {
 				A_points.Add(p.Instance);
 			}
@@ -141,6 +167,9 @@ namespace MauronAlpha.Geometry.Geometry2d.Shapes {
 			}
 		}
 		public void SetCenter (Vector2d v) {
+			if( IsReadOnly ) {
+				throw Error("Is Protected!,(SetCenter)", this, ErrorType_protected.Instance);
+			}
 			if( v==null ) {
 				V_center=null;
 				return;
@@ -162,6 +191,9 @@ namespace MauronAlpha.Geometry.Geometry2d.Shapes {
 			}
 		}
 		protected Polygon2d SetBounds(Rectangle2d bounds){
+			if( IsReadOnly ) {
+				throw Error("Is Protected!,(SetBounds)", this, ErrorType_protected.Instance);
+			}
 			R_bounds=bounds;
 			return this;
 		}
@@ -176,6 +208,9 @@ namespace MauronAlpha.Geometry.Geometry2d.Shapes {
 			}
 		}
 		public Polygon2d SetRotation(double n) {
+			if( IsReadOnly ) {
+				throw Error("Is Protected!,(SetRotation)", this, ErrorType_protected.Instance);
+			}
 			//update the matrix
 			Matrix.SetRotation(n);
 			Matrix.ApplyTo(this);
@@ -192,6 +227,9 @@ namespace MauronAlpha.Geometry.Geometry2d.Shapes {
 			get { return Matrix.Scale; } 
 		}
 		public Polygon2d SetScale(Vector2d v) {
+			if( IsReadOnly ) {
+				throw Error("Is Protected!,(SetScale)", this, ErrorType_protected.Instance);
+			}
 			Matrix.SetScale(v);
 			Matrix.ApplyTo(this);
 			return this;
@@ -231,6 +269,9 @@ namespace MauronAlpha.Geometry.Geometry2d.Shapes {
 			get { return Matrix.Translation;}
 		}		
 		public Polygon2d SetPosition(Vector2d v) {
+			if( IsReadOnly ) {
+				throw Error("Is Protected!,(SetPosition)", this, ErrorType_protected.Instance);
+			}
 			//Update Matrix
 			Matrix.SetTranslation(v);
 			Matrix.ApplyTo(this);
@@ -245,6 +286,9 @@ namespace MauronAlpha.Geometry.Geometry2d.Shapes {
 
 		//Move position
 		public Polygon2d Move (Vector2d v) {
+			if( IsReadOnly ) {
+				throw Error("Is Protected!,(Move)", this, ErrorType_protected.Instance);
+			}
 			//Update matrix
 			Matrix.Translation.Add(v);
 			Matrix.ApplyTo(this);
@@ -252,7 +296,6 @@ namespace MauronAlpha.Geometry.Geometry2d.Shapes {
 		}
 		public Polygon2d Move (double x, double y) {
 			return Move(new Vector2d(x, y));
-
 		}
 		public Polygon2d Move (double n) {
 			return Move(new Vector2d(n));

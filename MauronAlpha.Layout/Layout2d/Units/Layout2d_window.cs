@@ -14,7 +14,7 @@ namespace MauronAlpha.Layout.Layout2d.Units {
 	public class Layout2d_window : Layout2d_unit {
 
 		//constructor
-		public Layout2d_window(string name, EventUnit_clock clock):base(UnitType_window.Instance) {
+		public Layout2d_window(string name, EventUnit_clock clock, Layout2d_context context):base(UnitType_window.Instance) {
 			CLOCK_events = new EventUnit_clock(clock);
 		}
 
