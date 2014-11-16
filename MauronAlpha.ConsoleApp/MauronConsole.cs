@@ -4,7 +4,6 @@ using MauronAlpha.Projects;
 
 using MauronAlpha.Events;
 using MauronAlpha.Events.Units;
-using MauronAlpha.Events.Singletons;
 
 using MauronAlpha.Layout.Layout2d.Units;
 using MauronAlpha.Layout.Layout2d.Context;

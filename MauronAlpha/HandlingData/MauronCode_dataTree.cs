@@ -47,7 +47,6 @@ namespace MauronAlpha.HandlingData {
 				SetValue(v_key[n],v_value[n]);
 			}
 		}
-		
 		#endregion
 
 		#region Delegate Functions
@@ -499,4 +498,5 @@ namespace MauronAlpha.HandlingData {
 		public override string Name { get { return "dataTree"; } }
 
 	}
+
 }

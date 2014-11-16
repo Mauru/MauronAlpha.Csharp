@@ -6,7 +6,7 @@ namespace MauronAlpha.Events.Units
     //A Base element of the event system
     public class EventUnit_clock:EventComponent_unit {
 
-
+		//constructor
         public EventUnit_clock():base() {}
 
         private EventHandler HANDLER_events;
@@ -44,10 +44,7 @@ namespace MauronAlpha.Events.Units
         public EventUnit_timeStamp TimeStamp {
             get { return new EventUnit_timeStamp(this, Ticks); }
         }
-
         public EventUnit_timeStamp TIME_created;
-
-
 
     }
 
