@@ -27,7 +27,7 @@ namespace MauronAlpha.ConsoleApp.Win {
 				Layout2d_context windowContext=new Layout2d_context(position, size, true);
 
 				//Set up the console
-				MauronConsole M = new MauronConsole("MauronConsole (Windows)",windowContext);
+				MauronConsole M = new MauronConsole("MauronConsole (Windows)", windowContext);
 
 				//Keep Console open
 				System.Console.ReadKey();

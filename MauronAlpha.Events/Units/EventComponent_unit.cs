@@ -1,6 +1,9 @@
-﻿namespace MauronAlpha.Events.Units {
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 
-	//Base class for units of an event
-	public abstract	class EventComponent_unit : MauronCode_eventComponent {}
-
+namespace MauronAlpha.Events.Units
+{
+    public class EventComponent_unit:MauronCode_eventComponent {}
 }

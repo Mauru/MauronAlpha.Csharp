@@ -1,0 +1,14 @@
+C:\Projects\C#\Building a Usable Code-Tree\Attempt 1\Mauron\MauronAlpha.Events\bin\Debug\MauronAlpha.Events.dll
+C:\Projects\C#\Building a Usable Code-Tree\Attempt 1\Mauron\MauronAlpha.Events\bin\Debug\MauronAlpha.Events.pdb
+C:\Projects\C#\Building a Usable Code-Tree\Attempt 1\Mauron\MauronAlpha.Events\bin\Debug\MauronAlpha.dll
+C:\Projects\C#\Building a Usable Code-Tree\Attempt 1\Mauron\MauronAlpha.Events\bin\Debug\MauronAlpha.pdb
+C:\Projects\C#\Building a Usable Code-Tree\Attempt 1\Mauron\MauronAlpha.Events\obj\Debug\MauronAlpha.Events.dll
+C:\Projects\C#\Building a Usable Code-Tree\Attempt 1\Mauron\MauronAlpha.Events\obj\Debug\MauronAlpha.Events.pdb
+C:\Projects\C#\Building a Usable Code-Tree\Attempt 1\Mauron\MauronAlpha.Events\obj\Debug\MauronAlpha.Events.csprojResolveAssemblyReference.cache
+I:\C#\CodeTree\MauronAlpha.Events\bin\Debug\MauronAlpha.Events.dll
+I:\C#\CodeTree\MauronAlpha.Events\bin\Debug\MauronAlpha.Events.pdb
+I:\C#\CodeTree\MauronAlpha.Events\bin\Debug\MauronAlpha.dll
+I:\C#\CodeTree\MauronAlpha.Events\bin\Debug\MauronAlpha.pdb
+I:\C#\CodeTree\MauronAlpha.Events\obj\Debug\MauronAlpha.Events.csprojResolveAssemblyReference.cache
+I:\C#\CodeTree\MauronAlpha.Events\obj\Debug\MauronAlpha.Events.dll
+I:\C#\CodeTree\MauronAlpha.Events\obj\Debug\MauronAlpha.Events.pdb

@@ -19,3 +19,24 @@ C:\Projects\C#\Building a Usable Code-Tree\Attempt 1\Mauron\MauronAlpha.ConsoleA
 C:\Projects\C#\Building a Usable Code-Tree\Attempt 1\Mauron\MauronAlpha.ConsoleApp.Win\bin\Debug\MauronAlpha.Forms.pdb
 C:\Projects\C#\Building a Usable Code-Tree\Attempt 1\Mauron\MauronAlpha.ConsoleApp.Win\bin\Debug\MauronAlpha.Layout.dll
 C:\Projects\C#\Building a Usable Code-Tree\Attempt 1\Mauron\MauronAlpha.ConsoleApp.Win\bin\Debug\MauronAlpha.Layout.pdb
+I:\C#\CodeTree\MauronAlpha.ConsoleApp.Win\obj\x86\Debug\MauronAlpha.ConsoleApp.Win.exe
+I:\C#\CodeTree\MauronAlpha.ConsoleApp.Win\obj\x86\Debug\MauronAlpha.ConsoleApp.Win.pdb
+I:\C#\CodeTree\MauronAlpha.ConsoleApp.Win\bin\Debug\MauronAlpha.ConsoleApp.Win.exe
+I:\C#\CodeTree\MauronAlpha.ConsoleApp.Win\bin\Debug\MauronAlpha.ConsoleApp.Win.pdb
+I:\C#\CodeTree\MauronAlpha.ConsoleApp.Win\bin\Debug\ClassLibrary.dll
+I:\C#\CodeTree\MauronAlpha.ConsoleApp.Win\bin\Debug\MauronAlpha.dll
+I:\C#\CodeTree\MauronAlpha.ConsoleApp.Win\bin\Debug\MauronAlpha.Events.dll
+I:\C#\CodeTree\MauronAlpha.ConsoleApp.Win\bin\Debug\MauronAlpha.Forms.dll
+I:\C#\CodeTree\MauronAlpha.ConsoleApp.Win\bin\Debug\MauronAlpha.Geometry.dll
+I:\C#\CodeTree\MauronAlpha.ConsoleApp.Win\bin\Debug\MauronAlpha.Layout.dll
+I:\C#\CodeTree\MauronAlpha.ConsoleApp.Win\bin\Debug\MauronAlpha.Text.dll
+I:\C#\CodeTree\MauronAlpha.ConsoleApp.Win\bin\Debug\MauronAlpha.Input.dll
+I:\C#\CodeTree\MauronAlpha.ConsoleApp.Win\bin\Debug\ClassLibrary.pdb
+I:\C#\CodeTree\MauronAlpha.ConsoleApp.Win\bin\Debug\MauronAlpha.Events.pdb
+I:\C#\CodeTree\MauronAlpha.ConsoleApp.Win\bin\Debug\MauronAlpha.Forms.pdb
+I:\C#\CodeTree\MauronAlpha.ConsoleApp.Win\bin\Debug\MauronAlpha.Geometry.pdb
+I:\C#\CodeTree\MauronAlpha.ConsoleApp.Win\bin\Debug\MauronAlpha.Layout.pdb
+I:\C#\CodeTree\MauronAlpha.ConsoleApp.Win\bin\Debug\MauronAlpha.Text.pdb
+I:\C#\CodeTree\MauronAlpha.ConsoleApp.Win\bin\Debug\MauronAlpha.pdb
+I:\C#\CodeTree\MauronAlpha.ConsoleApp.Win\bin\Debug\MauronAlpha.Input.pdb
+I:\C#\CodeTree\MauronAlpha.ConsoleApp.Win\obj\x86\Debug\MauronAlpha.ConsoleApp.Win.csprojResolveAssemblyReference.cache

@@ -7,3 +7,12 @@ C:\Projects\C#\Building a Usable Code-Tree\Attempt 1\Mauron\MauronAlpha.Text\obj
 C:\Projects\C#\Building a Usable Code-Tree\Attempt 1\Mauron\MauronAlpha.Text\obj\Debug\MauronAlpha.Text.pdb
 C:\Projects\C#\Building a Usable Code-Tree\Attempt 1\Mauron\MauronAlpha.Text\bin\Debug\MauronAlpha.Events.dll
 C:\Projects\C#\Building a Usable Code-Tree\Attempt 1\Mauron\MauronAlpha.Text\bin\Debug\MauronAlpha.Events.pdb
+I:\C#\CodeTree\MauronAlpha.Text\bin\Debug\MauronAlpha.Text.dll
+I:\C#\CodeTree\MauronAlpha.Text\bin\Debug\MauronAlpha.Text.pdb
+I:\C#\CodeTree\MauronAlpha.Text\bin\Debug\MauronAlpha.dll
+I:\C#\CodeTree\MauronAlpha.Text\bin\Debug\MauronAlpha.Events.dll
+I:\C#\CodeTree\MauronAlpha.Text\bin\Debug\MauronAlpha.Events.pdb
+I:\C#\CodeTree\MauronAlpha.Text\bin\Debug\MauronAlpha.pdb
+I:\C#\CodeTree\MauronAlpha.Text\obj\Debug\MauronAlpha.Text.csprojResolveAssemblyReference.cache
+I:\C#\CodeTree\MauronAlpha.Text\obj\Debug\MauronAlpha.Text.dll
+I:\C#\CodeTree\MauronAlpha.Text\obj\Debug\MauronAlpha.Text.pdb

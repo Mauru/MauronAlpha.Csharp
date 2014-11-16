@@ -16,3 +16,14 @@ C:\Projects\C#\Building a Usable Code-Tree\Attempt 1\Mauron\MauronAlpha.Layout\b
 C:\Projects\C#\Building a Usable Code-Tree\Attempt 1\Mauron\MauronAlpha.Layout\bin\Debug\MauronAlpha.pdb
 C:\Projects\C#\Building a Usable Code-Tree\Attempt 1\Mauron\MauronAlpha.Layout\bin\Debug\MauronAlpha.Events.dll
 C:\Projects\C#\Building a Usable Code-Tree\Attempt 1\Mauron\MauronAlpha.Layout\bin\Debug\MauronAlpha.Events.pdb
+I:\C#\CodeTree\MauronAlpha.Layout\bin\Debug\MauronAlpha.Layout.dll
+I:\C#\CodeTree\MauronAlpha.Layout\bin\Debug\MauronAlpha.Layout.pdb
+I:\C#\CodeTree\MauronAlpha.Layout\bin\Debug\MauronAlpha.dll
+I:\C#\CodeTree\MauronAlpha.Layout\bin\Debug\MauronAlpha.Events.dll
+I:\C#\CodeTree\MauronAlpha.Layout\bin\Debug\MauronAlpha.Geometry.dll
+I:\C#\CodeTree\MauronAlpha.Layout\bin\Debug\MauronAlpha.Events.pdb
+I:\C#\CodeTree\MauronAlpha.Layout\bin\Debug\MauronAlpha.Geometry.pdb
+I:\C#\CodeTree\MauronAlpha.Layout\bin\Debug\MauronAlpha.pdb
+I:\C#\CodeTree\MauronAlpha.Layout\obj\Debug\MauronAlpha.Layout.csprojResolveAssemblyReference.cache
+I:\C#\CodeTree\MauronAlpha.Layout\obj\Debug\MauronAlpha.Layout.dll
+I:\C#\CodeTree\MauronAlpha.Layout\obj\Debug\MauronAlpha.Layout.pdb

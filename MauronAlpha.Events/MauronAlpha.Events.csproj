@@ -34,28 +34,18 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="HandlingExceptions\Clock_exceptions.cs" />
-    <Compile Include="HandlingExceptions\MauronCode_exceptionAwareObject.cs" />
-    <Compile Include="I_eventHandler.cs" />
-    <Compile Include="I_eventReceiver.cs" />
-    <Compile Include="I_eventSender.cs" />
-    <Compile Include="I_exceptionAwareObject.cs" />
-    <Compile Include="MauronCode_event.cs" />
-    <Compile Include="Units\EventUnit_clock.cs" />
+    <Compile Include="Collections\I_eventHandler.cs" />
+    <Compile Include="Interfaces\I_eventSubscriber.cs" />
     <Compile Include="MauronCode_eventComponent.cs" />
-    <Compile Include="Clock_systemTime.cs" />
-    <Compile Include="Singletons\SharedEventSystem.cs" />
+    <Compile Include="Collections\EventSubscriberList.cs" />
+    <Compile Include="SystemClock.cs" />
     <Compile Include="Units\EventComponent_unit.cs" />
-    <Compile Include="Units\MauronCode_timeSpan.cs" />
+    <Compile Include="EventHandler.cs" />
+    <Compile Include="Units\EventUnit_counter.cs" />
+    <Compile Include="Units\EventUnit_subscription.cs" />
+    <Compile Include="Units\EventUnit_clock.cs" />
+    <Compile Include="Units\EventUnit_event.cs" />
     <Compile Include="Units\EventUnit_timeStamp.cs" />
-    <Compile Include="Units\EventUnit_time.cs" />
-    <Compile Include="EventSubscription.cs" />
-    <Compile Include="Collections\EventHistory.cs" />
-    <Compile Include="Shedules\MauronCode_eventShedule.cs" />
-    <Compile Include="Utility\EventPrecisionRuleSets.cs" />
-    <Compile Include="Utility\EventUtility_precision.cs" />
-    <Compile Include="Utility\EventUtility.cs" />
-    <Compile Include="Utility\EventUtility_synchronization.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup />

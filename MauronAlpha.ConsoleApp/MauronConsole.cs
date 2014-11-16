@@ -17,8 +17,7 @@ namespace MauronAlpha.ConsoleApp {
 		//constructor
 		public MauronConsole(string name, Layout2d_context context):base(ProjectType_mauronConsole.Instance, name){
 			//Define Event System
-			CLOCK_master = new EventUnit_clock();
-			CLOCK_events = new EventUnit_clock(CLOCK_master);
+			CLOCK_master = new EventUnit_clock("SystemTime", SharedEventSystem.Instance.SystemClock);
 
 			//Define Window
 			WindowController = new Layout2d_window(name, CLOCK_events, context);

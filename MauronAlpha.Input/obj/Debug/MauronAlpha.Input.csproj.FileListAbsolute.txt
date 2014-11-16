@@ -7,3 +7,12 @@ C:\Projects\C#\Building a Usable Code-Tree\Attempt 1\Mauron\MauronAlpha.Input\ob
 C:\Projects\C#\Building a Usable Code-Tree\Attempt 1\Mauron\MauronAlpha.Input\obj\Debug\MauronAlpha.Input.pdb
 C:\Projects\C#\Building a Usable Code-Tree\Attempt 1\Mauron\MauronAlpha.Input\bin\Debug\MauronAlpha.Events.pdb
 C:\Projects\C#\Building a Usable Code-Tree\Attempt 1\Mauron\MauronAlpha.Input\obj\Debug\MauronAlpha.Input.csprojResolveAssemblyReference.cache
+I:\C#\CodeTree\MauronAlpha.Input\bin\Debug\MauronAlpha.Input.dll
+I:\C#\CodeTree\MauronAlpha.Input\bin\Debug\MauronAlpha.Input.pdb
+I:\C#\CodeTree\MauronAlpha.Input\bin\Debug\MauronAlpha.dll
+I:\C#\CodeTree\MauronAlpha.Input\bin\Debug\MauronAlpha.Events.dll
+I:\C#\CodeTree\MauronAlpha.Input\bin\Debug\MauronAlpha.Events.pdb
+I:\C#\CodeTree\MauronAlpha.Input\bin\Debug\MauronAlpha.pdb
+I:\C#\CodeTree\MauronAlpha.Input\obj\Debug\MauronAlpha.Input.csprojResolveAssemblyReference.cache
+I:\C#\CodeTree\MauronAlpha.Input\obj\Debug\MauronAlpha.Input.dll
+I:\C#\CodeTree\MauronAlpha.Input\obj\Debug\MauronAlpha.Input.pdb
