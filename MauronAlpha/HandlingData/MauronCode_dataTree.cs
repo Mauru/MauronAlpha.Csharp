@@ -9,7 +9,11 @@ namespace MauronAlpha.HandlingData {
 	public class MauronCode_dataTree<TKey, TValue> : MauronCode_dataObject, I_instantiable {
 
 		#region Constructors
-		private MauronCode_dataTree() : base(DataType_dataTree.Instance) {}
+		public MauronCode_dataTree() : base(DataType_dataTree.Instance) {
+			DATA_keys=new TKey[]{};
+			DATA_values=new TValue[]{};
+			DATA_wasSet=new bool[]{};
+		}
 		public MauronCode_dataTree(ICollection<TKey> keys):this() {
 			//initialize keys
 			DATA_keys=new TKey[keys.Count];
@@ -275,8 +279,24 @@ namespace MauronAlpha.HandlingData {
 				return new MauronCode_dataList<TKey>(DATA_keys).SetIsReadOnly(true);
 			}
 		}
+		public ICollection<TKey> ValidKeys {
+			get {
+				TKey[] result=new TKey[CountValidKeys];
+				for( long index=0; index<Count; index++ ) {
+					if( IndexIsSet(index) ) {
+						long newIndex=result.Length;
+						result[newIndex]=DATA_keys[index];
+					}
+				}
+				return result;
+			}
+		}
+
 
 		public MauronCode_dataTree<TKey,TValue> AddKey(TKey key) {
+			if(IsReadOnly) {
+				throw Error("Is protected!,(AddKey)",this,ErrorType_protected.Instance);
+			}
 			if(ContainsKey(key)){
 				throw Error("Key is allready set!",this,ErrorType_protected.Instance);
 			}
@@ -304,6 +324,9 @@ namespace MauronAlpha.HandlingData {
 
 		//Remove a key and its values
 		public MauronCode_dataTree<TKey,TValue> RemoveKey(TKey key) {
+			if( IsReadOnly ) {
+				throw Error("Is protected!,(RemoveKey)", this, ErrorType_protected.Instance);
+			}
 			if(!ContainsKey(key)) {
 				throw Error("Invalid key!",this,ErrorType_index.Instance);
 			}
@@ -333,6 +356,9 @@ namespace MauronAlpha.HandlingData {
 			return DATA_values[IndexByKey(key)];
 		}
 		public MauronCode_dataTree<TKey, TValue> SetValue (TKey key, TValue value) {
+			if(IsReadOnly) {
+				throw Error("Is protected!,(SetValue)",this, ErrorType_protected.Instance);
+			}
 			long index=IndexByKey(key);
 			if( index < 0 ) {
 				throw Error("Invalid Key!", this, ErrorType_index.Instance);
@@ -341,28 +367,22 @@ namespace MauronAlpha.HandlingData {
 			DATA_wasSet[index]=true;
 			return this;
 		}
-		public MauronCode_dataTree<TKey, TValue> SetValues(TValue[] values) {
-			if(values.Length!=Count) {
+		public MauronCode_dataTree<TKey, TValue> SetValues(ICollection<TKey> keys, ICollection<TValue> values) {
+			if( IsReadOnly ) {
+				throw Error("Is protected!,(SetValues)", this, ErrorType_protected.Instance);
+			}
+			long length = values.Count;
+			if( length!=Count ) {
 				throw Error("Values must be same length as keys!,(SetValues)",this,ErrorType_bounds.Instance);
 			}
-			for(long n=0;n<values.Length;n++){
-				DATA_values[n]=values[n];
+			TValue[] arr_values = new TValue[length-1];
+			values.CopyTo(arr_values,0);
+
+			for( long n=0; n<length; n++ ) {
+				DATA_values[n]=arr_values[n];
 				DATA_wasSet[n]=true;
 			}
 			return this;
-		}
-
-		public ICollection<TKey> ValidKeys {
-			get {
-				TKey[] result=new TKey[CountValidKeys];
-				for( long index=0; index<Count; index++ ) {
-					if( IndexIsSet(index) ) {
-						long newIndex=result.Length;
-						result[newIndex]=DATA_keys[index];
-					}
-				}
-				return result;
-			}
 		}
 
 		public ICollection<TValue> ValidValues {
@@ -430,7 +450,12 @@ namespace MauronAlpha.HandlingData {
 		}
 
 		//is the index ReadOnly
-		public bool IsReadOnly { get { return false; } }
+		private bool B_isReadOnly = false;
+		public bool IsReadOnly { get { return B_isReadOnly; } }
+		public MauronCode_dataTree<TKey,TValue> SetIsReadOnly(bool state) {
+			B_isReadOnly = state;
+			return this;
+		}
 
 		/// <summary>
 		/// Checks

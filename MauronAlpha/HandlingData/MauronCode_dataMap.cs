@@ -11,8 +11,7 @@ namespace MauronAlpha.HandlingData {
 		//constructor
 		public MauronCode_dataMap():base(DataType_dataDictionary.Instance){
 			DATA_keys = new string[]{};
-			DATA_values=new TValue[] { };
-			DATA_state = new bool[] {};
+			DATA_values=new MauronCode_dataTree<int,TValue>();
 		}
 		public MauronCode_dataMap (ICollection<string> keys, ICollection<TValue> values)
 			: this() {
@@ -76,8 +75,8 @@ namespace MauronAlpha.HandlingData {
         #endregion
 
         #region Working with Values
-        public TValue[] Values {
-            get { return DATA_values; }
+        public ICollection<TValue> Values {
+            get { return DATA_values.ValidValues; }
         }
         public TValue Value(string key) {
             int n = IndexOfKey(key);
@@ -116,7 +115,6 @@ namespace MauronAlpha.HandlingData {
 
 		//Data
 		private string[] DATA_keys;
-		private TValue[] DATA_values;
-		private bool[] DATA_state;
+		private MauronCode_dataTree<int,TValue> DATA_values;
 	}	
 }
