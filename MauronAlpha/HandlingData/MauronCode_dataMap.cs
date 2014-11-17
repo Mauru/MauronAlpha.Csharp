@@ -30,6 +30,87 @@ namespace MauronAlpha.HandlingData {
 			}
 		}
 
+        private bool B_isReadOnly = false;
+        public bool IsReadOnly {
+            get { return B_isReadOnly;  }
+        }
+
+        #region Working with Keys
+        public bool ContainsKey(string key) {
+            foreach (string k in DATA_keys) {
+                if (k == key) {
+                    return true;
+                }
+            }
+            return false;
+        }
+        public string[] Keys {
+            get {
+                return DATA_keys;
+            }
+        }
+        public int IndexOfKey(string key) {
+            for (int n = 0; n < DATA_keys.Length; n++) {
+                string k = DATA_keys[n];
+                if (k == key) {
+                    return n;
+                }
+            }
+            Exception("Invalid Index!", this, ErrorResolution.ReturnNegativeIndex);
+            return -1;
+        }
+        public MauronCode_dataMap<TValue> AddKey(string key) {
+            if (IsReadOnly) {
+                throw Error("Is protected!,(AddKey)", this, ErrorType_protected.Instance);
+            }
+            if (IndexOfKey(key) >= 0) {
+                throw Error("Key allready Exists!,{" + key + "},(AddKey)", this, ErrorType_index.Instance);
+            }
+            int newIndex = DATA_keys.Length;
+            string[] newKeys = new string[newIndex];
+            Keys.CopyTo(newKeys, 0);
+            newKeys[newIndex] = key;
+            DATA_keys = newKeys;
+            return this;
+        }
+        #endregion
+
+        #region Working with Values
+        public TValue[] Values {
+            get { return DATA_values; }
+        }
+        public TValue Value(string key) {
+            int n = IndexOfKey(key);
+            if(n<0){
+                throw Error("Invalid Index!,{"+key+"},(Value)",this,ErrorType_index.Instance);
+            }
+            if (n >= DATA_values.Length) {
+                throw Error("Invalid Index!,{" + key + "},(Value)", this, ErrorType_index.Instance);
+            }
+            return DATA_values[n];
+        }
+        public MauronCode_dataMap<TValue> SetValue(string key, TValue value) {
+            if (IsReadOnly)
+            {
+                throw Error("Is protected", this, ErrorType_protected.Instance);
+            }
+
+            int n = IndexOfKey(key);
+            if (n < 0)
+            {
+                AddKey(key);
+                n = IndexOfKey(key);
+            }
+
+            return this;
+        }
+        #endregion
+
+        public MauronCode_dataMap<TValue> SetIsReadOnly(bool state) {
+            B_isReadOnly = state;
+            return this;
+        }
+
 		//Type Info
 		private Type TYPE_value;
 
@@ -37,8 +118,5 @@ namespace MauronAlpha.HandlingData {
 		private string[] DATA_keys;
 		private TValue[] DATA_values;
 		private bool[] DATA_state;
-
-		//Working with values
-				
 	}	
 }

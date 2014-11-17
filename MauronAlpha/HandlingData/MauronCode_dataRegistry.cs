@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 
-
 namespace MauronAlpha.HandlingData {
 
 	//Supposed to become a MauronCode_dataMap<MauronCode_dataList<T>>
@@ -147,7 +146,6 @@ namespace MauronAlpha.HandlingData {
 		#endregion
 	}
 
-
 	//A description of the dataType
 	public sealed class DataType_dataRegistry : DataType {
 		#region singleton
@@ -170,4 +168,5 @@ namespace MauronAlpha.HandlingData {
 		public override string Name { get { return "dataRegistry"; } }
 
 	}
+
 }

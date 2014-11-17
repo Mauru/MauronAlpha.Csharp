@@ -65,6 +65,14 @@ namespace MauronAlpha.HandlingErrors {
 				);
 			}
 		}
+        public static ErrorResolution ReturnNegativeIndex {
+            get { 
+                return new ErrorResolution(
+                    "ReturnNegativeIndex",
+                    "Return -1 as an Indicator for NULL in a positive numeric index."
+                );
+            }
+        }
 
 		public static ErrorResolution ExpectedReturn {
 			get {
