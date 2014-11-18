@@ -83,10 +83,10 @@ namespace MauronAlpha.HandlingData {
             if(n<0){
                 throw Error("Invalid Index!,{"+key+"},(Value)",this,ErrorType_index.Instance);
             }
-            if (n >= DATA_values.Length) {
+            if (n >= DATA_values.Count) {
                 throw Error("Invalid Index!,{" + key + "},(Value)", this, ErrorType_index.Instance);
             }
-            return DATA_values[n];
+            return DATA_values.Value(n);
         }
         public MauronCode_dataMap<TValue> SetValue(string key, TValue value) {
             if (IsReadOnly)
@@ -101,6 +101,8 @@ namespace MauronAlpha.HandlingData {
                 n = IndexOfKey(key);
             }
 
+			DATA_values.SetValue(n, value);
+
             return this;
         }
         #endregion
@@ -110,11 +112,36 @@ namespace MauronAlpha.HandlingData {
             return this;
         }
 
-		//Type Info
-		private Type TYPE_value;
-
 		//Data
 		private string[] DATA_keys;
 		private MauronCode_dataTree<int,TValue> DATA_values;
+	}
+	
+	public class DataMap_enumerator<TValue>:IEnumerator<TValue> {
+
+		//constructor
+		public DataMap_enumerator(TValue[] values){
+		
+		}
+
+		public TValue Current {
+			get { throw new NotImplementedException(); }
+		}
+
+		public void Dispose ( ) {
+			throw new NotImplementedException();
+		}
+
+		object System.Collections.IEnumerator.Current {
+			get { throw new NotImplementedException(); }
+		}
+
+		public bool MoveNext ( ) {
+			throw new NotImplementedException();
+		}
+
+		public void Reset ( ) {
+			throw new NotImplementedException();
+		}
 	}	
 }

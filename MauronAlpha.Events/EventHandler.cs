@@ -27,7 +27,7 @@ namespace MauronAlpha.Events
         }
         public EventSubscriberList Subscriptions {
             get {
-                return Subscribers.Instance.SetIsReadOnly(true) ;
+                return Subscribers.Instance.SetIsReadOnly(true);
             }
         }
 
