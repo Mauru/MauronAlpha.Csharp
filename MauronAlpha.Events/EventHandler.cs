@@ -47,7 +47,7 @@ namespace MauronAlpha.Events {
         //Send an event
         public delegate bool DELEGATE_SubmitEvent(EventUnit_event e);
         //The condition for a trigger to occure
-        public delegate bool DELEGATE_condition(EventUnit_event e);
+        public delegate bool DELEGATE_condition(EventUnit_event e, I_eventSender sender);
         //The trigger to execute
         public delegate bool DELEGATE_trigger(EventUnit_event e);
 
@@ -61,10 +61,10 @@ namespace MauronAlpha.Events {
         }
 
 		//Check if an event code matches a subscription
-		public int CheckForTrigger(EventUnit_event e, EventUnit_timeStamp timestamp){
+		public int CheckForTrigger(EventUnit_event e, I_eventSender sender, EventUnit_timeStamp timestamp){
 			MauronCode_dataList<EventUnit_subscription> subscriptions = Subscriptions.ByCode(e.Code);
 			foreach(EventUnit_subscription subscription in subscriptions) {
-				return subscription
+					return subscription.Condition (e, sender);
 			}
 		}
     }

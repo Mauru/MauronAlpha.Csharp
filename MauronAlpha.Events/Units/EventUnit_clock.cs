@@ -1,5 +1,5 @@
 ﻿using System;
-
+using MauronAlpha.Events.Interfaces;
 
 namespace MauronAlpha.Events.Units {
     
@@ -49,8 +49,8 @@ namespace MauronAlpha.Events.Units {
         }
         public EventUnit_timeStamp TIME_created;
 
-		public EventUnit_clock SubmitEvent(EventUnit_event e) {
-			EventHandler.CheckForTrigger(e, TimeStamp);
+		public EventUnit_clock SubmitEvent(EventUnit_event e, I_eventSender sender) {
+			EventHandler.CheckForTrigger(e, sender, TimeStamp);
 			return this;
 		}
     }

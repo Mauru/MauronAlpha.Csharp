@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace MauronAlpha.Events {
+namespace MauronAlpha.Events.Interfaces {
 
 	//A subscriber to an event
     public interface I_eventSubscriber {

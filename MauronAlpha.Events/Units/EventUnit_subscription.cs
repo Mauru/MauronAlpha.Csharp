@@ -1,4 +1,5 @@
 ﻿using System;
+using MauronAlpha.Events.Interfaces;
 
 namespace MauronAlpha.Events.Units
 {
