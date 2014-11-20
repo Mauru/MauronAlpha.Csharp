@@ -2,11 +2,12 @@
 
 using MauronAlpha.Layout.Layout2d.Collections;
 using MauronAlpha.Layout.Layout2d.Context;
-using MauronAlpha.Layout.Layout2d.Utility;
+using MauronAlpha.Layout.Layout2d.Events;
+using MauronAlpha.Layout.Layout2d.Interfaces;
 
 using MauronAlpha.HandlingErrors;
 
-using MauronAlpha.Events;
+using MauronAlpha.Events.Interfaces;
 
 namespace MauronAlpha.Layout.Layout2d.Units {
 	
@@ -14,8 +15,9 @@ namespace MauronAlpha.Layout.Layout2d.Units {
 	public class Layout2d_window : Layout2d_unit {
 
 		//constructor
-		public Layout2d_window(string name, EventUnit_clock clock, Layout2d_context context):base(UnitType_window.Instance) {
-			CLOCK_events = new EventUnit_clock(clock);
+		public Layout2d_window(string name, I_layoutController controller, Layout2d_context context):base(UnitType_window.Instance) {
+			STR_name = name;
+			EVENT_handler = new Layout2d_eventHandler(this,controller.EventHandler);
 
 			//make sure we set the anchor
 			if( !context.HasAnchor ) {
@@ -23,7 +25,12 @@ namespace MauronAlpha.Layout.Layout2d.Units {
 			}
 		}
 
-		private EventUnit_clock CLOCK_events;
+		private string STR_name;
+		public string Name {
+			get {
+				return STR_name;
+			}
+		}
 
 		#region Boolean states
 		public override bool Exists {
@@ -94,13 +101,16 @@ namespace MauronAlpha.Layout.Layout2d.Units {
 		private Layout2d_eventHandler EVENT_handler;
 		public override Layout2d_eventHandler EventHandler {
 			get { 
-				if(EVENT_handler==null) {
-					EVENT_handler = new Layout2d_eventHandler(this,CLOCK_events);
-				}
 				return EVENT_handler; 
 			}
 		}
 
+		public bool Equals(Layout2d_window other) {
+			if(Name!=other.Name)
+				return false;
+
+			return true;
+		}
 	}
 
 	//Description

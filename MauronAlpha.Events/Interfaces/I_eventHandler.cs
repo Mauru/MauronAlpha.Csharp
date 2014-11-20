@@ -1,4 +1,5 @@
 ﻿using System;
+using MauronAlpha.Events.Units;
 
 namespace MauronAlpha.Events.Interfaces {
     
@@ -6,6 +7,8 @@ namespace MauronAlpha.Events.Interfaces {
 	public interface I_eventHandler {
 		
 		bool Equals(I_eventHandler other);
+
+		EventUnit_timeStamp TimeStamp { get; }
 
     }
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using MauronAlpha.Events.Units;
 
 namespace MauronAlpha.Events.Interfaces {
 
@@ -6,6 +7,8 @@ namespace MauronAlpha.Events.Interfaces {
     public interface I_eventSubscriber {
 
 		bool Equals(I_eventSubscriber other);
+
+		bool ReceiveEvent(EventUnit_event e);
 		
     }
 

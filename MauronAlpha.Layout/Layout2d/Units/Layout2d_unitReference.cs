@@ -7,7 +7,7 @@ using MauronAlpha.Events;
 using MauronAlpha.Events.Units;
 
 using MauronAlpha.Layout.Layout2d.Context;
-using MauronAlpha.Layout.Layout2d.Utility;
+using MauronAlpha.Layout.Layout2d.Events;
 using MauronAlpha.Layout.Layout2d.Collections;
 
 namespace MauronAlpha.Layout.Layout2d.Units {

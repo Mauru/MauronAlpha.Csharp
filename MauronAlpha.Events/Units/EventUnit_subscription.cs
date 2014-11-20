@@ -32,7 +32,17 @@ namespace MauronAlpha.Events.Units
 			}
 		}
         EventHandler.DELEGATE_condition D_condition;
+		public EventHandler.DELEGATE_condition Condition {
+			get {
+				return D_condition;
+			}
+		}
         EventHandler.DELEGATE_trigger D_trigger;
+		public EventHandler.DELEGATE_trigger Trigger {
+			get {
+				return D_trigger;
+			}
+		}
 
 		public bool Equals(EventUnit_subscription other) {
 			if(STR_code!=other.Code)

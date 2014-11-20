@@ -19,3 +19,9 @@ I:\C#\CodeTree\MauronAlpha.Input\obj\Debug\MauronAlpha.Input.pdb
 C:\Projects\C#\CodeTree\MauronAlpha.Input\obj\Debug\MauronAlpha.Input.csprojResolveAssemblyReference.cache
 C:\Projects\C#\CodeTree\MauronAlpha.Input\obj\Debug\MauronAlpha.Input.dll
 C:\Projects\C#\CodeTree\MauronAlpha.Input\obj\Debug\MauronAlpha.Input.pdb
+C:\Projects\C#\CodeTree\MauronAlpha.Input\bin\Debug\MauronAlpha.Input.dll
+C:\Projects\C#\CodeTree\MauronAlpha.Input\bin\Debug\MauronAlpha.Input.pdb
+C:\Projects\C#\CodeTree\MauronAlpha.Input\bin\Debug\MauronAlpha.dll
+C:\Projects\C#\CodeTree\MauronAlpha.Input\bin\Debug\MauronAlpha.Events.dll
+C:\Projects\C#\CodeTree\MauronAlpha.Input\bin\Debug\MauronAlpha.Events.pdb
+C:\Projects\C#\CodeTree\MauronAlpha.Input\bin\Debug\MauronAlpha.pdb

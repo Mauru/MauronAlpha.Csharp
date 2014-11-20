@@ -102,7 +102,7 @@ namespace MauronAlpha.Layout.Layout2d.Units {
 			get { throw new NotImplementedException(); }
 		}
 
-		public override Utility.Layout2d_eventHandler EventHandler {
+		public override Events.Layout2d_eventHandler EventHandler {
 			get { throw new NotImplementedException(); }
 		}
 	}

@@ -13,7 +13,7 @@ namespace MauronAlpha.Events.Units {
 
 		//Let an event submit itself to an event clock
 		public EventUnit_event Submit (EventUnit_clock clock) {
-			clock.SubmitEvent(this);
+			clock.SubmitEvent(this,IE_sender);
 			return this;
 		}
 

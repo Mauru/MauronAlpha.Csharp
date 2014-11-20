@@ -1,5 +1,3 @@
-using System;
-
 using MauronAlpha.Projects;
 
 using MauronAlpha.Events;
@@ -7,24 +5,29 @@ using MauronAlpha.Events.Units;
 
 using MauronAlpha.Layout.Layout2d.Units;
 using MauronAlpha.Layout.Layout2d.Context;
+using MauronAlpha.Layout.Layout2d.Interfaces;
 
 namespace MauronAlpha.ConsoleApp {
 
 	//A Console Application
-	public class MauronConsole : MauronCode_project {
+	public class MauronConsole : MauronCode_project, I_layoutController {
 		
 		//constructor
 		public MauronConsole(string name, Layout2d_context context):base(ProjectType_mauronConsole.Instance, name){
-			//Define Event System
-			CLOCK_master = new EventUnit_clock("SystemTime", SharedEventSystem.Instance.SystemClock);
+			EventUnit_clock clock = new EventUnit_clock();
+
+			HANDLER_events = new MauronAlpha.Events.EventHandler(clock);
 
 			//Define Window
-			WindowController = new Layout2d_window(name, CLOCK_events, context);
+			WindowController = new Layout2d_window(name, this, context);
 		}
 
-		private EventUnit_clock CLOCK_master;
-
-		private EventUnit_clock CLOCK_events;
+		private EventHandler HANDLER_events;
+		public EventHandler EventHandler {
+			get {
+				return HANDLER_events;
+			}
+		}
 
 		private Layout2d_window WindowController;
 
@@ -48,13 +51,17 @@ namespace MauronAlpha.ConsoleApp {
 			}
 		}
 
+
+		Events.EventHandler I_layoutController.EventHandler {
+			get { return HANDLER_events; }
+		}
 	}
 
 	//Project Description
 	public sealed class ProjectType_mauronConsole : ProjectType {
 		#region singleton
 		private static volatile ProjectType_mauronConsole instance=new ProjectType_mauronConsole();
-		private static object syncRoot=new Object();
+		private static object syncRoot=new System.Object();
 		//constructor singleton multithread safe
 		static ProjectType_mauronConsole ( ) { }
 		public static ProjectType Instance {

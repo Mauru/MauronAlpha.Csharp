@@ -8,7 +8,7 @@ using MauronAlpha.Events.Collections;
 namespace MauronAlpha.Events {
     
 	//A base class for a event handler
-    public class EventHandler:MauronCode_eventComponent  {
+    public class EventHandler:MauronCode_eventComponent, I_eventHandler  {
 
         //constructor
         public EventHandler(I_eventHandler source):base() {
@@ -63,10 +63,40 @@ namespace MauronAlpha.Events {
 		//Check if an event code matches a subscription
 		public int CheckForTrigger(EventUnit_event e, I_eventSender sender, EventUnit_timeStamp timestamp){
 			MauronCode_dataList<EventUnit_subscription> subscriptions = Subscriptions.ByCode(e.Code);
+
+			int count_triggered = 0;
+
 			foreach(EventUnit_subscription subscription in subscriptions) {
-					return subscription.Condition (e, sender);
+				bool result = subscription.Condition (e, sender);
+				if(result) {
+					subscription.Subscriber.ReceiveEvent(e);
+					count_triggered++;
+				}
+			}
+			return count_triggered;
+		}
+
+		public EventHandler SubmitEvent(EventUnit_event e, I_eventSender sender) {
+			CheckForTrigger(e,sender, SystemClock.TimeStamp);
+			return this;
+		}
+
+		public EventUnit_timeStamp TimeStamp {
+			get {
+				if(!HasSource) {
+					return Clock.TimeStamp;
+				}
+				return Source.TimeStamp;
 			}
 		}
-    }
+
+		bool I_eventHandler.Equals (I_eventHandler other) {
+			return Equals(other);
+		}
+
+		EventUnit_timeStamp I_eventHandler.TimeStamp {
+			get { throw new NotImplementedException(); }
+		}
+	}
 
 }
