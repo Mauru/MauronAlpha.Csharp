@@ -34,7 +34,8 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Collections\I_eventHandler.cs" />
+    <Compile Include="Interfaces\I_eventHandler.cs" />
+    <Compile Include="Interfaces\I_eventSender.cs" />
     <Compile Include="Interfaces\I_eventSubscriber.cs" />
     <Compile Include="MauronCode_eventComponent.cs" />
     <Compile Include="Collections\EventSubscriberList.cs" />

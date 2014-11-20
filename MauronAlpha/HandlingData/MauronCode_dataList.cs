@@ -363,6 +363,19 @@ namespace MauronAlpha.HandlingData {
 
 		#endregion
 
+		public bool Equals(MauronCode_dataList<T> other){
+			long count = Count;
+			if(count!=other.Count)
+				return false;
+			for(int index=0; index<count; index++) {
+				T source = Value(index);
+				T candidate = other.Value(index);
+				if(!source.Equals(candidate))
+					return false;
+			}
+			return true;
+		}
+
 	}
 
 	//A Description of the DataType

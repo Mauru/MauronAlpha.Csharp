@@ -8,3 +8,8 @@ I:\C#\CodeTree\MauronAlpha\bin\Debug\MauronAlpha.pdb
 I:\C#\CodeTree\MauronAlpha\obj\Debug\MauronAlpha.csprojResolveAssemblyReference.cache
 I:\C#\CodeTree\MauronAlpha\obj\Debug\MauronAlpha.dll
 I:\C#\CodeTree\MauronAlpha\obj\Debug\MauronAlpha.pdb
+C:\Projects\C#\CodeTree\MauronAlpha\bin\Debug\MauronAlpha.dll
+C:\Projects\C#\CodeTree\MauronAlpha\bin\Debug\MauronAlpha.pdb
+C:\Projects\C#\CodeTree\MauronAlpha\obj\Debug\MauronAlpha.csprojResolveAssemblyReference.cache
+C:\Projects\C#\CodeTree\MauronAlpha\obj\Debug\MauronAlpha.dll
+C:\Projects\C#\CodeTree\MauronAlpha\obj\Debug\MauronAlpha.pdb

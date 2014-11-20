@@ -3,7 +3,6 @@
 using MauronAlpha.ConsoleApp;
 
 using MauronAlpha.Events;
-using MauronAlpha.Events.Singletons;
 
 using MauronAlpha.HandlingData;
 
@@ -19,8 +18,6 @@ namespace MauronAlpha.ConsoleApp.Win {
 
 		static void Main (string[] args) {
 				
-				SharedEventSystem synchronizer = SharedEventSystem.Instance;
-
 				Vector2d size = new Vector2d(System.Console.LargestWindowWidth,System.Console.LargestWindowHeight);
 				Vector2d position = new Vector2d(System.Console.WindowLeft,System.Console.WindowTop);
 

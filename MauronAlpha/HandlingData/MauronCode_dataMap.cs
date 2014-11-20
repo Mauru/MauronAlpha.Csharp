@@ -11,7 +11,7 @@ namespace MauronAlpha.HandlingData {
 		//constructor
 		public MauronCode_dataMap():base(DataType_dataDictionary.Instance){
 			DATA_keys = new string[]{};
-			DATA_values=new MauronCode_dataTree<int,TValue>();
+			DATA_values=new MauronCode_dataTree<long,TValue>();
 		}
 		public MauronCode_dataMap (ICollection<string> keys, ICollection<TValue> values)
 			: this() {
@@ -43,9 +43,16 @@ namespace MauronAlpha.HandlingData {
             }
             return false;
         }
+		public long KeyCount {
+			get {
+				return DATA_keys.Length;
+			}
+		}
         public string[] Keys {
             get {
-                return DATA_keys;
+                string[] result = new string[DATA_keys.Length-1];
+				DATA_keys.CopyTo(result,0);
+				return result;
             }
         }
         public int IndexOfKey(string key) {
@@ -72,7 +79,12 @@ namespace MauronAlpha.HandlingData {
             DATA_keys = newKeys;
             return this;
         }
-        #endregion
+        public bool IsSet(string key) {
+			long index = IndexOfKey(key);
+			return DATA_values.ContainsIndex(index);
+		}
+		
+		#endregion
 
         #region Working with Values
         public ICollection<TValue> Values {
@@ -105,7 +117,13 @@ namespace MauronAlpha.HandlingData {
 
             return this;
         }
-        #endregion
+        public bool ContainsValueAtIndex(long index){
+			return DATA_values.ContainsIndex(index);
+		}
+		public TValue ValueByIndex(long index) {
+			return DATA_values.Value(index);
+		}
+		#endregion
 
         public MauronCode_dataMap<TValue> SetIsReadOnly(bool state) {
             B_isReadOnly = state;
@@ -114,7 +132,7 @@ namespace MauronAlpha.HandlingData {
 
 		//Data
 		private string[] DATA_keys;
-		private MauronCode_dataTree<int,TValue> DATA_values;
+		private MauronCode_dataTree<long,TValue> DATA_values;
 	}
 	
 	public class DataMap_enumerator<TValue>:IEnumerator<TValue> {

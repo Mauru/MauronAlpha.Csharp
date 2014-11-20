@@ -4,18 +4,17 @@ using MauronAlpha.Input;
 using MauronAlpha.Input.Keyboard;
 using MauronAlpha.Input.Keyboard.Events;
 
-using MauronAlpha.Events;
-using MauronAlpha.Events.Utility;
+using MauronAlpha.Events.Units;
 
 namespace MauronAlpha.ConsoleApp {
 	
 	//A class that reads userInput
-	public class ConsoleInput:SystemInterface, I_eventSender {
+	public class ConsoleInput:SystemInterface {
 
 		//constructor
 		public ConsoleInput(MauronConsole console):base(){}
 
-		private EventUnit_clock CLOCK_events = new EventUnit_clock(PrecisionHandler_consoleInput.Instance);
+		private EventUnit_clock CLOCK_events = new EventUnit_clock();
 		public EventUnit_clock Events;
 
 		public ConsoleInput Listen() {

@@ -36,3 +36,5 @@ I:\C#\CodeTree\MauronAlpha.ConsoleApp\bin\Debug\MauronAlpha.Text.pdb
 I:\C#\CodeTree\MauronAlpha.ConsoleApp\obj\Debug\MauronAlpha.ConsoleApp.csprojResolveAssemblyReference.cache
 I:\C#\CodeTree\MauronAlpha.ConsoleApp\obj\Debug\ClassLibrary.dll
 I:\C#\CodeTree\MauronAlpha.ConsoleApp\obj\Debug\ClassLibrary.pdb
+C:\Projects\C#\CodeTree\MauronAlpha.ConsoleApp\obj\Debug\MauronAlpha.ConsoleApp.csprojResolveAssemblyReference.cache
+C:\Projects\C#\CodeTree\MauronAlpha.ConsoleApp\obj\Debug\ClassLibrary.dll

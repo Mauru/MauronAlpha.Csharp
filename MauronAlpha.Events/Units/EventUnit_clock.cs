@@ -1,13 +1,16 @@
 ﻿using System;
 
 
-namespace MauronAlpha.Events.Units
-{
-    //A Base element of the event system
+namespace MauronAlpha.Events.Units {
+    
+	//A Base element of the event system
     public class EventUnit_clock:EventComponent_unit {
 
 		//constructor
-        public EventUnit_clock():base() {}
+        public EventUnit_clock():base() {
+			TIME_created = new EventUnit_timeStamp(SystemClock.Ticks);
+			HANDLER_events = new EventHandler(this);
+		}
 
         private EventHandler HANDLER_events;
         public EventHandler EventHandler {
@@ -46,6 +49,10 @@ namespace MauronAlpha.Events.Units
         }
         public EventUnit_timeStamp TIME_created;
 
+		public EventUnit_clock SubmitEvent(EventUnit_event e) {
+			EventHandler.CheckForTrigger(e, TimeStamp);
+			return this;
+		}
     }
 
 }

@@ -12,3 +12,10 @@ I:\C#\CodeTree\MauronAlpha.Geometry\bin\Debug\MauronAlpha.pdb
 I:\C#\CodeTree\MauronAlpha.Geometry\obj\Debug\MauronAlpha.Geometry.csprojResolveAssemblyReference.cache
 I:\C#\CodeTree\MauronAlpha.Geometry\obj\Debug\MauronAlpha.Geometry.dll
 I:\C#\CodeTree\MauronAlpha.Geometry\obj\Debug\MauronAlpha.Geometry.pdb
+C:\Projects\C#\CodeTree\MauronAlpha.Geometry\bin\Debug\MauronAlpha.Geometry.dll
+C:\Projects\C#\CodeTree\MauronAlpha.Geometry\bin\Debug\MauronAlpha.Geometry.pdb
+C:\Projects\C#\CodeTree\MauronAlpha.Geometry\bin\Debug\MauronAlpha.dll
+C:\Projects\C#\CodeTree\MauronAlpha.Geometry\bin\Debug\MauronAlpha.pdb
+C:\Projects\C#\CodeTree\MauronAlpha.Geometry\obj\Debug\MauronAlpha.Geometry.csprojResolveAssemblyReference.cache
+C:\Projects\C#\CodeTree\MauronAlpha.Geometry\obj\Debug\MauronAlpha.Geometry.dll
+C:\Projects\C#\CodeTree\MauronAlpha.Geometry\obj\Debug\MauronAlpha.Geometry.pdb

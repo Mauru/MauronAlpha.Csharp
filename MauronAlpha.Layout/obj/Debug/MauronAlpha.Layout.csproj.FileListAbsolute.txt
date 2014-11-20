@@ -27,3 +27,6 @@ I:\C#\CodeTree\MauronAlpha.Layout\bin\Debug\MauronAlpha.pdb
 I:\C#\CodeTree\MauronAlpha.Layout\obj\Debug\MauronAlpha.Layout.csprojResolveAssemblyReference.cache
 I:\C#\CodeTree\MauronAlpha.Layout\obj\Debug\MauronAlpha.Layout.dll
 I:\C#\CodeTree\MauronAlpha.Layout\obj\Debug\MauronAlpha.Layout.pdb
+C:\Projects\C#\CodeTree\MauronAlpha.Layout\obj\Debug\MauronAlpha.Layout.csprojResolveAssemblyReference.cache
+C:\Projects\C#\CodeTree\MauronAlpha.Layout\obj\Debug\MauronAlpha.Layout.dll
+C:\Projects\C#\CodeTree\MauronAlpha.Layout\obj\Debug\MauronAlpha.Layout.pdb
