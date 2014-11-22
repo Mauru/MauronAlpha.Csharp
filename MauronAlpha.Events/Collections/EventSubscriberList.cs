@@ -1,6 +1,7 @@
 ﻿using System;
 using MauronAlpha.HandlingData;
 using MauronAlpha.Events.Units;
+using MauronAlpha.Events.Interfaces;
 
 namespace MauronAlpha.Events.Collections
 {
@@ -33,6 +34,18 @@ namespace MauronAlpha.Events.Collections
 				return new MauronCode_dataList<EventUnit_subscription>();
 			}
 			return Value(code);
+		}
+
+		public EventSubscriberList RegisterByCode(string code, EventUnit_subscription ) {
+			MauronCode_dataList<EventUnit_subscription> entry;
+			if (!ContainsKey (code)) {
+				AddKey (code);
+				entry = new MauronCode_dataList<EventUnit_subscription> ();
+				SetValue (code, entry);
+			}
+			entry = Value (code);
+			EventUnit_subscription subscription = new EventUnit_subscription (code, subscriber);
+			return this;		
 		}
 
 		public bool Equals(EventSubscriberList other){

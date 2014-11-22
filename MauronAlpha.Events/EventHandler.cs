@@ -26,10 +26,11 @@ namespace MauronAlpha.Events {
 		}
 
         private EventSubscriberList Subscribers = new EventSubscriberList();
-        public void Subscribe(string eventCode, I_eventSubscriber source) {
+        public void SubscribeToCode(string eventCode, I_eventSubscriber source) {
             if (Subscribers.ContainsKey(eventCode)) {
-                foreach (EventUnit_subscription subscription in Subscribers.Value(eventCode)) { }
-            }
+				Subscribers.RegisterByCode (eventCode, source);
+			}
+			return;
         }
         public EventSubscriberList Subscriptions {
             get {
