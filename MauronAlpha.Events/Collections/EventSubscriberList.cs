@@ -36,7 +36,7 @@ namespace MauronAlpha.Events.Collections
 			return Value(code);
 		}
 
-		public EventSubscriberList RegisterByCode(string code, EventUnit_subscription ) {
+		public EventSubscriberList RegisterByCode(string code, I_eventSubscriber subscriber, I_eventSubscriptionModel model) {
 			MauronCode_dataList<EventUnit_subscription> entry;
 			if (!ContainsKey (code)) {
 				AddKey (code);
@@ -44,7 +44,7 @@ namespace MauronAlpha.Events.Collections
 				SetValue (code, entry);
 			}
 			entry = Value (code);
-			EventUnit_subscription subscription = new EventUnit_subscription (code, subscriber);
+			EventUnit_subscription subscription=new EventUnit_subscription(code, subscriber, model, EventUnit_subscription.CONDITION_compareEventCode, subscriber.TriggerOfCode(code));
 			return this;		
 		}
 

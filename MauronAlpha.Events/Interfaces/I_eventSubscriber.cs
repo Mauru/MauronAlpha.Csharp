@@ -9,6 +9,8 @@ namespace MauronAlpha.Events.Interfaces {
 		bool Equals(I_eventSubscriber other);
 
 		bool ReceiveEvent(EventUnit_event e);
+
+		EventHandler.DELEGATE_trigger TriggerOfCode(string Code);
 		
     }
 

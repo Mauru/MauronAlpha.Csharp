@@ -23,12 +23,14 @@ namespace MauronAlpha.Events.Units {
         }
 
         public bool Equals(EventUnit_clock other) {
+			if( IsSystemTime != other.IsSystemTime)
+				return false;	
             if (TIME_created.Ticks != other.TIME_created.Ticks)
                 return false;
             return EventHandler.Subscriptions.Equals(other.EventHandler.Subscriptions);
         }
 
-        private bool B_isSystemTime;
+        private bool B_isSystemTime=true;
         public bool IsSystemTime {
             get {
                 return B_isSystemTime;

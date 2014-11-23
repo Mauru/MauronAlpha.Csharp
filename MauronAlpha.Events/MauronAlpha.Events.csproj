@@ -39,6 +39,7 @@
     <Compile Include="Interfaces\I_eventHandler.cs" />
     <Compile Include="Interfaces\I_eventSender.cs" />
     <Compile Include="Interfaces\I_eventSubscriber.cs" />
+    <Compile Include="Interfaces\I_eventSubscriptionModel.cs" />
     <Compile Include="MauronCode_eventComponent.cs" />
     <Compile Include="Collections\EventSubscriberList.cs" />
     <Compile Include="SystemClock.cs" />
@@ -48,6 +49,7 @@
     <Compile Include="Units\EventUnit_subscription.cs" />
     <Compile Include="Units\EventUnit_clock.cs" />
     <Compile Include="Units\EventUnit_event.cs" />
+    <Compile Include="Units\EventUnit_subscriptionModel.cs" />
     <Compile Include="Units\EventUnit_timeStamp.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

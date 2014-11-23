@@ -26,9 +26,9 @@ namespace MauronAlpha.Events {
 		}
 
         private EventSubscriberList Subscribers = new EventSubscriberList();
-        public void SubscribeToCode(string eventCode, I_eventSubscriber source) {
+        public void SubscribeToCode(string eventCode, I_eventSubscriber source, I_eventSubscriptionModel model) {
             if (Subscribers.ContainsKey(eventCode)) {
-				Subscribers.RegisterByCode (eventCode, source);
+				Subscribers.RegisterByCode (eventCode, source, model);
 			}
 			return;
         }
@@ -48,7 +48,7 @@ namespace MauronAlpha.Events {
         //Send an event
         public delegate bool DELEGATE_SubmitEvent(EventUnit_event e);
         //The condition for a trigger to occure
-        public delegate bool DELEGATE_condition(EventUnit_event e, I_eventSender sender);
+        public delegate bool DELEGATE_condition(EventUnit_event e, EventUnit_subscription subscription);
         //The trigger to execute
         public delegate bool DELEGATE_trigger(EventUnit_event e);
 
@@ -65,16 +65,41 @@ namespace MauronAlpha.Events {
 		public int CheckForTrigger(EventUnit_event e, I_eventSender sender, EventUnit_timeStamp timestamp){
 			MauronCode_dataList<EventUnit_subscription> subscriptions = Subscriptions.ByCode(e.Code);
 
-			int count_triggered = 0;
+			int count_processed = 0;
+			bool result = true;
+
+			MauronCode_dataList<EventUnit_subscription> unsubribe_these=new MauronCode_dataList<EventUnit_subscription>();
 
 			foreach(EventUnit_subscription subscription in subscriptions) {
-				bool result = subscription.Condition (e, sender);
-				if(result) {
-					subscription.Subscriber.ReceiveEvent(e);
-					count_triggered++;
+
+				result = true;
+
+				if(subscription.SubscriptionModel.UsesCondition) {
+					result = subscription.Condition(e,subscription);
 				}
+
+				if(result) {
+					if(subscription.SubscriptionModel.UsesTrigger) {
+						subscription.Subscriber.ReceiveEvent(e);
+						count_processed++;
+					}
+				}
+
+				if(subscription.SubscriptionModel.IsSingle) {
+					unsubribe_these.Add(subscription);
+				}
+
+				if( subscription.SubscriptionModel.UsesExecutionLimit ) {
+					subscription.ItterateExecutionCount(timestamp);
+
+					if( subscription.SubscriptionModel.ExecutionLimit<=subscription.ExecutionCount ) {
+						unsubribe_these.Add(subscription);
+					}
+				}
+		
 			}
-			return count_triggered;
+
+			return count_processed;
 		}
 
 		public EventHandler SubmitEvent(EventUnit_event e, I_eventSender sender) {
