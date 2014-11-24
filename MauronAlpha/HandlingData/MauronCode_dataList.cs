@@ -315,6 +315,15 @@ namespace MauronAlpha.HandlingData {
 		}
 		#endregion
 
+		public MauronCode_dataList<T> CopyTo(T[] array, int arrayIndex) {
+			int index=arrayIndex;
+			foreach( T obj in Values ) {
+				array[index] = obj;
+				index++;
+			}
+			return this;
+		}
+
 		#region ICollection
 
 		//Add
@@ -328,11 +337,7 @@ namespace MauronAlpha.HandlingData {
 
 		//copy to array
 		void ICollection<T>.CopyTo (T[] array, int arrayIndex) {
-			int index=arrayIndex;
-			foreach(T obj in Values) {
-				array.CopyTo(array, index);
-				index++;
-			}
+			CopyTo(array,arrayIndex);
 		}
 		
 		bool ICollection<T>.Remove (T item) {

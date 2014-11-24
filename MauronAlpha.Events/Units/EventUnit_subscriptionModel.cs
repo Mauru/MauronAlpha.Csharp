@@ -125,7 +125,6 @@ namespace MauronAlpha.Events.Units {
 				return result;
 			}
 		}
-		
 
 	}
 

@@ -1,6 +1,7 @@
 ﻿using System;
 
 using MauronAlpha.ConsoleApp;
+using MauronAlpha.Projects;
 
 using MauronAlpha.Events;
 
@@ -27,7 +28,11 @@ namespace MauronAlpha.ConsoleApp.Win {
 				MauronConsole M = new MauronConsole("MauronConsole (Windows)", windowContext);
 
 				//Keep Console open
-				System.Console.ReadKey();
+				ProjectComponent_statusCode statusCode = new ProjectComponent_statusCode(M);
+				while (!statusCode.CanExit ) {
+					statusCode = M.Idle();
+				}
+				
 		
 		}
 	

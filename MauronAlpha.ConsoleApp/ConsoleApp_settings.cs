@@ -5,7 +5,7 @@ using MauronAlpha.Projects;
 
 namespace MauronAlpha.ConsoleApp {
 	
-	public class ConsoleSettings:ProjectSettings {
+	public class ConsoleApp_settings:ProjectSettings {
 
 		private MauronConsole MC_parent;
 		private MauronConsole Parent {
@@ -16,13 +16,13 @@ namespace MauronAlpha.ConsoleApp {
 				return MC_parent;
 			}
 		}
-		private ConsoleSettings SetParent(MauronConsole parent){
+		private ConsoleApp_settings SetParent(MauronConsole parent){
 			MC_parent = parent;
 			return this;
 		}
 
 		//constructor
-		public ConsoleSettings(MauronConsole console){
+		public ConsoleApp_settings(MauronConsole console){
 			SetParent (console);
 		}
 
@@ -34,7 +34,7 @@ namespace MauronAlpha.ConsoleApp {
 				return B_visualizeStrings;
 			}
 		}
-		public ConsoleSettings SetVisualizeStrings (bool status) {
+		public ConsoleApp_settings SetVisualizeStrings (bool status) {
 			B_visualizeStrings=status;
 			return this;
 		}
@@ -46,7 +46,7 @@ namespace MauronAlpha.ConsoleApp {
 		//Is the applicaton a one time only process?
 		private bool B_isEnvironment=false;
 		public bool IsEnvironment { get { return B_isEnvironment; } }
-		public ConsoleSettings SetIsEnvironment (bool status) {
+		public ConsoleApp_settings SetIsEnvironment (bool status) {
 			B_isEnvironment=status;
 			return this;
 		}
@@ -62,7 +62,7 @@ namespace MauronAlpha.ConsoleApp {
 				return B_titleVisible;
 			}
 		}
-		public ConsoleSettings SetTitleVisible (bool visible) {
+		public ConsoleApp_settings SetTitleVisible (bool visible) {
 			B_titleVisible=visible;
 			return this;
 		}
@@ -72,7 +72,7 @@ namespace MauronAlpha.ConsoleApp {
 		#region Print Output as MauronCode.Debug
 		private bool B_writeAsDebug=true;
 		public bool WriteAsDebug { get { return B_writeAsDebug; } }
-		public ConsoleSettings SetWriteAsDebug (bool status) {
+		public ConsoleApp_settings SetWriteAsDebug (bool status) {
 			B_writeAsDebug=status;
 			return this;
 		}
@@ -85,7 +85,7 @@ namespace MauronAlpha.ConsoleApp {
 				return B_lineNumbersVisible;
 			}
 		}
-		public ConsoleSettings SetLineNumbersVisible (bool visible) {
+		public ConsoleApp_settings SetLineNumbersVisible (bool visible) {
 			B_lineNumbersVisible=visible;
 			return this;
 		}

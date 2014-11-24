@@ -9,15 +9,15 @@ using MauronAlpha.Events.Interfaces;
 namespace MauronAlpha.ConsoleApp {
 	
 	//A class that reads userInput
-	public class ConsoleInput:SystemInterface, I_eventSender {
+	public class ConsoleApp_input:SystemInterface, I_eventSender {
 
 		//constructor
-		public ConsoleInput(MauronConsole console):base(){
+		public ConsoleApp_input(MauronConsole console):base(){
 			EventHandler = new EventHandler(console.EventHandler);
 		}
 
 		private EventHandler EventHandler;
-		public ConsoleInput Listen() {
+		public ConsoleApp_input Listen() {
 			System.ConsoleKeyInfo key=System.Console.ReadKey(false);
 			KeyPress input = new KeyPress ();
 			//was the ctrl key pressed

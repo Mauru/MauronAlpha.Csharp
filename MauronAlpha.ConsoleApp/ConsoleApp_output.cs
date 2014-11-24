@@ -3,10 +3,10 @@
 namespace MauronAlpha.ConsoleApp {
 	
 	//Class that controls Output to the system
-	public class ConsoleOutput:SystemInterface {
+	public class ConsoleApp_output:SystemInterface {
 
 		//constructor
-		public ConsoleOutput (MauronConsole console) {
+		public ConsoleApp_output (MauronConsole console) {
 			SetTarget (console);
 		}
 
@@ -20,21 +20,21 @@ namespace MauronAlpha.ConsoleApp {
 				return C_target;
 			}
 		}
-		public ConsoleOutput SetTarget (MauronConsole target) {
+		public ConsoleApp_output SetTarget (MauronConsole target) {
 			C_target=target;
 			return this;
 		}
 		#endregion
 
 		#region Clear the window
-		public ConsoleOutput Clear() {
+		public ConsoleApp_output Clear() {
 			System.Console.Clear();
 			return this;
 		}
 		#endregion
 	
 		#region Write a line to the output
-		public ConsoleOutput WriteLine(string txt) {
+		public ConsoleApp_output WriteLine(string txt) {
 			System.Console.WriteLine(txt);
 			return this;
 		}

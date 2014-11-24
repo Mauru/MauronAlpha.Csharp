@@ -40,12 +40,14 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ConsoleInput.cs" />
-    <Compile Include="ConsoleOutput.cs" />
-    <Compile Include="ConsoleSettings.cs" />
+    <Compile Include="ConsoleApp_commandModel.cs" />
+    <Compile Include="ConsoleApp_component.cs" />
+    <Compile Include="ConsoleApp_input.cs" />
+    <Compile Include="ConsoleApp_output.cs" />
+    <Compile Include="ConsoleApp_settings.cs" />
     <Compile Include="CaretPosition.cs" />
-    <Compile Include="ConsoleWindow.cs" />
-    <Compile Include="KeyMap_mauronConsole.cs" />
+    <Compile Include="ConsoleApp_window.cs" />
+    <Compile Include="ConsoleApp_keyMap.cs" />
     <Compile Include="MauronConsole.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSHARP.Targets" />
@@ -81,5 +83,8 @@
       <Project>{8491848C-470B-4652-AEAE-547EAA8F2AD9}</Project>
       <Name>MauronAlpha.Text</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Events\" />
   </ItemGroup>
 </Project>

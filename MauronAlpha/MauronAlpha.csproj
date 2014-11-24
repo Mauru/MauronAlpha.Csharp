@@ -81,6 +81,7 @@
     </Compile>
     <Compile Include="HandlingErrors\ExceptionHandler.cs" />
     <Compile Include="ExplainingCode\I_MauronAlphaCode.cs" />
+    <Compile Include="Projects\ProjectComponent_statusCode.cs" />
     <Compile Include="Projects\ProjectSettings.cs" />
     <Compile Include="Settings\I_hasDefaultSettings.cs" />
     <Compile Include="HandlingData\MauronCode_data.cs" />

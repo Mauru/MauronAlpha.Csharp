@@ -48,11 +48,9 @@ namespace MauronAlpha.HandlingData {
 				return DATA_keys.Length;
 			}
 		}
-        public string[] Keys {
+        public MauronCode_dataList<string> Keys {
             get {
-                string[] result = new string[DATA_keys.Length-1];
-				DATA_keys.CopyTo(result,0);
-				return result;
+				return new MauronCode_dataList<string>(DATA_keys);
             }
         }
         public int IndexOfKey(string key) {

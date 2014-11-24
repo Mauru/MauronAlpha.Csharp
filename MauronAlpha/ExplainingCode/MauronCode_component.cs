@@ -6,6 +6,12 @@ namespace MauronAlpha.ExplainingCode {
 	public class MauronCode_component:MauronCode {	
 		//constructor
 		public MauronCode_component():base(CodeType_component.Instance) {}
+
+		public static CodeType StaticCodeType {
+			get {
+				return CodeType_component.Instance;
+			}
+		}
 	}
 
 	//An "Explaining class" - which serves to describe the function of a class

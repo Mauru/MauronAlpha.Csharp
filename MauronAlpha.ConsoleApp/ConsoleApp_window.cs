@@ -4,10 +4,10 @@ using MauronAlpha.Geometry.Geometry2d.Units;
 namespace MauronAlpha.ConsoleApp {
 	
 	//The Window of the console
-	public class ConsoleWindow:SystemInterface {
+	public class ConsoleApp_window:SystemInterface {
 
 		#region Constructor
-		public ConsoleWindow(MauronConsole console){
+		public ConsoleApp_window(MauronConsole console){
 			SetTarget(console);
 		}
 		#endregion
@@ -22,14 +22,14 @@ namespace MauronAlpha.ConsoleApp {
 				return C_target;
 			}
 		}
-		public ConsoleWindow SetTarget (MauronConsole target) {
+		public ConsoleApp_window SetTarget (MauronConsole target) {
 			C_target=target;
 			return this;
 		}
 		#endregion
 
 		#region Set the window title
-		public ConsoleWindow SetTitle(string title){
+		public ConsoleApp_window SetTitle(string title){
 			System.Console.Title=title;
 			return this;
 		}

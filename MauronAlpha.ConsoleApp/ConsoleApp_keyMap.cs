@@ -7,10 +7,10 @@ using System;
 namespace MauronAlpha.ConsoleApp {
 
 
-	public class KeyMap_mauronConsole:KeyMap {			
+	public class ConsoleApp_keyMap:KeyMap {			
 
 		//Constructor
-		public KeyMap_mauronConsole(MauronConsole target) {
+		public ConsoleApp_keyMap(MauronConsole target) {
 			SetTarget(target);
 		}
 
@@ -24,7 +24,7 @@ namespace MauronAlpha.ConsoleApp {
 				return C_target;
 			}
 		}
-		public KeyMap_mauronConsole SetTarget (MauronConsole target) {
+		public ConsoleApp_keyMap SetTarget (MauronConsole target) {
 			C_target=target;
 			return this;
 		}
