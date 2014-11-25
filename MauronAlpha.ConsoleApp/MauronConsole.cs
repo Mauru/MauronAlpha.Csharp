@@ -65,7 +65,8 @@ namespace MauronAlpha.ConsoleApp {
 
 		//States
 		public ProjectComponent_statusCode Idle() {
-			
+			HANDLER_events.SubscribeToCode("keyUp",this,TREE_states.Value("idle"));
+			return new ProjectComponent_statusCode(this);
 		}		
 
 	}
