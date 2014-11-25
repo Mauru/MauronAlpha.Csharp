@@ -56,7 +56,7 @@ namespace MauronAlpha.ConsoleApp {
 			}
 		}
 
-		Events.EventHandler I_layoutController.EventHandler {
+		MauronAlpha.Events.EventHandler I_layoutController.EventHandler {
 			get { return HANDLER_events; }
 		}
 
@@ -64,12 +64,45 @@ namespace MauronAlpha.ConsoleApp {
 		private MauronCode_dataMap<EventUnit_subscriptionModel> TREE_states = new MauronCode_dataMap<EventUnit_subscriptionModel>();
 
 		//States
-		public ProjectComponent_statusCode Idle() {
-			HANDLER_events.SubscribeToCode("keyUp",this,TREE_states.Value("idle"));
+		public ProjectComponent_statusCode Idle() {			
+			HANDLER_events.SubscribeToCode("keyUp",this,EventModels.Continous);
 			return new ProjectComponent_statusCode(this);
-		}		
+		}
+
+		//I_eventSubscriber
+		bool I_eventSubscriber.Equals (I_eventSubscriber other) {
+			return Equals(other);
+		}
+
+		bool I_eventSubscriber.ReceiveEvent (EventUnit_event e) {
+			throw new System.NotImplementedException();
+		}
+
+		private DataMap_EventTriggers DATA_eventTriggers;
+		private DataMap_EventTriggers EventTriggers {
+			get {
+				if(DATA_eventTriggers == null) {
+					DATA_eventTriggers=new ConsoleApp_eventTriggers(this);
+				}
+				return DATA_eventTriggers;
+			}
+		}
+		EventHandler.DELEGATE_trigger I_eventSubscriber.TriggerOfCode (string Code) {
+			if( !EventTriggers.ContainsKey(Code) )
+				return EventTriggers.DoNothing;
+			return EventTriggers.Value(Code);
+		}
+
 
 	}
+
+	//Event Trigger Registry for ConsoleApp
+	public class ConsoleApp_eventTriggers:DataMap_EventTriggers {
+		
+		public ConsoleApp_eventTriggers(MauronConsole instance):base() {}
+
+	}
+
 
 	//Project Description
 	public sealed class ProjectType_mauronConsole : ProjectType {

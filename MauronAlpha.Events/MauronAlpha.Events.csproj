@@ -35,6 +35,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Collections\EventModels.cs" />
+    <Compile Include="Collections\EventTriggers.cs" />
     <Compile Include="Interfaces\I_eventController.cs" />
     <Compile Include="Interfaces\I_eventHandler.cs" />
     <Compile Include="Interfaces\I_eventSender.cs" />

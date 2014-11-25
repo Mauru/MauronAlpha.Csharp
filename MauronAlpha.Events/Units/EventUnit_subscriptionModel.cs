@@ -108,13 +108,16 @@ namespace MauronAlpha.Events.Units {
 			MauronCode_dataTree<string, bool> source=AsTree_booleanStates;
 			MauronCode_dataTree<string, bool> candidate=other.AsTree_booleanStates;
 
-			if(!source.Equals(other)) return false;
-			
-			if(UsesInterval && other.Interval != Interval) return false;
+			if(!source.Equals(other))
+				return false;			
+			if(UsesInterval && other.Interval != Interval)
+				return false;
 			if( UsesExecutionLimit&&other.ExecutionLimit!=ExecutionLimit )
 				return false;
-			if(UsesRelay && !other.EventRelay_Generic.Equals(EventRelay_Generic)) return false;
-			if(TriggerEventOnComplete && !other.EventRelay_OnComplete.Equals(EventRelay_OnComplete)) return false;
+			if(UsesRelay && !other.EventRelay_Generic.Equals(EventRelay_Generic))
+				return false;
+			if(TriggerEventOnComplete && !other.EventRelay_OnComplete.Equals(EventRelay_OnComplete))
+				return false;
 
 			return true;			
 		}

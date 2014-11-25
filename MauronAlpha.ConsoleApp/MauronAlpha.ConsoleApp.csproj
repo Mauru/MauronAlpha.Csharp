@@ -84,7 +84,5 @@
       <Name>MauronAlpha.Text</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Events\" />
-  </ItemGroup>
+  <ItemGroup />
 </Project>

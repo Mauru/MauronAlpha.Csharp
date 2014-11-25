@@ -46,6 +46,7 @@
     <Compile Include="ExplainingCode\I_MauronCode.cs" />
     <Compile Include="ExplainingCode\MauronCode_component.cs" />
     <Compile Include="HandlingData\Collections\DataComponent_collection.cs" />
+    <Compile Include="HandlingData\Hashing\Murmur2.unsafe.cs" />
     <Compile Include="HandlingData\I_protectable.cs" />
     <Compile Include="HandlingData\MauronCode_dataComponent.cs" />
     <Compile Include="HandlingData\MauronCode_dataTree.cs" />

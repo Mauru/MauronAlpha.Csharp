@@ -121,7 +121,7 @@ namespace MauronAlpha.Events {
 		}
 
 		EventUnit_timeStamp I_eventHandler.TimeStamp {
-			get { throw new NotImplementedException(); }
+			get { return TimeStamp; }
 		}
 	}
 
