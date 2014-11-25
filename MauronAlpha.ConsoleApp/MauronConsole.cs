@@ -18,6 +18,7 @@ namespace MauronAlpha.ConsoleApp {
 		
 		//constructor
 		public MauronConsole(string name, Layout2d_context context):base(ProjectType_mauronConsole.Instance, name){
+            System.Console.Write("Started;");
 			EventUnit_clock clock = new EventUnit_clock();
 
 			HANDLER_events = new MauronAlpha.Events.EventHandler(clock);
@@ -41,6 +42,7 @@ namespace MauronAlpha.ConsoleApp {
 			get {
 				if(INPUT_console==null){
 					INPUT_console = new ConsoleApp_input(this);
+                    HANDLER_events.SubscribeToCode("keyUp", this, EventModels.Continous);
 				}
 				return INPUT_console;
 			}
@@ -64,8 +66,9 @@ namespace MauronAlpha.ConsoleApp {
 		private MauronCode_dataMap<EventUnit_subscriptionModel> TREE_states = new MauronCode_dataMap<EventUnit_subscriptionModel>();
 
 		//States
-		public ProjectComponent_statusCode Idle() {			
-			HANDLER_events.SubscribeToCode("keyUp",this,EventModels.Continous);
+		public ProjectComponent_statusCode Idle() {
+            System.Console.Write("Idle status;");
+            Input.Listen();
 			return new ProjectComponent_statusCode(this);
 		}
 
@@ -88,18 +91,32 @@ namespace MauronAlpha.ConsoleApp {
 			}
 		}
 		EventHandler.DELEGATE_trigger I_eventSubscriber.TriggerOfCode (string Code) {
+            System.Console.Write("Event received;");
 			if( !EventTriggers.ContainsKey(Code) )
 				return EventTriggers.DoNothing;
 			return EventTriggers.Value(Code);
 		}
+
+        public bool EVENT_keyUp(EventComponent_unit unit) {
+
+            return true;        
+        }
 
 
 	}
 
 	//Event Trigger Registry for ConsoleApp
 	public class ConsoleApp_eventTriggers:DataMap_EventTriggers {
-		
-		public ConsoleApp_eventTriggers(MauronConsole instance):base() {}
+
+        private MauronConsole Console;
+
+        //constructor
+		public ConsoleApp_eventTriggers(MauronConsole instance):base() {
+            Console = instance;
+            base.SetValue("keyUp", Console.EVENT_keyUp);
+        }
+
+
 
 	}
 

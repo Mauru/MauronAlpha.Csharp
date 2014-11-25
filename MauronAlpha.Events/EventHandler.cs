@@ -6,64 +6,64 @@ using MauronAlpha.Events.Interfaces;
 using MauronAlpha.Events.Collections;
 
 namespace MauronAlpha.Events {
-    
+	
 	//A base class for a event handler
-    public class EventHandler:MauronCode_eventComponent, I_eventHandler  {
+	public class EventHandler:MauronCode_eventComponent, I_eventHandler  {
 
-        //constructor
-        public EventHandler(I_eventHandler source):base() {
-            Source = source;
-        }
-        public EventHandler(EventUnit_clock clock) : base() {
-            CLOCK_events = clock;
-        }
+		//constructor
+		public EventHandler(I_eventHandler source):base() {
+			Source = source;
+		}
+		public EventHandler(EventUnit_clock clock) : base() {
+			CLOCK_events = clock;
+		}
 
-        private EventUnit_clock CLOCK_events;
+		private EventUnit_clock CLOCK_events;
 		public EventUnit_clock Clock {
 			get {
 				return CLOCK_events;
 			}
 		}
 
-        private EventSubscriberList Subscribers = new EventSubscriberList();
-        public void SubscribeToCode(string eventCode, I_eventSubscriber source, I_eventSubscriptionModel model) {
-            if (Subscribers.ContainsKey(eventCode)) {
-				Subscribers.RegisterByCode (eventCode, source, model);
-			}
+		private EventSubscriberList Subscribers = new EventSubscriberList();
+		public void SubscribeToCode(string eventCode, I_eventSubscriber source, I_eventSubscriptionModel model) {
+			Subscribers.RegisterByCode(eventCode, source, model);
 			return;
-        }
-        public EventSubscriberList Subscriptions {
-            get {
-                return Subscribers.Instance.SetIsReadOnly(true);
-            }
-        }
+		}
+		public EventSubscriberList Subscriptions {
+			get {
+				return Subscribers.Instance.SetIsReadOnly(true);
+			}
+		}
 
-        protected I_eventHandler Source;
+		protected I_eventHandler Source;
 		public bool HasSource {
 			get { return Source != null; }
 		}
 
-        //Receive an event
-        public delegate bool DELEGATE_ReceiveEvent(EventUnit_event e);
-        //Send an event
-        public delegate bool DELEGATE_SubmitEvent(EventUnit_event e);
-        //The condition for a trigger to occure
-        public delegate bool DELEGATE_condition(EventUnit_event e, EventUnit_subscription subscription);
-        //The trigger to execute
-        public delegate bool DELEGATE_trigger(EventUnit_event e);
+		//Receive an event
+		public delegate bool DELEGATE_ReceiveEvent(EventUnit_event e);
+		//Send an event
+		public delegate bool DELEGATE_SubmitEvent(EventUnit_event e);
+		//The condition for a trigger to occure
+		public delegate bool DELEGATE_condition(EventUnit_event e, EventUnit_subscription subscription);
+		//The trigger to execute
+		public delegate bool DELEGATE_trigger(EventUnit_event e);
 
-        //Equality
-        public bool Equals(EventHandler other) {
+		//Equality
+		public bool Equals(EventHandler other) {
 			if(HasSource!=other.HasSource)
 				return false;
 			if(HasSource)
 				return Source.Equals(other.Source);	
 			return Subscriptions.Equals(other.Subscriptions);
-        }
+		}
 
 		//Check if an event code matches a subscription
 		public int CheckForTrigger(EventUnit_event e, I_eventSender sender, EventUnit_timeStamp timestamp){
 			MauronCode_dataList<EventUnit_subscription> subscriptions = Subscriptions.ByCode(e.Code);
+
+			System.Console.Write("Subscriptions {"+e.Code+"}: "+subscriptions.Count);
 
 			int count_processed = 0;
 			bool result = true;
@@ -103,7 +103,7 @@ namespace MauronAlpha.Events {
 		}
 
 		public EventHandler SubmitEvent(EventUnit_event e, I_eventSender sender) {
-			CheckForTrigger(e,sender, SystemClock.TimeStamp);
+			CheckForTrigger(e, sender, SystemClock.TimeStamp);
 			return this;
 		}
 

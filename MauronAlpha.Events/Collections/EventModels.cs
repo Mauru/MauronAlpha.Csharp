@@ -11,6 +11,14 @@ namespace MauronAlpha.Events.Collections {
 		}
 
 		//Runs continously
-		public class EventUnit_subscriptionModel_continous:EventUnit_subscriptionModel {}
+		public class EventUnit_subscriptionModel_continous:EventUnit_subscriptionModel {
+
+            //Continous events use a trigger
+            public override bool UsesTrigger {
+                get {
+                    return true;
+                }
+            }
+        }
 	}
 }
