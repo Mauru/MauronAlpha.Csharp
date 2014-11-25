@@ -54,24 +54,34 @@ namespace MauronAlpha.HandlingData {
             }
         }
         public int IndexOfKey(string key) {
+			System.Console.Write("Index of key {"+key+"};");
             for (int n = 0; n < DATA_keys.Length; n++) {
                 string k = DATA_keys[n];
                 if (k == key) {
                     return n;
                 }
             }
-            Exception("Invalid Index!", this, ErrorResolution.ReturnNegativeIndex);
+            //Exception("Invalid Index!", this, ErrorResolution.ReturnNegativeIndex);
+			System.Console.Write("Continuing;");
             return -1;
         }
         public MauronCode_dataMap<TValue> AddKey(string key) {
             if (IsReadOnly) {
                 throw Error("Is protected!,(AddKey)", this, ErrorType_protected.Instance);
             }
-            if (IndexOfKey(key) >= 0) {
+			int index = IndexOfKey(key);
+
+			
+
+            if (index >= 0) {
                 throw Error("Key allready Exists!,{" + key + "},(AddKey)", this, ErrorType_index.Instance);
             }
+
             int newIndex = DATA_keys.Length;
-            string[] newKeys = new string[newIndex];
+
+			System.Console.Write("NewIndex {"+newIndex+"}");
+
+            string[] newKeys = new string[newIndex+1];
             Keys.CopyTo(newKeys, 0);
             newKeys[newIndex] = key;
             DATA_keys = newKeys;

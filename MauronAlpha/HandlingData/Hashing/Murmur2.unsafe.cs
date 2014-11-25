@@ -2,7 +2,7 @@
 
 namespace MauronAlpha.HandlingData.Hashing {
 
-	public class MurmurHash2:MauronCode_hash {
+	public class MurmurHash2:MauronCode_utility {
 		public UInt32 Hash (Byte[] data) {
 			return HashForByte(data, 0xc58f1a7b);
 		}
@@ -11,7 +11,7 @@ namespace MauronAlpha.HandlingData.Hashing {
 
 		public static UInt32 UniqueHash {
 			get {
-				return HashForByte(new byte[System.DateTime.Now.Ticks],m);
+				return HashForByte(BitConverter.GetBytes(System.DateTime.Now.Ticks), 2);
 			}
 		}
 
@@ -66,7 +66,7 @@ namespace MauronAlpha.HandlingData.Hashing {
 		public MauronCode_hash():base(CodeType_utility.Instance) {}
 
 		public static UInt32  Unique {
-			get { return MurmurHash2.Unique; }
+			get { return MurmurHash2.UniqueHash; }
 		}
 
 	}

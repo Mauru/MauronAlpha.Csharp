@@ -45,6 +45,8 @@ namespace MauronAlpha.Events.Collections
 			}
 			entry = Value (code);
 			EventUnit_subscription subscription=new EventUnit_subscription(code, subscriber, model, EventUnit_subscription.CONDITION_compareEventCode, subscriber.TriggerOfCode(code));
+			entry.Add(subscription);
+			
 			return this;		
 		}
 

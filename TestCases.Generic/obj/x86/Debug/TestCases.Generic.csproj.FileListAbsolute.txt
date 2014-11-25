@@ -1,0 +1,7 @@
+C:\Projects\C#\CodeTree\TestCases.Generic\bin\Debug\TestCases.Generic.exe
+C:\Projects\C#\CodeTree\TestCases.Generic\bin\Debug\TestCases.Generic.pdb
+C:\Projects\C#\CodeTree\TestCases.Generic\bin\Debug\MauronAlpha.dll
+C:\Projects\C#\CodeTree\TestCases.Generic\bin\Debug\MauronAlpha.pdb
+C:\Projects\C#\CodeTree\TestCases.Generic\obj\x86\Debug\TestCases.Generic.csprojResolveAssemblyReference.cache
+C:\Projects\C#\CodeTree\TestCases.Generic\obj\x86\Debug\TestCases.Generic.exe
+C:\Projects\C#\CodeTree\TestCases.Generic\obj\x86\Debug\TestCases.Generic.pdb

@@ -30,11 +30,11 @@ namespace MauronAlpha {
 		}
 
 		private string UNIQUE_objectId;
-		public string Id {
+		public new string Id {
 			get {
 				if( UNIQUE_objectId==null ) {
 					Type t = this.GetType();
-					string id = t.AssemblyQualifiedName+MauronCode_hash.Unique;
+					string id = t.Namespace.ToString()+"."+t.Name+"."+MauronCode_hash.Unique;
 					UNIQUE_objectId=id;
 				}
 				return UNIQUE_objectId;
