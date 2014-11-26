@@ -113,8 +113,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Settings\MauronCode_defaultSettingsObject.cs" />
     <Compile Include="ExplainingCode\Languages\CodeStyle.cs" />
-    <Compile Include="HandlingData\MauronCode_dataDictionary.cs" />
     <Compile Include="HandlingErrors\ErrorType_bounds.cs" />
+    <Compile Include="HandlingData\Mauroncode_dataDictionary.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />

@@ -298,14 +298,14 @@ namespace MauronAlpha.HandlingData {
 				throw Error("Is protected!,(AddKey)",this,ErrorType_protected.Instance);
 			}
 			if(ContainsKey(key)){
-				throw Error("Key is allready set!",this,ErrorType_protected.Instance);
+				throw Error("Key is allready set!,(AddKey)",this,ErrorType_protected.Instance);
 			}
-			
+
 			//Create instance of DataSet with new Length
 			long newIndex = Count;
-			TKey[] tmp_keys = new TKey[newIndex];
-			TValue[] tmp_values = new TValue[newIndex];
-			bool[] tmp_wasSet = new bool[newIndex];
+			TKey[] tmp_keys = new TKey[newIndex+1];
+			TValue[] tmp_values = new TValue[newIndex+1];
+			bool[] tmp_wasSet = new bool[newIndex+1];
 
 			for(long n=0; n<newIndex; n++) {
 				tmp_keys[n]=DATA_keys[n];
@@ -318,6 +318,10 @@ namespace MauronAlpha.HandlingData {
 			//Insert new Key
 			tmp_keys[newIndex] = key;
 			tmp_wasSet[newIndex] = false;
+
+			DATA_keys = tmp_keys;
+			DATA_values = tmp_values;
+			DATA_wasSet = tmp_wasSet;
 
 			return this;
 		}

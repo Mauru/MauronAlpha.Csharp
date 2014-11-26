@@ -54,7 +54,6 @@ namespace MauronAlpha.HandlingData {
             }
         }
         public int IndexOfKey(string key) {
-			System.Console.Write("Index of key {"+key+"};");
             for (int n = 0; n < DATA_keys.Length; n++) {
                 string k = DATA_keys[n];
                 if (k == key) {
@@ -62,7 +61,6 @@ namespace MauronAlpha.HandlingData {
                 }
             }
             //Exception("Invalid Index!", this, ErrorResolution.ReturnNegativeIndex);
-			System.Console.Write("Continuing;");
             return -1;
         }
         public MauronCode_dataMap<TValue> AddKey(string key) {
@@ -79,12 +77,17 @@ namespace MauronAlpha.HandlingData {
 
             int newIndex = DATA_keys.Length;
 
-			System.Console.Write("NewIndex {"+newIndex+"}");
-
-            string[] newKeys = new string[newIndex+1];
+			//Create a new list of keys
+			string[] newKeys = new string[newIndex+1];
             Keys.CopyTo(newKeys, 0);
-            newKeys[newIndex] = key;
+
+			newKeys[newIndex] = key;
+
+
             DATA_keys = newKeys;
+
+			DATA_values.AddKey (newIndex);
+
             return this;
         }
         public bool IsSet(string key) {
@@ -111,7 +114,7 @@ namespace MauronAlpha.HandlingData {
         public MauronCode_dataMap<TValue> SetValue(string key, TValue value) {
             if (IsReadOnly)
             {
-                throw Error("Is protected", this, ErrorType_protected.Instance);
+				throw Error("Is protected!,(SetValue)", this, ErrorType_protected.Instance);
             }
 
             int n = IndexOfKey(key);
@@ -120,7 +123,6 @@ namespace MauronAlpha.HandlingData {
                 AddKey(key);
                 n = IndexOfKey(key);
             }
-
 			DATA_values.SetValue(n, value);
 
             return this;
