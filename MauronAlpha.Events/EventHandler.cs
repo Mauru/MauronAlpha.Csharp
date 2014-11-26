@@ -27,6 +27,7 @@ namespace MauronAlpha.Events {
 
 		private EventSubscriberList Subscribers = new EventSubscriberList();
 		public void SubscribeToCode(string eventCode, I_eventSubscriber source, I_eventSubscriptionModel model) {
+			System.Console.WriteLine("Subscribing to Event for "+Id);
 			Subscribers.RegisterByCode(eventCode, source, model);
 			return;
 		}
@@ -63,23 +64,27 @@ namespace MauronAlpha.Events {
 		public int CheckForTrigger(EventUnit_event e, I_eventSender sender, EventUnit_timeStamp timestamp){
 			MauronCode_dataList<EventUnit_subscription> subscriptions = Subscriptions.ByCode(e.Code);
 
-			System.Console.Write("Subscriptions {"+e.Code+"}: "+subscriptions.Count);
+			System.Console.WriteLine("Checking Subscriptions for "+Id);
 
 			int count_processed = 0;
 			bool result = true;
 
 			MauronCode_dataList<EventUnit_subscription> unsubribe_these=new MauronCode_dataList<EventUnit_subscription>();
 
+			System.Console.WriteLine("There are "+subscriptions.Count+" Subscriptions");
+
 			foreach(EventUnit_subscription subscription in subscriptions) {
 
 				result = true;
 
 				if(subscription.SubscriptionModel.UsesCondition) {
+					System.Console.WriteLine("Model uses Condition");
 					result = subscription.Condition(e,subscription);
 				}
 
 				if(result) {
 					if(subscription.SubscriptionModel.UsesTrigger) {
+						System.Console.WriteLine("Model uses Trigger");
 						subscription.Subscriber.ReceiveEvent(e);
 						count_processed++;
 					}
@@ -98,6 +103,8 @@ namespace MauronAlpha.Events {
 				}
 		
 			}
+
+
 
 			return count_processed;
 		}

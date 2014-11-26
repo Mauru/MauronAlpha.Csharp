@@ -36,7 +36,7 @@ namespace MauronAlpha.ConsoleApp {
 			//Set the character 
 			input.SetKey(key.KeyChar);
             
-            System.Console.Write("Sending key;");
+            System.Console.WriteLine("Sending key;");
 
 			//throw a new Keyboardevent
 			EventHandler.SubmitEvent(new Event_keyUp(this, input), this);

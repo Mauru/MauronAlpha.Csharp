@@ -18,7 +18,6 @@ namespace MauronAlpha.ConsoleApp {
 		
 		//constructor
 		public MauronConsole(string name, Layout2d_context context):base(ProjectType_mauronConsole.Instance, name){
-            System.Console.Write("Started;");
 			EventUnit_clock clock = new EventUnit_clock();
 
 			HANDLER_events = new MauronAlpha.Events.EventHandler(clock);
@@ -67,7 +66,6 @@ namespace MauronAlpha.ConsoleApp {
 
 		//States
 		public ProjectComponent_statusCode Idle() {
-            System.Console.Write("Idle status;");
             Input.Listen();
 			return new ProjectComponent_statusCode(this);
 		}
@@ -91,14 +89,14 @@ namespace MauronAlpha.ConsoleApp {
 			}
 		}
 		EventHandler.DELEGATE_trigger I_eventSubscriber.TriggerOfCode (string Code) {
-            System.Console.Write("Event received;");
+			System.Console.WriteLine("Sending Delegate Trigger for "+Code);
 			if( !EventTriggers.ContainsKey(Code) )
 				return EventTriggers.DoNothing;
 			return EventTriggers.Value(Code);
 		}
 
-        public bool EVENT_keyUp(EventComponent_unit unit) {
-
+        public bool EVENT_keyUp(EventUnit_event unit) {
+			System.Console.WriteLine("Received Event!");
             return true;        
         }
 

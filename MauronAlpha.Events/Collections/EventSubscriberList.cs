@@ -49,7 +49,7 @@ namespace MauronAlpha.Events.Collections
 			
 			return this;		
 		}
-
+		
 		public bool Equals(EventSubscriberList other){
 			long count = KeyCount;
 		
