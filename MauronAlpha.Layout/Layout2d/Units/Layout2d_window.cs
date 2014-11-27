@@ -2,11 +2,11 @@
 
 using MauronAlpha.Layout.Layout2d.Collections;
 using MauronAlpha.Layout.Layout2d.Context;
-using MauronAlpha.Layout.Layout2d.Events;
 using MauronAlpha.Layout.Layout2d.Interfaces;
 
 using MauronAlpha.HandlingErrors;
 
+using MauronAlpha.Events;
 using MauronAlpha.Events.Interfaces;
 
 namespace MauronAlpha.Layout.Layout2d.Units {
@@ -17,7 +17,7 @@ namespace MauronAlpha.Layout.Layout2d.Units {
 		//constructor
 		public Layout2d_window(string name, I_layoutController controller, Layout2d_context context):base(UnitType_window.Instance) {
 			STR_name = name;
-			EVENT_handler = new Layout2d_eventHandler(this,controller.EventHandler);
+			EVENT_handler = new MauronAlpha.Events.EventHandler(controller.EventHandler);
 
 			//make sure we set the anchor
 			if( !context.HasAnchor ) {
@@ -98,8 +98,8 @@ namespace MauronAlpha.Layout.Layout2d.Units {
 			get { return LAYOUT_context; }
 		}
 
-		private Layout2d_eventHandler EVENT_handler;
-		public override Layout2d_eventHandler EventHandler {
+		private I_eventHandler EVENT_handler;
+		public override I_eventHandler EventHandler {
 			get { 
 				return EVENT_handler; 
 			}

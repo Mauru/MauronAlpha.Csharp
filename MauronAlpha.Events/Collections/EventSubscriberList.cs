@@ -31,6 +31,7 @@ namespace MauronAlpha.Events.Collections
 	
 		public MauronCode_dataList<EventUnit_subscription> ByCode(string code) {
 			if(!ContainsKey(code)) {
+				System.Console.WriteLine("No fitting supscriptions for code "+code+" on "+Id);
 				return new MauronCode_dataList<EventUnit_subscription>();
 			}
 			return Value(code);
@@ -46,6 +47,7 @@ namespace MauronAlpha.Events.Collections
 			entry = Value (code);
 			EventUnit_subscription subscription=new EventUnit_subscription(code, subscriber, model, EventUnit_subscription.CONDITION_compareEventCode, subscriber.TriggerOfCode(code));
 			entry.Add(subscription);
+			SetValue(code,entry);
 			
 			return this;		
 		}

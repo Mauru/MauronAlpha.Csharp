@@ -1,7 +1,8 @@
 ﻿using MauronAlpha.HandlingData;
 
+using MauronAlpha.Events.Interfaces;
+
 using MauronAlpha.Layout.Layout2d.Context;
-using MauronAlpha.Layout.Layout2d.Events;
 using MauronAlpha.Layout.Layout2d.Collections;
 
 namespace MauronAlpha.Layout.Layout2d.Units {	
@@ -47,7 +48,7 @@ namespace MauronAlpha.Layout.Layout2d.Units {
 
 		public abstract Layout2d_context Context {get;}
 
-		public abstract Layout2d_eventHandler EventHandler { get; }
+		public abstract I_eventHandler EventHandler { get; }
 
 	}
 

@@ -10,6 +10,8 @@ namespace MauronAlpha.Events.Interfaces {
 
 		bool ReceiveEvent(EventUnit_event e);
 
+		string Id { get; }
+
 		EventHandler.DELEGATE_trigger TriggerOfCode(string Code);
 		
     }

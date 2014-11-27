@@ -4,10 +4,10 @@ using MauronAlpha.HandlingData;
 using MauronAlpha.HandlingErrors;
 
 using MauronAlpha.Events;
+using MauronAlpha.Events.Interfaces;
 using MauronAlpha.Events.Units;
 
 using MauronAlpha.Layout.Layout2d.Context;
-using MauronAlpha.Layout.Layout2d.Events;
 using MauronAlpha.Layout.Layout2d.Collections;
 
 namespace MauronAlpha.Layout.Layout2d.Units {
@@ -16,7 +16,7 @@ namespace MauronAlpha.Layout.Layout2d.Units {
 	public class Layout2d_unitReference : Layout2d_unit {
 
 		//constructor
-		public Layout2d_unitReference (Layout2d_eventHandler handler, Layout2d_unit unit)
+		public Layout2d_unitReference (I_eventHandler handler, Layout2d_unit unit)
 			: base(UnitType_reference.Instance) {
 			UNIT_source = unit;
 			EVENTHANDLER_unitReference = handler;
@@ -24,8 +24,8 @@ namespace MauronAlpha.Layout.Layout2d.Units {
 		}
 
 		//The EventHandler for this unit
-		private Layout2d_eventHandler EVENTHANDLER_unitReference;
-		public override Layout2d_eventHandler EventHandler {
+		private I_eventHandler EVENTHANDLER_unitReference;
+		public override I_eventHandler EventHandler {
 			get {
 				return EVENTHANDLER_unitReference;
 			}

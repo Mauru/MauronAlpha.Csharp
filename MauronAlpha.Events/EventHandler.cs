@@ -29,6 +29,7 @@ namespace MauronAlpha.Events {
 		public void SubscribeToCode(string eventCode, I_eventSubscriber source, I_eventSubscriptionModel model) {
 			System.Console.WriteLine("Subscribing to Event for "+Id);
 			Subscribers.RegisterByCode(eventCode, source, model);
+			System.Console.WriteLine("Now has "+Subscriptions.KeyCount+" subscriptions");
 			return;
 		}
 		public EventSubscriberList Subscriptions {
@@ -61,12 +62,12 @@ namespace MauronAlpha.Events {
 		}
 
 		//Check if an event code matches a subscription
-		public int CheckForTrigger(EventUnit_event e, I_eventSender sender, EventUnit_timeStamp timestamp){
+		public long CheckForTrigger(EventUnit_event e, I_eventSender sender, EventUnit_timeStamp timestamp){
 			MauronCode_dataList<EventUnit_subscription> subscriptions = Subscriptions.ByCode(e.Code);
 
 			System.Console.WriteLine("Checking Subscriptions for "+Id);
 
-			int count_processed = 0;
+			long count_processed = 0;
 			bool result = true;
 
 			MauronCode_dataList<EventUnit_subscription> unsubribe_these=new MauronCode_dataList<EventUnit_subscription>();
@@ -104,7 +105,11 @@ namespace MauronAlpha.Events {
 		
 			}
 
-
+			//Bubbling up the event chain
+			if(HasSource) {
+				long processed_source = Source.CheckForTrigger(e,sender,timestamp);
+				count_processed += processed_source;
+			}
 
 			return count_processed;
 		}

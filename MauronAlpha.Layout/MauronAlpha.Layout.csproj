@@ -50,7 +50,6 @@
     <Compile Include="Layout2d\Units\Layout2d_unitReference.cs" />
     <Compile Include="Layout2d\Units\Layout2d_unitType.cs" />
     <Compile Include="Layout2d\Units\Layout2d_window.cs" />
-    <Compile Include="Layout2d\Events\Layout2d_eventHandler.cs" />
     <Compile Include="LayoutComponent.cs" />
     <Compile Include="Layout2d\Position\Layout2d_position.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

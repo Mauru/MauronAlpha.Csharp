@@ -3,6 +3,8 @@
 using MauronAlpha.HandlingData;
 using MauronAlpha.HandlingErrors;
 
+using MauronAlpha.Events.Interfaces;
+
 using MauronAlpha.Layout.Layout2d.Collections;
 
 namespace MauronAlpha.Layout.Layout2d.Units {
@@ -102,7 +104,7 @@ namespace MauronAlpha.Layout.Layout2d.Units {
 			get { throw new NotImplementedException(); }
 		}
 
-		public override Events.Layout2d_eventHandler EventHandler {
+		public override I_eventHandler EventHandler {
 			get { throw new NotImplementedException(); }
 		}
 	}

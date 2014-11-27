@@ -6,7 +6,7 @@ namespace MauronAlpha.Input.Keyboard.Events {
 	public class Event_keyUp:EventUnit_event {
 
 		//The Event code
-		public static string EventCode="KeyUp";
+		public static string EventCode="keyUp";
 
 		//constructor
 		public Event_keyUp(I_eventSender sender,KeyPress key):base(sender,Event_keyUp.EventCode){

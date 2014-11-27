@@ -10,6 +10,8 @@ namespace MauronAlpha.Events.Interfaces {
 
 		EventUnit_timeStamp TimeStamp { get; }
 
+		long CheckForTrigger(EventUnit_event e, I_eventSender sender, EventUnit_timeStamp timestamp);
+
     }
 
 }

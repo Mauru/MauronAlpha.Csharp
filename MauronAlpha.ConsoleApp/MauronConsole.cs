@@ -72,11 +72,13 @@ namespace MauronAlpha.ConsoleApp {
 
 		//I_eventSubscriber
 		bool I_eventSubscriber.Equals (I_eventSubscriber other) {
-			return Equals(other);
+			return Id==other.Id;
 		}
 
 		bool I_eventSubscriber.ReceiveEvent (EventUnit_event e) {
-			throw new System.NotImplementedException();
+			EventHandler.DELEGATE_trigger trigger = TriggerOfCode(e.Code);
+			bool result = trigger(e);
+			return result;
 		}
 
 		private DataMap_EventTriggers DATA_eventTriggers;
@@ -88,11 +90,15 @@ namespace MauronAlpha.ConsoleApp {
 				return DATA_eventTriggers;
 			}
 		}
-		EventHandler.DELEGATE_trigger I_eventSubscriber.TriggerOfCode (string Code) {
-			System.Console.WriteLine("Sending Delegate Trigger for "+Code);
-			if( !EventTriggers.ContainsKey(Code) )
+		private EventHandler.DELEGATE_trigger TriggerOfCode(string code) {
+			System.Console.WriteLine("Sending Delegate Trigger for "+code);
+			if( !EventTriggers.ContainsKey(code) )
 				return EventTriggers.DoNothing;
-			return EventTriggers.Value(Code);
+			return EventTriggers.Value(code);
+		}
+
+		EventHandler.DELEGATE_trigger I_eventSubscriber.TriggerOfCode (string code) {
+			return TriggerOfCode(code);
 		}
 
         public bool EVENT_keyUp(EventUnit_event unit) {
