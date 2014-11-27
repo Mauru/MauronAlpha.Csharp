@@ -11,6 +11,8 @@ using MauronAlpha.Layout.Layout2d.Units;
 using MauronAlpha.Layout.Layout2d.Context;
 using MauronAlpha.Layout.Layout2d.Interfaces;
 
+using MauronAlpha.Input.Keyboard.Events;
+
 namespace MauronAlpha.ConsoleApp {
 
 	//A Console Application
@@ -22,9 +24,11 @@ namespace MauronAlpha.ConsoleApp {
 
 			HANDLER_events = new MauronAlpha.Events.EventHandler(clock);
 
-
 			//Define Window
 			WindowController = new Layout2d_window(name, this, context);
+			
+
+
 		}
 
 		private EventHandler HANDLER_events;
@@ -100,8 +104,12 @@ namespace MauronAlpha.ConsoleApp {
 			return TriggerOfCode(code);
 		}
 
+
+		//Events
+
         public bool EVENT_keyUp(EventUnit_event unit) {
-			System.Console.WriteLine("Received Event!");
+			Event_keyUp e = (Event_keyUp) unit;
+			System.Console.WriteLine("Key pressed! "+e.KeyPress.Key);
             return true;        
         }
 

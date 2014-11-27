@@ -6,6 +6,7 @@ using MauronAlpha.HandlingErrors;
 using MauronAlpha.Events.Interfaces;
 
 using MauronAlpha.Layout.Layout2d.Collections;
+using MauronAlpha.Layout.Layout2d.Interfaces;
 
 namespace MauronAlpha.Layout.Layout2d.Units {
 	
@@ -13,7 +14,7 @@ namespace MauronAlpha.Layout.Layout2d.Units {
 	public class Layout2d_container:Layout2d_unit {
 
 		//Constructor
-		public Layout2d_container():base(UnitType_container.Instance) {
+		public Layout2d_container(I_layoutParent parent):base(UnitType_container.Instance) {
 			
 		}
 
@@ -81,19 +82,25 @@ namespace MauronAlpha.Layout.Layout2d.Units {
 		}
 
 		public override Layout2d_unitReference AsReference {
-			get { throw new NotImplementedException(); }
+			get { return new Layout2d_unitReference(this.EventHandler, this); }
 		}
 
 		public override bool IsReference {
-			get { throw new NotImplementedException(); }
+			get { return false; }
 		}
 
 		public override Layout2d_unitReference Instance {
-			get { throw new NotImplementedException(); }
+			get { 
+				return AsReference;
+			}
 		}
 
 		public override Layout2d_unit AddChildAtIndex (Layout2d_unitReference unit, int index) {
-			throw new NotImplementedException();
+			if( LAYOUT_children.ContainsIndex(index) ) {
+				throw Error("Unit allready has a child at index!,{"+index+"},(AddChildAtIndex)",this,ErrorType_index.Instance);
+			}
+			LAYOUT_children.RegisterUnitAtIndex(index, unit);
+			return this;
 		}
 
 		public override int Index {
