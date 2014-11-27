@@ -91,7 +91,6 @@ namespace MauronAlpha.ConsoleApp {
 			}
 		}
 		private EventHandler.DELEGATE_trigger TriggerOfCode(string code) {
-			System.Console.WriteLine("Sending Delegate Trigger for "+code);
 			if( !EventTriggers.ContainsKey(code) )
 				return EventTriggers.DoNothing;
 			return EventTriggers.Value(code);

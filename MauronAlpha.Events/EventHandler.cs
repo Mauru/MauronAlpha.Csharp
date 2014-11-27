@@ -21,15 +21,18 @@ namespace MauronAlpha.Events {
 		private EventUnit_clock CLOCK_events;
 		public EventUnit_clock Clock {
 			get {
+				if(CLOCK_events == null) {
+					if(HasSource)
+						return Source.Clock;
+					throw NullError("No EventClock and no Source Handler!,(Clock)",this,typeof(EventUnit_clock));
+				}
 				return CLOCK_events;
 			}
 		}
 
 		private EventSubscriberList Subscribers = new EventSubscriberList();
 		public void SubscribeToCode(string eventCode, I_eventSubscriber source, I_eventSubscriptionModel model) {
-			System.Console.WriteLine("Subscribing to Event for "+Id);
 			Subscribers.RegisterByCode(eventCode, source, model);
-			System.Console.WriteLine("Now has "+Subscriptions.KeyCount+" subscriptions");
 			return;
 		}
 		public EventSubscriberList Subscriptions {
@@ -65,27 +68,21 @@ namespace MauronAlpha.Events {
 		public long CheckForTrigger(EventUnit_event e, I_eventSender sender, EventUnit_timeStamp timestamp){
 			MauronCode_dataList<EventUnit_subscription> subscriptions = Subscriptions.ByCode(e.Code);
 
-			System.Console.WriteLine("Checking Subscriptions for "+Id);
-
 			long count_processed = 0;
 			bool result = true;
 
 			MauronCode_dataList<EventUnit_subscription> unsubribe_these=new MauronCode_dataList<EventUnit_subscription>();
-
-			System.Console.WriteLine("There are "+subscriptions.Count+" Subscriptions");
 
 			foreach(EventUnit_subscription subscription in subscriptions) {
 
 				result = true;
 
 				if(subscription.SubscriptionModel.UsesCondition) {
-					System.Console.WriteLine("Model uses Condition");
 					result = subscription.Condition(e,subscription);
 				}
 
 				if(result) {
 					if(subscription.SubscriptionModel.UsesTrigger) {
-						System.Console.WriteLine("Model uses Trigger");
 						subscription.Subscriber.ReceiveEvent(e);
 						count_processed++;
 					}
