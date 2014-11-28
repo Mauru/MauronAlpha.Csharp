@@ -1,0 +1,14 @@
+/#M/Projects/C#/CodeTree/MauronAlpha.Forms/obj/Debug/.NETFramework,Version=v4.0.AssemblyAttribute.cs
+/#M/Projects/C#/CodeTree/MauronAlpha.Forms/bin/Debug/MauronAlpha.Forms.dll.mdb
+/#M/Projects/C#/CodeTree/MauronAlpha.Forms/bin/Debug/MauronAlpha.Forms.dll
+/#M/Projects/C#/CodeTree/MauronAlpha.Forms/obj/Debug/MauronAlpha.Forms.dll
+/#M/Projects/C#/CodeTree/MauronAlpha.Forms/obj/Debug/MauronAlpha.Forms.dll.mdb
+/#M/Projects/C#/CodeTree/MauronAlpha.Forms/bin/Debug/MauronAlpha.Events.dll
+/#M/Projects/C#/CodeTree/MauronAlpha.Forms/bin/Debug/MauronAlpha.Events.dll.mdb
+/#M/Projects/C#/CodeTree/MauronAlpha.Forms/bin/Debug/MauronAlpha.Geometry.dll
+/#M/Projects/C#/CodeTree/MauronAlpha.Forms/bin/Debug/MauronAlpha.Geometry.dll.mdb
+/#M/Projects/C#/CodeTree/MauronAlpha.Forms/bin/Debug/MauronAlpha.Layout.dll
+/#M/Projects/C#/CodeTree/MauronAlpha.Forms/bin/Debug/MauronAlpha.Text.dll
+/#M/Projects/C#/CodeTree/MauronAlpha.Forms/bin/Debug/MauronAlpha.Text.dll.mdb
+/#M/Projects/C#/CodeTree/MauronAlpha.Forms/bin/Debug/MauronAlpha.dll
+/#M/Projects/C#/CodeTree/MauronAlpha.Forms/bin/Debug/MauronAlpha.dll.mdb

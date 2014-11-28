@@ -9,13 +9,15 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MauronAlpha", "..\MauronAlp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MauronAlpha.Events", "..\MauronAlpha.Events\MauronAlpha.Events.csproj", "{425A4B94-31DF-4569-B68C-EDEAF82163A7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MauronAlpha.Forms", "..\MauronAlpha.Forms\MauronAlpha.Forms.csproj", "{0C180114-7CFC-45AE-BF4F-433C5F992B84}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MauronAlpha.Forms", "..\MauronAlpha.Forms\MauronAlpha.Forms.csproj", "{528992A7-2184-4F0F-85BD-D8ECD1414DB9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MauronAlpha.Geometry", "..\MauronAlpha.Geometry\MauronAlpha.Geometry.csproj", "{39D005F7-F334-470D-A660-A2A7DA65C456}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MauronAlpha.Input", "..\MauronAlpha.Input\MauronAlpha.Input.csproj", "{7135ED8B-1992-4170-B4A1-A0086686FEBF}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MauronAlpha.Text", "..\MauronAlpha.Text\MauronAlpha.Text.csproj", "{8491848C-470B-4652-AEAE-547EAA8F2AD9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MauronAlpha.Layout", "..\MauronAlpha.Layout\MauronAlpha.Layout.csproj", "{507B82BF-B5CA-44C5-8520-8984D79685AB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -24,12 +26,6 @@ Global
 		DontCompile|Any CPU = DontCompile|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{0C180114-7CFC-45AE-BF4F-433C5F992B84}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{0C180114-7CFC-45AE-BF4F-433C5F992B84}.Debug|x86.Build.0 = Debug|Any CPU
-		{0C180114-7CFC-45AE-BF4F-433C5F992B84}.DontCompile|Any CPU.ActiveCfg = Debug|Any CPU
-		{0C180114-7CFC-45AE-BF4F-433C5F992B84}.DontCompile|Any CPU.Build.0 = Debug|Any CPU
-		{0C180114-7CFC-45AE-BF4F-433C5F992B84}.Release|x86.ActiveCfg = Release|Any CPU
-		{0C180114-7CFC-45AE-BF4F-433C5F992B84}.Release|x86.Build.0 = Release|Any CPU
 		{2EA00431-E460-4D40-8817-CC4E08B9B568}.Debug|x86.ActiveCfg = Debug|Any CPU
 		{2EA00431-E460-4D40-8817-CC4E08B9B568}.Debug|x86.Build.0 = Debug|Any CPU
 		{2EA00431-E460-4D40-8817-CC4E08B9B568}.DontCompile|Any CPU.ActiveCfg = Debug|Any CPU
@@ -48,6 +44,18 @@ Global
 		{425A4B94-31DF-4569-B68C-EDEAF82163A7}.DontCompile|Any CPU.Build.0 = Debug|Any CPU
 		{425A4B94-31DF-4569-B68C-EDEAF82163A7}.Release|x86.ActiveCfg = Release|Any CPU
 		{425A4B94-31DF-4569-B68C-EDEAF82163A7}.Release|x86.Build.0 = Release|Any CPU
+		{507B82BF-B5CA-44C5-8520-8984D79685AB}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{507B82BF-B5CA-44C5-8520-8984D79685AB}.Debug|x86.Build.0 = Debug|Any CPU
+		{507B82BF-B5CA-44C5-8520-8984D79685AB}.DontCompile|Any CPU.ActiveCfg = Debug|Any CPU
+		{507B82BF-B5CA-44C5-8520-8984D79685AB}.DontCompile|Any CPU.Build.0 = Debug|Any CPU
+		{507B82BF-B5CA-44C5-8520-8984D79685AB}.Release|x86.ActiveCfg = Release|Any CPU
+		{507B82BF-B5CA-44C5-8520-8984D79685AB}.Release|x86.Build.0 = Release|Any CPU
+		{528992A7-2184-4F0F-85BD-D8ECD1414DB9}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{528992A7-2184-4F0F-85BD-D8ECD1414DB9}.Debug|x86.Build.0 = Debug|Any CPU
+		{528992A7-2184-4F0F-85BD-D8ECD1414DB9}.DontCompile|Any CPU.ActiveCfg = Debug|Any CPU
+		{528992A7-2184-4F0F-85BD-D8ECD1414DB9}.DontCompile|Any CPU.Build.0 = Debug|Any CPU
+		{528992A7-2184-4F0F-85BD-D8ECD1414DB9}.Release|x86.ActiveCfg = Release|Any CPU
+		{528992A7-2184-4F0F-85BD-D8ECD1414DB9}.Release|x86.Build.0 = Release|Any CPU
 		{6A046817-9F14-4781-97C9-F89FEBC2097B}.Debug|x86.ActiveCfg = Debug|Any CPU
 		{6A046817-9F14-4781-97C9-F89FEBC2097B}.Debug|x86.Build.0 = Debug|Any CPU
 		{6A046817-9F14-4781-97C9-F89FEBC2097B}.DontCompile|Any CPU.ActiveCfg = DontCompile|Any CPU

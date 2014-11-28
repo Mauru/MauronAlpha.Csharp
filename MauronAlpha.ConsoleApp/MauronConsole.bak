@@ -11,8 +11,6 @@ using MauronAlpha.Layout.Layout2d.Units;
 using MauronAlpha.Layout.Layout2d.Context;
 using MauronAlpha.Layout.Layout2d.Interfaces;
 
-using MauronAlpha.Input.Keyboard.Events;
-
 namespace MauronAlpha.ConsoleApp {
 
 	//A Console Application
@@ -20,9 +18,11 @@ namespace MauronAlpha.ConsoleApp {
 		
 		//constructor
 		public MauronConsole(string name, Layout2d_context context):base(ProjectType_mauronConsole.Instance, name){
+            System.Console.Write("Started;");
 			EventUnit_clock clock = new EventUnit_clock();
 
 			HANDLER_events = new MauronAlpha.Events.EventHandler(clock);
+
 
 			//Define Window
 			WindowController = new Layout2d_window(name, this, context);
@@ -67,19 +67,18 @@ namespace MauronAlpha.ConsoleApp {
 
 		//States
 		public ProjectComponent_statusCode Idle() {
+            System.Console.Write("Idle status;");
             Input.Listen();
 			return new ProjectComponent_statusCode(this);
 		}
 
 		//I_eventSubscriber
 		bool I_eventSubscriber.Equals (I_eventSubscriber other) {
-			return Id==other.Id;
+			return Equals(other);
 		}
 
 		bool I_eventSubscriber.ReceiveEvent (EventUnit_event e) {
-			EventHandler.DELEGATE_trigger trigger = TriggerOfCode(e.Code);
-			bool result = trigger(e);
-			return result;
+			throw new System.NotImplementedException();
 		}
 
 		private DataMap_EventTriggers DATA_eventTriggers;
@@ -91,22 +90,15 @@ namespace MauronAlpha.ConsoleApp {
 				return DATA_eventTriggers;
 			}
 		}
-		private EventHandler.DELEGATE_trigger TriggerOfCode(string code) {
-			if( !EventTriggers.ContainsKey(code) )
+		EventHandler.DELEGATE_trigger I_eventSubscriber.TriggerOfCode (string Code) {
+            System.Console.Write("Event received;");
+			if( !EventTriggers.ContainsKey(Code) )
 				return EventTriggers.DoNothing;
-			return EventTriggers.Value(code);
+			return EventTriggers.Value(Code);
 		}
 
-		EventHandler.DELEGATE_trigger I_eventSubscriber.TriggerOfCode (string code) {
-			return TriggerOfCode(code);
-		}
+        public bool EVENT_keyUp(EventComponent_unit unit) {
 
-
-		//Events
-
-        public bool EVENT_keyUp(EventUnit_event unit) {
-			Event_keyUp e = (Event_keyUp) unit;
-			System.Console.WriteLine("Key pressed! "+e.KeyPress.Key);
             return true;        
         }
 
@@ -123,6 +115,8 @@ namespace MauronAlpha.ConsoleApp {
             Console = instance;
             base.SetValue("keyUp", Console.EVENT_keyUp);
         }
+
+
 
 	}
 
@@ -148,4 +142,5 @@ namespace MauronAlpha.ConsoleApp {
 
 		public override string Name { get { return "mauronConsole"; } }
 	}
+
 }

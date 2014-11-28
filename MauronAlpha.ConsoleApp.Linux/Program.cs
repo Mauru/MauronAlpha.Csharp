@@ -1,5 +1,6 @@
 ﻿using System;
 using MauronAlpha.ConsoleApp;
+using MauronAlpha.Layout.Layout2d.Context;
 
 namespace MauronAlpha.ConsoleApp.Linux
 {
@@ -7,7 +8,8 @@ namespace MauronAlpha.ConsoleApp.Linux
 	{
 		public static void Main (string[] args)
 		{
-			MauronConsole m = new MauronConsole ("Linux Version");
+			Layout2d_context context = new Layout2d_context ();
+			MauronConsole m = new MauronConsole ("Linux Version", context);
 		}
 	}
 }
