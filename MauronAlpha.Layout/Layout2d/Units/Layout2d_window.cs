@@ -12,7 +12,7 @@ using MauronAlpha.Events.Interfaces;
 namespace MauronAlpha.Layout.Layout2d.Units {
 	
 	//Describes a window
-	public class Layout2d_window : Layout2d_unit {
+	public class Layout2d_window : Layout2d_unit, I_layoutParent {
 
 		//constructor
 		public Layout2d_window(string name, I_layoutController controller, Layout2d_context context):base(UnitType_window.Instance) {
@@ -23,6 +23,7 @@ namespace MauronAlpha.Layout.Layout2d.Units {
 			if( !context.HasAnchor ) {
 				context.SetAnchor(AsReference);
 			}
+			LAYOUT_context = context;
 		}
 
 		private string STR_name;
@@ -31,6 +32,8 @@ namespace MauronAlpha.Layout.Layout2d.Units {
 				return STR_name;
 			}
 		}
+
+		private bool B_isReadOnly = false;
 
 		#region Boolean states
 		public override bool Exists {
@@ -64,6 +67,13 @@ namespace MauronAlpha.Layout.Layout2d.Units {
 		public override bool IsReference {
 			get { return false; }
 		}
+		public override bool IsReadOnly {
+			get {
+				return B_isReadOnly;
+			}
+		}
+		
+		
 		#endregion
 
 		private Layout2d_unitCollection LAYOUT_children=new Layout2d_unitCollection();
@@ -89,11 +99,7 @@ namespace MauronAlpha.Layout.Layout2d.Units {
 			return this;
 		}
 
-		public override int Index {
-			get { return 0; }
-		}
-
-		private Layout2d_context LAYOUT_context = new Layout2d_context();
+		private Layout2d_context LAYOUT_context;
 		public override Layout2d_context Context {
 			get { return LAYOUT_context; }
 		}

@@ -1,12 +1,12 @@
-﻿using System;
-
-using MauronAlpha.HandlingData;
+﻿using MauronAlpha.HandlingData;
 using MauronAlpha.HandlingErrors;
 
+using MauronAlpha.Events;
 using MauronAlpha.Events.Interfaces;
 
 using MauronAlpha.Layout.Layout2d.Collections;
 using MauronAlpha.Layout.Layout2d.Interfaces;
+using MauronAlpha.Layout.Layout2d.Context;
 
 namespace MauronAlpha.Layout.Layout2d.Units {
 	
@@ -15,7 +15,11 @@ namespace MauronAlpha.Layout.Layout2d.Units {
 
 		//Constructor
 		public Layout2d_container(I_layoutParent parent):base(UnitType_container.Instance) {
-			
+			LAYOUT_parent = parent.AsReference;
+			EVENT_handler = new EventHandler(parent.EventHandler);
+
+			Layout2d_context context = new Layout2d_context(LAYOUT_parent);
+			LAYOUT_context = context;
 		}
 
 		//Properties
@@ -33,39 +37,40 @@ namespace MauronAlpha.Layout.Layout2d.Units {
 			return this;
 		}
 
+		private bool B_isReadOnly = false;
 
 		//Implementing Layout2d_unit
 		public override bool Exists {
 			get { return true; }
 		}
-
 		public override bool CanHaveParent {
 			get { return true; }
 		}
-
 		public override bool CanHaveChildren {
 			get { return true; }
 		}
-
 		public override bool HasParent {
 			get { return (LAYOUT_parent!=null && LAYOUT_parent.Exists); }
 		}
-				
 		public override bool HasChildren {
 			get { return LAYOUT_children.IsEmpty; }
 		}
-
 		public override bool IsDynamic {
 			get { return true; }
 		}
-
 		public override bool IsParent {
 			get { return !LAYOUT_children.IsEmpty; }
 		}
-
 		public override bool IsChild {
 			get { return (LAYOUT_parent==null); }
 		}
+		public override bool IsReference {
+			get { return false; }
+		}
+		public override bool IsReadOnly {
+			get { return B_isReadOnly; }
+		}
+
 
 		private Layout2d_unitCollection LAYOUT_children=new Layout2d_unitCollection();
 		public override Layout2d_unitCollection Children {
@@ -80,15 +85,9 @@ namespace MauronAlpha.Layout.Layout2d.Units {
 			}
 			return LAYOUT_children.UnitByIndex(index);
 		}
-
 		public override Layout2d_unitReference AsReference {
 			get { return new Layout2d_unitReference(this.EventHandler, this); }
 		}
-
-		public override bool IsReference {
-			get { return false; }
-		}
-
 		public override Layout2d_unitReference Instance {
 			get { 
 				return AsReference;
@@ -103,16 +102,16 @@ namespace MauronAlpha.Layout.Layout2d.Units {
 			return this;
 		}
 
-		public override int Index {
-			get { throw new NotImplementedException(); }
+		private Layout2d_context LAYOUT_context;
+		public override Layout2d_context Context {
+			get { return LAYOUT_context; }
 		}
 
-		public override Context.Layout2d_context Context {
-			get { throw new NotImplementedException(); }
-		}
-
+		private I_eventHandler EVENT_handler;
 		public override I_eventHandler EventHandler {
-			get { throw new NotImplementedException(); }
+			get {
+				return EVENT_handler;
+			}
 		}
 	}
 
@@ -120,7 +119,8 @@ namespace MauronAlpha.Layout.Layout2d.Units {
 	public sealed class UnitType_container : Layout2d_unitType {
 		#region singleton
 		private static volatile UnitType_container instance=new UnitType_container();
-		private static object syncRoot=new Object();
+		private static object syncRoot=new System.Object();
+
 		//constructor singleton multithread safe
 		static UnitType_container ( ) { }
 		public static Layout2d_unitType Instance {
@@ -140,15 +140,12 @@ namespace MauronAlpha.Layout.Layout2d.Units {
 		public override bool CanHaveChildren {
 			get { return true; }
 		}
-
 		public override bool CanHaveParent {
 			get { return true; }
 		}
-
 		public override bool CanHide {
 			get { return true; }
 		}
-
 		public override bool IsDynamic {
 			get { return true; }
 		}

@@ -47,6 +47,7 @@ namespace MauronAlpha.Layout.Layout2d.Units {
 
 		//Return the last valid context of a unit
 		private Layout2d_contextSnapShot CONTEXT_lastValid;
+
 		public Layout2d_context LastValidContext {
 			get {
 				if(CONTEXT_lastValid == null) {
@@ -58,6 +59,11 @@ namespace MauronAlpha.Layout.Layout2d.Units {
 
 		public bool IsEmpty {
 			get { return UNIT_source==null; }
+		}
+		
+		private bool B_isReadOnly = false;
+		public override bool IsReadOnly {
+			get { return B_isReadOnly; }
 		}
 
 		public bool Equals(Layout2d_unitReference other) {
@@ -86,7 +92,6 @@ namespace MauronAlpha.Layout.Layout2d.Units {
 				return true;
 			}
 		}
-
 		public override bool CanHaveParent {
 			get { 
 				if(!Exists) {
@@ -96,7 +101,6 @@ namespace MauronAlpha.Layout.Layout2d.Units {
 				return UNIT_source.CanHaveParent;
 			}
 		}
-
 		public override bool CanHaveChildren {
 			get {
 				if( !Exists ) {
@@ -106,7 +110,6 @@ namespace MauronAlpha.Layout.Layout2d.Units {
 				return UNIT_source.CanHaveChildren;
 			}
 		}
-
 		public override bool HasParent {
 			get { 
 				if(!Exists) {
@@ -116,7 +119,6 @@ namespace MauronAlpha.Layout.Layout2d.Units {
 				return UNIT_source.HasParent;
 			}
 		}
-
 		public override bool HasChildren {
 			get {
 				if( !Exists ) {
@@ -126,7 +128,6 @@ namespace MauronAlpha.Layout.Layout2d.Units {
 				return UNIT_source.HasChildren;
 			}
 		}
-
 		public override bool IsDynamic {
 			get {
 				if( !Exists ) {
@@ -136,7 +137,6 @@ namespace MauronAlpha.Layout.Layout2d.Units {
 				return UNIT_source.IsDynamic;
 			}
 		}
-
 		public override bool IsParent {
 			get {
 				if( !Exists ) {
@@ -146,7 +146,6 @@ namespace MauronAlpha.Layout.Layout2d.Units {
 				return UNIT_source.IsParent;
 			}
 		}
-
 		public override bool IsChild {
 			get {
 				if( !Exists ) {
@@ -156,7 +155,6 @@ namespace MauronAlpha.Layout.Layout2d.Units {
 				return UNIT_source.IsChild;
 			}
 		}
-
 		public override bool IsReference { get { return true; } } 
 
 		public override Layout2d_unitCollection Children {
@@ -177,7 +175,6 @@ namespace MauronAlpha.Layout.Layout2d.Units {
 				return UNIT_source.Parent;
 			}
 		}
-		
 		public override Layout2d_unitReference AsReference {
 			get { 
 				if( !Exists ) {
@@ -186,13 +183,11 @@ namespace MauronAlpha.Layout.Layout2d.Units {
 				return Instance; 
 			}
 		}
-
 		public override Layout2d_unitReference Instance {
 			get { 
 				return new Layout2d_unitReference(EventHandler,UNIT_source); 
 			}
 		}
-
 		public override Layout2d_unitReference ChildByIndex (int index) {
 			if( !Exists ) {
 				throw NullError("ReferenceUnit does not exist!,(ChildByIndex)", this, typeof(Layout2d_unitReference));
@@ -205,15 +200,6 @@ namespace MauronAlpha.Layout.Layout2d.Units {
 				throw NullError("ReferenceUnit does not exist!,(ChildByIndex)", this, typeof(Layout2d_unit));
 			}
 			return UNIT_source.AddChildAtIndex(unit,index);
-		}
-
-		public override int Index {
-			get {
-				if( !Exists ) {
-					throw NullError("ReferenceUnit does not exist!,(Index)", this, typeof(Layout2d_unitReference));
-				}
-				return UNIT_source.Index;
-			}
 		}
 
 		public override Layout2d_context Context {

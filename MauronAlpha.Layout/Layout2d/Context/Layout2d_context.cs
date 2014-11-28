@@ -9,14 +9,20 @@ namespace MauronAlpha.Layout.Layout2d.Context {
 	public class Layout2d_context:Layout2d_component {
 
 		//constructor
-		public Layout2d_context():base() {}
+		public Layout2d_context() {}
+
+		public Layout2d_context (Layout2d_unitReference anchor)
+			: this() {
+			LAYOUT_anchor = anchor;
+			LAYOUT_position = new Layout2d_position(anchor);
+		}
 		public Layout2d_context(Layout2d_unitReference anchor, Vector2d position, Vector2d size, bool b_isStatic):this() {
 			LAYOUT_position=new Layout2d_position(anchor, position, b_isStatic);
 			LAYOUT_size = new Layout2d_size(size, b_isStatic);
+			LAYOUT_anchor = anchor;
 			B_isStatic = b_isStatic;
 		}
-		public Layout2d_context (Vector2d position, Vector2d size, bool b_isStatic)
-			: this() {
+		public Layout2d_context (Vector2d position, Vector2d size, bool b_isStatic)	: this() {
 			LAYOUT_position=new Layout2d_position(position, b_isStatic);
 			LAYOUT_size=new Layout2d_size(size, b_isStatic);
 			B_isStatic=b_isStatic;

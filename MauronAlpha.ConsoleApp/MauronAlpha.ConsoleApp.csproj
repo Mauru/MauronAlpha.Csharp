@@ -45,6 +45,7 @@
     <Compile Include="ConsoleApp_commandModel.cs" />
     <Compile Include="ConsoleApp_component.cs" />
     <Compile Include="ConsoleApp_input.cs" />
+    <Compile Include="ConsoleApp_layout.cs" />
     <Compile Include="ConsoleApp_output.cs" />
     <Compile Include="ConsoleApp_settings.cs" />
     <Compile Include="CaretPosition.cs" />

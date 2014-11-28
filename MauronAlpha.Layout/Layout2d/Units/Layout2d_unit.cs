@@ -34,6 +34,7 @@ namespace MauronAlpha.Layout.Layout2d.Units {
 		public abstract bool IsParent { get; }
 		public abstract bool IsChild { get; }
 		public abstract bool IsReference { get; }
+		public abstract bool IsReadOnly { get; }
 
 		public abstract Layout2d_unitCollection Children { get; }
 		
@@ -43,8 +44,6 @@ namespace MauronAlpha.Layout.Layout2d.Units {
 
 		public abstract Layout2d_unitReference Instance { get; }
 		public abstract Layout2d_unit AddChildAtIndex (Layout2d_unitReference unit, int index);
-
-		public abstract int Index { get; }
 
 		public abstract Layout2d_context Context {get;}
 

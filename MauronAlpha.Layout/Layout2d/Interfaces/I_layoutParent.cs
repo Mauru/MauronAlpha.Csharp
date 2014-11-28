@@ -14,6 +14,8 @@ namespace MauronAlpha.Layout.Layout2d.Interfaces {
 		bool IsReadOnly { get; }
 		Layout2d_unitType UnitType { get; }
 
+		Layout2d_unitReference AsReference { get; }
+
 	}
 
 }
