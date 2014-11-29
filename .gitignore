@@ -9,4 +9,5 @@
 **.userprefs
 **.csproj.FileListAbsolute.txt
 **.txt
+/Offline/**
 **.manifest
