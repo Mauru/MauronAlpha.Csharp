@@ -1,9 +1,0 @@
-/#M/Projects/C#/CodeTree/MauronAlpha.Input/obj/Debug/.NETFramework,Version=v4.0.AssemblyAttribute.cs
-/#M/Projects/C#/CodeTree/MauronAlpha.Input/bin/Debug/MauronAlpha.Input.dll.mdb
-/#M/Projects/C#/CodeTree/MauronAlpha.Input/bin/Debug/MauronAlpha.Input.dll
-/#M/Projects/C#/CodeTree/MauronAlpha.Input/obj/Debug/MauronAlpha.Input.dll
-/#M/Projects/C#/CodeTree/MauronAlpha.Input/obj/Debug/MauronAlpha.Input.dll.mdb
-/#M/Projects/C#/CodeTree/MauronAlpha.Input/bin/Debug/MauronAlpha.dll
-/#M/Projects/C#/CodeTree/MauronAlpha.Input/bin/Debug/MauronAlpha.dll.mdb
-/#M/Projects/C#/CodeTree/MauronAlpha.Input/bin/Debug/MauronAlpha.Events.dll
-/#M/Projects/C#/CodeTree/MauronAlpha.Input/bin/Debug/MauronAlpha.Events.dll.mdb

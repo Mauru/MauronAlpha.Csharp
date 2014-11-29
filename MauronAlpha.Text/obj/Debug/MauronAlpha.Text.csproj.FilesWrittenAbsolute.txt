@@ -1,9 +1,0 @@
-/#M/Projects/C#/CodeTree/MauronAlpha.Text/obj/Debug/.NETFramework,Version=v4.0.AssemblyAttribute.cs
-/#M/Projects/C#/CodeTree/MauronAlpha.Text/obj/Debug/MauronAlpha.Text.dll
-/#M/Projects/C#/CodeTree/MauronAlpha.Text/bin/Debug/MauronAlpha.dll
-/#M/Projects/C#/CodeTree/MauronAlpha.Text/bin/Debug/MauronAlpha.dll.mdb
-/#M/Projects/C#/CodeTree/MauronAlpha.Text/bin/Debug/MauronAlpha.Text.dll
-/#M/Projects/C#/CodeTree/MauronAlpha.Text/bin/Debug/MauronAlpha.Text.dll.mdb
-/#M/Projects/C#/CodeTree/MauronAlpha.Text/obj/Debug/MauronAlpha.Text.dll.mdb
-/#M/Projects/C#/CodeTree/MauronAlpha.Text/bin/Debug/MauronAlpha.Events.dll
-/#M/Projects/C#/CodeTree/MauronAlpha.Text/bin/Debug/MauronAlpha.Events.dll.mdb

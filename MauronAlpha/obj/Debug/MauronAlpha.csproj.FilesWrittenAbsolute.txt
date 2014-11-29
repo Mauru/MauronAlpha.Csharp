@@ -1,5 +1,0 @@
-/#M/Projects/C#/CodeTree/MauronAlpha/obj/Debug/.NETFramework,Version=v4.0.AssemblyAttribute.cs
-/#M/Projects/C#/CodeTree/MauronAlpha/obj/Debug/MauronAlpha.dll
-/#M/Projects/C#/CodeTree/MauronAlpha/bin/Debug/MauronAlpha.dll.mdb
-/#M/Projects/C#/CodeTree/MauronAlpha/bin/Debug/MauronAlpha.dll
-/#M/Projects/C#/CodeTree/MauronAlpha/obj/Debug/MauronAlpha.dll.mdb

@@ -1,7 +1,0 @@
-/#M/Projects/C#/CodeTree/MauronAlpha.Geometry/obj/Debug/.NETFramework,Version=v4.0.AssemblyAttribute.cs
-/#M/Projects/C#/CodeTree/MauronAlpha.Geometry/bin/Debug/MauronAlpha.Geometry.dll.mdb
-/#M/Projects/C#/CodeTree/MauronAlpha.Geometry/bin/Debug/MauronAlpha.Geometry.dll
-/#M/Projects/C#/CodeTree/MauronAlpha.Geometry/obj/Debug/MauronAlpha.Geometry.dll
-/#M/Projects/C#/CodeTree/MauronAlpha.Geometry/obj/Debug/MauronAlpha.Geometry.dll.mdb
-/#M/Projects/C#/CodeTree/MauronAlpha.Geometry/bin/Debug/MauronAlpha.dll
-/#M/Projects/C#/CodeTree/MauronAlpha.Geometry/bin/Debug/MauronAlpha.dll.mdb

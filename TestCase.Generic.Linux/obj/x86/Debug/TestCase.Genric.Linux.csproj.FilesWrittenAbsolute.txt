@@ -1,7 +1,0 @@
-/#M/Projects/C#/CodeTree/TestCase.Genric.Linux/TestCase.Genric.Linux/obj/x86/Debug/.NETFramework,Version=v4.5.AssemblyAttribute.cs
-/#M/Projects/C#/CodeTree/TestCase.Genric.Linux/TestCase.Genric.Linux/bin/Debug/TestCase.Genric.Linux.exe.mdb
-/#M/Projects/C#/CodeTree/TestCase.Genric.Linux/TestCase.Genric.Linux/bin/Debug/TestCase.Genric.Linux.exe
-/#M/Projects/C#/CodeTree/TestCase.Genric.Linux/TestCase.Genric.Linux/obj/x86/Debug/TestCase.Genric.Linux.exe
-/#M/Projects/C#/CodeTree/TestCase.Genric.Linux/TestCase.Genric.Linux/obj/x86/Debug/TestCase.Genric.Linux.exe.mdb
-/#M/Projects/C#/CodeTree/TestCase.Genric.Linux/TestCase.Genric.Linux/bin/Debug/MauronAlpha.dll
-/#M/Projects/C#/CodeTree/TestCase.Genric.Linux/TestCase.Genric.Linux/bin/Debug/MauronAlpha.dll.mdb

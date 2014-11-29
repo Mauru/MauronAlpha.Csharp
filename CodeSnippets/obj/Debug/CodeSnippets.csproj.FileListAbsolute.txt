@@ -1,4 +1,0 @@
-C:\Projects\C#\Building a Usable Code-Tree\Attempt 1\Mauron\CodeSnippets\bin\Debug\CodeSnippets.dll
-C:\Projects\C#\Building a Usable Code-Tree\Attempt 1\Mauron\CodeSnippets\bin\Debug\CodeSnippets.pdb
-C:\Projects\C#\Building a Usable Code-Tree\Attempt 1\Mauron\CodeSnippets\obj\Debug\CodeSnippets.dll
-C:\Projects\C#\Building a Usable Code-Tree\Attempt 1\Mauron\CodeSnippets\obj\Debug\CodeSnippets.pdb
