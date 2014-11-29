@@ -25,6 +25,25 @@ namespace MauronAlpha.Layout.Layout2d.Collections {
 				return new Layout2d_unitCollection(this);
 			}
 		}
+		public Layout2d_unitCollection RegisterUnitAtIndex (int index, Layout2d_unit unit) {
+			if( IsReadOnly ) {
+				throw Error("Index is protected!,(RegisterUnitAtIndex)", this, ErrorType_protected.Instance);
+			}
+			if( index<0 ) {
+				throw Error("Index out of Bounds!,(RegisterUnitAtIndex)", this, ErrorType_bounds.Instance);
+			}
+			if( index>LAYOUT_units.CountKeys ) {
+				throw Error("Index out of Bounds!,(RegisterUnitAtIndex)", this, ErrorType_bounds.Instance);
+			}
+			if( LAYOUT_units.ContainsKey(index) ) {
+				Exception("Index is in Use!,{"+index+"},(RegisterUnitAtIndex)", this, ErrorResolution.Replaced);
+			}
+			LAYOUT_units.SetValue(index, unit.AsReference);
+
+			return this;
+		}
+
+		public long Count { get { return LAYOUT_units.CountValidValues; } }
 
 		//The data
 		private MauronCode_dataIndex<Layout2d_unitReference> LAYOUT_units;
@@ -32,23 +51,7 @@ namespace MauronAlpha.Layout.Layout2d.Collections {
 		public Layout2d_unitReference UnitByIndex(int index) {
 			return LAYOUT_units.Value(index);
 		}
-		public Layout2d_unitCollection RegisterUnitAtIndex(int index, Layout2d_unit unit) {
-			if(IsReadOnly) {
-				throw Error("Index is protected!,(RegisterUnitAtIndex)",this,ErrorType_protected.Instance);
-			}
-			if(index<0) {
-				throw Error("Index out of Bounds!,(RegisterUnitAtIndex)",this,ErrorType_bounds.Instance);
-			}
-			if(index>LAYOUT_units.CountKeys){
-				throw Error("Index out of Bounds!,(RegisterUnitAtIndex)",this,ErrorType_bounds.Instance);
-			}
-			if(LAYOUT_units.ContainsKey(index)) {
-				Exception("Index is in Use!,{"+index+"},(RegisterUnitAtIndex)",this,ErrorResolution.Replaced);
-			}
-			LAYOUT_units.SetValue(index,unit.AsReference);
 
-			return this;			
-		}
 
 		//boolean states
 		public bool IsEmpty { 
@@ -63,7 +66,6 @@ namespace MauronAlpha.Layout.Layout2d.Collections {
 				return false;
 			}
 		}
-
 		public bool ContainsIndex(int index) {
 			if(LAYOUT_units == null) {
 				return false;

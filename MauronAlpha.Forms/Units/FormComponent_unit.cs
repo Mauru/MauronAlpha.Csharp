@@ -1,4 +1,6 @@
-﻿using MauronAlpha.Events.Interfaces;
+﻿using MauronAlpha.HandlingErrors;
+
+using MauronAlpha.Events.Interfaces;
 
 using MauronAlpha.Layout.Layout2d.Interfaces;
 using MauronAlpha.Layout.Layout2d.Units;
@@ -34,12 +36,7 @@ namespace MauronAlpha.Forms.Units {
             get { return LAYOUT_children; }
         }
 
-        protected bool B_isReadOnly = false;
-        public virtual bool IsReadOnly
-        {
-            get { return B_isReadOnly; }
-        }
-
+        
         protected Layout2d_unitType LAYOUT_unitType; 
         public virtual Layout2d_unitType UnitType
         {
@@ -61,12 +58,61 @@ namespace MauronAlpha.Forms.Units {
             }
         }
 
+		protected bool B_isReadOnly=false;
         protected bool B_isStatic = false;
         public virtual bool IsStatic
         {
             get { return B_isStatic; }
         }
-
+		public virtual bool IsReadOnly {
+			get { return B_isReadOnly; }
+		}
+		public bool HasChildren {
+			get {
+				return false;
+			}
+		}
+		public bool HasParent {
+			get {
+				return LAYOUT_parent==null;
+			}
+		}
+		public bool IsParent {
+			get {
+				return LAYOUT_children.Count>0;
+			}
+		}
+		public bool IsChild {
+			get {
+				return LAYOUT_parent.Exists;
+			}
+		}
+		public virtual bool IsDynamic {
+			get {
+				return true;
+			}
+		}
+		public virtual bool CanHaveParent {
+			get {
+				return true;
+			}
+		}
+		public virtual bool CanHaveChildren {
+			get { return false; }
+		}
+		public virtual bool Exists {
+			get {
+				return true;
+			}
+		}
+		
+		public virtual I_layoutUnit AddChildAtIndex(int index, Layout2d_unitReference unit) {
+			if(IsReadOnly){
+				throw Error("Is protected!,(AddChildAtIndex)",this,ErrorType_protected.Instance);
+			}
+			LAYOUT_children.RegisterUnitAtIndex(index, unit);
+			return this;
+		}
     }
 
 }
