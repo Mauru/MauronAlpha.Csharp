@@ -41,8 +41,7 @@ namespace MauronAlpha.Geometry.Geometry2d.Units {
 		public Vector2d Set (double x, double y) {
 			#region ReadOnly Check
 			if( IsReadOnly ) {
-				Error("Is protected!(Rotate)", this, ErrorType_protected.Instance);
-				return this;
+                throw Error("Is protected!,(Set)", this, ErrorType_protected.Instance);
 			}
 			#endregion
 			SetX(x);
@@ -52,8 +51,7 @@ namespace MauronAlpha.Geometry.Geometry2d.Units {
 		public Vector2d Set (Vector2d v) {
 			#region ReadOnly Check
 			if( IsReadOnly ) {
-				Error("Is protected!(Rotate)", this, ErrorType_protected.Instance);
-				return this;
+                throw Error("Is protected!,(Set)", this, ErrorType_protected.Instance);
 			}
 			#endregion
 			SetX(v.X);
@@ -114,8 +112,7 @@ namespace MauronAlpha.Geometry.Geometry2d.Units {
 		public Vector2d Transform(Vector2d v, Vector2d s){
 			#region ReadOnly Check
 			if( IsReadOnly ) {
-				Error("Is protected!(Rotate)", this, ErrorType_protected.Instance);
-				return this;
+                throw Error("Is protected!,(Transform)", this, ErrorType_protected.Instance);
 			}
 			#endregion
 			Vector2d p = Difference(v);
@@ -127,8 +124,7 @@ namespace MauronAlpha.Geometry.Geometry2d.Units {
 		public Vector2d Transform (Vector2d v, Double n) {
 			#region ReadOnly Check
 			if( IsReadOnly ) {
-				Error("Is protected!(Rotate)", this, ErrorType_protected.Instance);
-				return this;
+                throw Error("Is protected!,(Transform)", this, ErrorType_protected.Instance);
 			}
 			#endregion
 			Vector2d p=Difference(v);
@@ -140,8 +136,7 @@ namespace MauronAlpha.Geometry.Geometry2d.Units {
 		public Vector2d Mirror (Vector2d v) {
 			#region ReadOnly Check
 			if( IsReadOnly ) {
-				Error("Is protected!(Mirror)", this, ErrorType_protected.Instance);
-				return this;
+				throw Error("Is protected!,(Mirror)", this, ErrorType_protected.Instance);
 			}
 			#endregion
 			Vector2d p=(Vector2d) Difference(v).Multiply(-2);
@@ -151,8 +146,7 @@ namespace MauronAlpha.Geometry.Geometry2d.Units {
 		public Vector2d Rotate (Vector2d v, double angle) {
 			#region ReadOnly Check
 			if( IsReadOnly ) {
-				Error("Is protected!(Rotate)", this, ErrorType_protected.Instance);
-				return this;
+				throw Error("Is protected!,(Rotate)", this, ErrorType_protected.Instance);
 			}
 			#endregion
 			double s=Math.Sin(angle);
@@ -173,8 +167,7 @@ namespace MauronAlpha.Geometry.Geometry2d.Units {
 		public Vector2d Add (Vector2d v) {
 			#region ReadOnly Check
 			if( IsReadOnly ) {
-				Error("Is protected!(Rotate)", this, ErrorType_protected.Instance);
-				return this;
+                throw Error("Is protected!,(Add)", this, ErrorType_protected.Instance);
 			}
 			#endregion
 			SetX(X+v.X);
@@ -184,8 +177,7 @@ namespace MauronAlpha.Geometry.Geometry2d.Units {
 		public Vector2d Add (long n) {
 			#region ReadOnly Check
 			if( IsReadOnly ) {
-				Error("Is protected!(Rotate)", this, ErrorType_protected.Instance);
-				return this;
+                throw Error("Is protected!,(Add)", this, ErrorType_protected.Instance);
 			}
 			#endregion
 			SetX(X+n);
@@ -196,8 +188,7 @@ namespace MauronAlpha.Geometry.Geometry2d.Units {
 		public Vector2d Subtract (long n) {
 			#region ReadOnly Check
 			if( IsReadOnly ) {
-				Error("Is protected!(Rotate)", this, ErrorType_protected.Instance);
-				return this;
+				throw Error("Is protected!,(Subtract)", this, ErrorType_protected.Instance);
 			}
 			#endregion
 			SetX(X-n);
@@ -207,20 +198,31 @@ namespace MauronAlpha.Geometry.Geometry2d.Units {
 		public Vector2d Subtract (Vector2d v) {
 			#region ReadOnly Check
 			if( IsReadOnly ) {
-				Error("Is protected!(Rotate)", this, ErrorType_protected.Instance);
-				return this;
+				throw Error("Is protected!,(Subtract)", this, ErrorType_protected.Instance);
 			}
 			#endregion
 			SetX(X-v.X);
 			SetY(Y-v.Y);
 			return this;
 		}
-		//multiply
+        public Vector2d Subtract(long x, long y)
+        {
+            #region ReadOnly Check
+            if (IsReadOnly)
+            {
+                throw Error("Is protected!,(Subtract)", this, ErrorType_protected.Instance);
+            }
+            #endregion
+            SetX(X - x);
+            SetY(Y - y);
+            return this;
+        }
+		
+        //multiply
 		public Vector2d Multiply (long n) {
 			#region ReadOnly Check
 			if( IsReadOnly ) {
-				Error("Is protected!(Rotate)", this, ErrorType_protected.Instance);
-				return this;
+				throw Error("Is protected!,(Multiply)", this, ErrorType_protected.Instance);
 			}
 			#endregion
 			SetX(X*n);
@@ -230,8 +232,7 @@ namespace MauronAlpha.Geometry.Geometry2d.Units {
 		public Vector2d Multiply (Vector2d v) {
 			#region ReadOnly Check
 			if( IsReadOnly ) {
-				Error("Is protected!(Rotate)", this, ErrorType_protected.Instance);
-				return this;
+                throw Error("Is protected!,(Multiply)", this, ErrorType_protected.Instance);
 			}
 			#endregion
 			SetX(X*v.X);
@@ -242,8 +243,7 @@ namespace MauronAlpha.Geometry.Geometry2d.Units {
 		public Vector2d Divide (long n) {
 			#region ReadOnly Check
 			if( IsReadOnly ) {
-				Error("Is protected!(Rotate)", this, ErrorType_protected.Instance);
-				return this;
+				throw Error("Is protected!,(Divide)", this, ErrorType_protected.Instance);
 			}
 			#endregion
 			if( n!=0 ) {
@@ -255,8 +255,7 @@ namespace MauronAlpha.Geometry.Geometry2d.Units {
 		public Vector2d Divide (Vector2d v) {
 			#region ReadOnly Check
 			if( IsReadOnly ) {
-				Error("Is protected!(Rotate)", this, ErrorType_protected.Instance);
-				return this;
+				throw Error("Is protected!,(Divide)", this, ErrorType_protected.Instance);
 			}
 			#endregion
 			if( v.X!=0 ) {

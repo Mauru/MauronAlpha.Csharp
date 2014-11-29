@@ -44,7 +44,7 @@
     <Compile Include="Layout2d\Context\Layout2d_context.cs" />
     <Compile Include="Layout2d\Context\Layout2d_contextSnapShot.cs" />
     <Compile Include="Layout2d\Interfaces\I_layoutController.cs" />
-    <Compile Include="Layout2d\Interfaces\I_layoutParent.cs" />
+    <Compile Include="Layout2d\Interfaces\I_layoutUnit.cs" />
     <Compile Include="Layout2d\Layout2d_component.cs" />
     <Compile Include="Layout2d\Position\Layout2d_size.cs" />
     <Compile Include="Layout2d\Units\Layout2d_container.cs" />
@@ -56,6 +56,7 @@
     <Compile Include="Layout2d\Position\Layout2d_position.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Layout2d\Units\Layout2d_unit.cs" />
+    <Compile Include="Layout2d\Position\Layout2d_constraint.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MauronAlpha.Events\MauronAlpha.Events.csproj">

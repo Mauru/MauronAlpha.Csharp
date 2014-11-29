@@ -14,7 +14,7 @@ namespace MauronAlpha.Layout.Layout2d.Units {
 	public class Layout2d_container:Layout2d_unit {
 
 		//Constructor
-		public Layout2d_container(I_layoutParent parent):base(UnitType_container.Instance) {
+		public Layout2d_container(I_layoutUnit parent):base(UnitType_container.Instance) {
 			LAYOUT_parent = parent.AsReference;
 			EVENT_handler = new EventHandler(parent.EventHandler);
 
@@ -38,6 +38,7 @@ namespace MauronAlpha.Layout.Layout2d.Units {
 		}
 
 		private bool B_isReadOnly = false;
+        private bool B_isStatic = false;
 
 		//Implementing Layout2d_unit
 		public override bool Exists {
@@ -70,7 +71,10 @@ namespace MauronAlpha.Layout.Layout2d.Units {
 		public override bool IsReadOnly {
 			get { return B_isReadOnly; }
 		}
-
+        public override bool IsStatic
+        {
+            get { return B_isStatic; }
+        }
 
 		private Layout2d_unitCollection LAYOUT_children=new Layout2d_unitCollection();
 		public override Layout2d_unitCollection Children {
@@ -94,7 +98,7 @@ namespace MauronAlpha.Layout.Layout2d.Units {
 			}
 		}
 
-		public override Layout2d_unit AddChildAtIndex (Layout2d_unitReference unit, int index) {
+		public override I_layoutUnit AddChildAtIndex (int index,Layout2d_unitReference unit) {
 			if( LAYOUT_children.ContainsIndex(index) ) {
 				throw Error("Unit allready has a child at index!,{"+index+"},(AddChildAtIndex)",this,ErrorType_index.Instance);
 			}

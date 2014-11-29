@@ -7,6 +7,10 @@ namespace MauronAlpha.Layout.Layout2d.Position {
 	public class Layout2d_size:Layout2d_component {
 
 		//constructor
+		public Layout2d_size() {
+			B_isStatic = false;
+			RECT_bounds = new Rectangle2d ();
+		}
 		public Layout2d_size (Vector2d size, bool b_isStatic)
 			: base() {
 			B_isStatic = b_isStatic;
@@ -46,11 +50,15 @@ namespace MauronAlpha.Layout.Layout2d.Position {
 				return B_isReadOnly;
 			}
 		}
-		public Layout2d_size SetIsReadOnly (bool b_isReadOnly) {
+		
+        public Layout2d_size SetIsReadOnly (bool b_isReadOnly) {
 			B_isReadOnly=b_isReadOnly;
 			return this;
 		}
-	
+        public Layout2d_size Instance { get {
+            Layout2d_size result = new Layout2d_size(AsVector2d,IsStatic);
+            return result;
+        } }
 	}
 
 }

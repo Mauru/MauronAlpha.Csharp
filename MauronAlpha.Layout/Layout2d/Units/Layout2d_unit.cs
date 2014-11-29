@@ -2,13 +2,14 @@
 
 using MauronAlpha.Events.Interfaces;
 
+using MauronAlpha.Layout.Layout2d.Interfaces;
 using MauronAlpha.Layout.Layout2d.Context;
 using MauronAlpha.Layout.Layout2d.Collections;
 
 namespace MauronAlpha.Layout.Layout2d.Units {	
 	
 	//A layout unit in 2d space
-	public abstract class Layout2d_unit:Layout2d_component {
+	public abstract class Layout2d_unit:Layout2d_component, I_layoutUnit {
 
 		//constructor
 		public Layout2d_unit(Layout2d_unitType unitType):base(){
@@ -35,6 +36,7 @@ namespace MauronAlpha.Layout.Layout2d.Units {
 		public abstract bool IsChild { get; }
 		public abstract bool IsReference { get; }
 		public abstract bool IsReadOnly { get; }
+        public abstract bool IsStatic { get; }
 
 		public abstract Layout2d_unitCollection Children { get; }
 		
@@ -43,12 +45,11 @@ namespace MauronAlpha.Layout.Layout2d.Units {
 		public abstract Layout2d_unitReference AsReference { get; }
 
 		public abstract Layout2d_unitReference Instance { get; }
-		public abstract Layout2d_unit AddChildAtIndex (Layout2d_unitReference unit, int index);
-
-		public abstract Layout2d_context Context {get;}
+		public abstract I_layoutUnit AddChildAtIndex (int index,Layout2d_unitReference unit);
 
 		public abstract I_eventHandler EventHandler { get; }
 
+		public abstract Layout2d_context Context {get;}
 	}
 
 }

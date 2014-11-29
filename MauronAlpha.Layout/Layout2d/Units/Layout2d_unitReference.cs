@@ -9,6 +9,7 @@ using MauronAlpha.Events.Units;
 
 using MauronAlpha.Layout.Layout2d.Context;
 using MauronAlpha.Layout.Layout2d.Collections;
+using MauronAlpha.Layout.Layout2d.Interfaces;
 
 namespace MauronAlpha.Layout.Layout2d.Units {
 	
@@ -16,7 +17,7 @@ namespace MauronAlpha.Layout.Layout2d.Units {
 	public class Layout2d_unitReference : Layout2d_unit {
 
 		//constructor
-		public Layout2d_unitReference (I_eventHandler handler, Layout2d_unit unit)
+		public Layout2d_unitReference (I_eventHandler handler, I_layoutUnit unit)
 			: base(UnitType_reference.Instance) {
 			UNIT_source = unit;
 			EVENTHANDLER_unitReference = handler;
@@ -32,7 +33,7 @@ namespace MauronAlpha.Layout.Layout2d.Units {
 		}
 
 		//The unit this class is referencing
-		private Layout2d_unit UNIT_source;
+		private I_layoutUnit UNIT_source;
 
 		//Convert a Layout2d_unit DataIndex to a unitReference Index
 		public static MauronCode_dataIndex<Layout2d_unitReference> CONVERT_DataIndex_unitToReference(MauronCode_dataIndex<Layout2d_unit> dataIndex) {
@@ -60,7 +61,11 @@ namespace MauronAlpha.Layout.Layout2d.Units {
 		public bool IsEmpty {
 			get { return UNIT_source==null; }
 		}
-		
+        public override bool IsStatic {
+            get {
+                return UNIT_source.IsStatic;
+            }
+        }
 		private bool B_isReadOnly = false;
 		public override bool IsReadOnly {
 			get { return B_isReadOnly; }
@@ -195,11 +200,11 @@ namespace MauronAlpha.Layout.Layout2d.Units {
 			return UNIT_source.ChildByIndex(index);
 		}
 
-		public override Layout2d_unit AddChildAtIndex (Layout2d_unitReference unit, int index) {
+		public override I_layoutUnit AddChildAtIndex (int index, Layout2d_unitReference unit) {
 			if( !Exists ) {
 				throw NullError("ReferenceUnit does not exist!,(ChildByIndex)", this, typeof(Layout2d_unit));
 			}
-			return UNIT_source.AddChildAtIndex(unit,index);
+			return UNIT_source.AddChildAtIndex(index,unit);
 		}
 
 		public override Layout2d_context Context {
