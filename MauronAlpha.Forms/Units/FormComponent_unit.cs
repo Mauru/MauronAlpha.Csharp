@@ -113,6 +113,9 @@ namespace MauronAlpha.Forms.Units {
 			LAYOUT_children.RegisterUnitAtIndex(index, unit);
 			return this;
 		}
+        public virtual Layout2d_unitReference ChildByIndex(int index) { 
+            
+        }
     }
 
 }
