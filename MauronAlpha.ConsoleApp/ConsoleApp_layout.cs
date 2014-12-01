@@ -23,14 +23,61 @@ namespace MauronAlpha.ConsoleApp {
 
 		//Apply the design
 		public override Layout2d_design Apply ( ) {
+
+			Layout2d_size windowSize = LAYOUT_window.Context.Size;
+			
+			#region The header
+			Layout2d_container header;
 			if(!TREE_regions.IsSet("header")) {
-				Layout2d_container header=new Layout2d_container(LAYOUT_window);
+				header =new Layout2d_container(LAYOUT_window);
 				FormUnit_textField title = new FormUnit_textField(header);
-				header.Context.SetConstraint (new Layout2d_constraint (0, 1));
-                header.Context.SetSize(new Layout2d_size(LAYOUT_window.Context.Size.AsVector2d.SetY(1),true));
-                header.AddChildAtIndex(0, title.AsReference);
+				header.AddChildAtIndex(0, title.AsReference);
+				LAYOUT_window.AddChildAtIndex(0,header.AsReference);
 			}
-            header.Context.SetSize(new Layout2d_size(LAYOUT_window.Context.Size.AsVector2d.Subtract(0, 2), true));
+			header = LAYOUT_window.ChildByIndex(0).As<Layout2d_container>();
+			header.Context.SetConstraint(new Layout2d_constraint(windowSize.AsVector2d.SetY(1)));
+			header.Context.SetSize(new Layout2d_size(windowSize.AsVector2d.SetY(1), true));
+			#endregion
+
+			#region The Content
+			Layout2d_container content;
+			if(!TREE_regions.IsSet("content")) {
+				content=new Layout2d_container(LAYOUT_window);
+				FormUnit_textField text=new FormUnit_textField(content);
+				content.AddChildAtIndex(0, text.AsReference);
+				LAYOUT_window.AddChildAtIndex(1,content.AsReference);
+			}
+			content=LAYOUT_window.ChildByIndex(1).As<Layout2d_container>();
+			content.Context.SetConstraint(new Layout2d_constraint(windowSize.AsVector2d.Subtract(0,3)));
+			content.Context.SetSize(new Layout2d_size(content.Context.Constraint.AsVector2d,false));
+			#endregion
+			
+			#region The Command-line
+			Layout2d_container input;
+			if(!TREE_regions.IsSet("input")){
+				input = new Layout2d_container(LAYOUT_window);
+				FormUnit_textField inputText = new FormUnit_textField(input);
+				input.AddChildAtIndex(0, inputText.AsReference);
+				LAYOUT_window.AddChildAtIndex(2,input.AsReference);
+			}
+			input=LAYOUT_window.ChildByIndex(2).As<Layout2d_container>();
+			input.Context.SetConstraint(new Layout2d_constraint(windowSize.AsVector2d.SetY(1)));
+			input.Context.SetSize(new Layout2d_size(windowSize.AsVector2d.SetY(1),false));
+			#endregion
+
+			#region The Footer
+			Layout2d_container footer;
+			if( !TREE_regions.IsSet("footer") ) {
+				footer=new Layout2d_container(LAYOUT_window);
+				FormUnit_textField footerText=new FormUnit_textField(input);
+				input.AddChildAtIndex(0, footerText.AsReference);
+				LAYOUT_window.AddChildAtIndex(3, input.AsReference);
+			}
+			footer=LAYOUT_window.ChildByIndex(3).As<Layout2d_container>();
+			input.Context.SetConstraint(new Layout2d_constraint(windowSize.AsVector2d.SetY(1)));
+			input.Context.SetSize(new Layout2d_size(windowSize.AsVector2d.SetY(1), true));
+			#endregion
+
 			return this;
 		}
 	}

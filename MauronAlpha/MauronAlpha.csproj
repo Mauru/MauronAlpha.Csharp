@@ -84,6 +84,7 @@
     </Compile>
     <Compile Include="HandlingErrors\ExceptionHandler.cs" />
     <Compile Include="ExplainingCode\I_MauronAlphaCode.cs" />
+    <Compile Include="Interfaces\I_protectable.cs" />
     <Compile Include="Projects\ProjectComponent_statusCode.cs" />
     <Compile Include="Projects\ProjectSettings.cs" />
     <Compile Include="Settings\I_hasDefaultSettings.cs" />
@@ -124,9 +125,7 @@
   <ItemGroup>
     <None Include="Documentation\How Events Work.mau" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Interfaces\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -57,6 +57,11 @@ namespace MauronAlpha.Layout.Layout2d.Context {
         public Layout2d_size Size { get { return LAYOUT_size.Instance.SetIsReadOnly(true); } }
 
 		private Layout2d_constraint LAYOUT_limit;
+		public Layout2d_constraint Constraint {
+			get {
+				return LAYOUT_limit.Instance.SetIsReadOnly(true);
+			}
+		}
 
 		//Methods
         public Layout2d_context SetSize(Layout2d_size size) {

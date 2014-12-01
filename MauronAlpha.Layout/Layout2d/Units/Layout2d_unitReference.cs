@@ -218,6 +218,14 @@ namespace MauronAlpha.Layout.Layout2d.Units {
 
 		#endregion
 
+		/// <summary>
+		/// Cast UNIT_source as Class
+		/// </summary>
+		/// <typeparam name="returnType"></typeparam>
+		/// <returns></returns>
+		public returnType As<returnType>() {
+			return (returnType) UNIT_source;
+		}
 	}
 
 	//Description

@@ -114,7 +114,10 @@ namespace MauronAlpha.Forms.Units {
 			return this;
 		}
         public virtual Layout2d_unitReference ChildByIndex(int index) { 
-            
+           if(!Children.ContainsIndex(index)) {
+				throw Error("Index does not exist!,{"+index+"},(ChildByIndex)",this,ErrorType_index.Instance);
+		   }
+		   return Children.UnitByIndex(index);
         }
     }
 
