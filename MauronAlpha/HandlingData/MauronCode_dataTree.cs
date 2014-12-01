@@ -22,8 +22,9 @@ namespace MauronAlpha.HandlingData {
 				//we need to check if the keys are unique unfortunately
 				//TODO("Finish each on each check");
 				DelegateHandler_equals<TKey> D = new DelegateHandler_equals<TKey>();
-				if( ForEachKeys_bool(DATA_keys, D.D_objectEquals,1) ) {
-					throw Error("Duplicate Keys Detected!",this,ErrorType_constructor.Instance);
+				long index_compare=0;
+				if( ForEachKeys_bool(DATA_keys, D.D_objectEquals,1,index_compare) ) {
+					throw Error("Duplicate Keys Detected!,{"+index_compare+"|"+DATA_keys.Length+"},(Constructor)",this,ErrorType_constructor.Instance);
 				}
 			
 				keys.CopyTo(DATA_keys,0);
@@ -38,7 +39,7 @@ namespace MauronAlpha.HandlingData {
 		}
 		public MauronCode_dataTree(ICollection<TKey> keys, ICollection<TValue> values):this(keys){
 			if(keys.Count!=values.Count){
-				throw Error("Keys/Values have different length!",this,ErrorType_constructor.Instance);
+				throw Error("Keys/Values have different length!,(Constructor)",this,ErrorType_constructor.Instance);
 			}
 
 			TKey[] v_key = new TKey[keys.Count];
@@ -77,7 +78,28 @@ namespace MauronAlpha.HandlingData {
 			}
 			return false;
 		}
-		
+		private bool ForEachKeys_bool (TKey[] keys, DelegateMethod_objectInteraction_bool<TKey> comparer, long limitTrue, long store_lastIndex) {
+			TKey origin;
+			TKey target;
+			long countTrue=0;
+			for( long i=0; i<keys.Length; i++ ) {
+				store_lastIndex = i;
+				origin=keys[i];
+				for( long b=0; b<keys.Length; b++ ) {
+					if( i!=b ) {
+						target=keys[b];
+						if( comparer(origin, target) ) {
+							countTrue++;
+							if( limitTrue>0&&countTrue>=limitTrue ) {
+								return true;
+							}
+						}
+					}
+				}
+			}
+			return false;
+		}
+
 		///<summary>Cycle through each component of a array and test against target</summary>
 		///<param name="limitTrue">0: Test for all, >0: Test until true has been returned n times</param>
 		private bool ForEachKeys_compare_bool(TKey[] keys, TKey target, DelegateMethod_objectInteraction_bool<TKey> comparer, long limitTrue) {
@@ -158,8 +180,17 @@ namespace MauronAlpha.HandlingData {
 		//Internal class for a DelegateHandler
 		private class DelegateHandler_equals<varType> {
 
+			//keep track of the last used value
+			private varType VAR_lastOrigin;
+			public varType LastOrigin {
+				get {
+					return VAR_lastOrigin;
+				}
+			}
+
 			//Perform "Equals()" Comparison for two objects
 			public bool DEL_objectEquals(varType origin, varType target) {
+				VAR_lastOrigin=origin;
 				if(target == null && origin == null)
 					return true;
 				if(target == null || origin == null)

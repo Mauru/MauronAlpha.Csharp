@@ -26,6 +26,10 @@ namespace MauronAlpha.ConsoleApp {
 
 			//Define Window
 			WindowController = new Layout2d_window(name, this, context);
+
+			//Define the "looks" of the console
+			ConsoleApp_layout theme = new ConsoleApp_layout(WindowController);
+			//theme.Apply();
 		}
 
 		private EventHandler HANDLER_events;

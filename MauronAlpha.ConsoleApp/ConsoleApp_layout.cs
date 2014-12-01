@@ -18,14 +18,15 @@ namespace MauronAlpha.ConsoleApp {
 
         private I_layoutUnit LAYOUT_window;
 
-		private static string[] KEYS_regions = new string[]{"header","content","input","footer"};
+		private static string[] KEYS_regions = new string[4]{"header","content","input","footer"};
 		private MauronCode_dataTree<string,Layout2d_container> TREE_regions = new MauronCode_dataTree<string,Layout2d_container>(KEYS_regions);
 
 		//Apply the design
 		public override Layout2d_design Apply ( ) {
 
 			Layout2d_size windowSize = LAYOUT_window.Context.Size;
-			
+
+			System.Console.WriteLine("Creating header");			
 			#region The header
 			Layout2d_container header;
 			if(!TREE_regions.IsSet("header")) {
@@ -39,6 +40,10 @@ namespace MauronAlpha.ConsoleApp {
 			header.Context.SetSize(new Layout2d_size(windowSize.AsVector2d.SetY(1), true));
 			#endregion
 
+			System.Console.WriteLine("Creating content");
+
+
+
 			#region The Content
 			Layout2d_container content;
 			if(!TREE_regions.IsSet("content")) {
@@ -51,6 +56,8 @@ namespace MauronAlpha.ConsoleApp {
 			content.Context.SetConstraint(new Layout2d_constraint(windowSize.AsVector2d.Subtract(0,3)));
 			content.Context.SetSize(new Layout2d_size(content.Context.Constraint.AsVector2d,false));
 			#endregion
+
+			System.Console.WriteLine("Creating input");
 			
 			#region The Command-line
 			Layout2d_container input;
@@ -64,6 +71,8 @@ namespace MauronAlpha.ConsoleApp {
 			input.Context.SetConstraint(new Layout2d_constraint(windowSize.AsVector2d.SetY(1)));
 			input.Context.SetSize(new Layout2d_size(windowSize.AsVector2d.SetY(1),false));
 			#endregion
+
+			System.Console.WriteLine("Creating footer");
 
 			#region The Footer
 			Layout2d_container footer;
