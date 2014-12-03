@@ -42,8 +42,6 @@ namespace MauronAlpha.ConsoleApp {
 
 			System.Console.WriteLine("Creating content");
 
-
-
 			#region The Content
 			Layout2d_container content;
 			if(!TREE_regions.IsSet("content")) {

@@ -149,7 +149,7 @@ namespace MauronAlpha.Geometry.Geometry2d.Shapes {
 			}
 			SetSegments(s.Segments);
 			SetCenter(s.Center);
-			SetBounds(s.Bounds);
+			R_bounds=s.Bounds;
 			SetMatrix(s.Matrix);
 			return this;
 		}
@@ -180,22 +180,17 @@ namespace MauronAlpha.Geometry.Geometry2d.Shapes {
 		}
 		#endregion
 		#region Bounds
-		protected Rectangle2d R_bounds=null;
+		protected Rectangle2d R_bounds;
 		public override Rectangle2d Bounds { 
 			get {
-				if(Bounds==null){
-					SetBounds(new Rectangle2d(GeometryHelper2d.PolygonBounds(Points)));
+                if (R_bounds == null)
+                {
+                    Vector2d[] minmax = GeometryHelper2d.PolygonBounds(Points);
+                    R_bounds = new Rectangle2d(minmax[0], minmax[1]);
 				}
 				//need to apply matrix here
-				return (Rectangle2d) R_bounds.Instance;
+				return (Rectangle2d) R_bounds.Instance.SetIsReadOnly(true);
 			}
-		}
-		protected Polygon2d SetBounds(Rectangle2d bounds){
-			if( IsReadOnly ) {
-				throw Error("Is Protected!,(SetBounds)", this, ErrorType_protected.Instance);
-			}
-			R_bounds=bounds;
-			return this;
 		}
 		#endregion
 

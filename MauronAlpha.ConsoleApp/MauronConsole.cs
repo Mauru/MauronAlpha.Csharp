@@ -26,9 +26,10 @@ namespace MauronAlpha.ConsoleApp {
 
 			//Define Window
 			WindowController = new Layout2d_window(name, this, context);
+            System.Console.WriteLine(WindowController.Context.Size.AsVector2d.ToString);
 
 			//Define the "looks" of the console
-			ConsoleApp_layout theme = new ConsoleApp_layout(WindowController);
+			//ConsoleApp_layout theme = new ConsoleApp_layout(WindowController);
 			//theme.Apply();
 		}
 
@@ -105,16 +106,12 @@ namespace MauronAlpha.ConsoleApp {
 			return TriggerOfCode(code);
 		}
 
-
 		//Events
-
         public bool EVENT_keyUp(EventUnit_event unit) {
 			Event_keyUp e = (Event_keyUp) unit;
 			System.Console.WriteLine("Key pressed! "+e.KeyPress.Key);
             return true;        
         }
-
-
 	}
 
 	//Event Trigger Registry for ConsoleApp
