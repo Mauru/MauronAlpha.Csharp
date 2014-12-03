@@ -17,6 +17,8 @@ namespace MauronAlpha.HandlingData {
 		public MauronCode_dataTree(ICollection<TKey> keys):this() {
 			//initialize keys
 			DATA_keys=new TKey[keys.Count];
+
+            keys.CopyTo(DATA_keys, 0);
 			
 			if(keys.Count>0) {
 				//we need to check if the keys are unique unfortunately
@@ -26,8 +28,7 @@ namespace MauronAlpha.HandlingData {
 				if( ForEachKeys_bool(DATA_keys, D.D_objectEquals,1,index_compare) ) {
 					throw Error("Duplicate Keys Detected!,{"+index_compare+"|"+DATA_keys.Length+"},(Constructor)",this,ErrorType_constructor.Instance);
 				}
-			
-				keys.CopyTo(DATA_keys,0);
+
 
 				//initialize empty values
 				DATA_values=new TValue[keys.Count];
