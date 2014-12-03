@@ -88,7 +88,7 @@ namespace MauronAlpha.Geometry.Geometry2d.Units {
 		}
 		public new string ToString {
 			get {
-				return "{[1:"+A.ToString+"][2:"+B.ToString+"]}";
+				return "{[1:"+A.AsString+"][2:"+B.AsString+"]}";
 			}
 		}
 	

@@ -33,7 +33,7 @@ namespace MauronAlpha.Geometry.Geometry2d.Shapes {
 				string r="{";
 				for( int i=0; i<Points.Length; i++ ) {
 					Vector2d p=Points[i];
-					r+="["+(i+1)+":"+p.ToString+"]";
+					r+="["+(i+1)+":"+p.AsString+"]";
 				}
 				return r+"}";
 			}
