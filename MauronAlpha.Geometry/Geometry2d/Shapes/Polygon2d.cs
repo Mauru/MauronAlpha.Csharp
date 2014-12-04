@@ -19,40 +19,17 @@ namespace MauronAlpha.Geometry.Geometry2d.Shapes {
 				return B_isReadOnly;
 			}
 		}
-		public Polygon2d SetIsReadOnly(bool state) {
-			B_isReadOnly = state;
-			return this;			
-		}
-
-		#region Comparison { Polygon2d }
 		public bool Equals (Polygon2d p) {
-			return ToString==p.ToString;
+			return AsString==p.AsString;
 		}
-		public new string ToString {
-			get {
-				string r="{";
-				for( int i=0; i<Points.Length; i++ ) {
-					Vector2d p=Points[i];
-					r+="["+(i+1)+":"+p.AsString+"]";
-				}
-				return r+"}";
-			}
-		}
-		#endregion
 
-		#region Matrix
-		protected Matrix2d M_matrix;
-		public override Matrix2d Matrix { 
-			get { 
-				if (M_matrix==null) { 
-					M_matrix = new Matrix2d(this);
-				}
-				return M_matrix.SetIsReadOnly(IsReadOnly);
-			}
+		public Polygon2d SetIsReadOnly (bool state) {
+			B_isReadOnly=state;
+			return this;
 		}
-		protected Polygon2d SetMatrix(Matrix2d m) {
-			if(IsReadOnly) {
-				throw Error("Is Protected!,(SetMatrix)",this,ErrorType_protected.Instance);
+		protected Polygon2d SetMatrix (Matrix2d m) {
+			if( IsReadOnly ) {
+				throw Error("Is Protected!,(SetMatrix)", this, ErrorType_protected.Instance);
 			}
 
 			//Reset Points to original
@@ -65,32 +42,55 @@ namespace MauronAlpha.Geometry.Geometry2d.Shapes {
 
 			return this;
 		}
-		#endregion
-		#region Points
-
-		//Points as handled on the inside (unmodified)
-
-
-		//Points as displayed to the outside (modified by Matrix)
-		protected List<Vector2d> A_points=new List<Vector2d>();		
-		
-		public Vector2d[] Points {
-			get { return A_points.ToArray(); }
-		}
-		public Polygon2d SetPoints (Vector2d[] points) {
-			if(IsReadOnly) {
+		public Polygon2d SetPoints (ICollection<Vector2d> points) {
+			if( IsReadOnly ) {
 				throw Error("Is Protected!,(SetPoints)", this, ErrorType_protected.Instance);
 			}
-			//get the distance of the first point
-			if(points.Length>0){
-				Vector2d offset = new Vector2d().Difference(points[0]);
-				Matrix.Translation.Add(offset);
+
+			DATA_points=new Vector2d[points.Count];
+			points.CopyTo(DATA_points, 0);
+
+
+			//we offset the first point to be 0,0
+			Matrix2d t_matrix = new Matrix2d();
+			if( DATA_points.Length>0 ) {
+				Vector2d offset = new Vector2d().Difference(DATA_points[0]);
+				
 			}
-			A_points=new List<Vector2d>(points);
-			Matrix.ApplyTo(this);
+
+			DATA_points = Matrix.ApplyTo(DATA_points);
 			return this;
 		}
-		#endregion
+
+
+		public string AsString {
+			get {
+				string r="{";
+				for( int i=0; i<Points.Length; i++ ) {
+					Vector2d p=Points[i];
+					r+="["+(i+1)+":"+p.AsString+"]";
+				}
+				return r+"}";
+			}
+		}
+
+		protected Matrix2d M_matrix;
+		public override Matrix2d Matrix {
+			get {
+				if( M_matrix==null ) {
+					M_matrix=new Matrix2d(this);
+				}
+				return M_matrix.Instance.SetIsReadOnly(IsReadOnly);
+			}
+		}
+
+		protected Vector2d[] DATA_points;
+		public Vector2d[] Points {
+			get { return DATA_points.Instance.SetIsReadOnly(true); }
+		}
+		
+		
+		
 		#region Segments
 		protected List<Segment2d> A_segments=new List<Segment2d>();
 		public Segment2d[] Segments {

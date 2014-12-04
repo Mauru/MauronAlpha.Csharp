@@ -47,6 +47,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\MauronAlpha.Geometry\MauronAlpha.Geometry.csproj">
+      <Project>{39D005F7-F334-470D-A660-A2A7DA65C456}</Project>
+      <Name>MauronAlpha.Geometry</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\MauronAlpha\MauronAlpha.csproj">
       <Project>{6A046817-9F14-4781-97C9-F89FEBC2097B}</Project>
       <Name>MauronAlpha</Name>

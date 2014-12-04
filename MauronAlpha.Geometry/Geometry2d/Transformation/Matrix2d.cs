@@ -8,8 +8,10 @@ namespace MauronAlpha.Geometry.Geometry2d.Transformation {
 
 	//Keeps track of all applied transforms
 	public class Matrix2d : GeometryComponent2d {
+
+
 		//constructor
-		public Matrix2d(GeometryComponent2d_shape shape) {}
+		public Matrix2d():base() {}
 
 		private bool B_isReadOnly=false;
 		public bool IsReadOnly {
