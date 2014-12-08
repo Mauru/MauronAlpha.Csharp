@@ -1,14 +1,12 @@
 ﻿using MauronAlpha.Geometry.Geometry2d.Units;
 using MauronAlpha.Geometry.Geometry2d.Shapes;
-using MauronAlpha.Geometry.Geometry2d.Utility;
 
 using MauronAlpha.HandlingErrors;
 
 namespace MauronAlpha.Geometry.Geometry2d.Transformation {
 
-	//Keeps track of all applied transforms
+	//Keeps track of all applied transforms to a series of geometrical data
 	public class Matrix2d : GeometryComponent2d {
-
 
 		//constructor
 		public Matrix2d():base() {}

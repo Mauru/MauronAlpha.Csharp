@@ -1,6 +1,5 @@
 ﻿using System;
 
-using MauronAlpha.Geometry.Geometry2d.Utility;
 using MauronAlpha.Mathematics;
 
 namespace MauronAlpha.Geometry.Geometry2d.Units {

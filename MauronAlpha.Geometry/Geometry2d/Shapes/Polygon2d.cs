@@ -6,7 +6,7 @@ using MauronAlpha.HandlingErrors;
 using MauronAlpha.Geometry.Geometry2d.Transformation;
 using MauronAlpha.Geometry.Geometry2d.Units;
 using MauronAlpha.Geometry.Shapes;
-using MauronAlpha.Geometry.Geometry2d.Utility;
+using MauronAlpha.Geometry.Geometry2d.Collections;
 
 namespace MauronAlpha.Geometry.Geometry2d.Shapes {
 
@@ -47,14 +47,13 @@ namespace MauronAlpha.Geometry.Geometry2d.Shapes {
 				throw Error("Is Protected!,(SetPoints)", this, ErrorType_protected.Instance);
 			}
 
-			DATA_points=new Vector2d[points.Count];
-			points.CopyTo(DATA_points, 0);
+            DATA_points = new Vector2dList(points);
 
 
 			//we offset the first point to be 0,0
 			Matrix2d t_matrix = new Matrix2d();
-			if( DATA_points.Length>0 ) {
-				Vector2d offset = new Vector2d().Difference(DATA_points[0]);
+			if( DATA_points.Count>0 ) {
+				Vector2d offset = new Vector2d().Difference(DATA_points.Value(0));
 				
 			}
 
@@ -62,12 +61,11 @@ namespace MauronAlpha.Geometry.Geometry2d.Shapes {
 			return this;
 		}
 
-
 		public string AsString {
 			get {
 				string r="{";
 				for( int i=0; i<Points.Length; i++ ) {
-					Vector2d p=Points[i];
+					Vector2d p=Points.Value(i);
 					r+="["+(i+1)+":"+p.AsString+"]";
 				}
 				return r+"}";
@@ -84,53 +82,62 @@ namespace MauronAlpha.Geometry.Geometry2d.Shapes {
 			}
 		}
 
-		protected Vector2d[] DATA_points;
-		public Vector2d[] Points {
+		protected Vector2dList DATA_points;
+        public Vector2dList Points {
 			get { return DATA_points.Instance.SetIsReadOnly(true); }
 		}
+
+        private Polygon2dBounds V_limits;
+        private Polygon2dBounds Limits {
+            get {
+                if (V_limits == null){
+                    V_limits = new Polygon2dBounds(this);
+                }
+                return V_limits;
+            }
+        }
 		
-		
-		
-		#region Segments
-		protected List<Segment2d> A_segments=new List<Segment2d>();
-		public Segment2d[] Segments {
+        protected Segment2dList DATA_segments;
+        public Segment2dList Segments {
 			get {
-				if( A_segments==null ) {
-					A_segments=BuildSegments(Points);
+                if (DATA_segments == null) {
+                    DATA_segments = BuildSegments(DATA_points);
 				}
-				return A_segments.ToArray();
+                return DATA_segments;
 			}
 		}
-		public static List<Segment2d> BuildSegments (Vector2d[] points) {
-			if( points.Length<1 ) {
-				return new List<Segment2d>();
+		private Polygon2d SetSegments(Segment2dList segments) {
+			if( IsReadOnly ) {
+				throw Error("Is Protected!,(SetSegments)", this, ErrorType_protected.Instance);
 			}
-			if( points.Length==1 ) {
-				return new List<Segment2d>() { new Segment2d(points[0], points[0]) };
-			}
-			List<Segment2d> a_segments=new List<Segment2d>();
-			for( int i=0; i<points.Length; i++ ) {
-				Vector2d v=points[i];
-				if( i%2==0&&points[i+1]!=null ) {
-					Segment2d s=new Segment2d(points[i], points[i+1]);
-					a_segments.Add(s);
+            DATA_segments = segments;
+			return this;
+		}
+        public static Segment2dList BuildSegments (Vector2dList points) {
+            int count = points.Count;
+
+            Segment2dList result = new Segment2dList();
+
+            if (count < 1)
+                return result;
+            if (count == 1)
+                return result.Add(new Segment2d(points.Value(0), points.Value(0));
+
+			for( int i=0; i<count; i++ ) {
+				Vector2d v_current=points.Value(i);
+				if( i%2==0&&points.ContainsKey(i+1) ) {
+                    Vector2d v_next = points.Value(i + 1);
+					Segment2d s=new Segment2d(v_current,v_next);
+					result.Add(s);
 				}
 			}
 
 			//final segment
-			Segment2d f=new Segment2d(points[points.Length-1], points[0]);
-			a_segments.Add(f);
-
-			return a_segments;
+            Vector2d v_last = points.Value(count - 1);
+            Vector2d v_first = points.Value(0);
+			Segment2d segment=new Segment2d(v_last, v_first);
+            return result.Add(segment);
 		}
-		private Polygon2d SetSegments(Segment2d[] s) {
-			if( IsReadOnly ) {
-				throw Error("Is Protected!,(SetSegments)", this, ErrorType_protected.Instance);
-			}
-			A_segments=new List<Segment2d>(s);
-			return this;
-		}
-		#endregion
 
 		#region Get a copy of the polygon
 		public Polygon2d Instance {
@@ -145,7 +152,7 @@ namespace MauronAlpha.Geometry.Geometry2d.Shapes {
 				throw Error("Is Protected!,(FromShape)", this, ErrorType_protected.Instance);
 			}
 			foreach(Vector2d p in s.Points) {
-				A_points.Add(p.Instance);
+				DATA_points.Add(p.Instance);
 			}
 			SetSegments(s.Segments);
 			SetCenter(s.Center);
@@ -179,7 +186,7 @@ namespace MauronAlpha.Geometry.Geometry2d.Shapes {
 			V_center=v;		
 		}
 		#endregion
-		#region Bounds
+
 		protected Rectangle2d R_bounds;
 		public override Rectangle2d Bounds { 
 			get {
@@ -192,7 +199,6 @@ namespace MauronAlpha.Geometry.Geometry2d.Shapes {
 				return (Rectangle2d) R_bounds.Instance.SetIsReadOnly(true);
 			}
 		}
-		#endregion
 
 		#region Rotation
 
@@ -358,7 +364,7 @@ namespace MauronAlpha.Geometry.Geometry2d.Shapes {
 	}
 
 	//Shape description for a polygon
-	public sealed class ShapeType_polygon : ShapeType {
+	public sealed class ShapeType_polygon:ShapeType {
 		#region singleton
 		private static volatile ShapeType_polygon instance=new ShapeType_polygon();
 		private static object syncRoot=new Object();

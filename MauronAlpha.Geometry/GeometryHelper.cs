@@ -6,7 +6,7 @@ using System.Text;
 namespace MauronAlpha.Geometry {
 
 	//Base class for generic mathematical operations
-	public class GeometryHelper:MauronCode_utility {
+	public class GeometryHelper2d:MauronCode_utility {
 		
 		//A precision value to avoid 0
 		public static double NotQuiteZero=0.00001;

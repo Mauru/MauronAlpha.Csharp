@@ -24,12 +24,12 @@ namespace MauronAlpha.Geometry.Geometry2d.Shapes {
 		}
 
         public new Rectangle2d Instance { get {
-            int length = Points.Length;
+            int length = Points.Count;
             if (length == 0)
                 return new Rectangle2d(0,0,0,0);
             if(length!=4)
                 throw Error("Invalid Rectangle!,{"+length+"},(Instance)",this,ErrorType_bounds.Instance);
-            return new Rectangle2d(Points[0], Points[2]);
+            return new Rectangle2d(Points.Value(0), Points.Value(2));
         } }
 
 	}

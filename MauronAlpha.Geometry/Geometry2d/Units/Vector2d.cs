@@ -101,7 +101,7 @@ namespace MauronAlpha.Geometry.Geometry2d.Units {
 		#endregion
 
 		//string
-		public new string AsString {
+		public string AsString {
 			get {
 				return "{[x:"+X+"],[y:"+Y+"]}";
 			}
