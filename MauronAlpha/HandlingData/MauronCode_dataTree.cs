@@ -324,7 +324,6 @@ namespace MauronAlpha.HandlingData {
 			}
 		}
 
-
 		public MauronCode_dataTree<TKey,TValue> AddKey(TKey key) {
 			if(IsReadOnly) {
 				throw Error("Is protected!,(AddKey)",this,ErrorType_protected.Instance);

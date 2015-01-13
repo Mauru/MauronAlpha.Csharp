@@ -45,8 +45,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Geometry2d\Collections\PolygonBounds.cs" />
+    <Compile Include="Geometry2d\Interfaces\I_polygon2d.cs" />
+    <Compile Include="Geometry2d\Shapes\Polygon2dBounds.cs" />
     <Compile Include="Geometry2d\Collections\Segment2dList.cs" />
+    <Compile Include="Geometry2d\Interfaces\I_polygonShape2d.cs" />
     <Compile Include="Geometry2d\Units\GeometryComponent2d_unit.cs" />
     <Compile Include="Geometry2d\Collections\Vector2dList.cs" />
     <Compile Include="Geometry2d\GeometryComponent2d.cs" />

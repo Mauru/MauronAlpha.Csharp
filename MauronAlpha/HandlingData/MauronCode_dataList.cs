@@ -2,21 +2,24 @@
 using System;
 
 using MauronAlpha.HandlingErrors;
+using MauronAlpha.HandlingData.Interfaces;
 
 namespace MauronAlpha.HandlingData {
 
 	//A list of numerically sorted data
-	public class MauronCode_dataList<T>:MauronCode_dataObject,ICollection<T>,IEnumerable<T> {
+	public class MauronCode_dataList<T>:MauronCode_dataObject, ICollection<T>, IEnumerable<T>, I_dataCollection<int,T> {
 
 		#region Constructors
 		public MauronCode_dataList():base(DataType_dataList.Instance) {}
+
+		// Interpretative constructors
 		public MauronCode_dataList ( T obj)
 			: this() {
 			AddValue(obj);
 		}
-		public MauronCode_dataList(T[] obj):this() {
-			foreach (T o in obj) {
-				AddValue (o);
+		public MauronCode_dataList( ICollection<T> data ):this() {
+			foreach( T o in data ) {
+				AddValue( o );
 			}
 		}
 		#endregion
@@ -37,7 +40,7 @@ namespace MauronAlpha.HandlingData {
 		public List<T> Data {
 			get { 
 				if (L_data == null) {
-					SetData(new List<T>());
+					L_data = new List<T>();
 				}
 				return L_data;
 			}
@@ -53,7 +56,7 @@ namespace MauronAlpha.HandlingData {
 				throw Error("ReadOnly!,(SetData)", this, ErrorType_protected.Instance);
 			}
 			#endregion
-			L_data=data;
+			L_data = data;
 			return this;
 		}
 		#endregion
@@ -82,12 +85,12 @@ namespace MauronAlpha.HandlingData {
 			return Data.Contains(obj);
 		}
 		public bool ContainsKey(int key) {
-			return key>=0 && Data.Count>0 && key<Data.Count;
+			return key >= 0 && Data.Count > 0 && key < Data.Count;
 		}
 		//Is a List empty?
 		public bool IsEmpty {
 			get {
-				return Data.Count==0;
+				return Data.Count == 0;
 			}
 		} 
 		#endregion
@@ -103,14 +106,6 @@ namespace MauronAlpha.HandlingData {
 		#endregion
 
 		#region Add Values to Data
-		public MauronCode_dataList<T> Add(T obj){
-			#region ReadOnly Check
-			if( IsReadOnly ) {
-				throw Error("ReadOnly!,(Add)", this, ErrorType_protected.Instance);
-			}
-			#endregion
-			return AddValue(obj);
-		}
 		public MauronCode_dataList<T> AddValue(T obj) {
 			#region ReadOnly Check
 			if( IsReadOnly ) {
@@ -316,7 +311,7 @@ namespace MauronAlpha.HandlingData {
 		#endregion
 
 		public MauronCode_dataList<T> CopyTo(T[] array, int arrayIndex) {
-			int index=arrayIndex;
+			int index = arrayIndex;
 			foreach( T obj in Values ) {
 				array[index] = obj;
 				index++;
@@ -381,6 +376,71 @@ namespace MauronAlpha.HandlingData {
 			return true;
 		}
 
+		public ICollection<KeyValuePair<int,T>> KeyValuePairs { 
+			get {
+				KeyValuePair<int,T>[] result = new KeyValuePair<int, T>[ Count ];
+				foreach( int n in Keys ) {
+					KeyValuePair<int,T> kvp =new KeyValuePair<int, T>( n, Data[ n ] );
+					result[ n ]=kvp;
+				}
+				return result;
+			} 
+		}
+
+		public ICollection<int> Keys {
+			get {
+				int[] result = new int[ Count ];
+				for( int n=0; n < Count; n++ ) {
+					result[n] = n;
+				}
+				return result;
+			}
+		}
+	
+		//Sorting
+		public I_dataCollection<int,T> Sort_quickSort( I_dataCollection<int,T> list, int startIndex, int endIndex, Delegate_quickSortCompare comparer ) {
+			int start = startIndex;
+			T pivot = list.Value( start );
+			startIndex++;
+			endIndex++;
+
+			while( true ) {
+				while(
+					startIndex <= endIndex 
+					&& comparer( list.Value( startIndex ), list.Value( endIndex ) ) < 1
+				)
+					startIndex++;
+
+				while(
+					startIndex <= endIndex
+					&& comparer( list.Value( startIndex ), list.Value( endIndex ) ) >0
+				)
+					endIndex--;
+
+				if( startIndex > endIndex ) {
+					list.SetValue( start, list.Value( startIndex-1 ) );
+					list.SetValue( startIndex -1, pivot );
+					return list;
+				}
+
+				T temp = list.Value( startIndex );
+				list.SetValue( startIndex, list.Value( endIndex ) );
+				list.SetValue( endIndex, temp );
+			}
+		}
+
+		//-1 smaller, 1 larger, 0 same
+		public delegate int Delegate_quickSortCompare( T candidate1, T candidate2 );
+
+
+		#region I_dataCollection<int,T> Members
+
+
+		I_dataCollection<int, T> I_dataCollection<int, T>.SetValue( int key, T value ) {
+			return SetValue( key, value );
+		}
+
+		#endregion
 	}
 
 	//A Description of the DataType
