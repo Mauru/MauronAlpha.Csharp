@@ -2,21 +2,24 @@
 using System;
 
 using MauronAlpha.HandlingErrors;
+using MauronAlpha.HandlingData.Interfaces;
 
 namespace MauronAlpha.HandlingData {
 
 	//A list of numerically sorted data
-	public class MauronCode_dataList<T>:MauronCode_dataObject,ICollection<T>,IEnumerable<T> {
+	public class MauronCode_dataList<T>:MauronCode_dataObject, ICollection<T>, IEnumerable<T>, I_dataCollection<int,T>, IList<T> {
 
 		#region Constructors
 		public MauronCode_dataList():base(DataType_dataList.Instance) {}
+
+		// Interpretative constructors
 		public MauronCode_dataList ( T obj)
 			: this() {
 			AddValue(obj);
 		}
-		public MauronCode_dataList(T[] obj):this() {
-			foreach (T o in obj) {
-				AddValue (o);
+		public MauronCode_dataList( ICollection<T> data ):this() {
+			foreach( T o in data ) {
+				AddValue( o );
 			}
 		}
 		#endregion
@@ -37,7 +40,7 @@ namespace MauronAlpha.HandlingData {
 		public List<T> Data {
 			get { 
 				if (L_data == null) {
-					SetData(new List<T>());
+					L_data = new List<T>();
 				}
 				return L_data;
 			}
@@ -53,7 +56,7 @@ namespace MauronAlpha.HandlingData {
 				throw Error("ReadOnly!,(SetData)", this, ErrorType_protected.Instance);
 			}
 			#endregion
-			L_data=data;
+			L_data = data;
 			return this;
 		}
 		#endregion
@@ -82,12 +85,12 @@ namespace MauronAlpha.HandlingData {
 			return Data.Contains(obj);
 		}
 		public bool ContainsKey(int key) {
-			return key>=0 && Data.Count>0 && key<Data.Count;
+			return key >= 0 && Data.Count > 0 && key < Data.Count;
 		}
 		//Is a List empty?
 		public bool IsEmpty {
 			get {
-				return Data.Count==0;
+				return Data.Count == 0;
 			}
 		} 
 		#endregion
@@ -103,12 +106,7 @@ namespace MauronAlpha.HandlingData {
 		#endregion
 
 		#region Add Values to Data
-		public MauronCode_dataList<T> Add(T obj){
-			#region ReadOnly Check
-			if( IsReadOnly ) {
-				throw Error("ReadOnly!,(Add)", this, ErrorType_protected.Instance);
-			}
-			#endregion
+		public MauronCode_dataList<T> Add(T obj) {
 			return AddValue(obj);
 		}
 		public MauronCode_dataList<T> AddValue(T obj) {
@@ -316,7 +314,7 @@ namespace MauronAlpha.HandlingData {
 		#endregion
 
 		public MauronCode_dataList<T> CopyTo(T[] array, int arrayIndex) {
-			int index=arrayIndex;
+			int index = arrayIndex;
 			foreach( T obj in Values ) {
 				array[index] = obj;
 				index++;
@@ -381,6 +379,111 @@ namespace MauronAlpha.HandlingData {
 			return true;
 		}
 
+		public ICollection<KeyValuePair<int,T>> KeyValuePairs { 
+			get {
+				KeyValuePair<int,T>[] result = new KeyValuePair<int, T>[ Count ];
+				foreach( int n in Keys ) {
+					KeyValuePair<int,T> kvp =new KeyValuePair<int, T>( n, Data[ n ] );
+					result[ n ]=kvp;
+				}
+				return result;
+			} 
+		}
+
+		public ICollection<int> Keys {
+			get {
+				int[] result = new int[ Count ];
+				for( int n=0; n < Count; n++ ) {
+					result[n] = n;
+				}
+				return result;
+			}
+		}
+	
+		public string AsString {
+			get {
+				string result = "";
+				foreach(T obj in Data) {
+					result+=obj.ToString()+',';
+				}
+				return result;
+			}
+		}
+
+		//Sorting
+		public I_dataCollection<int,T> Sort (int startIndex, int endIndex, Delegate_quickSortCompare comparer) {
+			return Sort_quickSort(this,startIndex,endIndex,comparer);
+		}
+		public static I_dataCollection<int,T> Sort_quickSort( I_dataCollection<int,T> list, int startIndex, int endIndex, Delegate_quickSortCompare comparer ) {
+			int left = startIndex, right = endIndex;
+			T pivot = list.Value( (startIndex+endIndex)/2 );
+
+			while( left <= right ) {
+				while(
+					comparer( list.Value( left ), pivot ) < 0
+				)
+					left++;
+
+				while(
+					comparer( list.Value( right ), pivot ) > 0
+				)
+					right--;
+
+				if( left <= right ) {
+					T tmp = list.Value(left);
+					list.SetValue( left, list.Value( right ) );
+					list.SetValue( right, tmp );
+				}
+			}
+
+			if(startIndex < right)
+				Sort_quickSort(list,startIndex,right,comparer);
+			if(left < endIndex)
+				Sort_quickSort(list,left,endIndex,comparer);
+
+			return list;
+		}
+
+		//-1 smaller, 1 larger, 0 same
+		public delegate int Delegate_quickSortCompare( T candidate1, T candidate2 );
+
+
+		#region I_dataCollection<int,T> Members
+
+
+		I_dataCollection<int, T> I_dataCollection<int, T>.SetValue( int key, T value ) {
+			return SetValue( key, value );
+		}
+
+		#endregion
+
+		int IList<T>.IndexOf (T item) {
+			return L_data.IndexOf(item);
+		}
+
+		void IList<T>.Insert (int index, T item) {
+			if(IsReadOnly)
+				throw Error("Protected!,(Insert)",this,ErrorType_protected.Instance);
+				L_data.Insert(index,item);
+			return;
+		}
+
+		void IList<T>.RemoveAt (int index) {
+			if( IsReadOnly )
+				throw Error("Protected!,(RemoveAt)", this, ErrorType_protected.Instance);
+			L_data.RemoveAt(index);
+		}
+
+		T IList<T>.this[int index] {
+			get {
+				return Value(index);
+			}
+			set {
+				if( IsReadOnly )
+					throw Error("Protected!,(SetValue)", this, ErrorType_protected.Instance);
+					SetValue(index,value);
+			}
+		}
 	}
 
 	//A Description of the DataType

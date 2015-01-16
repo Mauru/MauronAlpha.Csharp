@@ -19,6 +19,28 @@ namespace MauronAlpha.Geometry.Geometry2d.Units {
 		public Vector2d (Vector2d p) : this(p.X, p.Y) { }
 		#endregion
 
+		public bool IsZero {
+			get {
+				return (INT_x == 0 && INT_y == 0);
+			}
+		}
+
+		#region Instancing, Cloning
+		public Vector2d Instance {
+			get {
+				return new Vector2d( this );
+			}
+		}
+		public Vector2d Cloned {
+			get {
+				return new Vector2d( this );
+			}
+		}
+		Object ICloneable.Clone() {
+			return new Vector2d( this );
+		}
+		#endregion
+
 		#region Coordinates
 		#region X
 		protected double INT_x=0;
@@ -73,13 +95,7 @@ namespace MauronAlpha.Geometry.Geometry2d.Units {
 		}
 		#endregion
 
-		#region Instancing
-		public Vector2d Instance {
-			get { return new Vector2d(this); }
-		}
-		public object Clone ( ) {
-			return Instance;
-		}
+		#region Modified Instances
 
 		//return the distance to another point
 		public Vector2d Difference (Vector2d v) {
@@ -103,7 +119,7 @@ namespace MauronAlpha.Geometry.Geometry2d.Units {
 		//string
 		public string AsString {
 			get {
-				return "{[x:"+X+"],[y:"+Y+"]}";
+				return "["+X+"|"+Y+"]";
 			}
 		}
 
@@ -120,6 +136,7 @@ namespace MauronAlpha.Geometry.Geometry2d.Units {
 			Add(p);
 			return this;
 		}
+		
 		//stretch or compress by [-1+] around a point
 		public Vector2d Transform (Vector2d v, Double n) {
 			#region ReadOnly Check
@@ -132,6 +149,7 @@ namespace MauronAlpha.Geometry.Geometry2d.Units {
 			Add(p);
 			return this;
 		}
+		
 		//Mirror this point around another
 		public Vector2d Mirror (Vector2d v) {
 			#region ReadOnly Check
@@ -142,6 +160,7 @@ namespace MauronAlpha.Geometry.Geometry2d.Units {
 			Vector2d p=(Vector2d) Difference(v).Multiply(-2);
 			return Add(p);
 		}
+		
 		//rotate the point around another
 		public Vector2d Rotate (Vector2d v, double angle) {
 			#region ReadOnly Check
@@ -302,6 +321,10 @@ namespace MauronAlpha.Geometry.Geometry2d.Units {
 			if( X>other.X&&Y>other.Y )
 				return 1;
 			return -1;
+		}
+
+		public static int Compare( Vector2d source, Vector2d other ) {
+			return source.CompareTo( other );
 		}
 		#endregion
 

@@ -78,6 +78,20 @@ namespace MauronAlpha.HandlingData {
 			}
 		}
 
+		//get a list of all keys (remember that keys on dataTrees can be unreliable!, use / implement validKeys for better precision)
+		public MauronCode_dataList<long> KeysAsList {
+			get {
+				return DATA_values.Keys;
+			}
+		}
+
+		//returns all keys that lead to a result (a built in ContainsValueAtKey check)
+		public ICollection<long> ValidKeys {
+			get {
+				return DATA_values.ValidKeys;
+			}
+		}
+
 		//Does data contain a key
 		public bool ContainsKey(long key){
 			return DATA_values.ContainsKey(key);

@@ -11,7 +11,7 @@ namespace MauronAlpha.HandlingData {
 		//constructor
 		public MauronCode_dataMap():base(DataType_dataDictionary.Instance){
 			DATA_keys = new string[]{};
-			DATA_values=new MauronCode_dataTree<long,TValue>();
+			DATA_values = new MauronCode_dataTree<long,TValue>();
 		}
 		public MauronCode_dataMap (ICollection<string> keys, ICollection<TValue> values)
 			: this() {
