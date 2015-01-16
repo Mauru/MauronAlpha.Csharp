@@ -53,6 +53,7 @@
     <Compile Include="HandlingData\I_protectable.cs" />
     <Compile Include="HandlingData\MauronCode_dataComponent.cs" />
     <Compile Include="HandlingData\MauronCode_dataTree.cs" />
+    <Compile Include="HandlingData\Sorting\Sort_quickSort.cs" />
     <Compile Include="HandlingErrors\ErrorType_outOfSynch.cs" />
     <Compile Include="HandlingErrors\ErrorType_precision.cs" />
     <Compile Include="HandlingErrors\ErrorType_scope.cs" />

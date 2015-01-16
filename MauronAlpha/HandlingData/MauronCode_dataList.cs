@@ -3,6 +3,7 @@ using System;
 
 using MauronAlpha.HandlingErrors;
 using MauronAlpha.HandlingData.Interfaces;
+using MauronAlpha.HandlingData.Sorting;
 
 namespace MauronAlpha.HandlingData {
 
@@ -313,6 +314,15 @@ namespace MauronAlpha.HandlingData {
 		}
 		#endregion
 
+		//Sorting
+		public MauronCode_dataList<T> SortWith(Sort_quickSort<T>.Comparer comparer) {
+			Sort_quickSort<T> sorter = new Sort_quickSort<T>();
+			sorter.Sort(this,comparer);
+			return this;
+		}
+
+		public delegate int Sort_comparer(T source, T other);
+
 		public MauronCode_dataList<T> CopyTo(T[] array, int arrayIndex) {
 			int index = arrayIndex;
 			foreach( T obj in Values ) {
@@ -410,44 +420,6 @@ namespace MauronAlpha.HandlingData {
 			}
 		}
 
-		//Sorting
-		public I_dataCollection<int,T> Sort (int startIndex, int endIndex, Delegate_quickSortCompare comparer) {
-			return Sort_quickSort(this,startIndex,endIndex,comparer);
-		}
-		public static I_dataCollection<int,T> Sort_quickSort( I_dataCollection<int,T> list, int startIndex, int endIndex, Delegate_quickSortCompare comparer ) {
-			int left = startIndex, right = endIndex;
-			T pivot = list.Value( (startIndex+endIndex)/2 );
-
-			while( left <= right ) {
-				while(
-					comparer( list.Value( left ), pivot ) < 0
-				)
-					left++;
-
-				while(
-					comparer( list.Value( right ), pivot ) > 0
-				)
-					right--;
-
-				if( left <= right ) {
-					T tmp = list.Value(left);
-					list.SetValue( left, list.Value( right ) );
-					list.SetValue( right, tmp );
-				}
-			}
-
-			if(startIndex < right)
-				Sort_quickSort(list,startIndex,right,comparer);
-			if(left < endIndex)
-				Sort_quickSort(list,left,endIndex,comparer);
-
-			return list;
-		}
-
-		//-1 smaller, 1 larger, 0 same
-		public delegate int Delegate_quickSortCompare( T candidate1, T candidate2 );
-
-
 		#region I_dataCollection<int,T> Members
 
 
@@ -457,23 +429,21 @@ namespace MauronAlpha.HandlingData {
 
 		#endregion
 
+		#region Implementing IList
 		int IList<T>.IndexOf (T item) {
 			return L_data.IndexOf(item);
 		}
-
 		void IList<T>.Insert (int index, T item) {
 			if(IsReadOnly)
 				throw Error("Protected!,(Insert)",this,ErrorType_protected.Instance);
 				L_data.Insert(index,item);
 			return;
 		}
-
 		void IList<T>.RemoveAt (int index) {
 			if( IsReadOnly )
 				throw Error("Protected!,(RemoveAt)", this, ErrorType_protected.Instance);
 			L_data.RemoveAt(index);
 		}
-
 		T IList<T>.this[int index] {
 			get {
 				return Value(index);
@@ -484,6 +454,7 @@ namespace MauronAlpha.HandlingData {
 					SetValue(index,value);
 			}
 		}
+		#endregion
 	}
 
 	//A Description of the DataType

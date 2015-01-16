@@ -73,7 +73,7 @@ namespace MauronAlpha.Geometry.Geometry2d.Collections {
 			get {
 				if( IsReadOnly )
 					throw Error( "Protected!,(Ordered_asLRTB)", this, ErrorType_protected.Instance );
-				base.Sort( 0, 3, Vector2d.Compare );
+				base.SortWith( Vector2d.Compare );
 				return this;
 			}
 		}
