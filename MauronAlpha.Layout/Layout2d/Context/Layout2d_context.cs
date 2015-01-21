@@ -9,7 +9,12 @@ namespace MauronAlpha.Layout.Layout2d.Context {
 	public class Layout2d_context:Layout2d_component {
 
 		//constructors
-		public Layout2d_context() {}
+		private Layout2d_context():base() {}
+		internal Layout2d_context( Layout2d_context source ) : this() {
+			LAYOUT_position = source.LAYOUT_position;
+			LAYOUT_size = source.LAYOUT_size;
+			B_isStatic = source.B_isStatic;
+		}
 		public Layout2d_context (Layout2d_unitReference anchor)	: this() {
 			LAYOUT_anchor = anchor;
 			LAYOUT_position = new Layout2d_position(anchor);
@@ -54,7 +59,13 @@ namespace MauronAlpha.Layout.Layout2d.Context {
 		private Layout2d_position LAYOUT_position;
 		
         private Layout2d_size LAYOUT_size;
-        public Layout2d_size Size { get { return LAYOUT_size.Instance.SetIsReadOnly(true); } }
+		public Layout2d_size Size {
+			get {
+				if(LAYOUT_size==null)
+					throw NullError("LAYOUT_size can not be null!,(Size)",this, typeof(Layout2d_size));
+				return LAYOUT_size;
+			}
+		}
 
 		private Layout2d_constraint LAYOUT_limit;
 		public Layout2d_constraint Constraint {

@@ -19,6 +19,7 @@ namespace MauronAlpha.Layout.Layout2d.Units {
 			STR_name = name;
 			EVENT_handler = new MauronAlpha.Events.EventHandler(controller.EventHandler);
             LAYOUT_context = context;
+
 			//make sure we set the anchor
 			if( !context.HasAnchor ) {
 				context.SetAnchor(AsReference);
@@ -105,10 +106,10 @@ namespace MauronAlpha.Layout.Layout2d.Units {
 		private Layout2d_context LAYOUT_context;
 		public override Layout2d_context Context {
 			get {
-                if (LAYOUT_context == null) {
+                if (LAYOUT_context == null)
                     throw NullError("Context can not be null!,(Context)", this, typeof(Layout2d_context));
-                }
-                return LAYOUT_context; }
+                return LAYOUT_context;
+			}
 		}
 
 		private I_eventHandler EVENT_handler;

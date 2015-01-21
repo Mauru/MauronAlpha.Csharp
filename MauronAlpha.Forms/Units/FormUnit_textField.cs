@@ -6,6 +6,7 @@ using MauronAlpha.Events.Interfaces;
 
 using MauronAlpha.Layout.Layout2d.Position;
 using MauronAlpha.Layout.Layout2d.Units;
+using MauronAlpha.Layout.Layout2d.Context;
 using MauronAlpha.Layout.Layout2d.Interfaces;
 
 namespace MauronAlpha.Forms.Units {
@@ -16,6 +17,8 @@ namespace MauronAlpha.Forms.Units {
 		//constructor
 		public FormUnit_textField(Layout2d_container parent):base() {
 			LAYOUT_parent = parent.AsReference;
+			Layout2d_context context = parent.Context;
+			
             HANDLER_events = new EventHandler(parent.EventHandler);
 		}
        

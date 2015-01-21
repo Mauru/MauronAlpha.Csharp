@@ -27,6 +27,7 @@ namespace MauronAlpha.Layout.Layout2d.Interfaces {
         Layout2d_unitCollection Children { get; }
 
         Layout2d_context Context { get; }
+
     }
 
 }

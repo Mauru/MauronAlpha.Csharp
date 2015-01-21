@@ -13,7 +13,7 @@ namespace MauronAlpha.Geometry.Geometry2d.Shapes {
 		public Rectangle2d():base(){}
         
         //creators
-		private Rectangle2d ( Vector2d size ):this(0 ,0 ,size.X ,size.Y) {}
+		public Rectangle2d ( Vector2d size ):this(0 ,0 ,size.X ,size.Y) {}
         
 		private Rectangle2d(Vector2dList points):this(){
             if (points.Count != 4) {

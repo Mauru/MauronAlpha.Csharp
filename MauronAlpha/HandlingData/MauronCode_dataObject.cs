@@ -10,13 +10,13 @@ namespace MauronAlpha.HandlingData {
 
 		private DataType DT_dataType;
 		public DataType DataType { get {
-			if (DT_dataType==null){
+			if (DT_dataType == null){
 				throw NullError("DataType can not be null!,(DataType)", this,typeof(DataType));
 			}
 			return DT_dataType;
 		} }
 		private void SetDataType(DataType dataType) {
-			DT_dataType=dataType;
+			DT_dataType = dataType;
 		}
 	
 	}

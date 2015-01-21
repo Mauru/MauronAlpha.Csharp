@@ -8,7 +8,6 @@ namespace MauronAlpha.Layout.Layout2d.Position {
 		//constructor
 		public Layout2d_design (Layout2d_window window) { 
 			LAYOUT_window = window;
-			Apply();
 		}
 
 		public virtual Layout2d_design Apply(){
@@ -16,7 +15,14 @@ namespace MauronAlpha.Layout.Layout2d.Position {
 		}
 
 		//The source anchor we are using
-		private Layout2d_window LAYOUT_window;
+		protected Layout2d_window LAYOUT_window;
+		public Layout2d_window Window {
+			get {
+				if( LAYOUT_window == null )
+					throw NullError( "LAYOUT_window can not be null!,(Window)", this, typeof( Layout2d_window ) );
+				return LAYOUT_window;
+			}
+		}
 
 	}
 }

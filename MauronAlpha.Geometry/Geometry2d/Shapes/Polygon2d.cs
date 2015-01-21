@@ -141,7 +141,6 @@ namespace MauronAlpha.Geometry.Geometry2d.Shapes {
 			}
 
             DATA_points = new Vector2dList(points).Ordered_asLRTB;
-			System.Console.WriteLine(DATA_points.AsString);
 			//Matrix2d matrix = DATA_points.Bulk_OffsetToVector_matrix( new Vector2d(0) );
 			//Matrix.Add( matrix );
 

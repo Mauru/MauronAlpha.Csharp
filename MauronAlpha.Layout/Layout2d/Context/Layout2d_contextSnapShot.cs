@@ -9,7 +9,7 @@ namespace MauronAlpha.Layout.Layout2d.Context {
 	public class Layout2d_contextSnapShot:Layout2d_context {
 		
 		//constructor
-		public Layout2d_contextSnapShot(EventUnit_timeStamp time, Layout2d_context context):base() {
+		public Layout2d_contextSnapShot(EventUnit_timeStamp time, Layout2d_context context):base(context) {
 			TIME_snapshot = time;
 			CONTEXT_snapshot = context;		
 		}
