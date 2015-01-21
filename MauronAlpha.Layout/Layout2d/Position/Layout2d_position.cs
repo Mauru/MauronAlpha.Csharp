@@ -29,22 +29,41 @@ namespace MauronAlpha.Layout.Layout2d.Position {
 		private Layout2d_unit UNIT_anchor;
 		public Layout2d_unitReference Anchor {
 			get {
-				if(UNIT_anchor == null) {
+				if(UNIT_anchor == null)
 					throw NullError("Anchor can not be null!,(Anchor)",this,typeof(Layout2d_unit));
-				}
 				return UNIT_anchor.AsReference;
 			}
 		}
+		
 		public Layout2d_position SetAnchor(Layout2d_unitReference unit){
-			if(IsReadOnly) {
+			if(IsReadOnly)
 				throw Error("Is Protected!,(SetAnchor)",this,ErrorType_protected.Instance);
-			}
 			UNIT_anchor=unit;
 			return this;
+		}
+		public Layout2d_position Instance { 
+			get {
+				if(HasAnchor)
+					return new Layout2d_position(Anchor, AsVector, IsStatic);
+				return new Layout2d_position(AsVector,IsStatic);
+			}
+		}
+		public Layout2d_position SetIsReadOnly(bool b_isReadOnly) {
+			B_isReadOnly=b_isReadOnly;
+			return this;
+		}
+
+		public string AsString {
+			get { return V_position.AsString; }
 		}
 
 		//The actual position
 		private Vector2d V_position=new Vector2d(0,0);
+		public Vector2d AsVector { 
+			get { 
+				return V_position; 
+			} 
+		}
 
 		//Can the position change?
 		private bool B_isStatic = false;
@@ -66,11 +85,7 @@ namespace MauronAlpha.Layout.Layout2d.Position {
 				return B_isReadOnly;
 			}
 		}
-		public Layout2d_position SetIsReadOnly(bool b_isReadOnly) {
-			B_isReadOnly=b_isReadOnly;
-			return this;
-		}
-
+		
 	}
 
 }

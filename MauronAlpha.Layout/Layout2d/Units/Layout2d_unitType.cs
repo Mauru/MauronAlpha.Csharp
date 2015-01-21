@@ -5,6 +5,9 @@
 		
 		//The Name of the unitType
 		public abstract string Name { get; }
+		public string AsString {
+			get { return Name; }
+		}
 
 		//The "features" of the unitType
 		public abstract bool CanHaveChildren { get; }

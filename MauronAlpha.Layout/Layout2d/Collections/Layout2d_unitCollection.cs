@@ -26,18 +26,18 @@ namespace MauronAlpha.Layout.Layout2d.Collections {
 			}
 		}
 		public Layout2d_unitCollection RegisterUnitAtIndex (int index, Layout2d_unit unit) {
-			if( IsReadOnly ) {
+			if( IsReadOnly )
 				throw Error("Index is protected!,(RegisterUnitAtIndex)", this, ErrorType_protected.Instance);
-			}
-			if( index<0 ) {
+
+			if( index<0 )
 				throw Error("Index out of Bounds!,(RegisterUnitAtIndex)", this, ErrorType_bounds.Instance);
-			}
-			if( index>LAYOUT_units.CountKeys ) {
+
+			if( index>LAYOUT_units.CountKeys )
 				throw Error("Index out of Bounds!,(RegisterUnitAtIndex)", this, ErrorType_bounds.Instance);
-			}
-			if( LAYOUT_units.ContainsKey(index) ) {
+
+			if( LAYOUT_units.ContainsKey(index) )
 				Exception("Index is in Use!,{"+index+"},(RegisterUnitAtIndex)", this, ErrorResolution.Replaced);
-			}
+			
 			LAYOUT_units.SetValue(index, unit.AsReference);
 
 			return this;

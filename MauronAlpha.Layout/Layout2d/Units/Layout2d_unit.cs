@@ -45,7 +45,13 @@ namespace MauronAlpha.Layout.Layout2d.Units {
 		public abstract Layout2d_unitReference AsReference { get; }
 
 		public abstract Layout2d_unitReference Instance { get; }
+		
 		public abstract I_layoutUnit AddChildAtIndex (int index,Layout2d_unitReference unit);
+		public virtual I_layoutUnit AsOriginal {
+			get {
+				return this;
+			}
+		}
 
 		public abstract I_eventHandler EventHandler { get; }
 

@@ -31,6 +31,7 @@ namespace MauronAlpha.Layout.Layout2d.Context {
 			LAYOUT_size=new Layout2d_size(size, b_isStatic);
 			B_isStatic=b_isStatic;
 		}
+		public Layout2d_context( int x, int y, int width, int height, bool b_isStatic):this( new Vector2d(x,y),new Vector2d(width,height), b_isStatic) {}
 
 		//The component this context is attached to
 		private Layout2d_unitReference LAYOUT_anchor;
@@ -40,6 +41,13 @@ namespace MauronAlpha.Layout.Layout2d.Context {
 					throw NullError("Anchor can not be null!,(Anchor)",this,typeof(Layout2d_unitReference));
 				}
 				return LAYOUT_anchor;
+			}
+		}
+
+		//As String
+		public string AsString { 
+			get {
+				return "{[ Position : "+Position.AsString+" ], [ Size : "+Size.AsString+" ]}";
 			}
 		}
 
@@ -57,6 +65,11 @@ namespace MauronAlpha.Layout.Layout2d.Context {
 		}
 
 		private Layout2d_position LAYOUT_position;
+		public Layout2d_position Position { get {
+			if(LAYOUT_position == null)
+				throw NullError("No position set!,(Position)",this,typeof(Vector2d));
+			return LAYOUT_position.Instance.SetIsReadOnly(true);
+		} }
 		
         private Layout2d_size LAYOUT_size;
 		public Layout2d_size Size {

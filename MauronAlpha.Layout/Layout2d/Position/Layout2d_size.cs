@@ -3,7 +3,7 @@ using MauronAlpha.Geometry.Geometry2d.Shapes;
 
 namespace MauronAlpha.Layout.Layout2d.Position {
 
-
+	//Proxy unit describing the size of a layout Object
 	public class Layout2d_size:Layout2d_component {
 
 		//constructor
@@ -22,9 +22,15 @@ namespace MauronAlpha.Layout.Layout2d.Position {
 			return RECT_bounds.SetIsReadOnly(true);
 		} }
 		
-		public Vector2d AsVector2d { get {
+		public Vector2d AsVector { get {
 			return new Vector2d(Bounds.Width,Bounds.Height);
 		} }
+
+		public string AsString {
+			get {
+				return AsVector.AsString;
+			}
+		}
 
 		public double Height { 
 			get {
@@ -56,7 +62,7 @@ namespace MauronAlpha.Layout.Layout2d.Position {
 			return this;
 		}
         public Layout2d_size Instance { get {
-            Layout2d_size result = new Layout2d_size(AsVector2d,IsStatic);
+            Layout2d_size result = new Layout2d_size(AsVector,IsStatic);
             return result;
         } }
 	}

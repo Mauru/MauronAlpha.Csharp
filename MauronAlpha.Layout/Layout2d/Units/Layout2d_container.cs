@@ -90,7 +90,9 @@ namespace MauronAlpha.Layout.Layout2d.Units {
 			return LAYOUT_children.UnitByIndex(index);
 		}
 		public override Layout2d_unitReference AsReference {
-			get { return new Layout2d_unitReference(this.EventHandler, this); }
+			get { 
+				return new Layout2d_unitReference(this.EventHandler, this);
+			}
 		}
 		public override Layout2d_unitReference Instance {
 			get { 
@@ -99,9 +101,8 @@ namespace MauronAlpha.Layout.Layout2d.Units {
 		}
 
 		public override I_layoutUnit AddChildAtIndex (int index,Layout2d_unitReference unit) {
-			if( LAYOUT_children.ContainsIndex(index) ) {
+			if( LAYOUT_children.ContainsIndex(index) )
 				throw Error("Unit allready has a child at index!,{"+index+"},(AddChildAtIndex)",this,ErrorType_index.Instance);
-			}
 			LAYOUT_children.RegisterUnitAtIndex(index, unit);
 			return this;
 		}

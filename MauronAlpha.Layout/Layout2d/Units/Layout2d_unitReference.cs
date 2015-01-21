@@ -182,17 +182,23 @@ namespace MauronAlpha.Layout.Layout2d.Units {
 		}
 		public override Layout2d_unitReference AsReference {
 			get { 
-				if( !Exists ) {
-					Exception("ReferenceUnit does not exist!,(AsReference)",this,ErrorResolution.Delayed);
-				}
-				return Instance; 
+				if( !Exists )
+					throw Error("ReferenceUnit does not exist!,(AsReference)",this, ErrorType_outOfSynch.Instance);
+				
+				return Instance;
 			}
 		}
+
 		public override Layout2d_unitReference Instance {
 			get { 
-				return new Layout2d_unitReference(EventHandler,UNIT_source); 
+				I_layoutUnit source = UNIT_source;
+				while(source.IsReference) {
+					source = source.AsOriginal;
+				}
+				return new Layout2d_unitReference(EventHandler,source); 
 			}
 		}
+
 		public override Layout2d_unitReference ChildByIndex (int index) {
 			if( !Exists ) {
 				throw NullError("ReferenceUnit does not exist!,(ChildByIndex)", this, typeof(Layout2d_unitReference));
@@ -201,10 +207,19 @@ namespace MauronAlpha.Layout.Layout2d.Units {
 		}
 
 		public override I_layoutUnit AddChildAtIndex (int index, Layout2d_unitReference unit) {
-			if( !Exists ) {
-				throw NullError("ReferenceUnit does not exist!,(ChildByIndex)", this, typeof(Layout2d_unit));
+			if( !Exists )
+				throw NullError("ReferenceUnit does not exist!,(AddChildAtIndex)", this, typeof(Layout2d_unit));
+			if(IsReadOnly)
+				throw Error("Unit is protected!(AddChildAtIndex)", this, ErrorType_protected.Instance);
+			UNIT_source.AddChildAtIndex(index,unit);
+			return this;
+		}
+		public override I_layoutUnit AsOriginal {
+			get {
+				if( !Exists )
+					throw NullError("ReferenceUnit does not exist!,(ChildByIndex)", this, typeof(Layout2d_unit));
+				return UNIT_source;
 			}
-			return UNIT_source.AddChildAtIndex(index,unit);
 		}
 
 		public override Layout2d_context Context {

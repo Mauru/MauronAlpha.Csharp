@@ -19,14 +19,19 @@ namespace MauronAlpha.Layout.Layout2d.Interfaces {
         bool IsStatic { get; }
         bool HasParent { get; }
         bool HasChildren { get; }
+		bool IsReference { get; }
 
         Layout2d_unitReference Parent { get; }
         Layout2d_unitReference ChildByIndex(int index);
+
         I_layoutUnit AddChildAtIndex(int index, Layout2d_unitReference unit);
+		I_layoutUnit AsOriginal { get; }
 
         Layout2d_unitCollection Children { get; }
 
         Layout2d_context Context { get; }
+
+		Layout2d_unitType UnitType { get; }
 
     }
 
