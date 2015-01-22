@@ -25,7 +25,7 @@ namespace MauronAlpha.Layout.Layout2d.Collections {
 				return new Layout2d_unitCollection(this);
 			}
 		}
-		public Layout2d_unitCollection RegisterUnitAtIndex (int index, Layout2d_unit unit) {
+		public Layout2d_unitCollection RegisterUnitAtIndex (int index, Layout2d_unitReference unit) {
 			if( IsReadOnly )
 				throw Error("Index is protected!,(RegisterUnitAtIndex)", this, ErrorType_protected.Instance);
 
@@ -38,7 +38,8 @@ namespace MauronAlpha.Layout.Layout2d.Collections {
 			if( LAYOUT_units.ContainsKey(index) )
 				Exception("Index is in Use!,{"+index+"},(RegisterUnitAtIndex)", this, ErrorResolution.Replaced);
 			
-			LAYOUT_units.SetValue(index, unit.AsReference);
+			
+			LAYOUT_units.SetValue(index, unit);
 
 			return this;
 		}

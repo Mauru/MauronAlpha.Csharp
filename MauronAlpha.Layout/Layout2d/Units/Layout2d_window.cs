@@ -76,7 +76,13 @@ namespace MauronAlpha.Layout.Layout2d.Units {
 				return B_isReadOnly;
 			}
 		}
-		
+
+		public bool Equals (Layout2d_window other) {
+			if( Name!=other.Name )
+				return false;
+
+			return true;
+		}
 		
 		#endregion
 
@@ -119,12 +125,7 @@ namespace MauronAlpha.Layout.Layout2d.Units {
 			}
 		}
 
-		public bool Equals(Layout2d_window other) {
-			if(Name!=other.Name)
-				return false;
 
-			return true;
-		}
 	}
 
 	//Description

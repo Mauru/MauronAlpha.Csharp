@@ -7,6 +7,8 @@ using MauronAlpha.Layout.Layout2d.Units;
 using MauronAlpha.Layout.Layout2d.Interfaces;
 using MauronAlpha.Layout.Layout2d.Context;
 
+using MauronAlpha.HandlingData;
+
 public class Test {
 	
 	public static void Main ( ) {
@@ -27,8 +29,11 @@ public class Test {
 		Layout2d_container c_title = new Layout2d_container(window);
 		
 		Layout2d_unitReference reference = c_title.AsReference;
-		I_layoutUnit c_stamp = c_title.AsOriginal;
-		System.Console.WriteLine(c_stamp.UnitType.AsString);
+		window.AddChildAtIndex(0,reference);
+
+		MauronCode_dataIndex<int> LAYOUT_units =new MauronCode_dataIndex<int>();
+		LAYOUT_units.SetValue(0,1);
+
 	}
 
 

@@ -39,23 +39,13 @@ namespace MauronAlpha.HandlingData {
 		/// <remarks>You should theoretically lock this object while expanding...</remarks>
 		/// <returns>returns self</returns>
 		public MauronCode_dataIndex<T> SetValue(long key, T value){
-			
-			if(IsReadOnly) {
+			if(IsReadOnly)
 				throw Error("Is ReadOnly!,(SetValue)",this,ErrorType_protected.Instance);
-			}
 
-			//creating an instance to preserve functionality for as long as possible
-			MauronCode_dataTree<long,T> tree_new =  DATA_values.Instance;
-			if( !DATA_values.ContainsValueAtIndex(key)) {
-				if(!DATA_values.ContainsKey(key)){
-					tree_new.AddKey(key);	
-				}else{
-					//throw an exception
-					Exception("Replacing existing Value!,{"+key+"},(SetValue)", this, ErrorResolution.ExpectedReturn);
-				}
-				tree_new.SetValue(key, value);
-			}
-			DATA_values = tree_new;
+			if(!DATA_values.ContainsKey(key))
+				DATA_values.AddKey(key);
+
+			DATA_values.SetValue(key,value);
 
 			return this;
 		}
