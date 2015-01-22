@@ -33,15 +33,15 @@ namespace MauronAlpha.ConsoleApp {
 			Layout2d_container header;
 			if(!TREE_regions.IsSet("header")) {
 				header =new Layout2d_container(base.LAYOUT_window);
-				FormUnit_textField title = new FormUnit_textField( header );
-				header.AddChildAtIndex(0, title.AsReference);
-				base.LAYOUT_window.AddChildAtIndex(0,header.AsReference);
+				I_layoutUnit title = new FormUnit_textField( header );
+				
+				base.LAYOUT_window.AddChildAtIndex(0,header);
 			}
 			header = base.LAYOUT_window.ChildByIndex(0).As<Layout2d_container>();
-			header.Context.SetConstraint(new Layout2d_constraint(windowSize.AsVector2d.SetY(1)));
-			header.Context.SetSize(new Layout2d_size(windowSize.AsVector2d.SetY(1), true));
+			header.Context.SetConstraint(new Layout2d_constraint(windowSize.AsVector.SetY(1)));
+			header.Context.SetSize(new Layout2d_size(windowSize.AsVector.SetY(1), true));
 			#endregion
-
+			/*
 			System.Console.WriteLine("Creating content");
 
 			#region The Content
@@ -53,7 +53,7 @@ namespace MauronAlpha.ConsoleApp {
 				base.LAYOUT_window.AddChildAtIndex(1,content.AsReference);
 			}
 			content=base.LAYOUT_window.ChildByIndex(1).As<Layout2d_container>();
-			content.Context.SetConstraint(new Layout2d_constraint(windowSize.AsVector2d.Subtract(0,3)));
+			content.Context.SetConstraint(new Layout2d_constraint(windowSize.AsVector.Subtract(0,3)));
 			content.Context.SetSize(new Layout2d_size(content.Context.Constraint.AsVector2d,false));
 			#endregion
 
@@ -68,8 +68,8 @@ namespace MauronAlpha.ConsoleApp {
 				base.LAYOUT_window.AddChildAtIndex(2,input.AsReference);
 			}
 			input=base.LAYOUT_window.ChildByIndex(2).As<Layout2d_container>();
-			input.Context.SetConstraint(new Layout2d_constraint(windowSize.AsVector2d.SetY(1)));
-			input.Context.SetSize(new Layout2d_size(windowSize.AsVector2d.SetY(1),false));
+			input.Context.SetConstraint(new Layout2d_constraint(windowSize.AsVector.SetY(1)));
+			input.Context.SetSize(new Layout2d_size(windowSize.AsVector.SetY(1),false));
 			#endregion
 
 			System.Console.WriteLine("Creating footer");
@@ -83,10 +83,10 @@ namespace MauronAlpha.ConsoleApp {
 				base.LAYOUT_window.AddChildAtIndex(3, input.AsReference);
 			}
 			footer=base.LAYOUT_window.ChildByIndex(3).As<Layout2d_container>();
-			input.Context.SetConstraint(new Layout2d_constraint(windowSize.AsVector2d.SetY(1)));
-			input.Context.SetSize(new Layout2d_size(windowSize.AsVector2d.SetY(1), true));
+			input.Context.SetConstraint(new Layout2d_constraint(windowSize.AsVector.SetY(1)));
+			input.Context.SetSize(new Layout2d_size(windowSize.AsVector.SetY(1), true));
 			#endregion
-
+			*/
 			return this;
 		}
 	}

@@ -3,6 +3,8 @@
 using MauronAlpha.Layout.Layout2d.Position;
 using MauronAlpha.Layout.Layout2d.Units;
 
+using MauronAlpha.Layout.Layout2d.Interfaces;
+
 namespace MauronAlpha.Layout.Layout2d.Context {
 	
 	//A class describing A LayoutUnit's Position in the Action/Reaction-dependency tree	
@@ -10,6 +12,11 @@ namespace MauronAlpha.Layout.Layout2d.Context {
 
 		//constructors
 		private Layout2d_context():base() {}
+
+		public Layout2d_context(I_layoutUnit anchor):this() {
+			LAYOUT_anchor = anchor.AsReference;	
+		}
+
 		internal Layout2d_context( Layout2d_context source ) : this() {
 			LAYOUT_position = source.LAYOUT_position;
 			LAYOUT_size = source.LAYOUT_size;

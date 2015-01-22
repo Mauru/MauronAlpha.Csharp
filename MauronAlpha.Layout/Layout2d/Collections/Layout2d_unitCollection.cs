@@ -2,6 +2,7 @@
 using MauronAlpha.HandlingErrors;
 
 using MauronAlpha.Layout.Layout2d.Units;
+using MauronAlpha.Layout.Layout2d.Interfaces;
 
 namespace MauronAlpha.Layout.Layout2d.Collections {
 	public class Layout2d_unitCollection : Layout2d_component, I_protectable {
@@ -25,7 +26,7 @@ namespace MauronAlpha.Layout.Layout2d.Collections {
 				return new Layout2d_unitCollection(this);
 			}
 		}
-		public Layout2d_unitCollection RegisterUnitAtIndex (int index, Layout2d_unitReference unit) {
+		public Layout2d_unitCollection RegisterUnitAtIndex (int index, I_layoutUnit unit) {
 			if( IsReadOnly )
 				throw Error("Index is protected!,(RegisterUnitAtIndex)", this, ErrorType_protected.Instance);
 
@@ -39,7 +40,7 @@ namespace MauronAlpha.Layout.Layout2d.Collections {
 				Exception("Index is in Use!,{"+index+"},(RegisterUnitAtIndex)", this, ErrorResolution.Replaced);
 			
 			
-			LAYOUT_units.SetValue(index, unit);
+			LAYOUT_units.SetValue(index, unit.AsReference);
 
 			return this;
 		}

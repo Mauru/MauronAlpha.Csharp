@@ -100,7 +100,7 @@ namespace MauronAlpha.Layout.Layout2d.Units {
 			}
 		}
 
-		public override I_layoutUnit AddChildAtIndex (int index,Layout2d_unitReference unit) {
+		public override I_layoutUnit AddChildAtIndex (int index, I_layoutUnit unit) {
 			if( LAYOUT_children.ContainsIndex(index) )
 				throw Error("Unit allready has a child at index!,{"+index+"},(AddChildAtIndex)",this,ErrorType_index.Instance);
 			LAYOUT_children.RegisterUnitAtIndex(index, unit);

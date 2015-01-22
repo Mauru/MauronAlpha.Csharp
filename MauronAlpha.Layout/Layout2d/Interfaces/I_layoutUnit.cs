@@ -24,7 +24,7 @@ namespace MauronAlpha.Layout.Layout2d.Interfaces {
         Layout2d_unitReference Parent { get; }
         Layout2d_unitReference ChildByIndex(int index);
 
-        I_layoutUnit AddChildAtIndex(int index, Layout2d_unitReference unit);
+        I_layoutUnit AddChildAtIndex(int index, I_layoutUnit unit);
 		I_layoutUnit AsOriginal { get; }
 
         Layout2d_unitCollection Children { get; }

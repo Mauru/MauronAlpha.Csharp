@@ -104,7 +104,7 @@ namespace MauronAlpha.Layout.Layout2d.Units {
 			get { return AsReference; }
 		}
 
-		public override I_layoutUnit AddChildAtIndex (int index,Layout2d_unitReference unit) {
+		public override I_layoutUnit AddChildAtIndex (int index, I_layoutUnit unit) {
 			LAYOUT_children.RegisterUnitAtIndex(index,unit);
 			return this;
 		}

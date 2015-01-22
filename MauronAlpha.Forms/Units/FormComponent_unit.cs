@@ -59,8 +59,8 @@ namespace MauronAlpha.Forms.Units {
 		protected Layout2d_context LAYOUT_context;
 		public virtual Layout2d_context Context {
 			get {
-				if( LAYOUT_context == null )
-					throw NullError( "LAYOUT_context can not be null!,(Context)", this, typeof( Layout2d_context ) );
+				if(LAYOUT_context == null)
+					LAYOUT_context = new Layout2d_context(this);
 				return LAYOUT_context;
 			}
 		}
@@ -118,9 +118,15 @@ namespace MauronAlpha.Forms.Units {
 				return true;
 			}
 		}
+		public virtual bool IsReference {
+			get { return false; }
+		}
 
 		// Adding Children
-		public virtual I_layoutUnit AddChildAtIndex( int index, Layout2d_unitReference unit ) {
+		public I_layoutUnit AsOriginal {
+			get { return this; }
+		}
+		public virtual I_layoutUnit AddChildAtIndex( int index, I_layoutUnit unit ) {
 			if( IsReadOnly ) {
 				throw Error( "Is protected!,(AddChildAtIndex)", this, ErrorType_protected.Instance );
 			}
@@ -133,6 +139,9 @@ namespace MauronAlpha.Forms.Units {
 			}
 			return Children.UnitByIndex( index );
 		}
+
+
+
 	}
 
 }

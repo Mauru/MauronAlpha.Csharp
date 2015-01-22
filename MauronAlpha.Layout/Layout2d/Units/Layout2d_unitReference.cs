@@ -206,7 +206,7 @@ namespace MauronAlpha.Layout.Layout2d.Units {
 			return UNIT_source.ChildByIndex(index);
 		}
 
-		public override I_layoutUnit AddChildAtIndex (int index, Layout2d_unitReference unit) {
+		public override I_layoutUnit AddChildAtIndex (int index, I_layoutUnit unit) {
 			if( !Exists )
 				throw NullError("ReferenceUnit does not exist!,(AddChildAtIndex)", this, typeof(Layout2d_unit));
 			if(IsReadOnly)
