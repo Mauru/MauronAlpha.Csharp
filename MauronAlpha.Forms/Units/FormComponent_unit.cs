@@ -21,25 +21,6 @@ namespace MauronAlpha.Forms.Units {
 			}
 		}
 
-		//Parent object
-		protected Layout2d_unitReference LAYOUT_parent;
-		public virtual Layout2d_unitReference Parent {
-			get {
-				if( LAYOUT_parent == null ) {
-					throw NullError( "LAYOUT_parent can not be null!,(Parent)", this, typeof( Layout2d_unitReference ) );
-				}
-				return LAYOUT_parent;
-			}
-		}
-
-		//Children
-		protected Layout2d_unitCollection LAYOUT_children = new Layout2d_unitCollection();
-		public virtual Layout2d_unitCollection Children {
-			get {
-				return LAYOUT_children;
-			}
-		}
-
 		//Unit Description
 		protected Layout2d_unitType LAYOUT_unitType;
 		public virtual Layout2d_unitType UnitType {
@@ -48,99 +29,88 @@ namespace MauronAlpha.Forms.Units {
 			}
 		}
 
-		//Pass unit as a Reference
-		public virtual Layout2d_unitReference AsReference {
-			get {
-				return new Layout2d_unitReference( EventHandler, this );
-			}
-		}
-
 		//The Context of the unit
 		protected Layout2d_context LAYOUT_context;
 		public virtual Layout2d_context Context {
 			get {
 				if(LAYOUT_context == null)
-					LAYOUT_context = new Layout2d_context(this);
-				return LAYOUT_context;
+					LAYOUT_context = new Layout2d_context();
+				return LAYOUT_context.SetIsReadOnly(IsReadOnly);
 			}
 		}
 
 		//Booleans
 		protected bool B_isReadOnly = false;
-		protected bool B_isStatic = false;
-		public virtual bool IsStatic {
-			get {
-				return B_isStatic;
-			}
-		}
-		public virtual bool IsReadOnly {
+		public bool IsReadOnly {
 			get {
 				return B_isReadOnly;
 			}
 		}
-		public bool HasChildren {
-			get {
+		public bool Equals( I_layoutUnit other ) {
+			if( !UnitType.Equals( other.UnitType ) )
 				return false;
-			}
-		}
-		public bool HasParent {
-			get {
-				return LAYOUT_parent==null;
-			}
-		}
-		public bool IsParent {
-			get {
-				return LAYOUT_children.Count>0;
-			}
-		}
-		public bool IsChild {
-			get {
-				return LAYOUT_parent.Exists;
-			}
-		}
-		public virtual bool IsDynamic {
-			get {
-				return true;
-			}
-		}
-		public virtual bool CanHaveParent {
-			get {
-				return true;
-			}
-		}
-		public virtual bool CanHaveChildren {
-			get {
+			if( !Context.Equals( other.Context ) )
 				return false;
-			}
-		}
-		public virtual bool Exists {
-			get {
-				return true;
-			}
-		}
-		public virtual bool IsReference {
-			get { return false; }
+			if( !EventHandler.Equals( other.EventHandler ) )
+				return false;
+			if( CanHaveChildren )
+				return Children.Equals( other.Children );
+			if( CanHaveParent )
+				return Parent.Equals( other.Parent );
+			return true;
 		}
 
-		// Adding Children
-		public I_layoutUnit AsOriginal {
-			get { return this; }
-		}
-		public virtual I_layoutUnit AddChildAtIndex( int index, I_layoutUnit unit ) {
-			if( IsReadOnly ) {
-				throw Error( "Is protected!,(AddChildAtIndex)", this, ErrorType_protected.Instance );
-			}
-			LAYOUT_children.RegisterUnitAtIndex( index, unit );
+		public I_layoutUnit SetEventHandler( I_eventHandler handler ) {
+			HANDLER_events = handler;
 			return this;
 		}
-		public virtual Layout2d_unitReference ChildByIndex( int index ) {
-			if( !Children.ContainsIndex( index ) ) {
-				throw Error( "Index does not exist!,{"+index+"},(ChildByIndex)", this, ErrorType_index.Instance );
-			}
-			return Children.UnitByIndex( index );
+		public I_layoutUnit SetContext( Layout2d_context context ) {
+			LAYOUT_context = context;
+			return this;
+		}
+		public I_layoutUnit SetIsReadOnly( bool state ) {
+			B_isReadOnly = state;
+			return this;
 		}
 
+		public bool CanHaveChildren {
+			get {
+				return UnitType.CanHaveChildren;
+			}
+		}
+		public bool CanHaveParent {
+			get {
+				return UnitType.CanHaveParent;
+			}
+		}
 
+		private Layout2d_unitCollection LAYOUT_children;
+		public Layout2d_unitCollection Children {
+			get {
+				if( !CanHaveChildren )
+					return new Layout2d_unitCollection();
+				if( LAYOUT_children==null )
+					LAYOUT_children = new Layout2d_unitCollection();
+				return LAYOUT_children.SetIsReadOnly( IsReadOnly );
+			}
+		}
+
+		private I_layoutUnit LAYOUT_parent;
+		public I_layoutUnit Parent {
+			get {
+				if( !CanHaveParent )
+					throw Error( "Unit can not have a parent!", this, ErrorType_scope.Instance );
+				return LAYOUT_parent;
+			}
+		}
+		public I_layoutUnit SetParent( I_layoutUnit parent ) {
+			if( !parent.CanHaveChildren )
+				throw Error( "Unit can not have any children!,(SetParent)", this, ErrorType_scope.Instance );
+			if( IsReadOnly )
+				throw Error( "Protected!,(SetParent)", this, ErrorType_protected.Instance );
+			LAYOUT_parent = parent;
+			return this;
+		}
 
 	}
 

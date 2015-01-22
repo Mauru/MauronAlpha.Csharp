@@ -15,12 +15,7 @@ namespace MauronAlpha.Forms.Units {
 	public class FormUnit_textField : FormComponent_unit, I_layoutUnit {
 		
 		//constructor
-		public FormUnit_textField(Layout2d_container parent):base() {
-			LAYOUT_parent = parent.AsReference;
-			Layout2d_context context = parent.Context;
-			
-            HANDLER_events = new EventHandler(parent.EventHandler);
-		}
+		public FormUnit_textField():base() {}
        
 		private TextUnit_text TXT_text;
 

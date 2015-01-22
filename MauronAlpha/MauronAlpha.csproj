@@ -86,6 +86,7 @@
     </Compile>
     <Compile Include="HandlingErrors\ExceptionHandler.cs" />
     <Compile Include="ExplainingCode\I_MauronAlphaCode.cs" />
+    <Compile Include="Interfaces\I_instantiable.cs" />
     <Compile Include="Interfaces\I_protectable.cs" />
     <Compile Include="Projects\ProjectComponent_statusCode.cs" />
     <Compile Include="Projects\ProjectSettings.cs" />
