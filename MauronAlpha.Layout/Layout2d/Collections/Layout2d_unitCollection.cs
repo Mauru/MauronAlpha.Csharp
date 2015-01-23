@@ -1,22 +1,26 @@
-﻿using MauronAlpha.HandlingData;
+﻿using System;
+using System.Collections.Generic;
+using MauronAlpha.Interfaces;
+using MauronAlpha.HandlingData;
 using MauronAlpha.HandlingErrors;
 
 using MauronAlpha.Layout.Layout2d.Units;
 using MauronAlpha.Layout.Layout2d.Interfaces;
 
 namespace MauronAlpha.Layout.Layout2d.Collections {
-	public class Layout2d_unitCollection : Layout2d_component, I_protectable {
+	public class Layout2d_unitCollection : Layout2d_component, I_protectable, IEquatable<Layout2d_unitCollection>,I_instantiable<Layout2d_unitCollection> {
 		
 		//constructor
 		public Layout2d_unitCollection():base() {
-			LAYOUT_units = new MauronCode_dataIndex<Layout2d_unitReference>();
+			DATA_units = new MauronCode_dataIndex<I_layoutUnit>();
 		}
 		private Layout2d_unitCollection(Layout2d_unitCollection original):base() {
 			Layout2d_unitCollection instance = new Layout2d_unitCollection();
-			for(int index=0; index<LAYOUT_units.CountKeys; index++) {
-				if(LAYOUT_units.ContainsValueAtKey(index)){
-					Layout2d_unitReference unit = UnitByIndex(index);
-					instance.RegisterUnitAtIndex(index,unit);
+			ICollection<long> keys = DATA_units.ValidKeys;
+			foreach(long key in keys) {
+				if(DATA_units.ContainsValueAtKey(key)){ 
+					I_layoutUnit unit = DATA_units.Value(key);
+					instance.RegisterUnitAtIndex(key,unit);
 				}
 			}
 		}
@@ -26,64 +30,84 @@ namespace MauronAlpha.Layout.Layout2d.Collections {
 				return new Layout2d_unitCollection(this);
 			}
 		}
-		public Layout2d_unitCollection RegisterUnitAtIndex (int index, I_layoutUnit unit) {
+		public Layout2d_unitCollection RegisterUnitAtIndex (long index, I_layoutUnit unit) {
 			if( IsReadOnly )
 				throw Error("Index is protected!,(RegisterUnitAtIndex)", this, ErrorType_protected.Instance);
 
 			if( index<0 )
 				throw Error("Index out of Bounds!,(RegisterUnitAtIndex)", this, ErrorType_bounds.Instance);
 
-			if( index>LAYOUT_units.CountKeys )
+			if( index>DATA_units.CountKeys )
 				throw Error("Index out of Bounds!,(RegisterUnitAtIndex)", this, ErrorType_bounds.Instance);
 
-			if( LAYOUT_units.ContainsKey(index) )
+			if( DATA_units.ContainsKey(index) )
 				Exception("Index is in Use!,{"+index+"},(RegisterUnitAtIndex)", this, ErrorResolution.Replaced);
 			
 			
-			LAYOUT_units.SetValue(index, unit.AsReference);
+			DATA_units.SetValue(index, unit);
 
 			return this;
 		}
-
-		public long Count { get { return LAYOUT_units.CountValidValues; } }
-
-		//The data
-		private MauronCode_dataIndex<Layout2d_unitReference> LAYOUT_units;
-
-		public Layout2d_unitReference UnitByIndex(int index) {
-			return LAYOUT_units.Value(index);
+		public Layout2d_unitCollection SetIsReadOnly (bool status) {
+			B_isReadOnly=status;
+			return this;
 		}
 
+		public MauronCode_dataList<long> Keys {
+			get {
+				return DATA_units.KeysAsList;
+			}
+		}
+
+		public long Count { get { return DATA_units.CountValidValues; } }
+
+		//The data
+		private MauronCode_dataIndex<I_layoutUnit> DATA_units;
+
+		public I_layoutUnit UnitByIndex (long index) {
+			return DATA_units.Value(index);
+		}
 
 		//boolean states
+		public bool Equals(Layout2d_unitCollection other) {
+			if(IsEmpty!=other.IsEmpty)
+				return false;
+			if(IsEmpty == true && other.IsEmpty == true)
+				return true;
+			if(!Count.Equals(other.Count))
+				return false;			
+			MauronCode_dataList<long> keys = Keys;
+			if(!other.Keys.Equals(keys))
+				return false;
+			foreach(long key in keys) {
+				I_layoutUnit unit =  UnitByIndex(key);
+				if(!unit.Equals(other.UnitByIndex(key) ))
+					return false;
+			}
+			return true;
+		}
 		public bool IsEmpty { 
 			get {
-				if(LAYOUT_units.IsEmpty)
+				if(DATA_units.IsEmpty)
 					return true;
-				for(int index = 0; index<LAYOUT_units.CountKeys; index++) {
-					Layout2d_unitReference unit = LAYOUT_units.Value(index);
-					if(unit.Exists)
-						return true;
+				for(int index = 0; index<DATA_units.CountKeys; index++) {
+					I_layoutUnit unit=DATA_units.Value(index);
 				}
 				return false;
 			}
 		}
-		public bool ContainsIndex(int index) {
-			if(LAYOUT_units == null) {
+		public bool ContainsIndex(long index) {
+			if(DATA_units == null)
 				return false;
-			}
-			return LAYOUT_units.ContainsValueAtKey(index);
+			return DATA_units.ContainsValueAtKey(index);
 		}
 
-		#region I_protectable (implemented)
+
 		private bool B_isReadOnly = false;
 		public bool IsReadOnly {
 			get { return B_isReadOnly; }
 		}
-		public Layout2d_unitCollection SetIsReadOnly(bool status){
-			B_isReadOnly = status;
-			return this;
-		}
-		#endregion
+
+
 	}
 }

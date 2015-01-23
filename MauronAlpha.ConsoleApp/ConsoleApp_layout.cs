@@ -30,14 +30,14 @@ namespace MauronAlpha.ConsoleApp {
 
 			System.Console.WriteLine("Creating header");			
 			#region The header
-			Layout2d_container header;
+			I_layoutUnit header;
 			if(!TREE_regions.IsSet("header")) {
 				header =new Layout2d_container(base.LAYOUT_window);
-				I_layoutUnit title = new FormUnit_textField( header );
+				FormUnit_textField title = new FormUnit_textField();
 				
 				base.LAYOUT_window.AddChildAtIndex(0,header);
 			}
-			header = base.LAYOUT_window.ChildByIndex(0).As<Layout2d_container>();
+			header = base.LAYOUT_window.ChildByIndex(0);
 			header.Context.SetConstraint(new Layout2d_constraint(windowSize.AsVector.SetY(1)));
 			header.Context.SetSize(new Layout2d_size(windowSize.AsVector.SetY(1), true));
 			#endregion

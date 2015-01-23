@@ -22,8 +22,8 @@ namespace MauronAlpha.Forms.Units {
 		}
 
 		//Parent object
-		protected Layout2d_unitReference LAYOUT_parent;
-		public virtual Layout2d_unitReference Parent {
+		protected I_layoutUnit LAYOUT_parent;
+		public virtual I_layoutUnit Parent {
 			get {
 				if( LAYOUT_parent == null ) {
 					throw NullError( "LAYOUT_parent can not be null!,(Parent)", this, typeof( Layout2d_unitReference ) );
@@ -48,12 +48,6 @@ namespace MauronAlpha.Forms.Units {
 			}
 		}
 
-		//Pass unit as a Reference
-		public virtual Layout2d_unitReference AsReference {
-			get {
-				return new Layout2d_unitReference( EventHandler, this );
-			}
-		}
 
 		//The Context of the unit
 		protected Layout2d_context LAYOUT_context;
@@ -118,9 +112,6 @@ namespace MauronAlpha.Forms.Units {
 				return true;
 			}
 		}
-		public virtual bool IsReference {
-			get { return false; }
-		}
 
 		// Adding Children
 		public I_layoutUnit AsOriginal {
@@ -133,14 +124,12 @@ namespace MauronAlpha.Forms.Units {
 			LAYOUT_children.RegisterUnitAtIndex( index, unit );
 			return this;
 		}
-		public virtual Layout2d_unitReference ChildByIndex( int index ) {
+		public virtual I_layoutUnit ChildByIndex( int index ) {
 			if( !Children.ContainsIndex( index ) ) {
 				throw Error( "Index does not exist!,{"+index+"},(ChildByIndex)", this, ErrorType_index.Instance );
 			}
 			return Children.UnitByIndex( index );
 		}
-
-
 
 	}
 

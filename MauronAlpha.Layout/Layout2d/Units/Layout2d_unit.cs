@@ -16,6 +16,7 @@ namespace MauronAlpha.Layout.Layout2d.Units {
 			SUB_type=unitType;
 		}
 
+		//Unit type
 		private Layout2d_unitType SUB_type;
 		public virtual Layout2d_unitType UnitType {
 			get {
@@ -23,35 +24,58 @@ namespace MauronAlpha.Layout.Layout2d.Units {
 			}
 		}
 
-		public abstract bool Exists { get; }
-
-		public abstract bool CanHaveParent { get; }
-		public abstract bool CanHaveChildren { get; }
+		public bool CanHaveParent { get {
+			return UnitType.CanHaveParent;
+		} }
+		public bool CanHaveChildren { get {
+			return UnitType.CanHaveChildren;
+		} }
+		public virtual bool Equals(Layout2d_unit other) {
+			if(!UnitType.Equals(other.UnitType))
+				return false;
+			if(!Context.Equals(other.Context))
+				return false;
+			if(!Parent.Equals(other.Parent))
+				return false;
+			if(!Children.Equals(other.Children))
+				return false;
+			if(!EventHandler.Equals(other.EventHandler))
+				return false;
+			return true;
+		}
+		public bool Equals(I_layoutUnit other) {
+			if( !UnitType.Equals(other.UnitType) )
+				return false;
+			if( !Context.Equals(other.Context) )
+				return false;
+			if( !Parent.Equals(other.Parent) )
+				return false;
+			if( !Children.Equals(other.Children) )
+				return false;
+			if( !EventHandler.Equals(other.EventHandler) )
+				return false;
+			return true;
+		}
 
 		public abstract bool HasParent { get; }
 		public abstract bool HasChildren { get; }
 
-		public abstract bool IsDynamic { get; }
 		public abstract bool IsParent { get; }
 		public abstract bool IsChild { get; }
-		public abstract bool IsReference { get; }
-		public abstract bool IsReadOnly { get; }
-        public abstract bool IsStatic { get; }
+		
+		private bool B_isReadOnly = false;
+		public bool IsReadOnly {
+			get {
+				return B_isReadOnly;
+			}
+		}
 
 		public abstract Layout2d_unitCollection Children { get; }
 		
-		public abstract Layout2d_unitReference Parent { get; }
-		public abstract Layout2d_unitReference ChildByIndex (int index);
-		public abstract Layout2d_unitReference AsReference { get; }
+		public abstract I_layoutUnit Parent { get; }
+		public abstract I_layoutUnit ChildByIndex (int index);
 
-		public abstract Layout2d_unitReference Instance { get; }
-		
 		public abstract I_layoutUnit AddChildAtIndex (int index, I_layoutUnit unit);
-		public virtual I_layoutUnit AsOriginal {
-			get {
-				return this;
-			}
-		}
 
 		public abstract I_eventHandler EventHandler { get; }
 

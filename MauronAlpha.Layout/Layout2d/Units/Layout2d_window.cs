@@ -19,12 +19,6 @@ namespace MauronAlpha.Layout.Layout2d.Units {
 			STR_name = name;
 			EVENT_handler = new MauronAlpha.Events.EventHandler(controller.EventHandler);
             LAYOUT_context = context;
-
-			//make sure we set the anchor
-			if( !context.HasAnchor ) {
-				context.SetAnchor(AsReference);
-			}
-
 		}
 
 		private string STR_name;
@@ -35,46 +29,20 @@ namespace MauronAlpha.Layout.Layout2d.Units {
 		}
 
 		private bool B_isReadOnly = false;
-        private bool B_isStatic = false;
-        public override bool IsStatic {
-            get { return B_isStatic; }
-        }
+      
 
 		#region Boolean states
-		public override bool Exists {
-			get { return true; }
-		}
-
-		public override bool CanHaveParent {
-			get { return false; }
-		}
-		public override bool CanHaveChildren {
-			get { return true; }
-		}
-
 		public override bool HasParent {
 			get { return false; }
 		}
 		public override bool HasChildren {
 			get { return !LAYOUT_children.IsEmpty; }
 		}
-
-		public override bool IsDynamic {
-			get { return true; }
-		}
 		public override bool IsParent {
 			get { return !LAYOUT_children.IsEmpty; }
 		}
 		public override bool IsChild {
 			get { return false; }
-		}
-		public override bool IsReference {
-			get { return false; }
-		}
-		public override bool IsReadOnly {
-			get {
-				return B_isReadOnly;
-			}
 		}
 
 		public bool Equals (Layout2d_window other) {
@@ -91,17 +59,11 @@ namespace MauronAlpha.Layout.Layout2d.Units {
 			get { return LAYOUT_children; }
 		}
 		
-		public override Layout2d_unitReference ChildByIndex (int index) {
+		public override I_layoutUnit ChildByIndex (int index) {
 			return LAYOUT_children.UnitByIndex(index);
 		}
-		public override Layout2d_unitReference Parent {
+		public override I_layoutUnit Parent {
 			get { throw Error("Windows can not have a parent!,(Parent)",this,ErrorType_nullError.Instance); }
-		}
-		public override Layout2d_unitReference AsReference {
-			get { return new Layout2d_unitReference(EventHandler,this); }
-		}
-		public override Layout2d_unitReference Instance {
-			get { return AsReference; }
 		}
 
 		public override I_layoutUnit AddChildAtIndex (int index, I_layoutUnit unit) {
