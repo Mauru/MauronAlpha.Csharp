@@ -64,9 +64,9 @@ namespace MauronAlpha.ConsoleApp {
 		private ConsoleApp_input INPUT_console;
 		public ConsoleApp_input Input {
 			get {
-				if(INPUT_console==null){
-					INPUT_console = new ConsoleApp_input(this);
-                    HANDLER_events.SubscribeToCode("keyUp", this, EventModels.Continous);
+				if( INPUT_console == null ){
+					INPUT_console = new ConsoleApp_input( this );
+                    HANDLER_events.SubscribeToCode( "keyUp", this, EventModels.Continous );
 				}
 				return INPUT_console;
 			}

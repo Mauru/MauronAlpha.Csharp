@@ -1,0 +1,23 @@
+#.Info {
+	
+	This is basic information on the usage of this GitHub Project.
+
+	Please note the following BIG CaveEat in the Code ATM.
+
+	* The SIngular TYPE-Definition (CodeType,UnitType,etc.) is NOT threadsafe and very CLUMSY.
+	This is because my current singular TYPE definitions employ a SYNCLOCK code-state.
+
+	Information on this can be found here:
+	https://msdn.microsoft.com/en-us/library/a8544e2s.aspx
+
+	A basic quote:
+
+	#QUOTE.link{ https://msdn.microsoft.com/en-us/library/a8544e2s.aspx }#,{
+
+	Disadvantages of Locks
+
+Although using locks will guarantee that multiple threads do not simultaneously access an object, they can cause significant performance degradation. Imagine a program with many different threads running. If each thread needs to use a particular object and has to wait to obtain an exclusive lock on that object before executing, the threads will all cease executing and back up behind one another, causing poor performance. For these reasons, you should only use locks when you have code that must be executed as a unit. For example, you might update multiple resources that were interdependent. Such code is said to be atomic. Restricting your locks only to code that must be executed atomically will allow you to write multithreaded components that ensure the safety of your data while still maintaining good performance.
+
+You must also be careful to avoid situations where deadlocks might occur. In this case, multiple threads wait for each other to release shared resources. For example, Thread 1 might hold a lock on resource A and is waiting for resource B. Thread 2, on the other hand, might have a lock on resource B and awaits resource A. In such a case, neither thread will be allowed to proceed. The only way to avoid deadlock situations is through careful programming. 
+
+}

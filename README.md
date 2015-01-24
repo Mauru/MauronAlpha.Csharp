@@ -18,5 +18,7 @@ The planned feature set includes:
 
 * Updates *
 
+
 Currently nothing works. But it once worked. Then I decided to make things better and broke something ;-) Which is good but also time-consuming.
 
+Please consult the File Info.mau for further notes on how things progress. It is relatively unreliable so it might not be quite up to date.
