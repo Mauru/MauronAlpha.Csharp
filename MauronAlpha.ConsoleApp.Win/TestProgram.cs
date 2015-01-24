@@ -19,26 +19,29 @@ namespace MauronAlpha.ConsoleApp.Win {
 
 		static void Main (string[] args) {
 				
-				Vector2d size = new Vector2d(System.Console.LargestWindowWidth,System.Console.LargestWindowHeight);
-				Vector2d position = new Vector2d(System.Console.WindowLeft,System.Console.WindowTop);
+				//1: We start by grabbing the size and position of the Context Window
+				Vector2d size = new Vector2d(
+					System.Console.LargestWindowWidth,
+					System.Console.LargestWindowHeight
+				);
+				Vector2d position = new Vector2d(
+					System.Console.WindowLeft,
+					System.Console.WindowTop
+				);
 
-				//System.Console.WriteLine(size.AsString);
+				//2: We create a layout context
+				Layout2d_context context = new Layout2d_context( position, size );
 
-				Layout2d_context windowContext = new Layout2d_context(position, size);
+				//3: We initiate the mauronConsole
+				MauronConsole console = new MauronConsole( "MauronConsole (Windows)", context );
 
-				//System.Console.WriteLine("NEW:"+windowContext.Size.AsVector2d.AsString);
-
-				//Set up the console
-				MauronConsole M = new MauronConsole("MauronConsole (Windows)", windowContext);
-
-				//Keep Console open
-				ProjectComponent_statusCode statusCode = new ProjectComponent_statusCode(M);
-				while (!statusCode.CanExit ) {
-					statusCode = M.Idle();
+				//4: Start the FrameWork, create an activity-loop
+				ProjectComponent_statusCode statusCode = new ProjectComponent_statusCode( console );
+				while ( !statusCode.CanExit ) {
+					statusCode = console.Idle();
 				}
 				
 		}
-	
 	
 	}
 }

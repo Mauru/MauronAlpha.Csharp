@@ -6,13 +6,13 @@ using System;
 namespace MauronAlpha.Projects {
 
 	//A Project coded in MauronCode
-	public class MauronCode_project:MauronCode, I_project {
+	public class MauronCode_project:MauronCode,
+		I_project {
 
 		//The constructor
 		public MauronCode_project(ProjectType projecttype, string name):base(CodeType_project.Instance) {
 			SetProjectType(projecttype);
 		}
-		
 
 		#region I_Project
 		//The name

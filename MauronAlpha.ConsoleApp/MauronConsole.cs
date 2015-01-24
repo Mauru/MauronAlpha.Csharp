@@ -21,20 +21,24 @@ namespace MauronAlpha.ConsoleApp {
 	I_eventSubscriber {
 		
 		//Constructors
-		public MauronConsole(string name, Layout2d_context context):base(ProjectType_mauronConsole.Instance, name){
+		public MauronConsole(string name, Layout2d_context context):base(
+			ProjectType_mauronConsole.Instance,
+			name
+		){
+			//1: Establish an event clock
 			EventUnit_clock clock = new EventUnit_clock();
+			HANDLER_events = new MauronAlpha.Events.EventHandler( clock );
 
-			HANDLER_events = new MauronAlpha.Events.EventHandler(clock);
-
-			//Define Window
+			//2: Define the output-environment ( Assume a Window )
 			UNIT_window = new Layout2d_window( name, this );
+
+			//3: Set Window Event handler and context
 			UNIT_window.SetEventHandler(HANDLER_events);
 			UNIT_window.SetContext(context);
 
-			//Define the "looks" of the console
+			//4: Define the "looks" of the console
 			ConsoleApp_layout theme = new ConsoleApp_layout();
 			theme.ApplyTo( UNIT_window );
-
 		}
 
 		//State of the Program
@@ -79,7 +83,7 @@ namespace MauronAlpha.ConsoleApp {
 			}
 		}
 		
-		//States
+		//This is basically a process state trigger
 		public ProjectComponent_statusCode Idle() {
             Input.Listen();
 			return new ProjectComponent_statusCode(this);
@@ -128,10 +132,10 @@ namespace MauronAlpha.ConsoleApp {
 
         private MauronConsole Console;
 
-        //constructor
-		public ConsoleApp_eventTriggers(MauronConsole instance):base() {
+        //Constructor
+		public ConsoleApp_eventTriggers( MauronConsole instance ):base() {
             Console = instance;
-            base.SetValue("keyUp", Console.EVENT_keyUp);
+            base.SetValue( "keyUp", Console.EVENT_keyUp );
         }
 
 	}
@@ -156,6 +160,7 @@ namespace MauronAlpha.ConsoleApp {
 		#endregion
 
 		public override string Name { get { return "mauronConsole"; } }
+
 	}
 
 }
