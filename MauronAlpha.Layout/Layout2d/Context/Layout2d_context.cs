@@ -1,8 +1,8 @@
 ﻿using System;
+
 using MauronAlpha.Interfaces;
 
 using MauronAlpha.Layout.Layout2d.Interfaces;
-
 using MauronAlpha.Layout.Layout2d.Position;
 using MauronAlpha.Layout.Layout2d.Units;
 
@@ -12,71 +12,75 @@ using MauronAlpha.Geometry.Geometry2d.Units;
 namespace MauronAlpha.Layout.Layout2d.Context {
 	
 	//A class describing A LayoutUnit's Position in the Action/Reaction-dependency tree	
-	public class Layout2d_context:Layout2d_component,IEquatable<Layout2d_context>,I_instantiable<Layout2d_context>,I_protectable<Layout2d_context> {
+	public class Layout2d_context : Layout2d_component,
+	IEquatable<Layout2d_context>,
+	I_instantiable<Layout2d_context>,
+	I_protectable<Layout2d_context> {
 
 		//constructors
 		public Layout2d_context():base() {}
-
-		internal Layout2d_context( Layout2d_context source ) : this() {
-			LAYOUT_position = source.LAYOUT_position;
-			LAYOUT_size = source.LAYOUT_size;
-		}
-
 		public Layout2d_context(Vector2d position, Vector2d size):this() {
-			LAYOUT_position=new Layout2d_position( position);
-			LAYOUT_size = new Layout2d_size(size);
+			CONTEXT_position = new Layout2d_position(position);
+			CONTEXT_size = new Layout2d_size(size);
 		}
 		public Layout2d_context( int x, int y, int width, int height):this( new Vector2d(x,y),new Vector2d(width,height)) {}
+		protected Layout2d_context( Layout2d_context source ) : this(source.Position.AsVector, source.Size.AsVector) {}
 
-		//As String
-		public string AsString { 
+		//Size
+		private Layout2d_size CONTEXT_size;
+		public Layout2d_size Size {
 			get {
-				return "{[ Position : "+Position.AsString+" ], [ Size : "+Size.AsString+" ]}";
+				if( CONTEXT_size==null )
+					CONTEXT_size = new Layout2d_size();
+				return CONTEXT_size.SetIsReadOnly(true);
+			}
+		}
+		
+		//Position
+		private Layout2d_position CONTEXT_position;
+		public Layout2d_position Position {
+			get {
+				if( CONTEXT_position==null )
+					CONTEXT_position = new Layout2d_position();
+				return CONTEXT_position.SetIsReadOnly(true);
 			}
 		}
 
 		//Boolean states
 		public bool Equals (Layout2d_context other) {
-			return Size.Equals(other.Size)&&Position.Equals(other.Position);
+			if( !CONTEXT_position.Equals(other.Position) )
+				return false;
+			if( !CONTEXT_size.Equals(other.Size) )
+				return false;
+			return true;
 		}
-		
 		private bool B_isReadOnly = false;
-		public bool IsReadOnly { get {
-			return B_isReadOnly;
-		} }
-
-		//Position
-		private Layout2d_position LAYOUT_position;
-		public Layout2d_position Position { get {
-			if(LAYOUT_position == null)
-				throw NullError("No position set!,(Position)",this,typeof(Vector2d));
-			return LAYOUT_position.SetIsReadOnly(true);
-		} }
-		
-		//Size
-        private Layout2d_size LAYOUT_size;
-		public Layout2d_size Size {
+		public bool IsReadOnly { 
 			get {
-				if(LAYOUT_size==null)
-					throw NullError("LAYOUT_size can not be null!,(Size)",this, typeof(Layout2d_size));
-				return LAYOUT_size.SetIsReadOnly(true);
+				return B_isReadOnly;
 			}
 		}
 
 		//Methods
-        public Layout2d_context SetSize(Layout2d_size size) {
-            LAYOUT_size = size;
-            return this;
-        }
+
 		public Layout2d_context Instance {
 			get {
-				return new Layout2d_context(Position.AsVector, Size.AsVector);
+				return new Layout2d_context(CONTEXT_position.AsVector, CONTEXT_size.AsVector);
 			}
+		}
+        public Layout2d_context SetSize(Layout2d_size size) {
+            CONTEXT_size = size;
+            return this;
+        }
+		public Layout2d_context SetPosition (Layout2d_position position) {
+			CONTEXT_position = position;
+			return this;
 		}
 		public Layout2d_context SetIsReadOnly(bool status) {
 			B_isReadOnly = status;
 			return this;
 		}
+
 	}
 
 }

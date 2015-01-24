@@ -24,7 +24,7 @@ namespace MauronAlpha.ConsoleApp.Win {
 
 				//System.Console.WriteLine(size.AsString);
 
-				Layout2d_context windowContext=new Layout2d_context(position, size);
+				Layout2d_context windowContext = new Layout2d_context(position, size);
 
 				//System.Console.WriteLine("NEW:"+windowContext.Size.AsVector2d.AsString);
 

@@ -1,57 +1,63 @@
-﻿using MauronAlpha.Geometry.Geometry2d.Units;
+﻿using System;
+using MauronAlpha.Interfaces;
+
+using MauronAlpha.Geometry.Geometry2d.Units;
 
 using MauronAlpha.Layout.Layout2d.Units;
 using MauronAlpha.HandlingErrors;
 
 namespace MauronAlpha.Layout.Layout2d.Position {
 
-	//A Wrapper for The Geometry class
-	public class Layout2d_position:Layout2d_component {
-		
-		//constructor
-		public Layout2d_position ()	: base() {}
-		public Layout2d_position (Vector2d position)
-			: base() {
-			V_position = position;
+	//A wrapper for a vector designating a Layout2d Object's Position
+	public class Layout2d_position : Layout2d_component,
+	I_protectable<Layout2d_position>,
+	IEquatable<Layout2d_position>,
+	I_instantiable<Layout2d_position> {
+
+		//constructors
+		public Layout2d_position( ) : base() {}
+		public Layout2d_position( Vector2d vector ):this() {
+			V_position = vector;
 		}
 
-		public Layout2d_position Instance { 
-			get {
-				return new Layout2d_position(AsVector);
-			}
+		//Booleans
+		public bool Equals( Layout2d_position other ) {
+			return V_position.Equals( other.AsVector );
 		}
-		public Layout2d_position SetIsReadOnly(bool b_isReadOnly) {
-			B_isReadOnly=b_isReadOnly;
-			return this;
-		}
-
-		public string AsString {
-			get { return V_position.AsString; }
-		}
-
-		//The actual position
-		private Vector2d V_position = new Vector2d(0,0);
-		public Vector2d AsVector { 
-			get { 
-				return V_position; 
-			} 
-		}
-
-		//Can the position change?
-		private bool B_isStatic = false;
-		public bool IsStatic {
-			get {
-				return B_isStatic;
-			}
-		}
-		
 		private bool B_isReadOnly = false;
 		public bool IsReadOnly {
 			get {
 				return B_isReadOnly;
 			}
 		}
-		
+
+		//As String
+		public string AsString {
+			get { return V_position.AsString; }
+		}
+
+		//As Vector
+		private Vector2d V_position;
+		public Vector2d AsVector {
+			get {
+				if( V_position==null )
+					V_position=new Vector2d();
+				return V_position.Instance.SetIsReadOnly(true);
+			}
+		}
+
+		//Methods
+		public Layout2d_position Instance { 
+			get {
+				Layout2d_position result = new Layout2d_position( AsVector );
+				return result;
+			}
+		}
+		public Layout2d_position SetIsReadOnly( bool status ) {
+			B_isReadOnly = status;
+			return this;
+		}
+	
 	}
 
 }

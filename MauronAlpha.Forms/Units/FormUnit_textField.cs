@@ -11,16 +11,11 @@ using MauronAlpha.Layout.Layout2d.Interfaces;
 
 namespace MauronAlpha.Forms.Units {
 	
-	//A entity waiting for user input
+	//A Entity waiting for user input
 	public class FormUnit_textField : FormComponent_unit, I_layoutUnit {
 		
 		//constructor
-		public FormUnit_textField(Layout2d_container parent):base() {
-			LAYOUT_parent = parent.AsReference;
-			Layout2d_context context = parent.Context;
-			
-            HANDLER_events = new EventHandler(parent.EventHandler);
-		}
+		public FormUnit_textField():base( FormType_textField.Instance ) {}
        
 		private TextUnit_text TXT_text;
 
@@ -29,4 +24,41 @@ namespace MauronAlpha.Forms.Units {
 		private Layout2d_position XY_position;
 
 	}
+
+	//Form Description
+	public sealed class FormType_textField : Layout2d_unitType {
+		#region singleton
+		private static volatile FormType_textField instance = new FormType_textField();
+		private static object syncRoot = new System.Object();
+
+		//constructor singleton multithread safe
+		static FormType_textField ( ) { }
+		public static Layout2d_unitType Instance {
+			get {
+				if( instance==null ) {
+					lock( syncRoot ) {
+						instance = new FormType_textField();
+					}
+				}
+				return instance;
+			}
+		}
+		#endregion
+
+		public override string Name { get { return "form_textField"; } }
+
+		public override bool CanHaveChildren {
+			get { return true; }
+		}
+		public override bool CanHaveParent {
+			get { return true; }
+		}
+		public override bool CanHide {
+			get { return true; }
+		}
+		public override bool IsDynamic {
+			get { return true; }
+		}
+	}
+
 }

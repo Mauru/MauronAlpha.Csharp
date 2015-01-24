@@ -12,15 +12,17 @@ using MauronAlpha.Events.Interfaces;
 namespace MauronAlpha.Layout.Layout2d.Units {
 	
 	//Describes a window
-	public class Layout2d_window : Layout2d_unit, I_layoutUnit {
+	public class Layout2d_window : Layout2d_unit, 
+		I_layoutUnit,
+		IEquatable<Layout2d_window> {
 
-		//constructor
-		public Layout2d_window(string name, I_layoutController controller, Layout2d_context context):base(UnitType_window.Instance) {
+		//Constructors
+		public Layout2d_window( string name, I_layoutController controller ):base(UnitType_window.Instance) {
 			STR_name = name;
-			EVENT_handler = new MauronAlpha.Events.EventHandler(controller.EventHandler);
-            LAYOUT_context = context;
+			base.SetEventHandler( new MauronAlpha.Events.EventHandler( controller.EventHandler ) );
 		}
 
+		//As String
 		private string STR_name;
 		public string Name {
 			get {
@@ -28,65 +30,19 @@ namespace MauronAlpha.Layout.Layout2d.Units {
 			}
 		}
 
-		private bool B_isReadOnly = false;
-      
-
-		#region Boolean states
-		public override bool HasParent {
-			get { return false; }
-		}
-		public override bool HasChildren {
-			get { return !LAYOUT_children.IsEmpty; }
-		}
-		public override bool IsParent {
-			get { return !LAYOUT_children.IsEmpty; }
-		}
-		public override bool IsChild {
-			get { return false; }
-		}
-
-		public bool Equals (Layout2d_window other) {
+		//Booleans
+		public bool Equals ( Layout2d_window other ) {
 			if( Name!=other.Name )
 				return false;
+			return base.Equals(other);
+		}
 
-			return true;
-		}
-		
-		#endregion
-
-		private Layout2d_unitCollection LAYOUT_children=new Layout2d_unitCollection();
-		public override Layout2d_unitCollection Children {
-			get { return LAYOUT_children; }
-		}
-		
-		public override I_layoutUnit ChildByIndex (int index) {
-			return LAYOUT_children.UnitByIndex(index);
-		}
+		//Methods (override)
 		public override I_layoutUnit Parent {
-			get { throw Error("Windows can not have a parent!,(Parent)",this,ErrorType_nullError.Instance); }
-		}
-
-		public override I_layoutUnit AddChildAtIndex (int index, I_layoutUnit unit) {
-			LAYOUT_children.RegisterUnitAtIndex(index,unit);
-			return this;
-		}
-
-		private Layout2d_context LAYOUT_context;
-		public override Layout2d_context Context {
 			get {
-                if (LAYOUT_context == null)
-                    throw NullError("Context can not be null!,(Context)", this, typeof(Layout2d_context));
-                return LAYOUT_context;
+				throw Error("Windows can not have a parent!,(Parent)", this, ErrorType_nullError.Instance);
 			}
 		}
-
-		private I_eventHandler EVENT_handler;
-		public override I_eventHandler EventHandler {
-			get { 
-				return EVENT_handler; 
-			}
-		}
-
 
 	}
 

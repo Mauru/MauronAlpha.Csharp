@@ -10,5 +10,4 @@ namespace MauronAlpha.Interfaces {
 		T Instance { get; }
 
 	}
-
 }

@@ -15,32 +15,48 @@ using MauronAlpha.Input.Keyboard.Events;
 
 namespace MauronAlpha.ConsoleApp {
 
-	//A Console Application
-	public class MauronConsole : MauronCode_project, I_layoutController, I_eventSubscriber {
+	//A Console Application Wrapper
+	public class MauronConsole : MauronCode_project, 
+	I_layoutController, 
+	I_eventSubscriber {
 		
-		//constructor
+		//Constructors
 		public MauronConsole(string name, Layout2d_context context):base(ProjectType_mauronConsole.Instance, name){
 			EventUnit_clock clock = new EventUnit_clock();
 
 			HANDLER_events = new MauronAlpha.Events.EventHandler(clock);
 
 			//Define Window
-			WindowController = new Layout2d_window(name, this, context);
+			UNIT_window = new Layout2d_window( name, this );
+			UNIT_window.SetEventHandler(HANDLER_events);
+			UNIT_window.SetContext(context);
 
 			//Define the "looks" of the console
-			ConsoleApp_layout theme = new ConsoleApp_layout(WindowController);
-			theme.Apply();
+			ConsoleApp_layout theme = new ConsoleApp_layout();
+			theme.ApplyTo( UNIT_window );
+
 		}
 
+		//State of the Program
+		public static MauronCode_dataList<string> StateModes = 
+			new MauronCode_dataList<string>(){ "idle","busy", "done" };
+		private MauronCode_dataMap<EventUnit_subscriptionModel> TREE_states = 
+			new MauronCode_dataMap<EventUnit_subscriptionModel>();
+
+		//Event Handler
 		private EventHandler HANDLER_events;
 		public EventHandler EventHandler {
 			get {
+				if( HANDLER_events == null )
+				HANDLER_events = new EventHandler();
 				return HANDLER_events;
 			}
 		}
 
-		private Layout2d_window WindowController;
+		//The Output window
+		private Layout2d_window UNIT_window;
 
+		//Inputs
 		private ConsoleApp_input INPUT_console;
 		public ConsoleApp_input Input {
 			get {
@@ -52,6 +68,7 @@ namespace MauronAlpha.ConsoleApp {
 			}
 		}
 
+		//Outputs
 		private ConsoleApp_output OUTPUT_console;
 		public ConsoleApp_output Output {
 			get {
@@ -61,48 +78,21 @@ namespace MauronAlpha.ConsoleApp {
 				return OUTPUT_console;
 			}
 		}
-
-		MauronAlpha.Events.EventHandler I_layoutController.EventHandler {
-			get { return HANDLER_events; }
-		}
-
-		public static MauronCode_dataList<string> StateModes = new MauronCode_dataList<string>(){"idle","busy","done"};
-		private MauronCode_dataMap<EventUnit_subscriptionModel> TREE_states = new MauronCode_dataMap<EventUnit_subscriptionModel>();
-
+		
 		//States
 		public ProjectComponent_statusCode Idle() {
             Input.Listen();
 			return new ProjectComponent_statusCode(this);
 		}
 
-		//I_eventSubscriber
+		//Booleans
 		bool I_eventSubscriber.Equals (I_eventSubscriber other) {
 			return Id==other.Id;
 		}
-
 		bool I_eventSubscriber.ReceiveEvent (EventUnit_event e) {
 			EventHandler.DELEGATE_trigger trigger = TriggerOfCode(e.Code);
 			bool result = trigger(e);
 			return result;
-		}
-
-		private DataMap_EventTriggers DATA_eventTriggers;
-		private DataMap_EventTriggers EventTriggers {
-			get {
-				if(DATA_eventTriggers == null) {
-					DATA_eventTriggers=new ConsoleApp_eventTriggers(this);
-				}
-				return DATA_eventTriggers;
-			}
-		}
-		private EventHandler.DELEGATE_trigger TriggerOfCode(string code) {
-			if( !EventTriggers.ContainsKey(code) )
-				return EventTriggers.DoNothing;
-			return EventTriggers.Value(code);
-		}
-
-		EventHandler.DELEGATE_trigger I_eventSubscriber.TriggerOfCode (string code) {
-			return TriggerOfCode(code);
 		}
 
 		//Events
@@ -111,6 +101,26 @@ namespace MauronAlpha.ConsoleApp {
 			System.Console.WriteLine("Key pressed! "+e.KeyPress.Key);
             return true;        
         }
+
+		private DataMap_EventTriggers DATA_eventTriggers;
+		private DataMap_EventTriggers EventTriggers {
+			get {
+				if( DATA_eventTriggers==null ) {
+					DATA_eventTriggers=new ConsoleApp_eventTriggers(this);
+				}
+				return DATA_eventTriggers;
+			}
+		}
+
+		private EventHandler.DELEGATE_trigger TriggerOfCode (string code) {
+			if( !EventTriggers.ContainsKey(code) )
+				return EventTriggers.DoNothing;
+			return EventTriggers.Value(code);
+		}
+		EventHandler.DELEGATE_trigger I_eventSubscriber.TriggerOfCode (string code) {
+			return TriggerOfCode(code);
+		}
+
 	}
 
 	//Event Trigger Registry for ConsoleApp
@@ -125,7 +135,6 @@ namespace MauronAlpha.ConsoleApp {
         }
 
 	}
-
 
 	//Project Description
 	public sealed class ProjectType_mauronConsole : ProjectType {
@@ -148,4 +157,5 @@ namespace MauronAlpha.ConsoleApp {
 
 		public override string Name { get { return "mauronConsole"; } }
 	}
+
 }

@@ -8,7 +8,10 @@ using MauronAlpha.Layout.Layout2d.Context;
 
 namespace MauronAlpha.Layout.Layout2d.Interfaces {
     
-    public interface I_layoutUnit:IEquatable<I_layoutUnit> {
+	//Base definition for Layout Units
+    public interface I_layoutUnit : IEquatable<I_layoutUnit>,
+	I_protectable<I_layoutUnit> {
+
         I_eventHandler EventHandler { get; }
 
         bool CanHaveChildren { get; }
@@ -19,15 +22,17 @@ namespace MauronAlpha.Layout.Layout2d.Interfaces {
         bool HasChildren { get; }
 
         I_layoutUnit Parent { get; }
-        I_layoutUnit ChildByIndex(int index);
+        I_layoutUnit ChildByIndex(long index);
+        I_layoutUnit AddChildAtIndex(long index, I_layoutUnit unit);
+		I_layoutUnit SetParent( I_layoutUnit parent );
+		I_layoutUnit SetContext( Layout2d_context context );
+		I_layoutUnit SetEventHandler( I_eventHandler handler );
 
-        I_layoutUnit AddChildAtIndex(int index, I_layoutUnit unit);
-
-        Layout2d_unitCollection Children { get; }
-
-        Layout2d_context Context { get; }
+		Layout2d_unitCollection Children { get;	}
 
 		Layout2d_unitType UnitType { get; }
+
+		Layout2d_context Context { get;	}
 
     }
 

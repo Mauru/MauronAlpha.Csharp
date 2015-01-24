@@ -11,6 +11,7 @@ namespace MauronAlpha.Events {
 	public class EventHandler:MauronCode_eventComponent, I_eventHandler  {
 
 		//constructor
+		public EventHandler( ) : this( new EventUnit_clock() ) {}
 		public EventHandler(I_eventHandler source):base() {
 			Source = source;
 		}

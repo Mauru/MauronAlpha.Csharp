@@ -1,6 +1,8 @@
 ﻿using MauronAlpha.HandlingData;
+using MauronAlpha.HandlingErrors;
 
 using MauronAlpha.Events.Interfaces;
+using MauronAlpha.Events;
 
 using MauronAlpha.Layout.Layout2d.Interfaces;
 using MauronAlpha.Layout.Layout2d.Context;
@@ -9,14 +11,15 @@ using MauronAlpha.Layout.Layout2d.Collections;
 namespace MauronAlpha.Layout.Layout2d.Units {	
 	
 	//A layout unit in 2d space
-	public abstract class Layout2d_unit:Layout2d_component, I_layoutUnit {
+	public abstract class Layout2d_unit : Layout2d_component, 
+	I_layoutUnit {
 
-		//constructor
+		//Constructors
 		public Layout2d_unit(Layout2d_unitType unitType):base(){
-			SUB_type=unitType;
+			SUB_type = unitType;
 		}
 
-		//Unit type
+		//Type description
 		private Layout2d_unitType SUB_type;
 		public virtual Layout2d_unitType UnitType {
 			get {
@@ -24,62 +27,141 @@ namespace MauronAlpha.Layout.Layout2d.Units {
 			}
 		}
 
-		public bool CanHaveParent { get {
-			return UnitType.CanHaveParent;
-		} }
-		public bool CanHaveChildren { get {
-			return UnitType.CanHaveChildren;
-		} }
-		public virtual bool Equals(Layout2d_unit other) {
-			if(!UnitType.Equals(other.UnitType))
-				return false;
-			if(!Context.Equals(other.Context))
-				return false;
-			if(!Parent.Equals(other.Parent))
-				return false;
-			if(!Children.Equals(other.Children))
-				return false;
-			if(!EventHandler.Equals(other.EventHandler))
-				return false;
-			return true;
-		}
-		public bool Equals(I_layoutUnit other) {
-			if( !UnitType.Equals(other.UnitType) )
-				return false;
-			if( !Context.Equals(other.Context) )
-				return false;
-			if( !Parent.Equals(other.Parent) )
-				return false;
-			if( !Children.Equals(other.Children) )
-				return false;
-			if( !EventHandler.Equals(other.EventHandler) )
-				return false;
-			return true;
-		}
-
-		public abstract bool HasParent { get; }
-		public abstract bool HasChildren { get; }
-
-		public abstract bool IsParent { get; }
-		public abstract bool IsChild { get; }
-		
+		//Booleans
 		private bool B_isReadOnly = false;
+		public virtual bool Equals( I_layoutUnit other ) {
+			if( !UnitType.Equals( other.UnitType ) )
+				return false;
+			if( !Context.Equals( other.Context ) )
+				return false;
+			if( CanHaveParent )
+				return Parent.Equals( other.Parent );
+			if( CanHaveChildren )
+				return Children.Equals( other.Children );
+			if( !EventHandler.Equals( other.EventHandler ) )
+				return false;
+			return true;
+		}
+		public bool CanHaveChildren {
+			get {
+				return UnitType.CanHaveChildren;
+			}
+		}
+		public bool CanHaveParent {
+			get {
+				return UnitType.CanHaveParent;
+			}
+		}
 		public bool IsReadOnly {
 			get {
 				return B_isReadOnly;
 			}
 		}
+		public bool IsParent {
+			get {
+				return CanHaveChildren&&!DATA_children.IsEmpty;
+			}
+		}
+		public bool IsChild {
+			get {
+				return (CanHaveParent&&UNIT_parent!=null);
+			}
+		}
+		public bool HasChildren { 
+			get {
+				return CanHaveChildren 
+				&& ( DATA_children == null || DATA_children.IsEmpty );
+			}
+		}
+		public bool HasParent {
+			get {
+				return CanHaveParent 
+				&& ( UNIT_parent == null );
+			}
+		}
 
-		public abstract Layout2d_unitCollection Children { get; }
+		//Context
+		private Layout2d_context CONTEXT_layout;
+		public Layout2d_context Context {
+			get {
+				if( CONTEXT_layout == null )
+					CONTEXT_layout = new Layout2d_context();
+				return CONTEXT_layout.SetIsReadOnly(true);
+			}
+		}
 		
-		public abstract I_layoutUnit Parent { get; }
-		public abstract I_layoutUnit ChildByIndex (int index);
+		//Event Handler
+		private I_eventHandler EVENT_handler;
+		public I_eventHandler EventHandler {
+			get {
+				if( EVENT_handler == null )
+					EVENT_handler = new EventHandler();
+				return EVENT_handler;
+			}
+		}
 
-		public abstract I_layoutUnit AddChildAtIndex (int index, I_layoutUnit unit);
+		//Relational Data > Children
+		private Layout2d_unitCollection DATA_children;
+		public Layout2d_unitCollection Children {
+			get {
+				if( !CanHaveChildren )
+					return new Layout2d_unitCollection();
+				if( DATA_children==null )
+					DATA_children = new Layout2d_unitCollection();
+				return DATA_children.SetIsReadOnly(IsReadOnly);
+			}
+		}
 
-		public abstract I_eventHandler EventHandler { get; }
+		//Relational Data > Parent
+		private I_layoutUnit UNIT_parent;
 
-		public abstract Layout2d_context Context {get;}
-	}
+		//Methods
+		public I_layoutUnit SetIsReadOnly( bool status ) {
+			B_isReadOnly = status;
+			return this;
+		}
+		public I_layoutUnit SetEventHandler(I_eventHandler handler) {
+			if( IsReadOnly )
+				throw Error( "Is protected!,(SetEventhandler)", this, ErrorType_protected.Instance );
+				
+			EVENT_handler = handler;
+			return this;
+		}
+		public I_layoutUnit SetContext( Layout2d_context context ) {
+			if( IsReadOnly )
+				throw Error( "Is protected!,(SetContext)", this, ErrorType_protected.Instance );
+			CONTEXT_layout = context;
+			return this;
+		}
+
+		//Virtuals
+		public virtual I_layoutUnit ChildByIndex (long index) {
+			if( !DATA_children.IsEmpty||!DATA_children.ContainsIndex(index) )
+				throw Error("Invalid index!,{"+index+"},(ChildByIndex)", this, ErrorType_index.Instance);
+			return DATA_children.UnitByIndex(index);
+		}
+		public virtual I_layoutUnit AddChildAtIndex (long index, I_layoutUnit unit) {
+			if( DATA_children.ContainsIndex(index) )
+				throw Error("Unit allready has a child at index!,{"+index+"},(AddChildAtIndex)", this, ErrorType_index.Instance);
+			DATA_children.RegisterUnitAtIndex(index, unit);
+			return this;
+		}
+		public virtual I_layoutUnit Parent {
+			get {
+				if( !CanHaveParent )
+					throw Error("Unit can not have a parent!", this, ErrorType_scope.Instance);
+				return UNIT_parent;
+			}
+		}
+		public virtual I_layoutUnit SetParent (I_layoutUnit parent) {
+			if( IsReadOnly )
+				throw Error("Protected!,(SetParent)", this, ErrorType_protected.Instance);
+			if( !parent.CanHaveChildren )
+				throw Error("Unit can not have any children!,(SetParent)", this, ErrorType_scope.Instance);
+			UNIT_parent=parent;
+			return this;
+		}
+		
+	}	
 
 }
