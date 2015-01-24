@@ -1,6 +1,4 @@
-#.Info {
-	
-	This is basic information on the usage of this GitHub Project.
+#.Info { This is basic information on the usage of this GitHub Project.
 
 	Please note the following BIG CaveEat in the Code ATM.
 
@@ -19,5 +17,60 @@
 Although using locks will guarantee that multiple threads do not simultaneously access an object, they can cause significant performance degradation. Imagine a program with many different threads running. If each thread needs to use a particular object and has to wait to obtain an exclusive lock on that object before executing, the threads will all cease executing and back up behind one another, causing poor performance. For these reasons, you should only use locks when you have code that must be executed as a unit. For example, you might update multiple resources that were interdependent. Such code is said to be atomic. Restricting your locks only to code that must be executed atomically will allow you to write multithreaded components that ensure the safety of your data while still maintaining good performance.
 
 You must also be careful to avoid situations where deadlocks might occur. In this case, multiple threads wait for each other to release shared resources. For example, Thread 1 might hold a lock on resource A and is waiting for resource B. Thread 2, on the other hand, might have a lock on resource B and awaits resource A. In such a case, neither thread will be allowed to proceed. The only way to avoid deadlock situations is through careful programming. 
+
+Here is another Quote:
+
+ Multithreaded Singleton ( Source : https://msdn.microsoft.com/en-us/library/ff650316.aspx )
+
+Static initialization is suitable for most situations. When your application must delay the instantiation, use a non-default constructor or perform other tasks before the instantiation, and work in a multithreaded environment, you need a different solution. Cases do exist, however, in which you cannot rely on the common language runtime to ensure thread safety, as in the Static Initialization example. In such cases, you must use specific language capabilities to ensure that only one instance of the object is created in the presence of multiple threads. One of the more common solutions is to use the Double-Check Locking [Lea99] idiom to keep separate threads from creating new instances of the singleton at the same time.
+
+    Note: The common language runtime resolves issues related to using Double-Check Locking that are common in other environments. For more information about these issues, see "The 'Double-Checked Locking Is Broken' Declaration," on the University of Maryland, Department of Computer Science Web site, at http://www.cs.umd.edu/~pugh/java/memoryModel/DoubleCheckedLocking.html.
+
+The following implementation allows only a single thread to enter the critical area, which the lock block identifies, when no instance of Singleton has yet been created:
+
+}
+	
+
+
+#.Code.Example.CSharp {
+	
+	
+	public sealed class HardwareType_display : HardwareType {
+		#region Singleton
+		private static volatile HardwareType_display instance = new HardwareType_display();
+		private static object syncRoot = new Object();
+		//constructor singleton multithread safe
+		static HardwareType_display ( ) { }
+		public static HardwareType Instance {
+			get {
+				if (instance == null)
+				{
+					lock (syncRoot)
+					{
+						instance = new HardwareType_display();
+					}
+				}
+				return instance;
+			}
+		}
+		#endregion
+		public override string Name {
+			get { return "display"; }
+		}
+	}
+
+}
+
+#.Research.FurtherReading {
+
+
+[Gamma95] Gamma, Helm, Johnson, and Vlissides. Design Patterns: Elements of Reusable Object-Oriented Software. Addison-Wesley, 1995.
+
+[Lea99] Lea, Doug. Concurrent Programming in Java, Second Edition. Addison-Wesley, 1999.
+
+[Sells03] Sells, Chris. "Sealed Sucks." sellsbrothers.com News. Available at: http://www.sellsbrothers.com/news/showTopic.aspx?ixTopic=411.
+
+    Note: Despite its title, the "Sealed Sucks" article is actually a balanced discussion of the pros and cons of marking a class sealed.
+
 
 }
