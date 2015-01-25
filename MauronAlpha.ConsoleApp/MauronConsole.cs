@@ -46,8 +46,6 @@ namespace MauronAlpha.ConsoleApp {
 			ConsoleApp_commandModel model = new ConsoleApp_commandModel();
 		}
 
-
-
 		//State of the Program
 		public static MauronCode_dataList<string> StateModes = 
 			new MauronCode_dataList<string>(){ "idle", "busy", "done" };
@@ -71,6 +69,18 @@ namespace MauronAlpha.ConsoleApp {
 				if(HANDLER_commands == null) 
 					HANDLER_commands = new ConsoleApp_commandModel();
 				return HANDLER_commands;
+			}
+		}
+
+		//This is basically the Contained Data
+		public I_consoleData ContentModel {
+			get {
+				return CommandModel.ContentModel;
+			}
+		}
+		public bool AllowsInput {
+			get {
+				return CommandModel.AllowsInput;
 			}
 		}
 

@@ -2,7 +2,7 @@
 using MauronAlpha.Events;
 
 
-namespace MauronAlpha.Input.Keyboard {
+namespace MauronAlpha.Input.Keyboard.Units {
 
 	public class KeyPress:MauronCode_dataObject {
 		

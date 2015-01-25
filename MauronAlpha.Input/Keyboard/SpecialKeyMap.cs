@@ -1,6 +1,8 @@
 ﻿using MauronAlpha.HandlingData;
 
-namespace MauronAlpha.Input.Keyboard {
+using MauronAlpha.Input.Keyboard.Units;
+
+namespace MauronAlpha.Input.Keyboard.Collections {
 
 	//A list of Special Keys
 	public class SpecialKeyMap:MauronCode_dataMap<SpecialKey> {}

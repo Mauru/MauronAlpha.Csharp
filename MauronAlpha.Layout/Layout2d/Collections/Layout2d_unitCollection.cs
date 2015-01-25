@@ -115,7 +115,13 @@ namespace MauronAlpha.Layout.Layout2d.Collections {
 		return this;
 	}
 
-
+	public I_layoutUnit FirstElement { 
+		get {
+			if( IsEmpty )
+				throw Error("Is Empty!,(FirstElement)",this, ErrorType_index.Instance);
+			return DATA_units.Value(DATA_units.FirstIndex);
+		}
+	 }
 
 	}
 }

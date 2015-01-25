@@ -3,6 +3,7 @@ using MauronAlpha.HandlingData;
 using MauronAlpha.Forms.Units;
 using System;
 
+using MauronAlpha.Input.Keyboard.Units;
 
 namespace MauronAlpha.ConsoleApp {
 

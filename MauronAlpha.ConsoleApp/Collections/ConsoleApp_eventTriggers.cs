@@ -3,6 +3,7 @@ using MauronAlpha.Events.Interfaces;
 using MauronAlpha.Events.Collections;
 
 using MauronAlpha.Input.Keyboard.Events;
+using MauronAlpha.Input.Keyboard.Units;
 
 using MauronAlpha.ConsoleApp.Interfaces;
 
@@ -27,8 +28,12 @@ namespace MauronAlpha.ConsoleApp.Collections {
 			if( Controller == null )
 				return false;
 
-			Controller.LayoutModel.GetMember( "input_current" );
-
+			ConsoleApp_commandModel commandModel = Controller.CommandModel;
+			
+			KeyPress  key = e.KeyPress;
+			if( !commandModel.AllowsInput )
+				return false;
+			commandModel.AppendToSequence( key );
 			return true;
 		}
 	}

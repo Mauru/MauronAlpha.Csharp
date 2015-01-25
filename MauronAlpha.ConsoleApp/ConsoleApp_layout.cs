@@ -1,4 +1,5 @@
 ﻿using MauronAlpha.HandlingData;
+using MauronAlpha.HandlingErrors;
 
 using MauronAlpha.Layout.Layout2d.Position;
 using MauronAlpha.Layout.Layout2d.Units;
@@ -18,11 +19,12 @@ namespace MauronAlpha.ConsoleApp {
 	I_consoleLayout {
 
 		//constructor
-
 		public ConsoleApp_layout():base() {}
 
-		private static string[] KEYS_regions = new string[4]{"header","content","input","footer"};
-		private MauronCode_dataTree<string,Layout2d_container> TREE_regions = new MauronCode_dataTree<string,Layout2d_container>(KEYS_regions);
+		private static string[] KEYS_regions = new string[4]{
+			"header", "content", "input", "footer"
+		};
+		private MauronCode_dataTree<string,I_layoutUnit> DATA_regions = new MauronCode_dataTree<string,I_layoutUnit>(KEYS_regions);
 
 		//Apply the design
 		public ConsoleApp_layout ApplyTo(I_layoutUnit unit) {
@@ -37,6 +39,13 @@ namespace MauronAlpha.ConsoleApp {
 			
 			unit.AddChildAtIndex( unit.NextChildIndex,header, true );
 			return this;
+		}
+		
+		//get a Member by name
+		public I_layoutUnit Member(string key) {
+			if(!DATA_regions.ContainsKey(key))
+				throw Error("Invalid Member!,{"+key+"},(Member)",this,ErrorType_index.Instance);
+			return DATA_regions.Value(key);
 		}
 	}
 

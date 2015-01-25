@@ -1,5 +1,5 @@
 ﻿using MauronAlpha.Input;
-using MauronAlpha.Input.Keyboard;
+using MauronAlpha.Input.Keyboard.Units;
 using MauronAlpha.Input.Keyboard.Events;
 
 using MauronAlpha.Events;

@@ -1,6 +1,8 @@
 ﻿using MauronAlpha.HandlingData;
 
-namespace MauronAlpha.Input.Keyboard {
+namespace MauronAlpha.Input.Keyboard.Units {
+
+
 	public class SpecialKey:MauronCode_dataObject {
 
 		//constructor

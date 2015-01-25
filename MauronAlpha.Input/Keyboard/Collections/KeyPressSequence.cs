@@ -1,6 +1,8 @@
 ﻿using MauronAlpha.HandlingData;
 using MauronAlpha.Events;
 
+using MauronAlpha.Input.Keyboard.Units;
+
 namespace MauronAlpha.Input.Keyboard.Collections {
 
 	//A Class that tracks KeyPresses

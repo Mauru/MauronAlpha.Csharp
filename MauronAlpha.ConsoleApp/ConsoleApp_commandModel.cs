@@ -1,5 +1,6 @@
 ﻿using MauronAlpha.Input.Keyboard.Collections;
 using MauronAlpha.Input.Keyboard.Events;
+using MauronAlpha.Input.Keyboard.Units;
 
 using MauronAlpha.Events.Interfaces;
 using MauronAlpha.Events;
@@ -17,8 +18,7 @@ namespace MauronAlpha.ConsoleApp {
 	I_eventController,
 	I_eventSubscriber {
 
-		private KeyPressSequence CurrentCommand = new KeyPressSequence();
-
+		
 		private EventHandler EVENT_handler;
 		public EventHandler EventHandler {
 			get {
@@ -35,13 +35,19 @@ namespace MauronAlpha.ConsoleApp {
 		public bool Equals (I_eventSubscriber other) {
 			return Id==other.Id;
 		}
-
+		private bool b_allowsInput = true;
+		public bool AllowsInput{ 
+			get {
+				return b_allowsInput;
+			}
+		}
+		
+		//Event Model
 		public bool ReceiveEvent (EventUnit_event e) {
 			EventHandler.DELEGATE_trigger trigger=TriggerOfCode(e.Code);
 			bool result=trigger(e);
 			return result;
 		}
-		
 		bool I_eventSubscriber.ReceiveEvent (EventUnit_event e) {
 			EventHandler.DELEGATE_trigger trigger=TriggerOfCode(e.Code);
 			bool result=trigger(e);
@@ -71,6 +77,7 @@ namespace MauronAlpha.ConsoleApp {
 		private MauronConsole MAU_console;
 		private ConsoleApp_input INPUT_keyBoard;
 
+		//The Layout
 		private I_consoleLayout LAYOUT_model;
 		public I_consoleLayout LayoutModel {  
 			get {
@@ -82,7 +89,20 @@ namespace MauronAlpha.ConsoleApp {
 			}
 		}
 
+		//The Content
+		private I_consoleData DATA_console;
+		public I_consoleData ContentModel {
+			get {
+				return DATA_console;
+			}
+		}
+	
 		//Methods
+		public ConsoleApp_commandModel CommandModel {
+			get {
+				return this;
+			}
+		}
 		public ConsoleApp_commandModel SubscribeToEvent(string eventCode, EventUnit_subscriptionModel model ) {
 			EventHandler.SubscribeToCode(eventCode, this, model);
 			return this;
@@ -100,6 +120,12 @@ namespace MauronAlpha.ConsoleApp {
 			return this;
 
 		}
+
+		public ConsoleApp_commandModel AppendToSequence( KeyPress key ){
+			DATA_console.AppendToSequence( key );
+			return this;
+		}
+
 	}
 
 }

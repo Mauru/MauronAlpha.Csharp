@@ -1,6 +1,8 @@
 ﻿using MauronAlpha.Events.Units;
 using MauronAlpha.Events.Interfaces;
 
+using MauronAlpha.Input.Keyboard.Units;
+
 namespace MauronAlpha.Input.Keyboard.Events {
 
 	public class Event_keyUp:EventUnit_event {

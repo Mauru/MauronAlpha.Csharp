@@ -7,5 +7,11 @@ namespace MauronAlpha.ConsoleApp.Interfaces {
 
 		I_consoleLayout LayoutModel { get; }
 
+		ConsoleApp_commandModel CommandModel { get; }
+
+		I_consoleData ContentModel { get; }
+
+		bool AllowsInput { get; }
+
 	}
 }

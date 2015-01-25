@@ -1,10 +1,10 @@
-﻿using MauronAlpha.Layout.Layout2d.Collections;
+﻿using MauronAlpha.Layout.Layout2d.Interfaces;
 
 namespace MauronAlpha.ConsoleApp.Interfaces {
 
 	public interface I_consoleLayout {
 
-		public Layout2d_queryResult GetMember(string key);
+		I_layoutUnit Member(string key);
 	}
 
 }
