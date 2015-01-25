@@ -38,10 +38,14 @@ namespace MauronAlpha.Layout.Layout2d.Collections {
 			return DATA_units.KeysAsList;
 		}
 	}
+	
 	public long Count {
 		get {
 			return DATA_units.CountValidValues;
 		}
+	}
+	public long NextIndex {
+		get { return DATA_units.NextIndex; }
 	}
 
 	//Queries
@@ -110,6 +114,8 @@ namespace MauronAlpha.Layout.Layout2d.Collections {
 		B_isReadOnly=status;
 		return this;
 	}
+
+
 
 	}
 }

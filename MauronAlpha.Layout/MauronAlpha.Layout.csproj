@@ -40,6 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Layout2d\Collections\Layout2d_queryResult.cs" />
     <Compile Include="Layout2d\Collections\Layout2d_unitCollection.cs" />
     <Compile Include="Layout2d\Context\Layout2d_context.cs" />
     <Compile Include="Layout2d\Interfaces\I_layoutController.cs" />
@@ -48,6 +49,7 @@
     <Compile Include="Layout2d\Position\Layout2d_size.cs" />
     <Compile Include="Layout2d\Units\Layout2d_container.cs" />
     <Compile Include="Layout2d\Position\Layout2d_design.cs" />
+    <Compile Include="Layout2d\Units\Layout2d_delayedUnit.cs" />
     <Compile Include="Layout2d\Units\Layout2d_unitType.cs" />
     <Compile Include="Layout2d\Units\Layout2d_window.cs" />
     <Compile Include="LayoutComponent.cs" />

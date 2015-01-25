@@ -16,7 +16,7 @@ namespace MauronAlpha.Layout.Layout2d.Units {
 		//Constructor
 		public Layout2d_container():base( UnitType_container.Instance ) {}
 		public Layout2d_container(I_layoutUnit parent):this() {
-			base.SetParent( parent );
+			base.SetParent( parent, false );
 			base.SetEventHandler( new EventHandler(parent.EventHandler) );
 
 			Layout2d_context context = new Layout2d_context();

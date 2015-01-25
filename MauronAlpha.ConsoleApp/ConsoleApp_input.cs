@@ -12,38 +12,44 @@ namespace MauronAlpha.ConsoleApp {
 	public class ConsoleApp_input:SystemInterface, I_eventSender {
 
 		//constructor
-		public ConsoleApp_input(MauronConsole console):base(){
-			EventHandler = new EventHandler(console.EventHandler);
+		public ConsoleApp_input( I_eventController source ):base(){
+			EventHandler = new EventHandler( source.EventHandler );
 		}
 
 		private EventHandler EventHandler;
+
 		public ConsoleApp_input Listen() {
-			System.ConsoleKeyInfo key=System.Console.ReadKey(false);
+
+			System.ConsoleKeyInfo key = System.Console.ReadKey( true );
+
 			KeyPress input = new KeyPress ();
+
 			//was the ctrl key pressed
-			if( (key.Modifiers&System.ConsoleModifiers.Shift)!=0 ) {
+			if( ( key.Modifiers & System.ConsoleModifiers.Shift) !=0 )
 				input.SetIsShiftKeyDown(true);
-			}
+
 			//was the alt key pressed
-			if( (key.Modifiers&System.ConsoleModifiers.Control)!=0 ) {
+			if( ( key.Modifiers & System.ConsoleModifiers.Control ) !=0 )
 				input.SetIsCtrlKeyDown(true);
-			}
+
 			//was the ctrl 
-			if( (key.Modifiers&System.ConsoleModifiers.Alt)!=0 ) {
+			if( ( key.Modifiers & System.ConsoleModifiers.Alt ) != 0 )
 				input.SetIsAltKeyDown(true);
-			}
 
 			//Set the character 
-			input.SetKey(key.KeyChar);
+			input.SetKey( key.KeyChar );
             
 			//throw a new Keyboardevent
-			EventHandler.SubmitEvent(new Event_keyUp(this, input), this);
+			EventHandler.SubmitEvent( new Event_keyUp( this, input), this );
+			
 			return this;
+
 		}
 
 		I_eventSender I_eventSender.SendEvent (EventUnit_event e) {
-			EventHandler.SubmitEvent(e,this);
+			EventHandler.SubmitEvent(e, this);
 			return this;
 		}
+
 	}
 }

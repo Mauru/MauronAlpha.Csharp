@@ -32,7 +32,7 @@ namespace MauronAlpha.Events {
 		}
 
 		private EventSubscriberList Subscribers = new EventSubscriberList();
-		public void SubscribeToCode(string eventCode, I_eventSubscriber source, I_eventSubscriptionModel model) {
+		public void SubscribeToCode( string eventCode, I_eventSubscriber source, I_eventSubscriptionModel model ) {
 			Subscribers.RegisterByCode(eventCode, source, model);
 			return;
 		}
@@ -43,56 +43,53 @@ namespace MauronAlpha.Events {
 		}
 
 		protected I_eventHandler Source;
+		
+		//Booleans
+		public bool Equals (EventHandler other) {
+			if( HasSource!=other.HasSource )
+				return false;
+			if( HasSource )
+				return Source.Equals(other.Source);
+			return Subscriptions.Equals(other.Subscriptions);
+		}
 		public bool HasSource {
 			get { return Source != null; }
 		}
 
-		//Receive an event
-		public delegate bool DELEGATE_ReceiveEvent(EventUnit_event e);
-		//Send an event
-		public delegate bool DELEGATE_SubmitEvent(EventUnit_event e);
-		//The condition for a trigger to occure
-		public delegate bool DELEGATE_condition(EventUnit_event e, EventUnit_subscription subscription);
-		//The trigger to execute
-		public delegate bool DELEGATE_trigger(EventUnit_event e);
+		//Check if an event code matches a subscription : Return the number of Processed Receivers
+		public long CheckForTrigger (EventUnit_event e, I_eventSender sender, EventUnit_timeStamp timestamp) {
+			MauronCode_dataList<EventUnit_subscription> subscriptions=Subscriptions.ByCode(e.Code);
 
-		//Equality
-		public bool Equals(EventHandler other) {
-			if(HasSource!=other.HasSource)
-				return false;
-			if(HasSource)
-				return Source.Equals(other.Source);	
-			return Subscriptions.Equals(other.Subscriptions);
-		}
+			long count_processed=0;
+			bool result=true;
 
-		//Check if an event code matches a subscription
-		public long CheckForTrigger(EventUnit_event e, I_eventSender sender, EventUnit_timeStamp timestamp){
-			MauronCode_dataList<EventUnit_subscription> subscriptions = Subscriptions.ByCode(e.Code);
+			MauronCode_dataList<EventUnit_subscription> unsubribe_these = new MauronCode_dataList<EventUnit_subscription>();
 
-			long count_processed = 0;
-			bool result = true;
-
-			MauronCode_dataList<EventUnit_subscription> unsubribe_these=new MauronCode_dataList<EventUnit_subscription>();
-
-			foreach(EventUnit_subscription subscription in subscriptions) {
+			foreach( EventUnit_subscription subscription in subscriptions ) {
 
 				result = true;
 
-				if(subscription.SubscriptionModel.UsesCondition) {
-					result = subscription.Condition(e,subscription);
+				//Does the subscription have a condition
+				if( subscription.SubscriptionModel.UsesCondition ) {
+					result = subscription.Condition(e, subscription);
 				}
 
-				if(result) {
-					if(subscription.SubscriptionModel.UsesTrigger) {
+				//If condition has been met or no condition 
+				if( result ) {
+					
+					if( subscription.SubscriptionModel.UsesTrigger ) {
 						subscription.Subscriber.ReceiveEvent(e);
 						count_processed++;
 					}
+
 				}
 
-				if(subscription.SubscriptionModel.IsSingle) {
+				//Does the subscription only receive the check once, regardLess of the result of condition
+				if( subscription.SubscriptionModel.IsSingle ) {
 					unsubribe_these.Add(subscription);
 				}
 
+				//Can the subscription only be checked N times ?
 				if( subscription.SubscriptionModel.UsesExecutionLimit ) {
 					subscription.ItterateExecutionCount(timestamp);
 
@@ -100,17 +97,29 @@ namespace MauronAlpha.Events {
 						unsubribe_these.Add(subscription);
 					}
 				}
-		
+
 			}
 
-			//Bubbling up the event chain
-			if(HasSource) {
-				long processed_source = Source.CheckForTrigger(e,sender,timestamp);
+			//Check for any Parent EventListeners and pass the event on
+			if( HasSource ) {
+
+				long processed_source = Source.CheckForTrigger(e, sender, timestamp);
 				count_processed += processed_source;
+
 			}
 
 			return count_processed;
 		}
+
+		//Boolean Delegate : Receive an event
+		public delegate bool DELEGATE_ReceiveEvent(EventUnit_event e);
+		//Boolean Delegate : Send an event
+		public delegate bool DELEGATE_SubmitEvent(EventUnit_event e);
+		//Boolean Delegate : The condition for a trigger to occure
+		public delegate bool DELEGATE_condition(EventUnit_event e, EventUnit_subscription subscription);
+		//Boolean Delegate : The trigger to execute
+		public delegate bool DELEGATE_trigger(EventUnit_event e);
+
 
 		public EventHandler SubmitEvent(EventUnit_event e, I_eventSender sender) {
 			CheckForTrigger(e, sender, SystemClock.TimeStamp);
@@ -133,6 +142,7 @@ namespace MauronAlpha.Events {
 		EventUnit_timeStamp I_eventHandler.TimeStamp {
 			get { return TimeStamp; }
 		}
+	
 	}
 
 }

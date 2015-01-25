@@ -7,7 +7,7 @@ namespace MauronAlpha.ConsoleApp {
 
 		//constructor
 		public ConsoleApp_output (MauronConsole console) {
-			SetTarget (console);
+			SetTarget ( console );
 		}
 
 		#region The related MauronConsole

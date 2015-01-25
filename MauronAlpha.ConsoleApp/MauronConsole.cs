@@ -13,12 +13,14 @@ using MauronAlpha.Layout.Layout2d.Interfaces;
 
 using MauronAlpha.Input.Keyboard.Events;
 
+using MauronAlpha.ConsoleApp.Interfaces;
+
 namespace MauronAlpha.ConsoleApp {
 
 	//A Console Application Wrapper
 	public class MauronConsole : MauronCode_project, 
-	I_layoutController, 
-	I_eventSubscriber {
+	I_layoutController,
+	I_consoleController {
 		
 		//Constructors
 		public MauronConsole(string name, Layout2d_context context):base(
@@ -37,13 +39,18 @@ namespace MauronAlpha.ConsoleApp {
 			UNIT_window.SetContext(context);
 
 			//4: Define the "looks" of the console
-			ConsoleApp_layout theme = new ConsoleApp_layout();
-			theme.ApplyTo( UNIT_window );
+			LAYOUT_console = new ConsoleApp_layout();
+			LAYOUT_console.ApplyTo( UNIT_window );
+
+			//5: Define the Command-Model for the Console
+			ConsoleApp_commandModel model = new ConsoleApp_commandModel();
 		}
+
+
 
 		//State of the Program
 		public static MauronCode_dataList<string> StateModes = 
-			new MauronCode_dataList<string>(){ "idle","busy", "done" };
+			new MauronCode_dataList<string>(){ "idle", "busy", "done" };
 		private MauronCode_dataMap<EventUnit_subscriptionModel> TREE_states = 
 			new MauronCode_dataMap<EventUnit_subscriptionModel>();
 
@@ -57,6 +64,26 @@ namespace MauronAlpha.ConsoleApp {
 			}
 		}
 
+		//The CommandModel for the console
+		private ConsoleApp_commandModel HANDLER_commands;
+		public ConsoleApp_commandModel CommandModel {
+			get {
+				if(HANDLER_commands == null) 
+					HANDLER_commands = new ConsoleApp_commandModel();
+				return HANDLER_commands;
+			}
+		}
+
+		//The Layout of the console
+		private ConsoleApp_layout LAYOUT_console;
+		public I_consoleLayout LayoutModel {
+			get {
+				if( LAYOUT_console == null )
+					LAYOUT_console = new ConsoleApp_layout();
+				return LAYOUT_console;
+			}
+		}
+
 		//The Output window
 		private Layout2d_window UNIT_window;
 
@@ -64,9 +91,10 @@ namespace MauronAlpha.ConsoleApp {
 		private ConsoleApp_input INPUT_console;
 		public ConsoleApp_input Input {
 			get {
+
 				if( INPUT_console == null ){
-					INPUT_console = new ConsoleApp_input( this );
-                    HANDLER_events.SubscribeToCode( "keyUp", this, EventModels.Continous );
+					INPUT_console = new ConsoleApp_input( CommandModel );
+					CommandModel.ActivateInput( INPUT_console, this );
 				}
 				return INPUT_console;
 			}
@@ -89,54 +117,6 @@ namespace MauronAlpha.ConsoleApp {
 			return new ProjectComponent_statusCode(this);
 		}
 
-		//Booleans
-		bool I_eventSubscriber.Equals (I_eventSubscriber other) {
-			return Id==other.Id;
-		}
-		bool I_eventSubscriber.ReceiveEvent (EventUnit_event e) {
-			EventHandler.DELEGATE_trigger trigger = TriggerOfCode(e.Code);
-			bool result = trigger(e);
-			return result;
-		}
-
-		//Events
-        public bool EVENT_keyUp(EventUnit_event unit) {
-			Event_keyUp e = (Event_keyUp) unit;
-			System.Console.WriteLine("Key pressed! "+e.KeyPress.Key);
-            return true;        
-        }
-
-		private DataMap_EventTriggers DATA_eventTriggers;
-		private DataMap_EventTriggers EventTriggers {
-			get {
-				if( DATA_eventTriggers==null ) {
-					DATA_eventTriggers=new ConsoleApp_eventTriggers(this);
-				}
-				return DATA_eventTriggers;
-			}
-		}
-
-		private EventHandler.DELEGATE_trigger TriggerOfCode (string code) {
-			if( !EventTriggers.ContainsKey(code) )
-				return EventTriggers.DoNothing;
-			return EventTriggers.Value(code);
-		}
-		EventHandler.DELEGATE_trigger I_eventSubscriber.TriggerOfCode (string code) {
-			return TriggerOfCode(code);
-		}
-
-	}
-
-	//Event Trigger Registry for ConsoleApp
-	public class ConsoleApp_eventTriggers:DataMap_EventTriggers {
-
-        private MauronConsole Console;
-
-        //Constructor
-		public ConsoleApp_eventTriggers( MauronConsole instance ):base() {
-            Console = instance;
-            base.SetValue( "keyUp", Console.EVENT_keyUp );
-        }
 
 	}
 

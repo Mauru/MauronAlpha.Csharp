@@ -140,10 +140,19 @@ namespace MauronAlpha.Layout.Layout2d.Units {
 				throw Error("Invalid index!,{"+index+"},(ChildByIndex)", this, ErrorType_index.Instance);
 			return DATA_children.UnitByIndex(index);
 		}
-		public virtual I_layoutUnit AddChildAtIndex (long index, I_layoutUnit unit) {
+		public virtual I_layoutUnit AddChildAtIndex (long index, I_layoutUnit unit, bool b_setDependencies) {
+			if(IsReadOnly)
+				throw Error("Protected!,(AddChildAtIndex)",this,ErrorType_protected.Instance);
+			if(DATA_children == null)
+				DATA_children = new Layout2d_unitCollection();
 			if( DATA_children.ContainsIndex(index) )
 				throw Error("Unit allready has a child at index!,{"+index+"},(AddChildAtIndex)", this, ErrorType_index.Instance);
+			
 			DATA_children.RegisterUnitAtIndex(index, unit);
+
+			if(b_setDependencies)
+				unit.SetParent(this, false);
+
 			return this;
 		}
 		public virtual I_layoutUnit Parent {
@@ -153,15 +162,27 @@ namespace MauronAlpha.Layout.Layout2d.Units {
 				return UNIT_parent;
 			}
 		}
-		public virtual I_layoutUnit SetParent (I_layoutUnit parent) {
+		public virtual I_layoutUnit SetParent (I_layoutUnit parent, bool updateRelations) {
 			if( IsReadOnly )
 				throw Error("Protected!,(SetParent)", this, ErrorType_protected.Instance);
 			if( !parent.CanHaveChildren )
 				throw Error("Unit can not have any children!,(SetParent)", this, ErrorType_scope.Instance);
+			
 			UNIT_parent=parent;
+			if( updateRelations )
+				parent.AddChildAtIndex(parent.NextChildIndex, this, false);
+
 			return this;
 		}
 		
+		//Relational Data > Index Information
+		public long NextChildIndex { 
+			get {
+				if(DATA_children == null)
+					return 0;
+				return DATA_children.NextIndex;
+			}
+		}
 	}	
 
 }

@@ -1,5 +1,7 @@
-﻿using MauronAlpha.HandlingData;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using MauronAlpha.HandlingData;
+
+using MauronAlpha.Input.Keyboard.Collections;
 
 namespace MauronAlpha.Input.Keyboard {
 

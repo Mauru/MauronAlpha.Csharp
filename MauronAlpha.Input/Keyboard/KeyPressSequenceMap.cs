@@ -1,4 +1,5 @@
 ﻿using MauronAlpha.HandlingData;
+using MauronAlpha.Input.Keyboard.Collections;
 
 namespace MauronAlpha.Input.Keyboard {
 

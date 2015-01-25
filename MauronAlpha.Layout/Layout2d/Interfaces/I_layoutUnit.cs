@@ -23,8 +23,13 @@ namespace MauronAlpha.Layout.Layout2d.Interfaces {
 
         I_layoutUnit Parent { get; }
         I_layoutUnit ChildByIndex(long index);
-        I_layoutUnit AddChildAtIndex(long index, I_layoutUnit unit);
-		I_layoutUnit SetParent( I_layoutUnit parent );
+		I_layoutUnit AddChildAtIndex (long index, I_layoutUnit unit, bool updateRelations);
+		
+		long NextChildIndex { get; }
+
+
+
+		I_layoutUnit SetParent( I_layoutUnit parent, bool updateRelations );
 		I_layoutUnit SetContext( Layout2d_context context );
 		I_layoutUnit SetEventHandler( I_eventHandler handler );
 

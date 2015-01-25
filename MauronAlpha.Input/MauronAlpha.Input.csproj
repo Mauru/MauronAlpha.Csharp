@@ -32,11 +32,11 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Keyboard\KeyPress.cs" />
-    <Compile Include="Keyboard\KeyPressSequence.cs" />
+    <Compile Include="Keyboard\Units\KeyPress.cs" />
+    <Compile Include="Keyboard\Collections\KeyPressSequence.cs" />
     <Compile Include="Keyboard\KeyPressSequenceMap.cs" />
     <Compile Include="Keyboard\KeyboardMap.cs" />
-    <Compile Include="Keyboard\SpecialKey.cs" />
+    <Compile Include="Keyboard\Units\SpecialKey.cs" />
     <Compile Include="Keyboard\SpecialKeyMap.cs" />
     <Compile Include="Keyboard\Events\Event_keyUp.cs" />
     <Compile Include="SystemInterface.cs" />
