@@ -1,5 +1,9 @@
 ﻿using MauronAlpha.Events;
 using MauronAlpha.Layout.Layout2d.Interfaces;
+using MauronAlpha.Layout.Layout2d.Units;
+using MauronAlpha.Layout.Layout2d.Collections;
+
+using MauronAlpha.Geometry.Geometry2d.Units;
 
 namespace MauronAlpha.ConsoleApp {
 	
@@ -43,8 +47,21 @@ namespace MauronAlpha.ConsoleApp {
 		#endregion
 
 
-		public I_layoutRenderer DrawRegions (System.Collections.Generic.ICollection<string> regions, I_layoutModel layout) {
+		public I_layoutRenderer Draw( I_layoutUnit source, I_layoutModel layout) {
 			Clear();
+
+			Vector2d CaretPosition = new Vector2d();
+			Vector2d CaretEnd = source.Context.Size.AsVector;
+
+			string output = "";
+
+			while(CaretPosition.CompareTo(CaretEnd) < 0){
+				
+				
+
+
+			}
+
 			return this;
 		}
 	}

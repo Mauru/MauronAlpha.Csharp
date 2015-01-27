@@ -19,7 +19,7 @@ namespace MauronAlpha.ConsoleApp {
 	I_consoleLayout {
 
 		//constructor
-		public ConsoleApp_layout():base() {}
+		public ConsoleApp_layout():base(  ) {}
 
 		private static string[] KEYS_regions = new string[3]{
 			"header", "content", "footer"
@@ -58,13 +58,14 @@ namespace MauronAlpha.ConsoleApp {
 		}
 	
 		//Render the output
-		public I_layoutModel RenderWith ( I_layoutRenderer renderer ) {
+		public I_layoutModel RenderWith ( I_layoutUnit source, I_layoutRenderer renderer ) {
 			
 			//renderer.DrawRegions( new MauronCode_dataList<string>(ConsoleApp_layout.KEYS_regions) );
 			
 			return this;
 		}
 	}
+
 
 	public class ConsoleLayout_header : Layout2d_unit,
 	I_layoutUnit {
