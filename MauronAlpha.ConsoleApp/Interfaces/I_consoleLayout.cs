@@ -2,9 +2,7 @@
 
 namespace MauronAlpha.ConsoleApp.Interfaces {
 
-	public interface I_consoleLayout {
-
-		I_layoutUnit Member(string key);
+	public interface I_consoleLayout:I_layoutModel {
 	}
 
 }

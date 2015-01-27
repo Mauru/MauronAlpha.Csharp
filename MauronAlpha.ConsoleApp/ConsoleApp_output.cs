@@ -1,9 +1,11 @@
 ﻿using MauronAlpha.Events;
+using MauronAlpha.Layout.Layout2d.Interfaces;
 
 namespace MauronAlpha.ConsoleApp {
 	
 	//Class that controls Output to the system
-	public class ConsoleApp_output:SystemInterface {
+	public class ConsoleApp_output:SystemInterface, 
+	I_layoutRenderer {
 
 		//constructor
 		public ConsoleApp_output (MauronConsole console) {
@@ -39,5 +41,11 @@ namespace MauronAlpha.ConsoleApp {
 			return this;
 		}
 		#endregion
+
+
+		public I_layoutRenderer DrawRegions (System.Collections.Generic.ICollection<string> regions, I_layoutModel layout) {
+			Clear();
+			return this;
+		}
 	}
 }

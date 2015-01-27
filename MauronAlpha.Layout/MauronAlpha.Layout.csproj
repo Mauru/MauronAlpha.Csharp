@@ -43,6 +43,8 @@
     <Compile Include="Layout2d\Collections\Layout2d_unitCollection.cs" />
     <Compile Include="Layout2d\Context\Layout2d_context.cs" />
     <Compile Include="Layout2d\Interfaces\I_layoutController.cs" />
+    <Compile Include="Layout2d\Interfaces\I_layoutModel.cs" />
+    <Compile Include="Layout2d\Interfaces\I_layoutRenderer.cs" />
     <Compile Include="Layout2d\Interfaces\I_layoutUnit.cs" />
     <Compile Include="Layout2d\Layout2d_component.cs" />
     <Compile Include="Layout2d\Position\Layout2d_size.cs" />

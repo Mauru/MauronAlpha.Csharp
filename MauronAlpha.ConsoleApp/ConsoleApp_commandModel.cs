@@ -93,6 +93,8 @@ namespace MauronAlpha.ConsoleApp {
 		private I_consoleData DATA_console;
 		public I_consoleData ContentModel {
 			get {
+				if(DATA_console == null)
+					DATA_console = new ConsoleApp_data();
 				return DATA_console;
 			}
 		}
@@ -122,7 +124,7 @@ namespace MauronAlpha.ConsoleApp {
 		}
 
 		public ConsoleApp_commandModel AppendToSequence( KeyPress key ){
-			DATA_console.AppendToSequence( key );
+			ContentModel.AppendToSequence(key);
 			return this;
 		}
 

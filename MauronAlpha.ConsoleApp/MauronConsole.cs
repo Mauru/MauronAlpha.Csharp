@@ -44,6 +44,8 @@ namespace MauronAlpha.ConsoleApp {
 
 			//5: Define the Command-Model for the Console
 			ConsoleApp_commandModel model = new ConsoleApp_commandModel();
+
+			LAYOUT_console.RenderWith( OUTPUT_console );
 		}
 
 		//State of the Program
@@ -111,8 +113,8 @@ namespace MauronAlpha.ConsoleApp {
 		}
 
 		//Outputs
-		private ConsoleApp_output OUTPUT_console;
-		public ConsoleApp_output Output {
+		private I_layoutRenderer OUTPUT_console;
+		public I_layoutRenderer Output {
 			get {
 				if( OUTPUT_console==null ) {
 					OUTPUT_console=new ConsoleApp_output(this);
@@ -127,6 +129,7 @@ namespace MauronAlpha.ConsoleApp {
 			return new ProjectComponent_statusCode(this);
 		}
 
+		//
 
 	}
 
