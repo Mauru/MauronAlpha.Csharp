@@ -54,13 +54,8 @@ namespace MauronAlpha.ConsoleApp {
 			Vector2d CaretEnd = source.Context.Size.AsVector;
 
 			string output = "";
-
-			while(CaretPosition.CompareTo(CaretEnd) < 0){
-				
-				
-
-
-			}
+			ConsoleLayout_header header = (ConsoleLayout_header) layout.Member("header");
+			
 
 			return this;
 		}

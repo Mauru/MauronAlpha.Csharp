@@ -3,15 +3,18 @@ using System;
 using MauronAlpha.HandlingData;
 using MauronAlpha.HandlingErrors;
 
+using MauronAlpha.Text.Interfaces;
 using MauronAlpha.Text.Context;
 using MauronAlpha.Text.Collections;
 
 namespace MauronAlpha.Text.Units {
 
 	//A Paragraph in a text
-	public class TextUnit_word : TextComponent_unit, I_textUnit<TextUnit_word> {
+	public class TextUnit_word : TextComponent_unit, 
+	I_textUnit,
+	I_textUnit<TextUnit_word> {
 
-		//constructor
+		//constructors
 		public TextUnit_word (TextUnit_line parent, TextContext context)
 			: base(TextUnitType_word.Instance) {
 			TXT_parent=parent;
@@ -26,36 +29,23 @@ namespace MauronAlpha.Text.Units {
 		//DataTress
 		private MauronCode_dataList<TextUnit_character> DATA_children=new MauronCode_dataList<TextUnit_character>();
 
-		#region Specific to this TextUnit
-			public bool HasWordBreak {
-				get {
-					if( Utility.RangeCompare<TextUnit_character>(DATA_children, 0, 1, Encoding.WordBreaks) ) {
-						return true;	
-					}
-					return false;
-				}
-			}
-		#endregion
-
-		#region Implementing I_textUnit
-
-		//Representation as string
-		public string AsString {
+		//Booleans
+		public bool Equals(I_textUnit<TextUnit_word> other) {
+			//1: Children
+			if(!DATA_children.Equals(other.Children))
+				return false;
+			if(Context.Equals(other.Context))
+				return false;
+			return true;
+		}
+		public bool HasWordBreak {
 			get {
-				if( IsEmpty ) {
-					return null;
+				if( Utility.RangeCompare<TextUnit_character>(DATA_children, 0, 1, Encoding.WordBreaks) ) {
+					return true;	
 				}
-				string result="";
-				foreach( TextUnit_character unit in DATA_children ) {
-					result+=unit.AsString;
-				}
-				return result;
+				return false;
 			}
 		}
-		//!Inherited(base) UnitType
-
-		#region Boolean Checks
-
 		public bool IsEmpty {
 			get {
 				if( DATA_children.Count==0 )
@@ -66,11 +56,7 @@ namespace MauronAlpha.Text.Units {
 				return false;
 			}
 		}
-		//!Inherited(base) IsReadOnly
-		public TextUnit_word SetIsReadOnly (bool b_isReadOnly) {
-			B_isReadOnly=b_isReadOnly;
-			return this;
-		}
+
 		public override bool IsFirstChild {
 			get { return Parent.FirstChild.Context.Equals(Context); }
 		}
@@ -103,14 +89,31 @@ namespace MauronAlpha.Text.Units {
 				return false;
 			}
 		}
-		//!Inherited(base) HasLimit
-		//!Inherited(base) HasReachedLimit
 
-		#endregion
+		//As String
+		public string AsString {
+			get {
+				if( IsEmpty ) {
+					return null;
+				}
+				string result="";
+				foreach( TextUnit_character unit in DATA_children ) {
+					result+=unit.AsString;
+				}
+				return result;
+			}
+		}
+		//!Inherited(base) UnitType
+
+		//Methods
+		public TextUnit_word SetIsReadOnly (bool b_isReadOnly) {
+			B_isReadOnly=b_isReadOnly;
+			return this;
+		}
 
 		//!Inherited(base) Context
 
-		#region INT queries
+		//Int Counters
 		public override int Index {
 			get { return 0; }
 		}
@@ -120,7 +123,8 @@ namespace MauronAlpha.Text.Units {
 				return DATA_children.Count;
 			}
 		}
-		#endregion
+		
+
 
 		#region Instancing, Parents
 		public TextUnit_word Instance {
@@ -212,9 +216,7 @@ namespace MauronAlpha.Text.Units {
 			}
 		}
 
-		#endregion
-
-		#region I_textUnit, IEquatable<>, IEquatable<TextComponent_unit>
+		/* Implemented stuff
 
 		string I_textUnit<TextUnit_word>.AsString {
 			get { return AsString; }
@@ -315,7 +317,7 @@ namespace MauronAlpha.Text.Units {
 			return Equals(other);
 		}
 
-		#endregion
+		*/
 
 	}
 

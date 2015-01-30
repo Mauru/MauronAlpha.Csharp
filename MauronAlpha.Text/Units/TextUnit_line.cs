@@ -3,13 +3,16 @@
 using MauronAlpha.HandlingErrors;
 using MauronAlpha.HandlingData;
 
+using MauronAlpha.Text.Interfaces;
 using MauronAlpha.Text.Utility;
 using MauronAlpha.Text.Context;
 
 namespace MauronAlpha.Text.Units {
 
 	//A line of text
-	public class TextUnit_line : TextComponent_unit,I_textUnit<TextUnit_line> {
+	public class TextUnit_line : TextComponent_unit,
+	I_textUnit,
+	I_textUnit<TextUnit_line> {
 
 		//constructor
 		public TextUnit_line (TextUnit_paragraph parent, TextContext context):base(TextUnitType_line.Instance) {

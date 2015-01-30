@@ -32,6 +32,8 @@ namespace MauronAlpha.Text.Units {
 		protected TextUtility_encoding UTILITY_encoding;
 		public TextUtility_encoding Encoding {
 			get {
+				if(UTILITY_encoding == null)
+					throw NullError("Encoding can not be null!,(Encoding)",this,typeof(TextUtility_encoding));
 				return UTILITY_encoding;
 			}
 		}

@@ -1,0 +1,47 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MauronAlpha.Text.Rework", "MauronAlpha.Text.Rework.csproj", "{FC8F715D-8FA5-4CB7-8866-E2D72747D4AD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MauronAlpha", "..\MauronAlpha\MauronAlpha.csproj", "{6A046817-9F14-4781-97C9-F89FEBC2097B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MauronAlpha.Colors", "..\MauronAlpha.Color\MauronAlpha.Colors.csproj", "{07CAC8B6-0B7B-412D-A4BF-86E7B86B3826}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MauronAlpha.Fonts", "..\MauronAlpha.Fonts\MauronAlpha.Fonts.csproj", "{D484DF06-76D6-4B93-9101-B053C8B4E663}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		DontCompile|Any CPU = DontCompile|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FC8F715D-8FA5-4CB7-8866-E2D72747D4AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FC8F715D-8FA5-4CB7-8866-E2D72747D4AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FC8F715D-8FA5-4CB7-8866-E2D72747D4AD}.DontCompile|Any CPU.ActiveCfg = Debug|Any CPU
+		{FC8F715D-8FA5-4CB7-8866-E2D72747D4AD}.DontCompile|Any CPU.Build.0 = Debug|Any CPU
+		{FC8F715D-8FA5-4CB7-8866-E2D72747D4AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FC8F715D-8FA5-4CB7-8866-E2D72747D4AD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6A046817-9F14-4781-97C9-F89FEBC2097B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6A046817-9F14-4781-97C9-F89FEBC2097B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6A046817-9F14-4781-97C9-F89FEBC2097B}.DontCompile|Any CPU.ActiveCfg = DontCompile|Any CPU
+		{6A046817-9F14-4781-97C9-F89FEBC2097B}.DontCompile|Any CPU.Build.0 = DontCompile|Any CPU
+		{6A046817-9F14-4781-97C9-F89FEBC2097B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6A046817-9F14-4781-97C9-F89FEBC2097B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{07CAC8B6-0B7B-412D-A4BF-86E7B86B3826}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{07CAC8B6-0B7B-412D-A4BF-86E7B86B3826}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{07CAC8B6-0B7B-412D-A4BF-86E7B86B3826}.DontCompile|Any CPU.ActiveCfg = Debug|Any CPU
+		{07CAC8B6-0B7B-412D-A4BF-86E7B86B3826}.DontCompile|Any CPU.Build.0 = Debug|Any CPU
+		{07CAC8B6-0B7B-412D-A4BF-86E7B86B3826}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{07CAC8B6-0B7B-412D-A4BF-86E7B86B3826}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D484DF06-76D6-4B93-9101-B053C8B4E663}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D484DF06-76D6-4B93-9101-B053C8B4E663}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D484DF06-76D6-4B93-9101-B053C8B4E663}.DontCompile|Any CPU.ActiveCfg = Debug|Any CPU
+		{D484DF06-76D6-4B93-9101-B053C8B4E663}.DontCompile|Any CPU.Build.0 = Debug|Any CPU
+		{D484DF06-76D6-4B93-9101-B053C8B4E663}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D484DF06-76D6-4B93-9101-B053C8B4E663}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

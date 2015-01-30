@@ -3,15 +3,15 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{8491848C-470B-4652-AEAE-547EAA8F2AD9}</ProjectGuid>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{FC8F715D-8FA5-4CB7-8866-E2D72747D4AD}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>MauronAlpha.Text</RootNamespace>
-    <AssemblyName>MauronAlpha.Text</AssemblyName>
+    <RootNamespace>MauronAlpha.Text.Rework</RootNamespace>
+    <AssemblyName>MauronAlpha.Text.Rework</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <ProductVersion>12.0.0</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -40,37 +40,30 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Collections\TextUnit_collection.cs" />
-    <Compile Include="Collections\TextUnit_neighbors.cs" />
-    <Compile Include="Context\TextComponent_context.cs" />
-    <Compile Include="Context\TextContextCount.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Context\TextContextException.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Context\TextContextResult.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Context\TextContextValidator.cs">
-      <SubType>Code</SubType>
-    </Compile>
+    <Compile Include="Context\TextContext.cs" />
     <Compile Include="Interfaces\I_textEncoding.cs" />
     <Compile Include="Interfaces\I_textUnit.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Style\public class TextStyle_transform.cs" />
+    <Compile Include="Style\TextStyle.cs" />
     <Compile Include="TextComponent.cs" />
-    <Compile Include="Context\TextContext.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Units\TextComponent_unit.cs" />
     <Compile Include="Units\TextUnitType.cs" />
-    <Compile Include="Units\TextUnit_character.cs" />
-    <Compile Include="Units\TextUnit_line.cs" />
-    <Compile Include="Units\TextUnit_paragraph.cs" />
-    <Compile Include="Units\TextUnit_text.cs" />
-    <Compile Include="Units\TextUnit_word.cs" />
-    <Compile Include="Utility\TextEncoding_UTF8.cs" />
-    <Compile Include="Utility\TextUtility.cs" />
-    <Compile Include="Utility\TextUtility_encoding.cs" />
-    <Compile Include="Utility\TextUtility_text.cs" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\MauronAlpha.Color\MauronAlpha.Colors.csproj">
+      <Project>{07CAC8B6-0B7B-412D-A4BF-86E7B86B3826}</Project>
+      <Name>MauronAlpha.Colors</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MauronAlpha.Fonts\MauronAlpha.Fonts.csproj">
+      <Project>{D484DF06-76D6-4B93-9101-B053C8B4E663}</Project>
+      <Name>MauronAlpha.Fonts</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MauronAlpha\MauronAlpha.csproj">
+      <Project>{6A046817-9F14-4781-97C9-F89FEBC2097B}</Project>
+      <Name>MauronAlpha</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
@@ -80,14 +73,4 @@
   <Target Name="AfterBuild">
   </Target>
   -->
-  <ItemGroup>
-    <ProjectReference Include="..\MauronAlpha.Events\MauronAlpha.Events.csproj">
-      <Project>{425A4B94-31DF-4569-B68C-EDEAF82163A7}</Project>
-      <Name>MauronAlpha.Events</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\MauronAlpha\MauronAlpha.csproj">
-      <Project>{6A046817-9F14-4781-97C9-F89FEBC2097B}</Project>
-      <Name>MauronAlpha</Name>
-    </ProjectReference>
-  </ItemGroup>
 </Project>

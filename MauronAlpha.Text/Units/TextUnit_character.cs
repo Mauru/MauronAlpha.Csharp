@@ -3,13 +3,16 @@
 using MauronAlpha.HandlingData;
 using MauronAlpha.HandlingErrors;
 
+using MauronAlpha.Text.Interfaces;
 using MauronAlpha.Text.Context;
 using MauronAlpha.Text.Collections;
 
 namespace MauronAlpha.Text.Units {
 
 	//A Paragraph in a text
-	public class TextUnit_character : TextComponent_unit, I_textUnit<TextUnit_character> {
+	public class TextUnit_character : TextComponent_unit,
+	I_textUnit,
+	I_textUnit<TextUnit_character> {
 
 		//constructor
 		public TextUnit_character (TextUnit_word parent, TextContext context)

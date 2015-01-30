@@ -3,15 +3,21 @@
 using MauronAlpha.HandlingData;
 using MauronAlpha.HandlingErrors;
 
+using MauronAlpha.Text.Interfaces;
 using MauronAlpha.Text.Context;
 using MauronAlpha.Text.Collections;
 
 namespace MauronAlpha.Text.Units {
 
 	//A Paragraph in a text
-	public class TextUnit_paragraph:TextComponent_unit,I_textUnit<TextUnit_paragraph> {
+	public class TextUnit_paragraph : TextComponent_unit,
+	I_textUnit,
+	I_textUnit<TextUnit_paragraph> {
 
 		//constructor
+		public TextUnit_paragraph (TextUnit_text parent):base(TextUnitType_paragraph.Instance) {
+			TXT_parent = parent;
+		}
 		public TextUnit_paragraph (TextUnit_text parent, TextContext context)
 			: base(TextUnitType_paragraph.Instance) {
 			TXT_parent=parent;
@@ -23,10 +29,9 @@ namespace MauronAlpha.Text.Units {
 			DATA_children = children.Instance;			
 		}
 
-		//DataTress
-		private MauronCode_dataList<TextUnit_line> DATA_children = new MauronCode_dataList<TextUnit_line>();
+		//Children
+		
 
-		#region Implementing I_textUnit
 
 		//Representation as string
 		public string AsString {
@@ -43,8 +48,7 @@ namespace MauronAlpha.Text.Units {
 		}
 		//!Inherited(base) UnitType
 
-		#region Boolean Checks
-
+		//Booleans
 		public bool IsEmpty {
 			get {
 				if( DATA_children.Count==0 )
@@ -100,11 +104,9 @@ namespace MauronAlpha.Text.Units {
 		//!Inherited(base) HasLimit
 		//!Inherited(base) HasReachedLimit
 
-		#endregion
-
 		//!Inherited(base) Context
 
-		#region INT queries
+		//Counters
 		public override int Index {
 			get { return 0; }
 		}
@@ -114,14 +116,8 @@ namespace MauronAlpha.Text.Units {
 				return DATA_children.Count;
 			}
 		}
-		#endregion
 
-		#region Instancing, Parents
-		public TextUnit_paragraph Instance {
-			get {
-				return new TextUnit_paragraph(Parent, Context, DATA_children);
-			}
-		}
+		//Parent (TextUnit_text)
 		private TextUnit_text TXT_parent;
 		public TextUnit_text Parent {
 			get { return TXT_parent; }
@@ -129,15 +125,15 @@ namespace MauronAlpha.Text.Units {
 		public TextUnit_text Source {
 			get { return TXT_parent; }
 		}
-		#endregion
 
-		#region Children
-
+		//Children (TextUnit_line)
+		private MauronCode_dataList<TextUnit_line> DATA_children = new MauronCode_dataList<TextUnit_line>();
 		public MauronCode_dataList<TextUnit_line> Children {
 			get {
 				return DATA_children.Instance.SetIsReadOnly(true);
 			}
 		}
+		
 		public TextUnit_line FirstChild {
 			get {
 				if( ChildCount<1 ) {
@@ -179,8 +175,7 @@ namespace MauronAlpha.Text.Units {
 			return DATA_children.Value(index);
 		}		
 		
-		#endregion
-
+		//Neightbors
 		public MauronCode_dataIndex<TextUnit_paragraph> Neighbors {
 			get {
 				MauronCode_dataIndex<TextUnit_paragraph> result = new MauronCode_dataIndex<TextUnit_paragraph>().SetIsReadOnly(true);
@@ -195,6 +190,15 @@ namespace MauronAlpha.Text.Units {
 			}
 		}
 
+		//Methods
+		public TextUnit_paragraph Instance {
+			get {
+				return new TextUnit_paragraph(Parent, Context, DATA_children);
+			}
+		}
+
+	
+		//Character Indexers
 		public override TextUnit_character FirstCharacter {
 			get {
 				return FirstChild.FirstCharacter;
@@ -205,8 +209,6 @@ namespace MauronAlpha.Text.Units {
 				return LastChild.LastCharacter;
 			}
 		}
-
-		#endregion
 
 		#region I_textUnit, IEquatable<>, IEquatable<TextComponent_unit>
 

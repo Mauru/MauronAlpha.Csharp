@@ -3,15 +3,17 @@
 using MauronAlpha.HandlingErrors;
 using MauronAlpha.HandlingData;
 
+using MauronAlpha.Text.Interfaces;
 using MauronAlpha.Text.Utility;
 using MauronAlpha.Text.Context;
 
 namespace MauronAlpha.Text.Units {
 
 	//A complete text
-	public class TextUnit_text : TextComponent_unit, I_textUnit<TextUnit_text> {
+	public class TextUnit_text : TextComponent_unit, I_textUnit, I_textUnit<TextUnit_text> {
 
 		//constructor
+		public TextUnit_text():base(TextUnitType_text.Instance) {}
 		public TextUnit_text(TextUtility_text utility, TextUtility_encoding encoding):base(TextUnitType_text.Instance){
 			UTILITY_text = utility;
 			UTILITY_encoding = encoding;
@@ -25,7 +27,6 @@ namespace MauronAlpha.Text.Units {
 		//Data
 		private MauronCode_dataList<TextUnit_paragraph> DATA_children = new MauronCode_dataList<TextUnit_paragraph>();
 		
-		#region implementing I_textUnit
 		
 		//As String
 		public string AsString {
@@ -46,8 +47,7 @@ namespace MauronAlpha.Text.Units {
 		}
 		//!Inherited(base) UnitType
 
-		#region Boolean checks
-
+		//Booleans
 		public bool IsEmpty {
 			get {
 				if(DATA_children.Count==0)
@@ -102,12 +102,9 @@ namespace MauronAlpha.Text.Units {
 		}
 		//!Inherited(base) HasLimit
 		//!Inherited(base) HasReachedLimit
-
-		#endregion
-
 		//!Inherited(base) Context
 
-		#region INT queries
+		//Int Counters
 		public override int Index {
 			get { return 0; }
 		}
@@ -117,9 +114,8 @@ namespace MauronAlpha.Text.Units {
 				return DATA_children.Count;
 			}
 		}
-		#endregion
-
-		#region Instancing, Parents
+		
+		//Methods
 		public TextUnit_text Instance {
 			get {
 				return new TextUnit_text(Utility,Encoding,DATA_children);
@@ -136,9 +132,25 @@ namespace MauronAlpha.Text.Units {
 			}
 		}
 		//!Inherited Source
-		#endregion
+		public TextUnit_text SetText(string text) {
+			if(IsReadOnly)
+				throw Error("Is protected!,(SetText)", this, ErrorType_protected.Instance);
+			DATA_children = new MauronCode_dataList<TextUnit_paragraph>();
 
-		#region Children
+			if(!HasEncoding)
+				SetEncoding(new TextEncoding_UTF8());
+
+			Encoding.ParseStringToText(text,this);
+			return this;
+		}
+		public TextUnit_text Clear() {
+			if(IsReadOnly)
+				throw Error("Is protected!,(Clear)",this, ErrorType_protected.Instance);
+			DATA_children = new MauronCode_dataList<TextUnit_paragraph>();
+			return this;
+		}
+	
+		//Children (Paragraph)
 		public MauronCode_dataList<TextUnit_paragraph> Children {
 			get {
 				return DATA_children.Instance.SetIsReadOnly(true);
@@ -184,14 +196,15 @@ namespace MauronAlpha.Text.Units {
 			}
 			return DATA_children.Value(index);
 		}
-		#endregion
-
+		
+		//Neighbors
 		public MauronCode_dataIndex<TextUnit_text> Neighbors {
 			get {
 				return new MauronCode_dataIndex<TextUnit_text>().SetIsReadOnly(true);
 			}
 		}
 
+		//Characters
 		public override TextUnit_character FirstCharacter {
 			get {
 				return FirstChild.FirstCharacter;
@@ -203,7 +216,7 @@ namespace MauronAlpha.Text.Units {
 			}
 		}
 
-		#endregion
+
 
 		#region I_textUnit, IEquatable<>, IEquatable<TextComponent_unit>
 
