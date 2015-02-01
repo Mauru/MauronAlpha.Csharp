@@ -41,7 +41,7 @@ namespace MauronAlpha.Text.Units {
 			return this;
 		}
 
-		private DATA_context;
+		private TextContext DATA_context;
 		public TextContext Context {
 			get { 
 				if(DATA_context == null)
@@ -50,28 +50,29 @@ namespace MauronAlpha.Text.Units {
 			 }
 		}
 
-		public string AsString {
-			get { throw new NotImplementedException(); }
-		}
+		public abstract string AsString { get; }
 
-		public bool IsEmpty {
-			get { throw new NotImplementedException(); }
-		}
+		public abstract bool IsEmpty { get; }
 
 		public bool IsParent {
-			get { throw new NotImplementedException(); }
+			get { 
+				if(!CanHaveChildren)
+					return false;
+				return (Children.Count>0);					
+			}
 		}
-
 		public bool IsChild {
-			get { throw new NotImplementedException(); }
+			get { 
+				if(!CanHaveParent)
+					return false;
+				return (UNIT_parent == null);
+			}
 		}
-
 		public bool CanHaveChildren {
-			get { throw new NotImplementedException(); }
+			get { return SUB_unitType.CanHaveChildren; }
 		}
-
 		public bool CanHaveParent {
-			get { throw new NotImplementedException(); }
+			get { return SUB_unitType.CanHaveParent; }
 		}
 
 		public System.Collections.Generic.ICollection<I_textUnit> Children {

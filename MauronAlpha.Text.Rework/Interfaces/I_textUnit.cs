@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 
 using MauronAlpha.Interfaces;
+using MauronAlpha.HandlingData;
 using MauronAlpha.Text.Units;
 using MauronAlpha.Text.Context;
 
@@ -24,8 +25,8 @@ namespace MauronAlpha.Text.Interfaces {
 		bool CanHaveChildren { get; }
 		bool CanHaveParent { get; }
 		
-		ICollection<I_textUnit> Children { get; }
-		ICollection<I_textUnit> Neighbors { get; }
+		MauronCode_dataList<I_textUnit> Children { get; }
+		MauronCode_dataList<I_textUnit> Neighbors { get; }
 
 		I_textUnit Parent { get; }
 

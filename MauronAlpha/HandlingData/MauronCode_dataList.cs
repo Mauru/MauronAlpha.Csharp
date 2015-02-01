@@ -8,7 +8,11 @@ using MauronAlpha.HandlingData.Sorting;
 namespace MauronAlpha.HandlingData {
 
 	//A list of numerically sorted data
-	public class MauronCode_dataList<T>:MauronCode_dataObject, ICollection<T>, IEnumerable<T>, I_dataCollection<int,T>, IList<T> {
+	public class MauronCode_dataList<T> : MauronCode_dataObject,
+	ICollection<T>,
+	IEnumerable<T>,
+	I_dataCollection<int,T>,
+	IList<T> {
 
 		#region Constructors
 		public MauronCode_dataList():base(DataType_dataList.Instance) {}
@@ -455,6 +459,7 @@ namespace MauronAlpha.HandlingData {
 			}
 		}
 		#endregion
+	
 	}
 
 	//A Description of the DataType
