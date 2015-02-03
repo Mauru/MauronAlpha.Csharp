@@ -1,12 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 
+using MauronAlpha.Interfaces;
 using MauronAlpha.HandlingErrors;
 
 namespace MauronAlpha.HandlingData {
 
 	//A data index is a numerical index of generics - it does not reindex its element like dataList
-	public class MauronCode_dataIndex<T>:MauronCode_dataObject, ICollection<T> {
+	public class MauronCode_dataIndex<T>:MauronCode_dataObject, 
+	ICollection<T>,
+	IEquatable<MauronCode_dataIndex<T>>,
+	I_protectable<MauronCode_dataIndex<T>> {
 		
 		//constructor
 		public MauronCode_dataIndex():base(DataType_dataIndex.Instance) {}
@@ -15,58 +19,6 @@ namespace MauronAlpha.HandlingData {
 
 		//The data
 		private MauronCode_dataTree<long,T> DATA_values = new MauronCode_dataTree<long,T>(MauronCode_dataIndex<T>.EmptyKeySet);
-
-		#region Custom DataObject functions
-
-		//Set a value
-		public ICollection<T> Values {
-			get {
-				return DATA_values.Values;
-			}
-		}
-		public T Value(long key) {
-			if( !DATA_values.IsSet(key) ) {
-				throw NullError("Value not Set!,{"+key+"},(Value),",this,typeof(T));
-			}
-			return DATA_values.Value(key);
-		}
-		/// <summary>
-		/// Sets a Value by Key
-		/// </summary>
-		/// <param name="key">the key to set</param>
-		/// <param name="value">the value to set</param>
-		/// <remarks>TODO: This operation SHOULD be volatile.</remarks>
-		/// <remarks>You should theoretically lock this object while expanding...</remarks>
-		/// <returns>returns self</returns>
-		public MauronCode_dataIndex<T> SetValue(long key, T value){
-			if(IsReadOnly)
-				throw Error("Is ReadOnly!,(SetValue)",this,ErrorType_protected.Instance);
-
-			if(!DATA_values.ContainsKey(key))
-				DATA_values.AddKey(key);
-
-			DATA_values.SetValue(key,value);
-
-			return this;
-		}
-
-		//is the index ReadOnly
-		private bool B_isReadOnly = false;
-		public bool IsReadOnly { get { return B_isReadOnly; } }
-		public MauronCode_dataIndex<T> SetIsReadOnly(bool state) {
-			B_isReadOnly=state;
-			return this;
-		}
-		public bool IsEmpty {
-			get {
-				foreach(long key in Keys){
-					if(ContainsValueAtKey(key)) {
-						return true;
-					}
-				}
-				return false;
-			}
-		}
 
 		//get a list of all keys (remember that keys on dataTrees can be unreliable!, use / implement validKeys for better precision)
 		public MauronCode_dataList<long> KeysAsList {
@@ -81,13 +33,61 @@ namespace MauronAlpha.HandlingData {
 				return DATA_values.ValidKeys;
 			}
 		}
-
-		//Does data contain a key
-		public bool ContainsKey(long key){
-			return DATA_values.ContainsKey(key);
+		public ICollection<long> InvalidKeys {
+			get {
+				return DATA_values.InvalidKeys;
+			}
+		}
+		//The keys of Data
+		public ICollection<long> Keys { 
+			get {
+				return DATA_values.Keys;
+			}
 		}
 
-		//Does data contain the specified object
+		//ICollection<T> Values
+		public ICollection<T> Values {
+			get {
+				return DATA_values.Values;
+			}
+		}
+
+		//Booleans
+		public bool Equals(MauronCode_dataIndex<T> other) {
+			MauronCode_dataList<long> otherKeys = new MauronCode_dataList<long>(other.Keys).SortWith(Delegate_sortKeys);
+			MauronCode_dataList<long> myKeys = new MauronCode_dataList<long>(Keys).SortWith(Delegate_sortKeys);
+			if(!myKeys.Equals(otherKeys))
+				return false;
+			foreach(long key in myKeys){
+				bool state = ContainsValueAtKey(key);
+				if(state!=other.ContainsValueAtKey(key))
+					return false;
+				if(state) {
+					T myValue = Value(key);
+					T otherValue = other.Value(key);
+					if(!myValue.Equals(otherValue))
+						return false;
+				}
+			}
+			return true;
+		}
+		private bool B_isReadOnly=false;
+		public bool IsReadOnly { 
+			get { return B_isReadOnly; } 
+		}
+		public bool IsEmpty {
+			get {
+				foreach( long key in Keys ) {
+					if( ContainsValueAtKey(key) ) {
+						return true;
+					}
+				}
+				return false;
+			}
+		}
+		public bool ContainsKey (long key) {
+			return DATA_values.ContainsKey(key);
+		}
 		public bool ContainsValue(T item){
 			foreach(T candidate in DATA_values.ValidValues){
 				if(candidate.Equals(item)){
@@ -96,33 +96,60 @@ namespace MauronAlpha.HandlingData {
 			}
 			return false;
 		}
-
 		public bool ContainsValueAtKey(long key) {
 			return DATA_values.IsSet(key);
 		}
 
-		//The keys of Data
-		public ICollection<long> Keys { get {
-			return DATA_values.Keys;
-		} }
-
-		//The number of T in collection
-		public long CountValidValues {
-			get {
-				return DATA_values.CountValidValues;
-			}
-		}
-		public long CountKeys {
-			get {
-				return DATA_values.CountKeys;
-			}
-		}
-		public long CountValidKeys {
-			get {
-				return DATA_values.CountValidKeys;
-			}
+		//Methods
+		public MauronCode_dataIndex<T> SetIsReadOnly (bool state) {
+			B_isReadOnly=state;
+			return this;
 		}
 
+		//Modifiers: Add
+		/// <summary>
+		/// Sets a Value by Key
+		/// </summary>
+		/// <param name="key">the key to set</param>
+		/// <param name="value">the value to set</param>
+		/// <remarks>TODO: This operation SHOULD be volatile.</remarks>
+		/// <remarks>You should theoretically lock this object while expanding...</remarks>
+		/// <returns>returns self</returns>
+		public MauronCode_dataIndex<T> SetValue (long key, T value) {
+			if( IsReadOnly )
+				throw Error("Is ReadOnly!,(SetValue)", this, ErrorType_protected.Instance);
+
+			if( !DATA_values.ContainsKey(key) )
+				DATA_values.AddKey(key);
+
+			DATA_values.SetValue(key, value);
+
+			return this;
+		}
+		public MauronCode_dataIndex<T> Prepend(MauronCode_dataList<T> list) {
+			long offset = FirstIndex;
+			for(int n=list.Count-1; n>=0; n--){
+				long newIndex = offset-1;
+				SetValue(newIndex,list.Value(n));
+			}
+			return this;
+		}
+		public MauronCode_dataIndex<T> Append(MauronCode_dataList<T> list){
+			long offset = LastIndex;
+			for(int n=0; n<list.Count; n++){
+				long newIndex = offset+1;
+				SetValue(newIndex,list.Value(n));
+			}
+			return this;
+		}
+		
+		//Modifiers: Remove
+		public MauronCode_dataIndex<T> Clear() {
+			if( IsReadOnly )
+				throw Error("Is Read Only!,(Clear)", this, ErrorType_protected.Instance);
+			DATA_values=new MauronCode_dataTree<long,T>(EmptyKeySet);
+			return this;
+		}
 		/// <summary>
 		/// Removes a value by key
 		/// </summary>
@@ -140,16 +167,30 @@ namespace MauronAlpha.HandlingData {
 			return this;
 		}
 
-		//Clear
-		public MauronCode_dataIndex<T> Clear() {
-			if( IsReadOnly ) {
-				throw Error("Is Read Only!,(Clear)", this, ErrorType_protected.Instance);
+		//Queries: Single
+		public T Value (long key) {
+			if( !DATA_values.IsSet(key) ) {
+				throw NullError("Value not Set!,{"+key+"},(Value),", this, typeof(T));
 			}
-			DATA_values=new MauronCode_dataTree<long,T>(EmptyKeySet);
-			return this;
+			return DATA_values.Value(key);
 		}
 
-		#region Specific to this class
+		//Indexers (long)
+		public long CountValidValues {
+			get {
+				return DATA_values.CountValidValues;
+			}
+		}
+		public long CountKeys {
+			get {
+				return DATA_values.CountKeys;
+			}
+		}
+		public long CountValidKeys {
+			get {
+				return DATA_values.CountValidKeys;
+			}
+		}
 
 		public long NextIndex { 
 			get {
@@ -167,54 +208,47 @@ namespace MauronAlpha.HandlingData {
 				return(DATA_values.Keys.FirstElement);
 			}
 		}
-		#endregion
-
-		#endregion
 	
-		#region ICollection<T>
-
+		//ICollection<T> Members
 		void ICollection<T>.Add (T item) {
 			SetValue(NextIndex,item);
 		}
-
 		void ICollection<T>.Clear ( ) {
 			Clear();
+		}
+		void ICollection<T>.CopyTo (T[] array, int arrayIndex) {
+			int index=arrayIndex;
+			foreach( T obj in Values ) {
+				array[index]=obj;
+				index++;
+			}
 		}
 
 		bool ICollection<T>.Contains (T item) {
 			return ContainsValue(item);
 		}
-
-		void ICollection<T>.CopyTo (T[] array, int arrayIndex) {
-			int index=arrayIndex;
-			foreach(T obj in Values){
-				array[index]=obj;
-				index++;
-			}
+		bool ICollection<T>.Remove (T item) {
+			DATA_values.UnsetByValue(item);
+			return true;
 		}
 
 		int ICollection<T>.Count {
 			get { return Convert.ToInt32(CountValidValues); }
 		}
 
-		bool ICollection<T>.IsReadOnly {
-			get { return IsReadOnly; }
-		}
-
-		bool ICollection<T>.Remove (T item) {
-			DATA_values.UnsetByValue(item);
-			return true;
-		}
-
 		IEnumerator<T> IEnumerable<T>.GetEnumerator ( ) {
 			return DATA_values.ValidValues.GetEnumerator();
 		}
-
-		#endregion
-
 		System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator ( ) {
 			return DATA_values.ValidValues.GetEnumerator();
 		}
+
+		//Delegates
+		private static int Delegate_sortKeys(long source, long other) {
+			return source.CompareTo(other);
+		}
+
+
 	}
 
 	//A description of the dataType

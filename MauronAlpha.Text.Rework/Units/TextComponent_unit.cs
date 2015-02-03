@@ -1,8 +1,11 @@
 ﻿using System;
 
+using MauronAlpha.HandlingData;
+
 using MauronAlpha.Text;
 using MauronAlpha.Text.Interfaces;
 using MauronAlpha.Text.Context;
+using MauronAlpha.Text.Encoding;
 
 namespace MauronAlpha.Text.Units {
 
@@ -26,7 +29,15 @@ namespace MauronAlpha.Text.Units {
 
 		//Booleans
 		public bool Equals (I_textUnit other) {
-			throw new NotImplementedException();
+			if(!SUB_unitType.Equals(other.UnitType))
+				return false;
+			if(IsParent!=other.IsParent)
+				return false;
+			if(!Context.Equals(other.Context))
+				return false;
+			if(IsChild!=other.IsChild)
+				return false;
+			return DATA_children.Equals(other.Children);
 		}
 		private bool B_isReadOnly = false;
 		public bool IsReadOnly {
@@ -34,38 +45,19 @@ namespace MauronAlpha.Text.Units {
 				return B_isReadOnly;
 			}
 		}
-
-		//Methods
-		public I_textUnit SetIsReadOnly(bool state) {
-			B_isReadOnly = state;
-			return this;
-		}
-
-		private TextContext DATA_context;
-		public TextContext Context {
-			get { 
-				if(DATA_context == null)
-					DATA_context = new TextContext();
-				return DATA_context;	
-			 }
-		}
-
-		public abstract string AsString { get; }
-
 		public abstract bool IsEmpty { get; }
-
 		public bool IsParent {
-			get { 
-				if(!CanHaveChildren)
+			get {
+				if( !CanHaveChildren )
 					return false;
-				return (Children.Count>0);					
+				return (Children.Count>0);
 			}
 		}
 		public bool IsChild {
-			get { 
-				if(!CanHaveParent)
+			get {
+				if( !CanHaveParent )
 					return false;
-				return (UNIT_parent == null);
+				return (UNIT_parent==null);
 			}
 		}
 		public bool CanHaveChildren {
@@ -75,20 +67,75 @@ namespace MauronAlpha.Text.Units {
 			get { return SUB_unitType.CanHaveParent; }
 		}
 
-		public System.Collections.Generic.ICollection<I_textUnit> Children {
-			get { throw new NotImplementedException(); }
+		//Methods
+		public I_textUnit SetIsReadOnly(bool state) {
+			B_isReadOnly = state;
+			return this;
 		}
 
-		public System.Collections.Generic.ICollection<I_textUnit> Neighbors {
-			get { throw new NotImplementedException(); }
+		//Context
+		private TextContext DATA_context;
+		public TextContext Context {
+			get { 
+				if(DATA_context == null)
+					DATA_context = new TextContext();
+				return DATA_context;	
+			 }
 		}
 
+		//As String
+		public abstract string AsString { get; }
+
+		//Children
+		protected MauronCode_dataList<I_textUnit> DATA_children;
+		public MauronCode_dataList<I_textUnit> Children {
+			get { 
+				if(DATA_children == null)
+					DATA_children = new MauronCode_dataList<I_textUnit>();
+				return DATA_children;
+			}
+		}
+
+		//Neighbors
+		public MauronCode_dataIndex<I_textUnit> Neighbors {
+			get {
+				MauronCode_dataIndex<I_textUnit> result = new MauronCode_dataIndex<I_textUnit>().SetValue(0,this);
+				if(!IsChild||!CanHaveParent)
+					return result.SetIsReadOnly(true);
+
+				MauronCode_dataList<I_textUnit> children = Parent.Children;
+				int s = children.IndexOf(this);
+				MauronCode_dataList<I_textUnit> left;
+				if(s > 0) {
+					left = children.Range(0, s-1);
+					result.Prepend(left);
+				}
+				if(s < children.Count-1){
+					left = children.Range(s+1, children.Count-1);
+					result.Append(left);
+				}
+				return result;
+			}
+		}
+
+		//Parent
+		protected I_textUnit UNIT_parent;
 		public I_textUnit Parent {
-			get { throw new NotImplementedException(); }
+			get { 
+				if(UNIT_parent == null)
+					throw NullError("Parent is null!,(Parent)",this,typeof(TextComponent_unit));
+				return UNIT_parent;
+			}
 		}
 
+		protected I_textEncoding UTILITY_encoding;
 		public I_textEncoding Encoding {
-			get { throw new NotImplementedException(); }
+			get { 
+				if(UTILITY_encoding==null)
+					UTILITY_encoding = new TextEncoding_UTF8();
+				return UTILITY_encoding;
+			}
 		}
+	
 	}
 }

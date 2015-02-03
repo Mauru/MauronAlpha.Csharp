@@ -14,9 +14,8 @@ namespace MauronAlpha.HandlingData {
 	I_dataCollection<int,T>,
 	IList<T> {
 
-		#region Constructors
+		//Constructors
 		public MauronCode_dataList():base(DataType_dataList.Instance) {}
-
 		// Interpretative constructors
 		public MauronCode_dataList ( T obj)
 			: this() {
@@ -27,8 +26,88 @@ namespace MauronAlpha.HandlingData {
 				AddValue( o );
 			}
 		}
-		#endregion
-		#region Instance of this list (does not instance the objects)
+
+		//The Data
+		private List<T> L_data;
+		public List<T> Data {
+			get { 
+				if (L_data == null)
+					L_data = new List<T>();
+				return L_data;
+			}
+		}
+
+		public T[] AsArray { 
+			get {
+				return L_data.ToArray();
+			}
+		}
+		//Indexes: KeyValuePair
+		public ICollection<KeyValuePair<int, T>> KeyValuePairs {
+			get {
+				KeyValuePair<int, T>[] result=new KeyValuePair<int, T>[Count];
+				foreach( int n in Keys ) {
+					KeyValuePair<int, T> kvp=new KeyValuePair<int, T>(n, Data[n]);
+					result[n]=kvp;
+				}
+				return result;
+			}
+		}
+		//Indexes: Keys
+		public ICollection<int> Keys {
+			get {
+				int[] result=new int[Count];
+				for( int n=0; n<Count; n++ ) {
+					result[n]=n;
+				}
+				return result;
+			}
+		}
+
+		//Booleans
+		public bool Equals (MauronCode_dataList<T> other) {
+			long count=Count;
+			if( count!=other.Count )
+				return false;
+			for( int index=0; index<count; index++ ) {
+				T source=Value(index);
+				T candidate=other.Value(index);
+				if( !source.Equals(candidate) )
+					return false;
+			}
+			return true;
+		}
+		internal bool B_isReadOnly=false;
+		public bool IsReadOnly {
+			get {
+				return B_isReadOnly;
+			}
+		}
+		public bool IsEmpty {
+			get {
+				return Data.Count==0;
+			}
+		} 
+
+		public bool ContainsValue (T obj) {
+			return Data.Contains(obj);
+		}
+		public bool ContainsKey (int key) {
+			return key>=0&&Data.Count>0&&key<Data.Count;
+		}
+
+		//As String
+		public string AsString {
+			get {
+				string result="";
+				foreach( T obj in Data ) {
+					result+=obj.ToString()+',';
+				}
+				return result;
+			}
+		}
+		
+		//Methods
 		public MauronCode_dataList<T> Instance {
 			get {
 				MauronCode_dataList<T> ret=new MauronCode_dataList<T>();
@@ -37,84 +116,40 @@ namespace MauronAlpha.HandlingData {
 				}
 				return this;
 			}
-		}
-		#endregion
-
-		#region The Data
-		private List<T> L_data;
-		public List<T> Data {
-			get { 
-				if (L_data == null) {
-					L_data = new List<T>();
-				}
-				return L_data;
-			}
-		}
-		public T[] AsArray { 
-			get {
-				return L_data.ToArray();
-			}
-		}
-		public MauronCode_dataList<T> SetData(List<T> data) {
-			#region ReadOnly Check
-			if( IsReadOnly ) {
-				throw Error("ReadOnly!,(SetData)", this, ErrorType_protected.Instance);
-			}
-			#endregion
-			L_data = data;
-			return this;
-		}
-		#endregion
-
-		#region ReadOnly
-		internal bool B_isReadOnly=false;
-		public bool IsReadOnly {
-			get {
-				return B_isReadOnly;
-			}
-		}
+		}		
 		public MauronCode_dataList<T> SetIsReadOnly(bool status) {
 			B_isReadOnly=status;
 			return this;
 		}
-		#endregion
-
-		#region Count
-		public int Count {
-			get { return Data.Count; }
-		}
-		#endregion
-
-		#region Check if Values are in Data
-		public bool ContainsValue(T obj) {
-			return Data.Contains(obj);
-		}
-		public bool ContainsKey(int key) {
-			return key >= 0 && Data.Count > 0 && key < Data.Count;
-		}
-		//Is a List empty?
-		public bool IsEmpty {
-			get {
-				return Data.Count == 0;
+		public MauronCode_dataList<T> CopyTo (T[] array, int arrayIndex) {
+			int index=arrayIndex;
+			foreach( T obj in Values ) {
+				array[index]=obj;
+				index++;
 			}
-		} 
-		#endregion
-		
-		#region Perform an action on each element in Data
-		public delegate void Delegate_performEach(T obj);
-		public MauronCode_dataList<T> Each(Delegate_performEach doStuff){
-			foreach(T obj in L_data){
+			return this;
+		}
+
+		//Sorting
+		public MauronCode_dataList<T> SortWith (Sort_quickSort<T>.Comparer comparer) {
+			Sort_quickSort<T> sorter=new Sort_quickSort<T>();
+			sorter.Sort(this, comparer);
+			return this;
+		}
+
+		//Modifiers: Each
+		public MauronCode_dataList<T> Each (Delegate_performEach doStuff) {
+			foreach( T obj in L_data ) {
 				doStuff(obj);
 			}
 			return this;
 		}
-		#endregion
 
-		#region Add Values to Data
-		public MauronCode_dataList<T> Add(T obj) {
+		//Modifiers: Add
+		public MauronCode_dataList<T> Add (T obj) {
 			return AddValue(obj);
 		}
-		public MauronCode_dataList<T> AddValue(T obj) {
+		public MauronCode_dataList<T> AddValue (T obj) {
 			#region ReadOnly Check
 			if( IsReadOnly ) {
 				throw Error("ReadOnly!,(AddValue)", this, ErrorType_protected.Instance);
@@ -122,46 +157,71 @@ namespace MauronAlpha.HandlingData {
 			#endregion
 			return SetValue(NextIndex, obj);
 		}
-		public MauronCode_dataList<T> SetValue(int key, T obj) {
+		public MauronCode_dataList<T> SetValue (int key, T obj) {
 			#region Avoid Invalid Key
-			if( key>=Count||(key==0&&Count==0) ) { 
+			if( key>=Count||(key==0&&Count==0) ) {
 				Data.Add(obj);
 				return this;
 			}
 			#endregion
 			#region Error Check
-			if(!ContainsKey(key)){				
-				throw Error("Invalid Index! {"+key+"},(SetValue)",this, ErrorType_index.Instance);
+			if( !ContainsKey(key) ) {
+				throw Error("Invalid Index! {"+key+"},(SetValue)", this, ErrorType_index.Instance);
 
 			}
 			#endregion
 			Data[key]=obj;
 			return this;
 		}
-		public MauronCode_dataList<T> AddValuesFrom(ICollection<T> collection){
+		public MauronCode_dataList<T> SetData (List<T> data) {
+			#region ReadOnly Check
+			if( IsReadOnly ) {
+				throw Error("ReadOnly!,(SetData)", this, ErrorType_protected.Instance);
+			}
+			#endregion
+			L_data=data;
+			return this;
+		}
+		public MauronCode_dataList<T> SetValues (ICollection<T> values) {
+			#region ReadOnly Check
+			if( IsReadOnly ) {
+				throw Error("ReadOnly!,(SetValues)", this, ErrorType_protected.Instance);
+			}
+			#endregion
+			SetData(new List<T>(values));
+			return this;
+		}
+		public MauronCode_dataList<T> AddValuesFrom (ICollection<T> collection) {
 			#region ReadOnly Check
 			if( IsReadOnly ) {
 				throw Error("ReadOnly!,(AddValuesFrom)", this, ErrorType_protected.Instance);
 			}
 			#endregion
-			foreach(T obj in collection) {
+			foreach( T obj in collection ) {
 				AddValue(obj);
 			}
 			return this;
 		}
-
-		//Add a value at the specified index, shift all other indexes
-		public MauronCode_dataList<T> InsertValueAt(int key, T obj){
+		public MauronCode_dataList<T> InsertValueAt (int key, T obj) {
 			#region ReadOnly Check
 			if( IsReadOnly ) {
 				throw Error("ReadOnly!,(InsertValueAt)", this, ErrorType_protected.Instance);
 			}
 			#endregion
-			Data.InsertRange(key, new T[1]{obj});
+			Data.InsertRange(key, new T[1] { obj });
 			return this;
 		}
-		#endregion
-		#region Remove Values from Data
+		
+		//Modifiers: Remove
+		public MauronCode_dataList<T> Clear ( ) {
+			#region ReadOnly Check
+			if( IsReadOnly ) {
+				throw Error("ReadOnly!,(Clear)", this, ErrorType_protected.Instance);
+			}
+			#endregion
+			L_data=new List<T>();
+			return this;
+		}
 		public MauronCode_dataList<T> RemoveByValue (T obj) {
 			#region ReadOnly Check
 			if( IsReadOnly ) {
@@ -217,21 +277,8 @@ namespace MauronAlpha.HandlingData {
 			#endregion
 			return RemoveByKey(Count-1);
 		}
-
-		//Clear
-		public MauronCode_dataList<T> Clear ( ) {
-			#region ReadOnly Check
-			if( IsReadOnly ) {
-				throw Error("ReadOnly!,(Clear)", this, ErrorType_protected.Instance);
-			}
-			#endregion
-			L_data=new List<T>();
-			return this;
-		}
-		#endregion
-
-		#region Get Elements from Data
-		//Get a range of results
+		
+		//Queries: List
 		public MauronCode_dataList<T> Range (int start, int end) {
 			if( start<0||start>=Count ) {
 				throw Error("Range start out of bounds! {"+start+"}", this, ErrorType_index.Instance);
@@ -250,30 +297,15 @@ namespace MauronAlpha.HandlingData {
 			return Range(start, LastIndex);
 		}
 
-		public T Value(int key){
+		//Queries: Single
+		public T Value (int key) {
 			#region Error Check
-			if(!ContainsKey(key)){
-				throw Error("Invalid key {"+key+"},(Value)",this,ErrorType_index.Instance);
+			if( !ContainsKey(key) ) {
+				throw Error("Invalid key {"+key+"},(Value)", this, ErrorType_index.Instance);
 			}
 			#endregion
 			return Data[key];
 		}
-		public ICollection<T> Values {
-			get {
-				return Data;
-			}
-		}
-		public MauronCode_dataList<T> SetValues(ICollection<T> values){
-			#region ReadOnly Check
-			if( IsReadOnly ) {
-				throw Error("ReadOnly!,(SetValues)", this, ErrorType_protected.Instance);
-			}
-			#endregion
-			SetData(new List<T>(values));
-			return this;
-		}
-
-		//Get the first element
 		public T FirstElement {
 			get {
 				#region Error Check
@@ -284,7 +316,6 @@ namespace MauronAlpha.HandlingData {
 				return Data[FirstIndex];
 			}
 		}
-		//Get the last element
 		public T LastElement {
 			get {
 				#region Error Check
@@ -296,7 +327,10 @@ namespace MauronAlpha.HandlingData {
 			}
 		}
 
-		//Indexes (keys)
+		//Numeric (int)
+		public int Count {
+			get { return Data.Count; }
+		}
 		public int NextIndex {
 			get {
 				if( Count==0 ) {
@@ -316,56 +350,43 @@ namespace MauronAlpha.HandlingData {
 		public int FirstIndex {
 			get { return 0; }
 		}
-		#endregion
-
-		//Sorting
-		public MauronCode_dataList<T> SortWith(Sort_quickSort<T>.Comparer comparer) {
-			Sort_quickSort<T> sorter = new Sort_quickSort<T>();
-			sorter.Sort(this,comparer);
-			return this;
+		public int IndexOf (T item) {
+			return L_data.IndexOf(item);
 		}
 
-		public delegate int Sort_comparer(T source, T other);
+		//Delegates
+		public delegate void Delegate_performEach (T obj);
+		public delegate int Sort_comparer (T source, T other);
 
-		public MauronCode_dataList<T> CopyTo(T[] array, int arrayIndex) {
-			int index = arrayIndex;
-			foreach( T obj in Values ) {
-				array[index] = obj;
-				index++;
+		#region ICollection Members
+		//Conversion: ICollection
+		public ICollection<T> Values {
+			get {
+				return Data;
 			}
-			return this;
 		}
-
-		#region ICollection
-
 		//Add
 		void ICollection<T>.Add (T item) {
 			AddValue(item);
 		}
-
 		void ICollection<T>.Clear ( ) {
 			Clear();
 		}
-
 		//copy to array
 		void ICollection<T>.CopyTo (T[] array, int arrayIndex) {
-			CopyTo(array,arrayIndex);
+			CopyTo(array, arrayIndex);
 		}
-		
 		bool ICollection<T>.Remove (T item) {
-			if(!ContainsValue(item)){ return false; }
+			if( !ContainsValue(item) ) { return false; }
 			RemoveByValue(item);
 			return true;
 		}
-
 		bool ICollection<T>.Contains (T item) {
 			return ContainsValue(item);
 		}
-
 		int ICollection<T>.Count {
 			get { return Count; }
 		}
-
 		bool ICollection<T>.IsReadOnly {
 			get { return IsReadOnly; }
 		}
@@ -373,70 +394,11 @@ namespace MauronAlpha.HandlingData {
 		IEnumerator<T> IEnumerable<T>.GetEnumerator ( ) {
 			return Data.GetEnumerator();
 		}
-
 		System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator ( ) {
 			return Data.GetEnumerator();
 		}
-
-		#endregion
-
-		public bool Equals(MauronCode_dataList<T> other){
-			long count = Count;
-			if(count!=other.Count)
-				return false;
-			for(int index=0; index<count; index++) {
-				T source = Value(index);
-				T candidate = other.Value(index);
-				if(!source.Equals(candidate))
-					return false;
-			}
-			return true;
-		}
-
-		public ICollection<KeyValuePair<int,T>> KeyValuePairs { 
-			get {
-				KeyValuePair<int,T>[] result = new KeyValuePair<int, T>[ Count ];
-				foreach( int n in Keys ) {
-					KeyValuePair<int,T> kvp =new KeyValuePair<int, T>( n, Data[ n ] );
-					result[ n ]=kvp;
-				}
-				return result;
-			} 
-		}
-
-		public ICollection<int> Keys {
-			get {
-				int[] result = new int[ Count ];
-				for( int n=0; n < Count; n++ ) {
-					result[n] = n;
-				}
-				return result;
-			}
-		}
-	
-		public string AsString {
-			get {
-				string result = "";
-				foreach(T obj in Data) {
-					result+=obj.ToString()+',';
-				}
-				return result;
-			}
-		}
-
-		#region I_dataCollection<int,T> Members
-
-
-		I_dataCollection<int, T> I_dataCollection<int, T>.SetValue( int key, T value ) {
-			return SetValue( key, value );
-		}
-
-		#endregion
-
-		#region Implementing IList
-		int IList<T>.IndexOf (T item) {
-			return L_data.IndexOf(item);
-		}
+		#endregion	
+		#region IList<T> Members
 		void IList<T>.Insert (int index, T item) {
 			if(IsReadOnly)
 				throw Error("Protected!,(Insert)",this,ErrorType_protected.Instance);
@@ -459,6 +421,11 @@ namespace MauronAlpha.HandlingData {
 			}
 		}
 		#endregion
+		#region I_dataCollection<int,T> Members
+		I_dataCollection<int, T> I_dataCollection<int, T>.SetValue (int key, T value) {
+			return SetValue(key, value);
+		}
+		#endregion	
 	
 	}
 
@@ -481,8 +448,16 @@ namespace MauronAlpha.HandlingData {
 		}
 		#endregion
 
-		public override bool IsProtectable { get { return true; }}
-		public override string Name { get { return "dataList"; } }
+		public override bool IsProtectable { 
+			get { 
+				return true;
+			} 
+		}
+		public override string Name { 
+			get {
+				return "dataList";
+			} 
+		}
 
 	}
 }

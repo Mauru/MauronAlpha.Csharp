@@ -26,12 +26,11 @@ namespace MauronAlpha.Text.Interfaces {
 		bool CanHaveParent { get; }
 		
 		MauronCode_dataList<I_textUnit> Children { get; }
-		MauronCode_dataList<I_textUnit> Neighbors { get; }
+		MauronCode_dataIndex<I_textUnit> Neighbors { get; }
 
 		I_textUnit Parent { get; }
 
 		I_textEncoding Encoding { get; }
-
 
 	}
 
