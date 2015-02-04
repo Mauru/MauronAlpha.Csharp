@@ -1,9 +1,10 @@
-﻿using System.Text;
+﻿using MauronAlpha.Text.Interfaces;
 
 namespace MauronAlpha.Text.Units {
 
 	//A Class defining the subtype of a textunit
-	public abstract class TextUnitType : MauronCode_subtype {
+	public abstract class TextUnitType : MauronCode_subtype,
+	I_textUnitType {
 
 		//constructor
 		public TextUnitType ( ) : base() { }
@@ -18,5 +19,9 @@ namespace MauronAlpha.Text.Units {
 			get { return true; }
 		}
 
+		public bool Equals(I_textUnitType other) {
+			return Name == other.Name;
+		}
+	
 	}
 }

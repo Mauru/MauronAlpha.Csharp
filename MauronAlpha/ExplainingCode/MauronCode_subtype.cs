@@ -20,7 +20,7 @@ namespace MauronAlpha {
 			get {
 				if( instance==null ) {
 					lock( syncRoot ) {
-						instance=new CodeType_subtype();
+						instance = new CodeType_subtype();
 					}
 				}
 				return instance;
@@ -28,7 +28,11 @@ namespace MauronAlpha {
 		}
 		#endregion
 
-		public override string Name { get { return "subtype"; } }
+		public override string Name { 
+			get { 
+				return "subtype"; 
+			} 
+		}
 
 	}
 

@@ -1,115 +1,177 @@
-﻿using MauronAlpha.Text.Context;
-using MauronAlpha.Text.Utility;
+﻿using System;
+
+using MauronAlpha.HandlingData;
+
+using MauronAlpha.Text;
+using MauronAlpha.Text.Interfaces;
+using MauronAlpha.Text.Context;
+using MauronAlpha.Text.Encoding;
 
 namespace MauronAlpha.Text.Units {
-	
-	//Represents a unit of text
-	public abstract class TextComponent_unit:MauronCode_textComponent {
-		
-		//constructor
-		public TextComponent_unit(TextUnitType type):base(){
-			SUB_unitType=type;
+
+	public abstract class TextComponent_unit : MauronCode_textComponent,
+	I_textUnit {
+
+		//Constructor
+		public TextComponent_unit(TextUnitType unitType):base() {
+			SUB_unitType = unitType;
 		}
 
-		private TextUnitType SUB_unitType;
-		public TextUnitType UnitType {
-			get {
-				if( SUB_unitType==null ) {
-					NullError("TextUnitType can not be null!,(TextUnitType)",this,typeof(TextUnitType));
-				}
+		//Unit Type
+		private I_textUnitType SUB_unitType;
+		public I_textUnitType UnitType {
+			get { 
+				if(SUB_unitType == null)
+					throw NullError("TextUnitType can not be null!,(UnitType)",this, typeof(TextUnitType));
 				return SUB_unitType;
-			}			
-		}
-
-		#region Utility and Comparers
-		
-		protected TextUtility_text UTILITY_text;
-		public TextUtility_text Utility {
-			get {
-				return UTILITY_text;
 			}
 		}
-		protected TextUtility_encoding UTILITY_encoding;
-		public TextUtility_encoding Encoding {
-			get {
-				if(UTILITY_encoding == null)
-					throw NullError("Encoding can not be null!,(Encoding)",this,typeof(TextUtility_encoding));
-				return UTILITY_encoding;
-			}
-		}
-		protected TextComponent_unit SETUP_Utility(TextUtility_text utility, TextUtility_encoding encoding){
-			UTILITY_text = utility;
-			UTILITY_encoding = encoding;
-			return this;			
-		}
-		protected TextComponent_unit SETUP_Utility (TextComponent_unit unit) {
-			UTILITY_text = unit.Utility;
-			UTILITY_encoding = unit.Encoding;
-			return this;
-		}
 
-		#endregion
-
-		#region Common Shared Functions in Implemntors
-
-		#region Booleans
-		protected bool B_isReadOnly=false;
+		//Booleans
+		public virtual bool Equals (I_textUnit other) {
+			if(!SUB_unitType.Equals(other.UnitType))
+				return false;
+			if(IsParent!=other.IsParent)
+				return false;
+			if(!Context.Equals(other.Context))
+				return false;
+			if(IsChild!=other.IsChild)
+				return false;
+			return DATA_children.Equals(other.Children);
+		}
+		private bool B_isReadOnly = false;
 		public bool IsReadOnly {
-			get { return B_isReadOnly; }
-		}
-
-		public bool HasLimit {
 			get {
-				return Limit>=0;
+				return B_isReadOnly;
 			}
 		}
-		public bool HasReachedLimit {
+		public bool IsParent {
 			get {
-				return INT_limit>=0&&ChildCount>=INT_limit;
+				if( !CanHaveChildren )
+					return false;
+				return (Children.Count>0);
+			}
+		}
+		public bool IsChild {
+			get {
+				if( !CanHaveParent )
+					return false;
+				return (UNIT_parent==null);
 			}
 		}
 		public bool CanHaveChildren {
-			get {
-				return UnitType.CanHaveChildren;
-			}
+			get { return SUB_unitType.CanHaveChildren; }
 		}
 		public bool CanHaveParent {
+			get { return SUB_unitType.CanHaveParent; }
+		}
+		public virtual bool IsEmpty {
 			get {
-				return UnitType.CanHaveParent;
+				if( DATA_children.Count<1 )
+					return true;
+				foreach( I_textUnit child in Children )
+					if( !child.IsEmpty )
+						return false;
+				return true;
 			}
 		}
 
-		#endregion
-
-		#region Integers
-		protected int INT_limit=-1;
-		public int Limit {
-			get { return INT_limit; }
+		//Methods
+		public I_textUnit SetIsReadOnly(bool state) {
+			B_isReadOnly = state;
+			return this;
 		}
-		#endregion
+		public I_textUnit Clear() {
+			DATA_children = new MauronCode_dataList<I_textUnit>();
+			return this;
+		}
 
-		
-		protected TextContext CTX_context;
+		//Context
+		private TextContext DATA_context;
 		public TextContext Context {
+			get { 
+				if(DATA_context == null)
+					DATA_context = new TextContext();
+				return DATA_context;	
+			 }
+		}
+
+		//As String
+		public virtual string AsString { 
 			get {
-				return CTX_context;
+				string result="";
+				foreach(I_textUnit unit in Children)
+					result+= unit.AsString;
+				return result; 
 			}
 		}
 
-		#endregion
+		//Characters
+		public virtual TextUnit_character FirstCharacter {
+			get {
+				if(IsEmpty||!IsParent)
+					return TextUnit_character.Empty;
+				return Children.FirstElement.FirstCharacter;
+			}
+		}
+		public virtual TextUnit_character LastCharacter {
+			get {
+				if( IsEmpty||!IsParent )
+					return TextUnit_character.Empty;
+				return Children.LastElement.LastCharacter;
+			}
+		}
 
-		#region Abstracts that need to be implemented
+		//Children
+		protected MauronCode_dataList<I_textUnit> DATA_children;
+		public MauronCode_dataList<I_textUnit> Children {
+			get { 
+				if(DATA_children == null)
+					DATA_children = new MauronCode_dataList<I_textUnit>();
+				return DATA_children;
+			}
+		}
 
-		public abstract bool IsFirstChild { get; }
-		public abstract bool IsLastChild { get;	}
+		//Neighbors
+		public MauronCode_dataIndex<I_textUnit> Neighbors {
+			get {
+				MauronCode_dataIndex<I_textUnit> result = new MauronCode_dataIndex<I_textUnit>().SetValue(0,this);
+				if(!IsChild||!CanHaveParent)
+					return result.SetIsReadOnly(true);
 
-		public abstract int Index { get; }
+				MauronCode_dataList<I_textUnit> children = Parent.Children;
+				int s = children.IndexOf(this);
+				MauronCode_dataList<I_textUnit> left;
+				if(s > 0) {
+					left = children.Range(0, s-1);
+					result.Prepend(left);
+				}
+				if(s < children.Count-1){
+					left = children.Range(s+1, children.Count-1);
+					result.Append(left);
+				}
+				return result;
+			}
+		}
 
-		public abstract int ChildCount { get; }
+		//Parent
+		protected I_textUnit UNIT_parent;
+		public I_textUnit Parent {
+			get { 
+				if(UNIT_parent == null)
+					throw NullError("Parent is null!,(Parent)",this,typeof(TextComponent_unit));
+				return UNIT_parent;
+			}
+		}
 
-		public abstract TextUnit_character FirstCharacter { get; }
-		public abstract TextUnit_character LastCharacter { get; }
+		protected I_textEncoding UTILITY_encoding;
+		public I_textEncoding Encoding {
+			get { 
+				if(UTILITY_encoding==null)
+					UTILITY_encoding = new TextEncoding_UTF8();
+				return UTILITY_encoding;
+			}
+		}
 	
-		#endregion
 	}
 }
