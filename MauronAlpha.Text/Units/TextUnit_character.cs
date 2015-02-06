@@ -1,6 +1,8 @@
 ﻿using MauronAlpha.HandlingErrors;
+
 using MauronAlpha.Text.Interfaces;
 using MauronAlpha.Text.Units;
+using MauronAlpha.Text.Context;
 
 namespace MauronAlpha.Text.Units {
 	
@@ -11,24 +13,35 @@ namespace MauronAlpha.Text.Units {
 		public TextUnit_character (TextUnit_word parent, bool updateDependencies)
 			: this() {
 			UNIT_parent = parent;
-			if(updateDependencies)
+			if(updateDependencies){
 				parent.AddChild(this,false);
+				SetContext(parent.Context.Instance.Add(0, 0, 0, parent.ChildCount));
+			}
 		}
 
 		public TextUnit_character SetParent (TextUnit_word parent, bool updateDependencies) {
 			if( IsReadOnly )
 				throw Error("Is protected!,(SetParent)", this, ErrorType_protected.Instance);
 			UNIT_parent=parent;
-			if( updateDependencies )
+			if( updateDependencies ){
 				parent.AddChild(this, false);
+				SetContext(parent.Context.Instance.Add(0,0,0, parent.ChildCount));
+			}
 
 			return this;
 		}
-		
+
 		//Statics
 		public static TextUnit_character Empty {
 			get {
 				return new TextUnit_character();
+			}
+		}
+
+		//Count
+		public override TextContext CountAsContext {
+			get { 
+				return new TextContext();
 			}
 		}
 

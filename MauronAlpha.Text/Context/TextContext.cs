@@ -19,6 +19,12 @@ namespace MauronAlpha.Text.Context {
 			INT_word = word;
 			INT_character = character;
 		}
+		public TextContext (int paragraph, int line, int word, int character) {
+			INT_paragraph=paragraph;
+			INT_line=line;
+			INT_word=word;
+			INT_character=character;
+		}
 
 		//Booleans
 		public bool Equals(TextContext other) {
@@ -84,6 +90,43 @@ namespace MauronAlpha.Text.Context {
 			return this;
 		}
 
+		public TextContext Add (int paragraph, int line, int word, int character) {
+			if( IsReadOnly )
+				throw Error("Is protected!,(Add)", this, ErrorType_protected.Instance);
+			INT_paragraph+=paragraph;
+			INT_line+=line;
+			INT_word+=word;
+			INT_character+=character;
+			return this;
+		}
+		public TextContext Add (TextContext context) {
+			if( IsReadOnly )
+				throw Error("Is protected!,(Add)", this, ErrorType_protected.Instance);
+			INT_paragraph+=context.Paragraph;
+			INT_line+=context.Line;
+			INT_word+=context.Word;
+			INT_character+=context.Character;
+			return this;
+		}
+		public TextContext Subtract (int paragraph, int line, int word, int character) {
+			if( IsReadOnly )
+				throw Error("Is protected!,(Subtract)", this, ErrorType_protected.Instance);
+			INT_paragraph-=paragraph;
+			INT_line-=line;
+			INT_word-=word;
+			INT_character-=character;
+			return this;
+		}
+		public TextContext Subtract (TextContext context) {
+			if( IsReadOnly )
+				throw Error("Is protected!,(Subtract)", this, ErrorType_protected.Instance);
+			INT_paragraph-=context.Paragraph;
+			INT_line-=context.Line;
+			INT_word-=context.Word;
+			INT_character-=context.Character;
+			return this;
+		}
+
 		//Index (text)
 		private string ID_txt="";
 		public string TextId {
@@ -97,7 +140,6 @@ namespace MauronAlpha.Text.Context {
 		public int Paragraph  { get {
 			return INT_paragraph;
 		} }
-		
 		private int INT_line = 0;
 		public int Line { get {
 			return INT_line;

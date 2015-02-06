@@ -1,6 +1,7 @@
 ﻿using System;
 
 using MauronAlpha.HandlingData;
+using MauronAlpha.HandlingErrors;
 
 using MauronAlpha.Text;
 using MauronAlpha.Text.Interfaces;
@@ -85,16 +86,23 @@ namespace MauronAlpha.Text.Units {
 			DATA_children = new MauronCode_dataList<I_textUnit>();
 			return this;
 		}
+		public I_textUnit SetContext(TextContext context) {
+			if(IsReadOnly)
+				throw Error("Is protected!,(SetContext)",this,ErrorType_protected.Instance);
+			DATA_context = context;
+			return this;
+		}
 
 		//Context
-		private TextContext DATA_context;
-		public TextContext Context {
+		protected TextContext DATA_context;
+		public virtual TextContext Context {
 			get { 
 				if(DATA_context == null)
 					DATA_context = new TextContext();
-				return DATA_context;	
+				return DATA_context.SetIsReadOnly(true);	
 			 }
 		}
+		public abstract TextContext CountAsContext { get; }
 
 		//As String
 		public virtual string AsString { 
@@ -103,6 +111,15 @@ namespace MauronAlpha.Text.Units {
 				foreach(I_textUnit unit in Children)
 					result+= unit.AsString;
 				return result; 
+			}
+		}
+
+		//Int
+		public virtual int ChildCount { 
+			get {
+				if(!CanHaveChildren)
+					return 0;
+				return Children.Count;
 			}
 		}
 

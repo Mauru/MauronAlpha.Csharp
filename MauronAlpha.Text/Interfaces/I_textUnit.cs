@@ -16,8 +16,11 @@ namespace MauronAlpha.Text.Interfaces {
 		I_textUnitType UnitType { get; }
 
 		TextContext Context { get; }
+		TextContext CountAsContext { get; }
 
 		string AsString { get; }
+
+		int ChildCount { get; }
 
 		bool IsEmpty { get; }
 		bool IsParent { get; }
@@ -29,6 +32,7 @@ namespace MauronAlpha.Text.Interfaces {
 		MauronCode_dataIndex<I_textUnit> Neighbors { get; }
 
 		I_textUnit Parent { get; }
+		I_textUnit SetContext (TextContext context);
 
 		I_textEncoding Encoding { get; }
 

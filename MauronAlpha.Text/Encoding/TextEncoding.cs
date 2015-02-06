@@ -1,5 +1,6 @@
 ﻿using MauronAlpha.Text.Interfaces;
 using MauronAlpha.Text.Units;
+using MauronAlpha.Text.Context;
 
 namespace MauronAlpha.Text.Encoding {
 	
@@ -10,11 +11,25 @@ namespace MauronAlpha.Text.Encoding {
 
 		public I_textEncoding SetTextToString(TextUnit_text unit, string text) {
 			unit.Clear();
-			TextUnit_paragraph paragraph = new TextUnit_paragraph(unit,false);
-			TextUnit_line line = new TextUnit_line(paragraph, false);
-			TextUnit_word word = new TextUnit_word(line, false);
-			TextUnit_character character = new TextUnit_character(word, false);
-			
+			unit.SetContext(new TextContext(-1,-1,-1,-1));
+			TextUnit_paragraph paragraph = new TextUnit_paragraph(unit,true);
+			TextUnit_line line = new TextUnit_line(paragraph, true);
+			TextUnit_word word = new TextUnit_word(line,true);
+			TextUnit_character character;
+			foreach(char c in text){
+				character = new TextUnit_character(word, false);
+				character.SetChar(c);
+				word.AddChild(character,true);
+				if(EndsParagraph(character)) {
+					paragraph = new TextUnit_paragraph(unit,true);
+				}
+				if( EndsLine(character) ) {
+					line = new TextUnit_line(paragraph,true);
+				}
+				if(EndsWord(character)) {
+					word = new TextUnit_word(line,true);
+				}
+			}
 			return this;
 		}
 
@@ -28,7 +43,16 @@ namespace MauronAlpha.Text.Encoding {
 
 		//Booleans
 		public bool Equals (I_textEncoding other) {
-			return Name==other.Name;
+			return Name == other.Name;
+		}
+		public virtual bool EndsParagraph(TextUnit_character unit) {
+			return IsParagraph(unit);
+		}
+		public virtual bool EndsWord(TextUnit_character unit) {
+			return IsWhiteSpace(unit) || IsTab(unit);
+		}
+		public virtual bool EndsLine(TextUnit_character unit) {
+			return IsNewLine(unit) || IsParagraph(unit);
 		}
 		public virtual bool IsEmptyCharacter (TextUnit_character unit) {
 			return unit.Character == EmptyCharacter;
