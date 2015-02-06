@@ -47,15 +47,14 @@ namespace MauronAlpha.ConsoleApp {
 		#endregion
 
 
-		public I_layoutRenderer Draw( I_layoutUnit source, I_layoutModel layout) {
+		public I_layoutRenderer Draw( I_layoutUnit source, I_layoutModel layout ) {
 			Clear();
 
 			Vector2d CaretPosition = new Vector2d();
 			Vector2d CaretEnd = source.Context.Size.AsVector;
 
 			string output = "";
-			ConsoleLayout_header header = (ConsoleLayout_header) layout.Member("header");
-			
+			ConsoleLayout_header header = (ConsoleLayout_header) layout.Member("header");			
 
 			return this;
 		}

@@ -45,7 +45,7 @@ namespace MauronAlpha.ConsoleApp {
 			//5: Define the Command-Model for the Console
 			ConsoleApp_commandModel model = new ConsoleApp_commandModel();
 
-			LAYOUT_console.RenderWith(UNIT_window, OUTPUT_console);
+			LAYOUT_console.RenderWith( UNIT_window, OUTPUT_console );
 		}
 
 		//State of the Program
@@ -80,6 +80,8 @@ namespace MauronAlpha.ConsoleApp {
 				return CommandModel.ContentModel;
 			}
 		}
+		
+		//Booleans
 		public bool AllowsInput {
 			get {
 				return CommandModel.AllowsInput;

@@ -1,5 +1,4 @@
 ﻿using MauronAlpha.Text.Units;
-using MauronAlpha.Text.Utility;
 
 using MauronAlpha.Events;
 using MauronAlpha.Events.Interfaces;
@@ -18,8 +17,6 @@ namespace MauronAlpha.Forms.Units {
 		public FormUnit_textField():base( FormType_textField.Instance ) {}
        
 		private TextUnit_text TXT_text;
-
-		private TextUtility_encoding Encoding;
 
 		private Layout2d_position XY_position;
 

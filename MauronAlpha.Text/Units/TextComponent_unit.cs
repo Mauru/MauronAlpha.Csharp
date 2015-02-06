@@ -16,6 +16,7 @@ namespace MauronAlpha.Text.Units {
 		//Constructor
 		public TextComponent_unit(TextUnitType unitType):base() {
 			SUB_unitType = unitType;
+			DATA_children=new MauronCode_dataList<I_textUnit>();
 		}
 
 		//Unit Type

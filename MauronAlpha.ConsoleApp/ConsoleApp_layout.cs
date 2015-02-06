@@ -60,8 +60,13 @@ namespace MauronAlpha.ConsoleApp {
 		//Render the output
 		public I_layoutModel RenderWith ( I_layoutUnit source, I_layoutRenderer renderer ) {
 			
-			//renderer.DrawRegions( new MauronCode_dataList<string>(ConsoleApp_layout.KEYS_regions) );
 			
+			return this;
+		}
+
+		//Outline
+		public I_layoutModel OutlineWith( I_layoutModel source, I_layoutRenderer renderer) {
+
 			return this;
 		}
 	}

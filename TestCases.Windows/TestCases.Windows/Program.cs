@@ -12,7 +12,8 @@ public class Test {
 
 		TextUnit_text text = new TextUnit_text();
 		text.SetText("Hi, I am a text");
-
+		System.Console.WriteLine(text.CountAsContext.AsString);
+		System.Console.WriteLine(text.AsString);
 		System.Console.WriteLine("-Program end-");
 		System.Console.ReadKey();
 	}

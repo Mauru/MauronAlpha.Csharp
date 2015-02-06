@@ -33,7 +33,6 @@ namespace MauronAlpha.Text.Units {
 		public TextUnit_paragraph AddChild(TextUnit_line unit, bool updateDependencies) {
 			if(IsReadOnly)
 				throw Error("Is protected!,(AddChild)",this,ErrorType_protected.Instance);
-				
 			DATA_children.AddValue(unit);
 			if(updateDependencies){
 				unit.SetParent(this,false);

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections;
 
 using MauronAlpha.Interfaces;
 using MauronAlpha.HandlingErrors;
@@ -9,6 +10,7 @@ namespace MauronAlpha.HandlingData {
 	//A data index is a numerical index of generics - it does not reindex its element like dataList
 	public class MauronCode_dataIndex<T>:MauronCode_dataObject, 
 	ICollection<T>,
+	IEnumerable<T>,
 	IEquatable<MauronCode_dataIndex<T>>,
 	I_protectable<MauronCode_dataIndex<T>> {
 		
@@ -236,19 +238,70 @@ namespace MauronAlpha.HandlingData {
 			get { return Convert.ToInt32(CountValidValues); }
 		}
 
-		IEnumerator<T> IEnumerable<T>.GetEnumerator ( ) {
-			return DATA_values.ValidValues.GetEnumerator();
-		}
-		System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator ( ) {
-			return DATA_values.ValidValues.GetEnumerator();
-		}
-
 		//Delegates
 		private static int Delegate_sortKeys(long source, long other) {
 			return source.CompareTo(other);
 		}
 
+		//Enumeration
+		public IEnumerator<T> GetEnumerator ( ) {
+			return new Enumerator_dataIndex<T>(this);
+		}
+		IEnumerator IEnumerable.GetEnumerator ( ) {
+			return new Enumerator_dataIndex<T>(this);
+		}
+	}
 
+	//The Enumerator for dataIndex
+	public class Enumerator_dataIndex<T>:IEnumerator<T> {
+			
+		//The collection
+		T[] Values;
+
+		//constructor
+		public Enumerator_dataIndex(MauronCode_dataIndex<T> list){
+			ICollection<T> units = list.Values;
+			int count = units.Count;
+			
+			Values = new T[count];
+			units.CopyTo(Values,0);
+
+			INT_current = -1;
+			UNIT_current=default(T);
+		}
+
+		private int INT_current=0;
+		private T UNIT_current;
+		public T Current {
+			get {
+				return UNIT_current;
+			}
+		}
+		object IEnumerator.Current {
+			get {
+				return UNIT_current;
+			}
+		}
+
+		public void Dispose ( ) {
+			Values = null;
+		}
+
+		public bool MoveNext ( ) {
+			//Avoids going beyond the end of the collection. 
+			if( ++INT_current >= Values.Length ) {
+				return false;
+			}
+			else {
+				// Set current box to next item in collection.
+				UNIT_current =Values[INT_current];
+			}
+			return true;
+		}
+
+		public void Reset ( ) {
+			INT_current = -1;
+		}
 	}
 
 	//A description of the dataType

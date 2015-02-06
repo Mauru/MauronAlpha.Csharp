@@ -134,6 +134,11 @@ namespace MauronAlpha.Text.Context {
 				return ID_txt;
 			}	
 		}
+		public string AsString {
+			get {
+				return "{"+INT_paragraph+":"+INT_line+":"+INT_word+":"+INT_character+"}";
+			}
+		}
 
 		//Index int
 		private int INT_paragraph = 0;
