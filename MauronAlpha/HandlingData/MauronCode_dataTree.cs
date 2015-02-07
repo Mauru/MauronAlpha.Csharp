@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
-using System;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+
 
 using MauronAlpha.HandlingErrors;
 
@@ -7,6 +9,7 @@ namespace MauronAlpha.HandlingData {
 
 	//An associative array with a fixed size, tracks if values have been set or not
 	public class MauronCode_dataTree<TKey, TValue> : MauronCode_dataObject,
+	IEnumerable<TValue>,
 	I_instantiable {
 
 		//Constructors
@@ -367,9 +370,18 @@ namespace MauronAlpha.HandlingData {
 			get {
 				MauronCode_dataIndex<TValue> result=new MauronCode_dataIndex<TValue>();
 				for(long n = 0; n < DATA_values.Length; n++) {
-					if(IndexIsSet(n)){
+					if(IndexIsSet(n))
 						result.SetValue(n,DATA_values[n]);
-					}
+				}
+				return result;
+			}
+		}
+		public MauronCode_dataList<TValue> ValuesAsList {
+			get {
+				MauronCode_dataList<TValue> result = new MauronCode_dataList<TValue>();
+				for( long n=0; n<DATA_values.Length; n++ ) {
+					if( IndexIsSet(n) )
+						result.AddValue(DATA_values[n]);
 				}
 				return result;
 			}
@@ -404,25 +416,46 @@ namespace MauronAlpha.HandlingData {
 		}
 		//Modify: Add
 		public MauronCode_dataTree<TKey, TValue> SetValue (TKey key, TValue value) {
-			if(IsReadOnly) {
+			if(IsReadOnly)
 				throw Error("Is protected!,(SetValue)",this, ErrorType_protected.Instance);
-			}
+
+			long index = IndexByKey( key );
+
+			if( index < 0 )
+				throw Error("Index/Key not initialized!,{"+index+"},(SetValue)", this, ErrorType_index.Instance);
+
+			DATA_values[index] = value;
+			DATA_wasSet[index] = true;
+
+			return this;
+		}
+		public MauronCode_dataTree<TKey, TValue> SetValue (TKey key, TValue value, bool b_generateKey) {
+			if( IsReadOnly )
+				throw Error("Is protected!,(SetValue)", this, ErrorType_protected.Instance);
+
 			long index=IndexByKey(key);
-			if( index < 0 ) {
-				throw Error("Invalid Key!", this, ErrorType_index.Instance);
+
+			if( index<0 ) {
+				if( b_generateKey ) {
+					AddKey(key);
+					index = IndexByKey(key);
+				} else
+					throw Error("Invalid Index!,{"+index+"},(SetValue)", this, ErrorType_index.Instance);
 			}
 			DATA_values[index]=value;
 			DATA_wasSet[index]=true;
+
 			return this;
 		}
 		public MauronCode_dataTree<TKey, TValue> SetValues(ICollection<TKey> keys, ICollection<TValue> values) {
-			if( IsReadOnly ) {
+			if( IsReadOnly )
 				throw Error("Is protected!,(SetValues)", this, ErrorType_protected.Instance);
-			}
+
 			long length = values.Count;
-			if( length!=Count ) {
+
+			if( length!=Count )
 				throw Error("Values must be same length as keys!,(SetValues)",this,ErrorType_bounds.Instance);
-			}
+
 			TValue[] arr_values = new TValue[length-1];
 			values.CopyTo(arr_values,0);
 
@@ -434,12 +467,10 @@ namespace MauronAlpha.HandlingData {
 		}
 		//Add a key, set it to empty
 		public MauronCode_dataTree<TKey, TValue> AddKey (TKey key) {
-			if( IsReadOnly ) {
+			if( IsReadOnly )
 				throw Error("Is protected!,(AddKey)", this, ErrorType_protected.Instance);
-			}
-			if( ContainsKey(key) ) {
+			if( ContainsKey(key) )
 				throw Error("Key is allready set!,(AddKey)", this, ErrorType_protected.Instance);
-			}
 
 			//Create instance of DataSet with new Length
 			long newIndex=Count;
@@ -449,9 +480,8 @@ namespace MauronAlpha.HandlingData {
 
 			for( long n=0; n<newIndex; n++ ) {
 				tmp_keys[n]=DATA_keys[n];
-				if( IndexIsSet(n) ) {
+				if( IndexIsSet(n) )
 					tmp_values[n]=DATA_values[n];
-				}
 				tmp_wasSet[n]=DATA_wasSet[n];
 			}
 
@@ -553,6 +583,55 @@ namespace MauronAlpha.HandlingData {
 		}
 		object ICloneable.Clone ( ) {
 			return Instance;
+		}
+	
+		//Enumerator
+		public IEnumerator<TValue> GetEnumerator() {
+			return new Enumerator_dataTree<TKey,TValue>(this);
+		}
+		IEnumerator IEnumerable.GetEnumerator ( ) {
+			return new Enumerator_dataTree<TKey, TValue>(this);
+		}
+	}
+
+	public class Enumerator_dataTree<TKey,TValue>:IEnumerator<TValue> {
+		
+		//constructor
+		public Enumerator_dataTree(MauronCode_dataTree<TKey,TValue> list){
+			Enumerables = list.ValuesAsList;
+		}
+
+		private MauronCode_dataList<TValue> Enumerables;
+		private int Index_current = -1;
+
+		private TValue Value_current = default(TValue);
+		public TValue Current {
+			get { 
+				return Value_current;
+			}
+		}
+
+		public void Dispose ( ) {
+			Enumerables = null;
+		}
+
+		object System.Collections.IEnumerator.Current {
+			get { 
+				return Value_current;
+			}
+		}
+
+		public bool MoveNext ( ) {
+			Index_current++;
+			if( Index_current >= Enumerables.Count )
+				return false;
+			Value_current = Enumerables.Value( Index_current );
+			return true;
+		}
+
+		public void Reset ( ) {
+			Index_current = -1;
+			Value_current = default(TValue);
 		}
 	}
 

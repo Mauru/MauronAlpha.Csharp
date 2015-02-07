@@ -54,6 +54,12 @@ namespace MauronAlpha.HandlingData {
 			}
 		}
 
+		public MauronCode_dataList<T> ValuesAsList { 
+			get {
+				return DATA_values.ValuesAsList;				
+			}
+		}
+
 		//Booleans
 		public bool Equals(MauronCode_dataIndex<T> other) {
 			MauronCode_dataList<long> otherKeys = new MauronCode_dataList<long>(other.Keys).SortWith(Delegate_sortKeys);
@@ -253,54 +259,47 @@ namespace MauronAlpha.HandlingData {
 	}
 
 	//The Enumerator for dataIndex
-	public class Enumerator_dataIndex<T>:IEnumerator<T> {
+	public class Enumerator_dataIndex<TValue> : IEnumerator<TValue> {
 			
 		//The collection
-		T[] Values;
+		MauronCode_dataList<TValue> Enumerables;
+		TValue Value_current = default(TValue);
 
 		//constructor
-		public Enumerator_dataIndex(MauronCode_dataIndex<T> list){
-			ICollection<T> units = list.Values;
-			int count = units.Count;
-			
-			Values = new T[count];
-			units.CopyTo(Values,0);
-
-			INT_current = -1;
-			UNIT_current=default(T);
+		public Enumerator_dataIndex ( MauronCode_dataIndex<TValue> list ) {
+			Enumerables = list.ValuesAsList;
+			Value_current=default(TValue);
 		}
 
-		private int INT_current=0;
-		private T UNIT_current;
-		public T Current {
+		private int Index_current = -1;
+	
+		public TValue Current {
 			get {
-				return UNIT_current;
+				return Value_current;
 			}
 		}
 		object IEnumerator.Current {
 			get {
-				return UNIT_current;
+				return Value_current;
 			}
 		}
 
 		public void Dispose ( ) {
-			Values = null;
+			Enumerables = null;
 		}
 
 		public bool MoveNext ( ) {
-			//Avoids going beyond the end of the collection. 
-			if( ++INT_current >= Values.Length ) {
+			Index_current++;
+			if( Index_current>=Enumerables.Count )
 				return false;
-			}
-			else {
-				// Set current box to next item in collection.
-				UNIT_current =Values[INT_current];
-			}
+			else
+				Value_current=Enumerables.Value(Index_current);
+
 			return true;
 		}
 
 		public void Reset ( ) {
-			INT_current = -1;
+			Index_current = -1;
 		}
 	}
 
