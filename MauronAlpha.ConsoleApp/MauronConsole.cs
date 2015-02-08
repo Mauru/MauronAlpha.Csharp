@@ -38,14 +38,16 @@ namespace MauronAlpha.ConsoleApp {
 			UNIT_window.SetEventHandler(HANDLER_events);
 			UNIT_window.SetContext(context);
 
-			//4: Define the "looks" of the console
-			LAYOUT_console = new ConsoleApp_layout();
-			LAYOUT_console.ApplyTo( UNIT_window );
+			//4: Define the Command-Model for the Console
+			ConsoleApp_commandModel model=new ConsoleApp_commandModel();
 
-			//5: Define the Command-Model for the Console
-			ConsoleApp_commandModel model = new ConsoleApp_commandModel();
+			//5: Define the console Output
+			OUTPUT_console = new ConsoleApp_output( this );
 
-			LAYOUT_console.RenderWith( UNIT_window, OUTPUT_console );
+			//6: Define the "looks" of the console
+			LAYOUT_console = new ConsoleApp_layout( this );
+			LAYOUT_console.ApplyTo( UNIT_window );			
+
 		}
 
 		//State of the Program
@@ -118,9 +120,8 @@ namespace MauronAlpha.ConsoleApp {
 		private I_layoutRenderer OUTPUT_console;
 		public I_layoutRenderer Output {
 			get {
-				if( OUTPUT_console==null ) {
+				if( OUTPUT_console==null )
 					OUTPUT_console=new ConsoleApp_output(this);
-				}
 				return OUTPUT_console;
 			}
 		}

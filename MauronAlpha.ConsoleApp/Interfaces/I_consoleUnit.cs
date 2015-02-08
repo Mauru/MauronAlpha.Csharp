@@ -1,12 +1,8 @@
 ﻿using MauronAlpha.Layout.Layout2d.Interfaces;
 
 namespace MauronAlpha.ConsoleApp.Interfaces {
-
-	public interface I_consoleLayout:I_layoutModel {
-
-		string Title { get; }
-
-
+	
+	public interface I_consoleUnit:I_layoutUnit {
 	}
 
 }

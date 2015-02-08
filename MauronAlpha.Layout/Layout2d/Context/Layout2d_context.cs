@@ -26,6 +26,13 @@ namespace MauronAlpha.Layout.Layout2d.Context {
 		public Layout2d_context( int x, int y, int width, int height):this( new Vector2d(x,y),new Vector2d(width,height)) {}
 		protected Layout2d_context( Layout2d_context source ) : this(source.Position.AsVector, source.Size.AsVector) {}
 
+		//As string
+		public string AsString {
+			get {
+				return "{"+Size.AsVector.AsString+"|"+Position.AsVector.AsString+"}";
+			}
+		}
+
 		//Size
 		private Layout2d_size CONTEXT_size;
 		public Layout2d_size Size {

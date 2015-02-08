@@ -20,11 +20,22 @@ namespace MauronAlpha.ConsoleApp {
 
 		//constructor
 		public ConsoleApp_layout():base(  ) {}
+		public ConsoleApp_layout ( I_layoutController console ) : base() { 
+			UNIT_console = console;
+		}
 
-		private static string[] KEYS_regions = new string[3]{
-			"header", "content", "footer"
-		};
+		//The regions
+		private static string[] KEYS_regions = new string[3]{ "header", "content", "footer"	};
 		private MauronCode_dataTree<string,I_layoutUnit> DATA_regions = new MauronCode_dataTree<string,I_layoutUnit>(KEYS_regions);
+
+		//The title
+		public string Title {
+			get {
+				if( UNIT_console == null )
+					return "Unnamed Console Application";
+				return UNIT_console.Name;
+			}
+		}
 
 		//Apply the design
 		public ConsoleApp_layout ApplyTo( I_layoutUnit unit ) {
@@ -50,25 +61,24 @@ namespace MauronAlpha.ConsoleApp {
 			return this;
 		}
 		
-		//get a Member by name
+		//The Console itself
+		private I_layoutController UNIT_console;
+		public I_layoutController Controller {
+			get {
+				if( UNIT_console==null )
+					throw NullError( "I_layoutControler can not be null!,(Controler)",this, typeof(I_layoutController) );
+				return UNIT_console;
+			}
+		}
+
+		//Get a Member by name
 		public I_layoutUnit Member(string key) {
 			if(!DATA_regions.ContainsKey(key))
 				throw Error("Invalid Member!,{"+key+"},(Member)",this,ErrorType_index.Instance);
 			return DATA_regions.Value(key);
 		}
 	
-		//Render the output
-		public I_layoutModel RenderWith ( I_layoutUnit source, I_layoutRenderer renderer ) {
-			
-			
-			return this;
-		}
-
-		//Outline
-		public I_layoutModel OutlineWith( I_layoutModel source, I_layoutRenderer renderer) {
-
-			return this;
-		}
+		
 	}
 
 

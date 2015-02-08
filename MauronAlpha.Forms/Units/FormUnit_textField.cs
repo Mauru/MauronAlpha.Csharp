@@ -16,7 +16,12 @@ namespace MauronAlpha.Forms.Units {
 		//constructor
 		public FormUnit_textField():base( FormType_textField.Instance ) {}
        
-		private TextUnit_text TXT_text;
+		private TextUnit_text UNIT_text;
+		public FormUnit_textField SetText (string text) {
+			UNIT_text = new TextUnit_text();
+			UNIT_text.SetText(text);
+			return this;
+		}
 
 		private Layout2d_position XY_position;
 
