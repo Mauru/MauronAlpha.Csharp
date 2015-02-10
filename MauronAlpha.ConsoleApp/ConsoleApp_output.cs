@@ -6,12 +6,14 @@ using MauronAlpha.Geometry.Geometry2d.Units;
 
 using MauronAlpha.ConsoleApp.Interfaces;
 
+using MauronAlpha.Text.Units;
+
 
 namespace MauronAlpha.ConsoleApp {
 	
 	//Class that controls Output to the system
 	public class ConsoleApp_output:SystemInterface, 
-	I_layoutRenderer {
+	I_consoleOutput {
 
 		//constructor
 		public ConsoleApp_output (MauronConsole console) {
@@ -33,15 +35,20 @@ namespace MauronAlpha.ConsoleApp {
 			UNIT_console = console;
 			return this;
 		}
-		public ConsoleApp_output Clear() {
-			System.Console.Clear();
-			return this;
-		}
 		public ConsoleApp_output WriteLine(string txt) {
 			System.Console.WriteLine(txt);
 			return this;
 		}
 
+		public I_consoleOutput WriteLine(TextUnit_line unit) {
+			WriteLine(unit.AsString);
+			return this;
+		}
+
+		public I_layoutRenderer Clear ( ) {
+			System.Console.Clear();
+			return this;
+		}
 		public I_layoutRenderer Draw (I_consoleUnit source) {
 
 			Vector2d CaretPosition=new Vector2d();

@@ -8,6 +8,8 @@ namespace MauronAlpha.Layout.Layout2d.Interfaces {
 		string Name { get; }
 
 		EventHandler EventHandler { get; }
+
+		I_layoutRenderer Output { get; }
 	}
 
 }

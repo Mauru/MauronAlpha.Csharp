@@ -134,6 +134,19 @@ namespace MauronAlpha.Layout.Layout2d.Units {
 			return this;
 		}
 
+		public I_layoutUnit SetHeight (int n) {
+			if( IsReadOnly )
+				throw Error("Is protected!,(SetHeight)", this, ErrorType_protected.Instance);
+			Context.Size.SetIsReadOnly(false).SetHeight(n);
+			return this;
+		}
+		public I_layoutUnit SetWidth (int n) {
+			if( IsReadOnly )
+				throw Error("Is protected!,(SetWidth)", this, ErrorType_protected.Instance);
+			Context.Size.SetIsReadOnly(false).SetWidth(n);
+			return this;
+		}
+
 		//Virtuals
 		public virtual I_layoutUnit ChildByIndex (long index) {
 			if( !DATA_children.IsEmpty||!DATA_children.ContainsIndex(index) )

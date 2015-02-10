@@ -17,7 +17,11 @@ namespace MauronAlpha.Projects {
 		#region I_Project
 		//The name
 		private string STR_name = "";
-		public string Name { get { return STR_name; } }	
+		public string Name { 
+			get { 
+				return STR_name; 
+			} 
+		}	
 		public I_project SetName(string name) {
 			STR_name = name;
 			return this;

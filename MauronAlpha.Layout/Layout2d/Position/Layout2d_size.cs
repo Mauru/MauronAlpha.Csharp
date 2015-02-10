@@ -1,6 +1,7 @@
 ﻿using System;
 
 using MauronAlpha.Interfaces;
+using MauronAlpha.HandlingErrors;
 
 using MauronAlpha.Geometry.Geometry2d.Units;
 using MauronAlpha.Geometry.Geometry2d.Shapes;
@@ -61,6 +62,18 @@ namespace MauronAlpha.Layout.Layout2d.Position {
 		}
 		public Layout2d_size SetIsReadOnly( bool status ) {
 			B_isReadOnly = status;
+			return this;
+		}
+		public Layout2d_size SetHeight(double n) {
+			if(IsReadOnly)
+				throw Error("Is protected!,(SetHeight)",this, ErrorType_protected.Instance);
+			V_size.SetY(n);
+			return this;
+		}
+		public Layout2d_size SetWidth (double n) {
+			if( IsReadOnly )
+				throw Error("Is protected!,(SetWidth)", this, ErrorType_protected.Instance);
+			V_size.SetX(n);
 			return this;
 		}
 

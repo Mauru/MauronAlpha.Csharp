@@ -1,4 +1,5 @@
 ﻿using MauronAlpha.Text.Units;
+using MauronAlpha.Text.Interfaces;
 
 using MauronAlpha.Events;
 using MauronAlpha.Events.Interfaces;
@@ -16,14 +17,26 @@ namespace MauronAlpha.Forms.Units {
 		//constructor
 		public FormUnit_textField():base( FormType_textField.Instance ) {}
        
-		private TextUnit_text UNIT_text;
+		private TextUnit_text UNIT_text = new TextUnit_text();
 		public FormUnit_textField SetText (string text) {
 			UNIT_text = new TextUnit_text();
+			
 			UNIT_text.SetText(text);
 			return this;
 		}
+		public TextUnit_text Text {
+			get {
+				UNIT_text.SetIsReadOnly(true);
+				return UNIT_text;
+			}
+		}
 
-		private Layout2d_position XY_position;
+		public TextUnit_line LineByIndex (int n) {
+			return UNIT_text.LineByIndex(n);
+		}
+
+		
+
 
 	}
 
@@ -47,7 +60,7 @@ namespace MauronAlpha.Forms.Units {
 		}
 		#endregion
 
-		public override string Name { get { return "form_textField"; } }
+		public override string Name { get { return "textField"; } }
 
 		public override bool CanHaveChildren {
 			get { return true; }

@@ -27,6 +27,7 @@ namespace MauronAlpha.ConsoleApp {
 			ProjectType_mauronConsole.Instance,
 			name
 		){
+
 			//1: Establish an event clock
 			EventUnit_clock clock = new EventUnit_clock();
 			HANDLER_events = new MauronAlpha.Events.EventHandler( clock );
@@ -46,7 +47,11 @@ namespace MauronAlpha.ConsoleApp {
 
 			//6: Define the "looks" of the console
 			LAYOUT_console = new ConsoleApp_layout( this );
-			LAYOUT_console.ApplyTo( UNIT_window );			
+			LAYOUT_console.ApplyTo( UNIT_window );
+
+			LAYOUT_console.Member("header").SetContent(name);
+			
+			LAYOUT_console.Draw();
 
 		}
 
@@ -117,12 +122,19 @@ namespace MauronAlpha.ConsoleApp {
 		}
 
 		//Outputs
-		private I_layoutRenderer OUTPUT_console;
-		public I_layoutRenderer Output {
+		private I_consoleOutput OUTPUT_console;
+		public I_consoleOutput Output {
 			get {
 				if( OUTPUT_console==null )
 					OUTPUT_console=new ConsoleApp_output(this);
 				return OUTPUT_console;
+			}
+		}
+		I_layoutRenderer I_layoutController.Output {
+			get {
+				if( OUTPUT_console==null )
+					OUTPUT_console=new ConsoleApp_output(this);
+				return (I_layoutRenderer) OUTPUT_console;
 			}
 		}
 		

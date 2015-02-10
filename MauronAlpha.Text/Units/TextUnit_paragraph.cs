@@ -41,6 +41,12 @@ namespace MauronAlpha.Text.Units {
 			return this;
 		}
 
+		public TextUnit_line ChildByIndex(int n) {
+			if(n>=ChildCount)
+				throw Error("Invalid Index!,{"+n+"}",this,ErrorType_index.Instance);
+			return (TextUnit_line) DATA_children.Value(n);
+		}
+
 		//Count
 		public override TextContext CountAsContext {
 			get {

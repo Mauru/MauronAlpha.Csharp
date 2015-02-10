@@ -14,7 +14,7 @@ namespace MauronAlpha.Forms.Units {
 
 		//Constructor
 		public FormComponent_unit( Layout2d_unitType unitType ):base(unitType) {}
-	
+
 	}
 
 }

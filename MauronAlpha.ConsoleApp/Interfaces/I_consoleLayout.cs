@@ -6,6 +6,10 @@ namespace MauronAlpha.ConsoleApp.Interfaces {
 
 		string Title { get; }
 
+		I_consoleLayout Draw();
+
+		new I_consoleUnit Member (string name);
+
 
 	}
 

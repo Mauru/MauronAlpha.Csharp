@@ -52,6 +52,30 @@ namespace MauronAlpha.Text.Units {
 				return result.SetIsReadOnly(true);
 			}
 		}
+	
+		public TextUnit_line LineByIndex(int index) {
+			if(index >= CountAsContext.Line)
+				throw Error("Index out of bounds!,{"+index+"},(LineByIndex)",this,ErrorType_index.Instance);
+			TextUnit_line result = default(TextUnit_line);
+			int offset = 0;
+			for(int n=0; n<ChildCount;n++) {
+				TextUnit_paragraph paragraph = ChildByIndex(n);
+				if(paragraph.ChildCount+offset>index) {
+					result = paragraph.ChildByIndex(index-offset);
+					break;
+				}
+				offset+=paragraph.ChildCount;
+			}
+
+			return result;
+
+		}
+
+		public TextUnit_paragraph ChildByIndex(int index) {
+			if( index>=ChildCount )
+				throw Error("Index out of bounds!,{"+index+"},(ChildByIndex)", this, ErrorType_index.Instance);
+			return (TextUnit_paragraph) DATA_children.Value(index);
+		}
 	}
 
 	public class TextUnitType_text:TextUnitType,
