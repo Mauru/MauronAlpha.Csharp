@@ -103,6 +103,8 @@ namespace MauronAlpha.ConsoleApp {
 			I_consoleUnit header = Member("header");
 			TextContext headerContext = header.Content.CountAsContext;
 
+
+
 			I_consoleUnit content = Member("content");
 			TextContext mainContext = content.Content.CountAsContext;
 
