@@ -1,4 +1,5 @@
 ﻿using MauronAlpha.Events;
+using MauronAlpha.Layout.Layout2d.Context;
 
 namespace MauronAlpha.Layout.Layout2d.Interfaces {
 
@@ -10,6 +11,8 @@ namespace MauronAlpha.Layout.Layout2d.Interfaces {
 		EventHandler EventHandler { get; }
 
 		I_layoutRenderer Output { get; }
+
+		Layout2d_context Context { get;	}
 	}
 
 }

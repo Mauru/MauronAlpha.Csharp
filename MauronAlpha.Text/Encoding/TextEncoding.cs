@@ -54,6 +54,12 @@ namespace MauronAlpha.Text.Encoding {
 		public virtual bool EndsLine(TextUnit_character unit) {
 			return IsNewLine(unit) || IsParagraph(unit);
 		}
+		public virtual bool EndsLine( TextUnit_word unit ) {
+			foreach( TextUnit_character ch in unit.Children )
+				if( EndsLine( ch ) )
+					return true;
+			return false;
+		}
 		public virtual bool IsEmptyCharacter (TextUnit_character unit) {
 			return unit.Character == EmptyCharacter;
 		}

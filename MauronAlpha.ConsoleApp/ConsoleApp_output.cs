@@ -44,6 +44,10 @@ namespace MauronAlpha.ConsoleApp {
 			WriteLine(unit.AsString);
 			return this;
 		}
+		public I_consoleOutput WriteLine( TextUnit_line unit , int maxWidth) {
+			WriteLine( unit.AsString );
+			return this;
+		}
 
 		public I_layoutRenderer Clear ( ) {
 			System.Console.Clear();

@@ -108,6 +108,13 @@ namespace MauronAlpha.ConsoleApp {
 		//The Output window
 		private Layout2d_window UNIT_window;
 
+		public Layout2d_context Context {
+			get {
+				if( UNIT_window == null )
+					return new Layout2d_context();
+				return UNIT_window.Context;
+			}
+		}
 		//Inputs
 		private ConsoleApp_input INPUT_console;
 		public ConsoleApp_input Input {

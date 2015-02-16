@@ -22,6 +22,7 @@ namespace MauronAlpha.Text.Interfaces {
 
 		int ChildCount { get; }
 
+
 		bool IsEmpty { get; }
 		bool IsParent { get; }
 		bool IsChild { get; }
@@ -38,6 +39,9 @@ namespace MauronAlpha.Text.Interfaces {
 
 		TextUnit_character FirstCharacter { get; }
 		TextUnit_character LastCharacter { get; }
+
+		I_textUnit InsertChildAtIndex( int n, I_textUnit unit, bool updateDependencies );
+		I_textUnit RemoveChildAtIndex( int n, bool updateDependencies );
 
 	}
 

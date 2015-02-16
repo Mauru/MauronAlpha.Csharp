@@ -6,40 +6,30 @@ using MauronAlpha.Text.Context;
 
 namespace MauronAlpha.Text.Units {
 	
+	//Represents a line of text in a pragraph
 	public class TextUnit_line:TextComponent_unit {
 
 		//Constructors
 		public TextUnit_line():base(TextUnitType_line.Instance) {}
-		public TextUnit_line(TextUnit_paragraph parent, bool updateDependencies):this() {
+		public TextUnit_line(TextUnit_paragraph parent, bool updateParent ):this() {
 			UNIT_parent = parent;
-			if(updateDependencies){
-				parent.AddChild(this,false);
+			if( updateParent ) {
+				parent.AddChildAtIndex( parent.NextIndex, true, false );
 				SetContext(parent.Context.Instance.Add(0, parent.ChildCount, 0, 0));
 			}
 		}
-		
+		public TextUnit_line( string text ) : this() {
+			SetText( text );
+		}
+
 		//Methods
-		public TextUnit_line SetParent (TextUnit_paragraph parent, bool updateDependencies) {
+		public TextUnit_line SetParent (TextUnit_paragraph parent, bool updateParent, bool updateChild ) {
 			if( IsReadOnly )
 				throw Error("Is protected!,(SetParent)", this, ErrorType_protected.Instance);
-			UNIT_parent=parent;
-			if( updateDependencies ){
-				parent.AddChild(this, false);
-				SetContext(parent.Context.Instance.Add(0, parent.ChildCount, 0, 0));
-			}
+			UNIT_parent = parent;
 			return this;
 		}
-		public TextUnit_line AddChild (TextUnit_word unit, bool updateDependencies) {
-			if( IsReadOnly )
-				throw Error("Is protected!,(AddChild)", this, ErrorType_protected.Instance);
 
-			DATA_children.AddValue(unit);
-			if( updateDependencies ){
-				unit.SetParent(this, false);
-				unit.SetContext(Context.Instance.Add(0, 0, ChildCount, 0));
-			}
-			return this;
-		}
 
 		//Count
 		public override TextContext CountAsContext {
@@ -52,6 +42,33 @@ namespace MauronAlpha.Text.Units {
 				return result.SetIsReadOnly(true);
 			}
 		}
+
+		//Indexing
+		public TextUnit_word ChildByIndex( int n ) {
+			if( n<0||n>ChildCount )
+				throw Error( "Index out of bounds!,{"+n+"},(ChildByIndex)", this, ErrorType_index.Instance );
+			return (TextUnit_word) DATA_children.Value( n );
+		}
+
+		public TextUnit_character CharacterByIndex( int index ) {
+			TextContext count = CountAsContext;
+			if( index < 0 || index > count.Character )
+				throw Error( "Invalid index!{"+index+"},(CharacterByIndex)", this, ErrorType_index.Instance );
+
+			int offset = 0;
+
+			foreach( TextUnit_word unit in DATA_children ) {
+				TextContext unit_count = unit.CountAsContext;
+
+				if( index < offset + unit_count.Character )
+					return unit.ChildByIndex( index - offset );
+
+				offset += unit_count.Character;
+			}
+
+			throw Error( "Invalid index!{"+index+"},(CharacterByIndex)", this, ErrorType_index.Instance );
+		}
+
 	}
 
 	public class TextUnitType_line:TextUnitType {

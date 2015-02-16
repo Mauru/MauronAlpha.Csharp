@@ -99,22 +99,43 @@ namespace MauronAlpha.ConsoleApp {
 			I_consoleOutput output = (I_consoleOutput) UNIT_console.Output;
 
 			Vector2d lineIndex=new Vector2d();
+			int maxWidth = ( int ) Controller.Context.Size.Width;
 
 			I_consoleUnit header = Member("header");
 			TextContext headerContext = header.Content.CountAsContext;
 
+			for( int n=0; n < header.Context.Size.Height; n++ ) {
+				if( n >= headerContext.Line ) {
+					output.WriteLine(new TextUnit_line());
+					break;
+				}
+				TextUnit_line line = header.LineAsOutput( n );
+				output.WriteLine( line, maxWidth );					
+			}
+
 			I_consoleUnit content = Member("content");
 			TextContext mainContext = content.Content.CountAsContext;
 
+			System.Console.WriteLine( content.Context.AsString );
+
+			for( int n=0; n < content.Context.Size.Height; n++ ) {
+				if( n >= mainContext.Line ) {
+					output.WriteLine( new TextUnit_line( n+"#EMPTY") );
+				} else {
+					TextUnit_line line = content.LineAsOutput( n );
+					TextUnit_word preface = new TextUnit_word();
+					preface.SetText( n+"#" );
+					line.InsertChildAtIndex( preface, 0, true );
+					output.WriteLine( line, maxWidth );
+				}
+			}
+
 			I_consoleUnit footer=Member("footer");
 			TextContext footerContext = footer.Content.CountAsContext;
-
-
 			
 			return this;
 
 		}
-
 
 	}
 

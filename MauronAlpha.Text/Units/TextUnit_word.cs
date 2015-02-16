@@ -6,6 +6,7 @@ using MauronAlpha.Text.Context;
 
 namespace MauronAlpha.Text.Units {
 	
+	//Describes a word in a Text
 	public class TextUnit_word:TextComponent_unit {
 
 		//Constructors
@@ -40,6 +41,26 @@ namespace MauronAlpha.Text.Units {
 			}
 			return this;
 		}
+		public TextUnit_word SetText( string str ) {
+			if( IsReadOnly )
+				throw Error( "Is protected!,(SetText)", this, ErrorType_protected.Instance );
+
+			Clear();
+
+			TextUnit_text text = new TextUnit_text(str);
+
+			TextContext count = text.CountAsContext;
+
+			if( count.Word > 1 || count.Word <= 0 )
+				throw Error( "String is not a word!,(SetText)", this, ErrorType_scope.Instance );
+
+			TextUnit_word word = text.WordByIndex( 0 );
+			
+			foreach(TextUnit_character ch in word.Children)
+				AddChild( ch, true );
+
+			return this;
+		}
 
 		//Count
 		public override TextContext CountAsContext {
@@ -48,6 +69,12 @@ namespace MauronAlpha.Text.Units {
 			}
 		}
 
+		//Indexing
+		public TextUnit_character ChildByIndex( int n ) {
+			if( n<0 || n>ChildCount )
+				throw Error( "Index out of bounds!,{"+n+"},(ChildByIndex)", this, ErrorType_index.Instance );
+			return ( TextUnit_character ) DATA_children.Value( n );
+		}
 	}
 
 	public class TextUnitType_word : TextUnitType {

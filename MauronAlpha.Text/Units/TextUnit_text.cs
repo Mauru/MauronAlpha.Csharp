@@ -11,6 +11,9 @@ namespace MauronAlpha.Text.Units {
 		
 		//constructor
 		public TextUnit_text():base(TextUnitType_text.Instance) {}
+		public TextUnit_text( string text ) : this() {
+			SetText( text );
+		}
 
 		//Methods
 		public TextUnit_text SetText(string text) {
@@ -52,30 +55,71 @@ namespace MauronAlpha.Text.Units {
 				return result.SetIsReadOnly(true);
 			}
 		}
-	
+
+		//Indexing
+		public TextUnit_paragraph ChildByIndex( int index ) {
+			if( index < 0 || index >= ChildCount )
+				throw Error( "Index out of bounds!,{"+index+"},(ChildByIndex)", this, ErrorType_index.Instance );
+
+			return ( TextUnit_paragraph ) DATA_children.Value( index );
+		}	
+
 		public TextUnit_line LineByIndex(int index) {
-			if(index >= CountAsContext.Line)
-				throw Error("Index out of bounds!,{"+index+"},(LineByIndex)",this,ErrorType_index.Instance);
-			TextUnit_line result = default(TextUnit_line);
 			int offset = 0;
-			for(int n=0; n<ChildCount;n++) {
-				TextUnit_paragraph paragraph = ChildByIndex(n);
-				if(paragraph.ChildCount+offset>index) {
-					result = paragraph.ChildByIndex(index-offset);
-					break;
-				}
-				offset+=paragraph.ChildCount;
+			TextContext count = CountAsContext;
+
+			if( index < 0 || index >= count.Line )
+				throw Error( "Index out of Bounds!,{"+index+"},(LineByIndex)", this, ErrorType_index.Instance );
+
+			foreach(TextUnit_paragraph unit in DATA_children) {
+				TextContext unit_count = unit.CountAsContext;
+				if( offset + unit_count.Line > index )
+					return unit.ChildByIndex( index - offset );
+
+				offset += unit_count.Line;
 			}
 
-			return result;
+			throw Error( "No unit found!,{"+index+"},(LineByIndex)", this, ErrorType_index.Instance );	
 
 		}
 
-		public TextUnit_paragraph ChildByIndex(int index) {
-			if( index>=ChildCount )
-				throw Error("Index out of bounds!,{"+index+"},(ChildByIndex)", this, ErrorType_index.Instance);
-			return (TextUnit_paragraph) DATA_children.Value(index);
+		public TextUnit_word WordByIndex( int index ) {
+			int offset = 0;
+			TextContext count = CountAsContext;
+			if(index < 0 || index >= count.Word)
+				throw Error( "Index out of Bounds!,{"+index+"},(WordByIndex)", this, ErrorType_index.Instance );
+
+			foreach(TextUnit_paragraph unit in DATA_children) {
+				TextContext unit_count = unit.CountAsContext;
+				if( offset + unit_count.Word > index )
+					return unit.WordByIndex( index - offset );
+
+				offset += unit_count.Word;
+			}
+
+			throw Error( "Index out of Bounds!,{"+index+"},(WordByIndex)", this, ErrorType_index.Instance );	
+
 		}
+
+		public TextUnit_character CharacterByIndex( int index ) {
+			TextContext count = CountAsContext;
+			if( index < 0 || index > count.Character )
+				throw Error( "Invalid index!{"+index+"},(CharacterByIndex)", this, ErrorType_index.Instance );
+
+			int offset = 0;
+
+			foreach( TextUnit_paragraph unit in DATA_children ) {
+				TextContext unit_count = unit.CountAsContext;
+
+				if( index < offset + unit_count.Character )
+					return unit.CharacterByIndex( index - offset );
+
+				offset += unit_count.Character;
+			}
+
+			throw Error( "Invalid index!{"+index+"},(CharacterByIndex)", this, ErrorType_index.Instance );
+		}
+	
 	}
 
 	public class TextUnitType_text:TextUnitType,

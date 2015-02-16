@@ -212,6 +212,7 @@ namespace MauronAlpha.HandlingData {
 			return this;
 		}
 		
+
 		//Modifiers: Remove
 		public MauronCode_dataList<T> Clear ( ) {
 			#region ReadOnly Check
@@ -271,9 +272,9 @@ namespace MauronAlpha.HandlingData {
 			}
 			#endregion
 			#region Error Check
-			if( Count==0 ) {
+			if( Count==0 )
 				throw Error("Data is empty!,(RemovelastElement)", this, ErrorType_index.Instance);
-			}
+			
 			#endregion
 			return RemoveByKey(Count-1);
 		}
