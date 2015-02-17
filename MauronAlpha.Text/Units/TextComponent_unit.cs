@@ -93,12 +93,19 @@ namespace MauronAlpha.Text.Units {
 			DATA_context = context;
 			return this;
 		}
+		
 		public I_textUnit InsertChildAtIndex( int index, I_textUnit unit, bool updateParent, bool updateChild ) {
 			return this;
 		}
+		
 		public I_textUnit RemoveChildAtIndex( int index, bool updateParent, bool updateChild ) {
 			return this;
 		}
+
+		public I_textUnit UpdateParentContext( ) {
+			return this;
+		}
+
 		public I_textUnit UpdateChildContext( ) {
 			return this;
 		}
@@ -107,10 +114,7 @@ namespace MauronAlpha.Text.Units {
 			return this;
 		}
 
-		public I_textUnit UpdateParentContext( ) {
-			return this;
-		}
-
+		
 		//Context
 		protected TextContext DATA_context;
 		public virtual TextContext Context {
@@ -166,9 +170,6 @@ namespace MauronAlpha.Text.Units {
 				return DATA_children;
 			}
 		}
-
-
-
 
 		//Neighbors
 		public MauronCode_dataIndex<I_textUnit> Neighbors {
