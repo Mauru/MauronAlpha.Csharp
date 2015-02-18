@@ -9,17 +9,20 @@ namespace MauronAlpha.Text.Encoding {
 
 		public abstract string Name { get; }
 
-		public I_textEncoding SetTextToString(TextUnit_text unit, string text) {
-			unit.Clear();
+		public TextUnit_text TextFromString(string text) {
+			TextUnit_text unit = new TextUnit_text();
 			unit.SetContext(new TextContext(-1,-1,-1,-1));
-			TextUnit_paragraph paragraph = new TextUnit_paragraph(unit,true);
+
+			TextUnit_paragraph paragraph = new TextUnit_paragraph(unit, true);
 			TextUnit_line line = new TextUnit_line(paragraph, true);
 			TextUnit_word word = new TextUnit_word(line,true);
 			TextUnit_character character;
+
 			foreach(char c in text){
-				character = new TextUnit_character(word, false);
-				character.SetChar(c);
-				word.AddChild(character,true);
+				character = new TextUnit_character( word, false );
+				character.SetChar(c, false);
+
+				word.InsertChildAtIndex(word.ChildCount,character, false, true);
 				if(EndsParagraph(character)) {
 					paragraph = new TextUnit_paragraph(unit,true);
 				}

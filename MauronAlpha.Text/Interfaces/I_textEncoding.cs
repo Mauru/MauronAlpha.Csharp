@@ -8,7 +8,8 @@ namespace MauronAlpha.Text.Interfaces {
 		
 		string Name { get; }
 
-		I_textEncoding SetTextToString(TextUnit_text unit, string text);
+		I_textEncoding StringAsTextUnit( string text);
+		I_textEncoding StringToTextUnit( string text, I_textUnit unit, bool updateParent, bool updateChild);
 
 		char EmptyCharacter { get; }
 		char WhiteSpace { get; }

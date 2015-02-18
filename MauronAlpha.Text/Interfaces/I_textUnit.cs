@@ -3,7 +3,9 @@ using System.Collections.Generic;
 
 using MauronAlpha.Interfaces;
 using MauronAlpha.HandlingData;
+
 using MauronAlpha.Text.Units;
+using MauronAlpha.Text.Collections;
 using MauronAlpha.Text.Context;
 
 namespace MauronAlpha.Text.Interfaces {
@@ -21,7 +23,7 @@ namespace MauronAlpha.Text.Interfaces {
 		string AsString { get; }
 
 		int ChildCount { get; }
-
+		int Index { get; }
 
 		bool IsEmpty { get; }
 		bool IsParent { get; }
@@ -30,7 +32,7 @@ namespace MauronAlpha.Text.Interfaces {
 		bool CanHaveParent { get; }
 		
 		MauronCode_dataList<I_textUnit> Children { get; }
-		MauronCode_dataIndex<I_textUnit> Neighbors { get; }
+		TextUnitNeighbors Neighbors { get; }
 
 		I_textUnit Parent { get; }
 		I_textUnit SetContext (TextContext context);
@@ -40,8 +42,8 @@ namespace MauronAlpha.Text.Interfaces {
 		TextUnit_character FirstCharacter { get; }
 		TextUnit_character LastCharacter { get; }
 
-		I_textUnit InsertChildAtIndex( int n, I_textUnit unit, bool updateDependencies );
-		I_textUnit RemoveChildAtIndex( int n, bool updateDependencies );
+		I_textUnit InsertChildAtIndex( int n, I_textUnit unit, bool updateParent, bool updateChild );
+		I_textUnit RemoveChildAtIndex( int n, bool updateParent, bool updateChild );
 
 	}
 

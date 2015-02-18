@@ -4,6 +4,7 @@ using MauronAlpha.HandlingData;
 using MauronAlpha.HandlingErrors;
 
 using MauronAlpha.Text;
+using MauronAlpha.Text.Collections;
 using MauronAlpha.Text.Interfaces;
 using MauronAlpha.Text.Context;
 using MauronAlpha.Text.Encoding;
@@ -94,25 +95,19 @@ namespace MauronAlpha.Text.Units {
 			return this;
 		}
 		
-		public I_textUnit InsertChildAtIndex( int index, I_textUnit unit, bool updateParent, bool updateChild ) {
-			return this;
-		}
-		
-		public I_textUnit RemoveChildAtIndex( int index, bool updateParent, bool updateChild ) {
-			return this;
-		}
-
 		public I_textUnit UpdateParentContext( ) {
 			return this;
 		}
-
 		public I_textUnit UpdateChildContext( ) {
 			return this;
 		}
-
 		public I_textUnit UpdateContext( ) {
 			return this;
 		}
+
+		public I_textUnit InsertChildAtIndex (int n, I_textUnit unit, bool updateParent, bool updateChild) { return this; }
+		public I_textUnit RemoveChildAtIndex (int n, bool updateParent, bool updateChild) { return this; }
+		public I_textUnit SetParent (I_textUnit unit, bool updateParent, bool updateChild) { return this; }
 
 		
 		//Context
@@ -144,6 +139,7 @@ namespace MauronAlpha.Text.Units {
 				return Children.Count;
 			}
 		}
+		public abstract int Index { get; }
 
 		//Characters
 		public virtual TextUnit_character FirstCharacter {
@@ -172,7 +168,7 @@ namespace MauronAlpha.Text.Units {
 		}
 
 		//Neighbors
-		public MauronCode_dataIndex<I_textUnit> Neighbors {
+		public TextUnitNeighbors Neighbors {
 			get {
 				MauronCode_dataIndex<I_textUnit> result = new MauronCode_dataIndex<I_textUnit>().SetValue(0,this);
 				if(!IsChild||!CanHaveParent)

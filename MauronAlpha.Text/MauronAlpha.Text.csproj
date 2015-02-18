@@ -40,11 +40,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Collections\TextUnitNeighbors.cs" />
     <Compile Include="Context\TextContext.cs" />
     <Compile Include="Encoding\TextEncoding.cs" />
     <Compile Include="Encoding\TextEncoding_UTF8.cs" />
     <Compile Include="Interfaces\I_textEncoding.cs" />
     <Compile Include="Interfaces\I_textUnit.cs" />
+    <Compile Include="Interfaces\I_textUnitCollection.cs" />
     <Compile Include="Interfaces\I_textUnitType.cs" />
     <Compile Include="Style\public class TextStyle_transform.cs" />
     <Compile Include="Style\TextStyle.cs" />

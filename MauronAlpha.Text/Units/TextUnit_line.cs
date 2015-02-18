@@ -13,23 +13,10 @@ namespace MauronAlpha.Text.Units {
 		public TextUnit_line():base(TextUnitType_line.Instance) {}
 		public TextUnit_line(TextUnit_paragraph parent, bool updateParent ):this() {
 			UNIT_parent = parent;
-			if( updateParent ) {
-				parent.AddChildAtIndex( parent.NextIndex, true, false );
-				SetContext(parent.Context.Instance.Add(0, parent.ChildCount, 0, 0));
-			}
 		}
 		public TextUnit_line( string text ) : this() {
 			SetText( text );
 		}
-
-		//Methods
-		public TextUnit_line SetParent (TextUnit_paragraph parent, bool updateParent, bool updateChild ) {
-			if( IsReadOnly )
-				throw Error("Is protected!,(SetParent)", this, ErrorType_protected.Instance);
-			UNIT_parent = parent;
-			return this;
-		}
-
 
 		//Count
 		public override TextContext CountAsContext {
@@ -43,13 +30,20 @@ namespace MauronAlpha.Text.Units {
 			}
 		}
 
-		//Indexing
+		//Int : Index
+		public override int Index {
+			get { return Context.Line; }
+		}
+
+		//Querying
 		public TextUnit_word ChildByIndex( int n ) {
 			if( n<0||n>ChildCount )
 				throw Error( "Index out of bounds!,{"+n+"},(ChildByIndex)", this, ErrorType_index.Instance );
 			return (TextUnit_word) DATA_children.Value( n );
 		}
-
+		public TextUnit_word WordByIndex( int n ) {
+			return ChildByIndex(n);
+		}
 		public TextUnit_character CharacterByIndex( int index ) {
 			TextContext count = CountAsContext;
 			if( index < 0 || index > count.Character )

@@ -127,7 +127,7 @@ namespace MauronAlpha.ConsoleApp {
 					TextUnit_line line = content.LineAsOutput( n );
 					TextUnit_word preface = new TextUnit_word();
 					preface.SetText( n+"#" );
-					line.InsertChildAtIndex( preface, 0, true );
+					line.InsertChildAtIndex( 0, preface, false, true );
 					output.WriteLine( line, maxWidth );
 				}
 			}

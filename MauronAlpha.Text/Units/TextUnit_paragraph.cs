@@ -6,48 +6,31 @@ using MauronAlpha.Text.Context;
 
 namespace MauronAlpha.Text.Units {
 
-	public class TextUnit_paragraph:TextComponent_unit,
-	I_textUnit {
+	//Describes a Paragraph
+	public class TextUnit_paragraph:TextComponent_unit {
 
 		//constructors
 		public TextUnit_paragraph():base(TextUnitType_paragraph.Instance){}
-		public TextUnit_paragraph(TextUnit_text parent, bool updateDependencies):this() {
+		public TextUnit_paragraph(TextUnit_text parent, bool updateParent):this() {
 			UNIT_parent = parent;
-			if(updateDependencies){
-				parent.AddChild(this,false);
-				SetContext(parent.Context.Instance.Add(parent.ChildCount, 0, 0, 0));
+		}
+
+		//Index
+		public override int Index { 
+			get { 
+				return Context.Paragraph; 
 			}
 		}
 
-		//Members
-		public TextUnit_paragraph SetParent(TextUnit_text parent, bool updateDependencies) {
-			if( IsReadOnly )
-				throw Error("Is protected!,(SetParent)", this, ErrorType_protected.Instance);
-			UNIT_parent = parent;
-			if(updateDependencies){
-				parent.AddChild(this,false);
-				SetContext(parent.Context.Instance.Add(parent.ChildCount, 0, 0, 0));
-			}
-			return this;
-		}
-		public TextUnit_paragraph AddChild(TextUnit_line unit, bool updateDependencies) {
-			if(IsReadOnly)
-				throw Error("Is protected!,(AddChild)",this,ErrorType_protected.Instance);
-			DATA_children.AddValue(unit);
-			if(updateDependencies){
-				unit.SetParent(this,false);
-				unit.SetContext(Context.Instance.Add(0, ChildCount, 0, 0));
-			}
-			return this;
-		}
-
-		//Indexing
+		//Querying
 		public TextUnit_line ChildByIndex(int n) {
 			if(n >= ChildCount)
 				throw Error("Invalid Index!,{"+n+"},(ChildByIndex)",this,ErrorType_index.Instance);
 			return (TextUnit_line) DATA_children.Value(n);
 		}
-
+		public TextUnit_line LineByIndex(int n) {
+			return ChildByIndex(n);
+		}
 		public TextUnit_word WordByIndex( int index ) {
 			int offset = 0;
 			TextContext count = CountAsContext;
@@ -65,7 +48,6 @@ namespace MauronAlpha.Text.Units {
 			throw Error( "Index out of Bounds!,{"+index+"},(WordByIndex)", this, ErrorType_index.Instance );
 
 		}
-
 		public TextUnit_character CharacterByIndex( int index ) {
 			TextContext count = CountAsContext;
 			if( index < 0 || index > count.Character )
@@ -99,6 +81,7 @@ namespace MauronAlpha.Text.Units {
 
 	}
 
+	//Description of type Capabilities
 	public class TextUnitType_paragraph:TextUnitType {
 		
 		private TextUnitType_paragraph():base(){}

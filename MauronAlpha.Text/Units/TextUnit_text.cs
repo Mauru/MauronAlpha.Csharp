@@ -20,23 +20,11 @@ namespace MauronAlpha.Text.Units {
 			if( IsReadOnly )
 				throw Error("Is protected!,(SetText)", this, ErrorType_protected.Instance);
 
-			Encoding.SetTextToString(this,text);
+			Encoding.StringToTextUnit(text, this, true, true);
 			
 			return this;
 		}
-		public TextUnit_text AddChild(TextUnit_paragraph unit, bool updateDependencies) {
-			if(IsReadOnly)
-				throw Error("Is protected!,(AddChild)",this,ErrorType_protected.Instance);
-
-			DATA_children.AddValue(unit);
-			if(updateDependencies){
-				unit.SetParent(this, false);
-				unit.SetContext(Context.Instance.Add(ChildCount,0,0,0));
-			}
-
-			return this;
-		}
-
+		
 		//Context
 		public override TextContext Context {
 			get {
@@ -56,14 +44,23 @@ namespace MauronAlpha.Text.Units {
 			}
 		}
 
+		//int Index
+		public override int Index { 
+			get { 
+				return 0; 
+			} 
+		}
+
 		//Indexing
 		public TextUnit_paragraph ChildByIndex( int index ) {
 			if( index < 0 || index >= ChildCount )
 				throw Error( "Index out of bounds!,{"+index+"},(ChildByIndex)", this, ErrorType_index.Instance );
 
 			return ( TextUnit_paragraph ) DATA_children.Value( index );
-		}	
-
+		}
+		public TextUnit_paragraph ParagraphByIndex (int n) {
+			return ChildByIndex(n);
+		}
 		public TextUnit_line LineByIndex(int index) {
 			int offset = 0;
 			TextContext count = CountAsContext;
@@ -82,7 +79,6 @@ namespace MauronAlpha.Text.Units {
 			throw Error( "No unit found!,{"+index+"},(LineByIndex)", this, ErrorType_index.Instance );	
 
 		}
-
 		public TextUnit_word WordByIndex( int index ) {
 			int offset = 0;
 			TextContext count = CountAsContext;
@@ -100,7 +96,6 @@ namespace MauronAlpha.Text.Units {
 			throw Error( "Index out of Bounds!,{"+index+"},(WordByIndex)", this, ErrorType_index.Instance );	
 
 		}
-
 		public TextUnit_character CharacterByIndex( int index ) {
 			TextContext count = CountAsContext;
 			if( index < 0 || index > count.Character )

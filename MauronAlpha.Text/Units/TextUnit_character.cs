@@ -12,11 +12,10 @@ namespace MauronAlpha.Text.Units {
 		public TextUnit_character():base(TextUnitType_character.Instance) {}
 		public TextUnit_character (TextUnit_word parent, bool updateDependencies)
 			: this() {
-			UNIT_parent = parent;
-			if(updateDependencies){
-				parent.AddChild(this,false);
-				SetContext(parent.Context.Instance.Add(0, 0, 0, parent.ChildCount));
-			}
+			UNIT_parent = parent;			
+		}
+		public TextUnit_character ( char character ):this() {
+			SetChar(char);
 		}
 
 		//Statics
@@ -63,17 +62,6 @@ namespace MauronAlpha.Text.Units {
 		}
 
 		//Methods
-		public TextUnit_character SetParent (TextUnit_word parent, bool updateDependencies) {
-			if( IsReadOnly )
-				throw Error("Is protected!,(SetParent)", this, ErrorType_protected.Instance);
-			UNIT_parent=parent;
-			if( updateDependencies ) {
-				parent.AddChild(this, false);
-				SetContext(parent.Context.Instance.Add(0, 0, 0, parent.ChildCount));
-			}
-
-			return this;
-		}
 		public TextUnit_character SetChar(char code) {
 			if( IsReadOnly )
 				throw Error("Is protected!,(SetChar)", this, ErrorType_protected.Instance);
