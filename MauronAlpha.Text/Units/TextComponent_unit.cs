@@ -105,7 +105,11 @@ namespace MauronAlpha.Text.Units {
 			return this;
 		}
 
-		public I_textUnit InsertChildAtIndex (int n, I_textUnit unit, bool updateParent, bool updateChild) { return this; }
+		public I_textUnit InsertChildAtIndex (int n, I_textUnit unit, bool updateParent, bool updateChild) {
+			if(IsReadOnly)
+				throw Error("Is protected!,(InsertChildAtIndex)",this, ErrorType_protected.Instance);
+			return this;
+		}
 		public I_textUnit RemoveChildAtIndex (int n, bool updateParent, bool updateChild) { return this; }
 		public I_textUnit SetParent (I_textUnit unit, bool updateParent, bool updateChild) { return this; }
 
