@@ -3,6 +3,9 @@
 using MauronAlpha.Interfaces;
 using MauronAlpha.HandlingErrors;
 
+using MauronAlpha.Text.Interfaces;
+using MauronAlpha.Text.Units;
+
 namespace MauronAlpha.Text.Context {
 	
 	public class TextContext:MauronCode_textComponent,
@@ -124,6 +127,31 @@ namespace MauronAlpha.Text.Context {
 			INT_line-=context.Line;
 			INT_word-=context.Word;
 			INT_character-=context.Character;
+			return this;
+		}
+
+		public TextContext ShiftRelativeToUnit( I_textUnit child, int offset, bool updateChildren ) {
+			if( IsReadOnly )
+				throw Error( "Protected!,(ShiftRelativeToUnit)", this, ErrorType_protected.Instance );
+			if( child.UnitType.Equals( TextUnitType_text.Instance ) ) {
+				return this;
+			}
+			if( child.UnitType.Equals( TextUnitType_paragraph.Instance ) ) {
+				SetParagraph( Character+offset );
+				return child.UpdateContext();
+			}
+			if( child.UnitType.Equals( TextUnitType_line.Instance ) ) {
+				SetLine( Line+offset );
+				return child.UpdateContext();
+			}
+			if( child.UnitType.Equals( TextUnitType_word.Instance ) ) {
+				SetWord( Word+offset );
+				return child.UpdateContext();
+			}
+			if( child.UnitType.Equals( TextUnitType_character.Instance ) ) {
+				SetCharacter(Character+offset);
+				return child.UpdateContext();
+			}
 			return this;
 		}
 

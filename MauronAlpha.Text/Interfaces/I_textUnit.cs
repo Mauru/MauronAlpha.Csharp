@@ -36,6 +36,7 @@ namespace MauronAlpha.Text.Interfaces {
 
 		I_textUnit Parent { get; }
 		I_textUnit SetContext (TextContext context);
+		I_textUnit UpdateContext( );
 
 		I_textEncoding Encoding { get; }
 

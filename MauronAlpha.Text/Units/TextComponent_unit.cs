@@ -108,11 +108,35 @@ namespace MauronAlpha.Text.Units {
 		public I_textUnit InsertChildAtIndex (int n, I_textUnit unit, bool updateParent, bool updateChild) {
 			if(IsReadOnly)
 				throw Error("Is protected!,(InsertChildAtIndex)",this, ErrorType_protected.Instance);
+
+			//remove from old parent
+			if( updateParent ) {
+				if( unit.IsChild && ( !unit.Parent.Equals( this ) ) )
+					Parent.RemoveChildAtIndex( unit.Index, false, true );
+			}
+
+			//update Children and their context
+			if( updateChild ) {
+				int childCount = ChildCount;
+
+				//TODO:we need to check if the unit terminates the new parent
+				
+
+				//We are actually inserting the unit and need to update the context
+				if( childCount > 1 && n < childCount -1 ) {
+					MauronCode_dataList<I_textUnit> result = DATA_children.Range( n );
+					foreach( I_textUnit child in result ) {
+						child.Context.ShiftRelativeToUnit( child, 1, true );
+					}
+				}
+
+			}
+
+
 			return this;
 		}
 		public I_textUnit RemoveChildAtIndex (int n, bool updateParent, bool updateChild) { return this; }
 		public I_textUnit SetParent (I_textUnit unit, bool updateParent, bool updateChild) { return this; }
-
 		
 		//Context
 		protected TextContext DATA_context;
