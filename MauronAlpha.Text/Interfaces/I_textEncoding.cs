@@ -28,6 +28,8 @@ namespace MauronAlpha.Text.Interfaces {
 		bool EndsLine( TextUnit_character unit );
 		bool EndsLine( TextUnit_word unit );
 
+		bool UnitEndsOther( I_textUnit candidate, I_textUnit other );
+
 	}
 
 

@@ -95,32 +95,34 @@ namespace MauronAlpha.Text.Units {
 			return this;
 		}
 		
-		public I_textUnit UpdateParentContext( ) {
-			return this;
-		}
-		public I_textUnit UpdateChildContext( ) {
-			return this;
-		}
-		public I_textUnit UpdateContext( ) {
+		public I_textUnit UpdateContext( bool updateChildren ) {
+			int index = 0;
+			foreach(I_textUnit unit in DATA_children) {
+				unit.Context.SetRelativeContext( unit, Context, index, false );
+				index++;
+				unit.UpdateContext( updateChildren );
+			}
 			return this;
 		}
 
-		public I_textUnit InsertChildAtIndex (int n, I_textUnit unit, bool updateParent, bool updateChild) {
+		public I_textUnit InsertChildAtIndex (int n, I_textUnit unit, bool updateParent, bool updateChildren) {
 			if(IsReadOnly)
 				throw Error("Is protected!,(InsertChildAtIndex)",this, ErrorType_protected.Instance);
 
 			//remove from old parent
-			if( updateParent ) {
-				if( unit.IsChild && ( !unit.Parent.Equals( this ) ) )
-					Parent.RemoveChildAtIndex( unit.Index, false, true );
-			}
+			if( updateParent 
+			&& unit.IsChild 
+			&& !unit.Parent.Equals( this ) )
+				Parent.RemoveChildAtIndex( unit.Index, false, true );
 
 			//update Children and their context
-			if( updateChild ) {
+			if( updateChildren ) {
 				int childCount = ChildCount;
 
 				//TODO:we need to check if the unit terminates the new parent
+				if( Encoding.UnitEndsOther( unit, this ) ) { 
 				
+				}
 
 				//We are actually inserting the unit and need to update the context
 				if( childCount > 1 && n < childCount -1 ) {
@@ -135,8 +137,8 @@ namespace MauronAlpha.Text.Units {
 
 			return this;
 		}
-		public I_textUnit RemoveChildAtIndex (int n, bool updateParent, bool updateChild) { return this; }
-		public I_textUnit SetParent (I_textUnit unit, bool updateParent, bool updateChild) { return this; }
+		public I_textUnit RemoveChildAtIndex (int n, bool updateParent, bool updateChildren) { return this; }
+		public I_textUnit SetParent (I_textUnit unit, bool updateParent, bool updateChildren) { return this; }
 		
 		//Context
 		protected TextContext DATA_context;

@@ -36,15 +36,15 @@ namespace MauronAlpha.Text.Interfaces {
 
 		I_textUnit Parent { get; }
 		I_textUnit SetContext (TextContext context);
-		I_textUnit UpdateContext( );
+		I_textUnit UpdateContext( bool updateChildren );
 
 		I_textEncoding Encoding { get; }
 
 		TextUnit_character FirstCharacter { get; }
 		TextUnit_character LastCharacter { get; }
 
-		I_textUnit InsertChildAtIndex( int n, I_textUnit unit, bool updateParent, bool updateChild );
-		I_textUnit RemoveChildAtIndex( int n, bool updateParent, bool updateChild );
+		I_textUnit InsertChildAtIndex( int n, I_textUnit unit, bool updateParent, bool updateChildren );
+		I_textUnit RemoveChildAtIndex( int n, bool updateParent, bool updateChildren );
 
 	}
 

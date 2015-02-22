@@ -81,7 +81,23 @@ namespace MauronAlpha.Text.Encoding {
 		public virtual bool IsZeroWidth(TextUnit_character unit) {
 			return unit.Character == ZeroWidth;
 		}
-	
+		
+		public virtual bool UnitEndsOther(I_textUnit candidate, I_textUnit other) {
+			if( other.UnitType.Equals( TextUnitType_text.Instance ) )
+				return other.UnitType.Equals(TextUnitType_text.Instance);
+
+			if( candidate.UnitType.Equals(other.UnitType) )
+				return true;
+
+			if( candidate.UnitType.Equals(TextUnitType_character.Instance) )
+				return EndsLine( (TextUnit_character) candidate )
+				&& !other.UnitType.Equals( TextUnitType_text.Instance )
+				&& !other.UnitType.Equals( TextUnitType_paragraph.Instance );
+			if( candidate.UnitType.Equals( TextUnitType_word.Instance) )
+				return EndsLine( (TextUnit_word) candidate )
+				&& !other.UnitType.Equals( TextUnitType_text.Instance )
+		}
+
 	}
 
 }

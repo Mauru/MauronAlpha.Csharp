@@ -132,25 +132,46 @@ namespace MauronAlpha.Text.Context {
 
 		public TextContext ShiftRelativeToUnit( I_textUnit child, int offset, bool updateChildren ) {
 			if( IsReadOnly )
-				throw Error( "Protected!,(ShiftRelativeToUnit)", this, ErrorType_protected.Instance );
-			if( child.UnitType.Equals( TextUnitType_text.Instance ) ) {
+				throw Error( "Is protected!,(ShiftRelativeToUnit)", this, ErrorType_protected.Instance );
+			if( child.UnitType.Equals( TextUnitType_text.Instance ) ){}
+				//Do nothing
+			else if( child.UnitType.Equals( TextUnitType_paragraph.Instance ) )
+				SetParagraph( Character+offset );
+			else if( child.UnitType.Equals( TextUnitType_line.Instance ) )
+				SetLine( Line+offset );
+			else if( child.UnitType.Equals( TextUnitType_word.Instance ) )
+				SetWord( Word+offset );
+			else if( child.UnitType.Equals( TextUnitType_character.Instance ) )
+				SetCharacter(Character+offset);
+			
+			if(updateChildren)
+				child.UpdateContext( true );
+
+			return this;
+		}
+		public TextContext SetRelativeContext( I_textUnit child, TextContext parent, int index, bool updateChildren ) {
+			if( IsReadOnly )
+				throw Error("Is protected!,(ShiftRelativeToUnit)", this, ErrorType_protected.Instance);
+			if( child.UnitType.Equals(TextUnitType_text.Instance) ) {
 				return this;
 			}
-			if( child.UnitType.Equals( TextUnitType_paragraph.Instance ) ) {
-				SetParagraph( Character+offset );
-				return child.UpdateContext();
+			if( child.UnitType.Equals(TextUnitType_paragraph.Instance) ) {
+				SetParagraph(index);
+				return this;
 			}
-			if( child.UnitType.Equals( TextUnitType_line.Instance ) ) {
-				SetLine( Line+offset );
-				return child.UpdateContext();
+			if( child.UnitType.Equals(TextUnitType_line.Instance) ) {
+				SetLine(index);
+				return this;
 			}
-			if( child.UnitType.Equals( TextUnitType_word.Instance ) ) {
-				SetWord( Word+offset );
-				return child.UpdateContext();
+			if( child.UnitType.Equals(TextUnitType_word.Instance) ) {
+				SetWord(index);
+				child.UpdateContext();
+				return this;
 			}
-			if( child.UnitType.Equals( TextUnitType_character.Instance ) ) {
-				SetCharacter(Character+offset);
-				return child.UpdateContext();
+			if( child.UnitType.Equals(TextUnitType_character.Instance) ) {
+				SetCharacter(index);
+				child.UpdateContext();
+				return this;
 			}
 			return this;
 		}

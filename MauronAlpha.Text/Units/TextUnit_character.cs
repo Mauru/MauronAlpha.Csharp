@@ -15,7 +15,7 @@ namespace MauronAlpha.Text.Units {
 			UNIT_parent = parent;			
 		}
 		public TextUnit_character ( char character ):this() {
-			SetChar(char);
+			SetChar( character );
 		}
 
 		//Statics
@@ -36,6 +36,11 @@ namespace MauronAlpha.Text.Units {
 		public override TextContext CountAsContext {
 			get { 
 				return new TextContext();
+			}
+		}
+		public override int Index { 
+			get {
+				return Context.Character;
 			}
 		}
 
