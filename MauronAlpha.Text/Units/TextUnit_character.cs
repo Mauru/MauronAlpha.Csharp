@@ -95,6 +95,12 @@ namespace MauronAlpha.Text.Units {
 				return false;
 			}
 		}
+
+		public override I_textUnit New {
+			get {
+				return new TextUnit_character();
+			}
+		}
 	}
 
 }

@@ -101,6 +101,11 @@ namespace MauronAlpha.Text.Units {
 			}
 		}
 
+		public override I_textUnit New {
+			get {
+				return new TextUnit_paragraph();
+			}
+		}
 	}
 
 }

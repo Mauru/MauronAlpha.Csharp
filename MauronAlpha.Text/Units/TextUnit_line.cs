@@ -78,7 +78,12 @@ namespace MauronAlpha.Text.Units {
 				return new TextUnitType_line();
 			}
 		}
-	
+
+		public override I_textUnit New {
+			get {
+				return new TextUnit_line();
+			}
+		}
 	}
 
 }

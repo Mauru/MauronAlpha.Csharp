@@ -112,23 +112,54 @@ namespace MauronAlpha.Text.Units {
 			//remove from old parent
 			if( updateParent 
 			&& unit.IsChild 
-			&& !unit.Parent.Equals( this ) )
-				Parent.RemoveChildAtIndex( unit.Index, false, true );
+			&& !unit.Parent.Equals( this ) ) {
+				unit.Parent.RemoveChildAtIndex( unit.Index, false, true );
+				bool displace =  Encoding.UnitEndsOther( unit, unit.Parent );
+				
+				//This is were things might get complicated
+				if(displace) {
+				
+				}
+			}
 
 			//update Children and their context
 			if( updateChildren ) {
 				int childCount = ChildCount;
 
-				//TODO:we need to check if the unit terminates the new parent
-				if( Encoding.UnitEndsOther( unit, this ) ) { 
-				
-				}
+				//check if the unit terminates the new parent
+				bool displace =  Encoding.UnitEndsOther( unit, this );
 
 				//We are actually inserting the unit and need to update the context
 				if( childCount > 1 && n < childCount -1 ) {
 					MauronCode_dataList<I_textUnit> result = DATA_children.Range( n );
+					int index = 0;
 					foreach( I_textUnit child in result ) {
-						child.Context.ShiftRelativeToUnit( child, 1, true );
+
+						//Displace unit to next logical item
+						if( displace ) {
+							//remove
+							RemoveChildAtIndex( n, false, false );
+							
+							//figure out neighbor
+							TextUnitNeighbors neighbors = Neighbors;
+							I_textUnit neighbor;
+
+							//no adequate neighbor
+							if( neighbors.Right.IsEmpty ) {
+								neighbor = UnitType.New;
+								neighbor.SetContext(Context.Instance.ShiftRelativeToUnit(this,1,false);
+							} else
+								neighbor = neighbors.Right.FirstElement;
+							
+							//1: add each unit to new neighbor
+							neighbor.InsertChildAtIndex( index, child, false, true );
+							index++;
+							neighbor.UpdateContext( true );
+
+						} else {
+							//Child get shifted into direction
+							child.Context.ShiftRelativeToUnit( child, 1, true );
+						}
 					}
 				}
 

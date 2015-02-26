@@ -1,4 +1,5 @@
 ﻿using System;
+using MauronAlpha.Text.Units;
 
 namespace MauronAlpha.Text.Interfaces {
 	
@@ -9,6 +10,9 @@ namespace MauronAlpha.Text.Interfaces {
 		bool CanHaveChildren { get; }
 		bool CanHaveParent { get; }
 
+		I_textUnit New {
+			get;
+		}
 	}
 
 }

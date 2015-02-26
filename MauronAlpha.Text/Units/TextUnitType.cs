@@ -22,6 +22,9 @@ namespace MauronAlpha.Text.Units {
 		public bool Equals(I_textUnitType other) {
 			return Name == other.Name;
 		}
-	
+
+		public abstract I_textUnit New {
+			get;
+		}}
 	}
 }

@@ -58,7 +58,12 @@ namespace MauronAlpha.Text.Units {
 				return new TextUnitType_word();
 			}
 		}
-	
+
+		public override I_textUnit New {
+			get {
+				return new TextUnit_word();
+			}
+		}
 	}
 
 }
