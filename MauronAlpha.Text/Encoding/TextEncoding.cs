@@ -1,4 +1,5 @@
-﻿using MauronAlpha.Text.Interfaces;
+﻿using MauronAlpha.HandlingData;
+using MauronAlpha.Text.Interfaces;
 using MauronAlpha.Text.Units;
 using MauronAlpha.Text.Context;
 
@@ -51,6 +52,12 @@ namespace MauronAlpha.Text.Encoding {
 		public virtual bool EndsParagraph(TextUnit_character unit) {
 			return IsParagraph(unit);
 		}
+		public virtual bool EndsParagraph(TextUnit_word unit) {
+			return EndsParagraph( unit.LastCharacter );
+		}
+		public virtual bool EndsParagraph(TextUnit_line unit) {
+			return EndsParagraph( unit.LastCharacter );
+		}
 		public virtual bool EndsWord(TextUnit_character unit) {
 			return IsWhiteSpace(unit) || IsTab(unit);
 		}
@@ -82,20 +89,79 @@ namespace MauronAlpha.Text.Encoding {
 			return unit.Character == ZeroWidth;
 		}
 		
-		public virtual bool UnitEndsOther(I_textUnit candidate, I_textUnit other) {
-			if( other.UnitType.Equals( TextUnitType_text.Instance ) )
-				return other.UnitType.Equals(TextUnitType_text.Instance);
+		protected MauronCode_dataList<I_textUnitType> TypeOrder = new MauronCode_dataList<I_textUnitType>() { 
+			TextUnitType_character.Instance,
+			TextUnitType_word.Instance,
+			TextUnitType_line.Instance,
+			TextUnitType_paragraph.Instance,
+			TextUnitType_text.Instance
+		};
 
-			if( candidate.UnitType.Equals(other.UnitType) )
+		public virtual bool UnitEndsOther(I_textUnit candidate, I_textUnit other) {
+			
+			if( candidate.UnitType.Equals(TextUnitType_character.Instance) ) {
+				TextUnit_character unit = (TextUnit_character) candidate;
+				return UnitEndsOther( unit, other );
+			}
+
+			if( candidate.UnitType.Equals( TextUnitType_word.Instance) ) {
+				TextUnit_word unit = ( TextUnit_word ) candidate;
+				return UnitEndsOther( unit, other );	
+			}
+
+			if( candidate.UnitType.Equals( TextUnitType_line.Instance ) ) {
+				TextUnit_line unit = (TextUnit_line) candidate;
+				return UnitEndsOther( unit, other );
+			}
+
+			return TypeOrder.IndexOf(candidate.UnitType) >= TypeOrder.IndexOf(other.UnitType);
+
+		}
+		public virtual bool UnitEndsOther (TextUnit_character unit, I_textUnit other) {
+			I_textUnitType otherType=other.UnitType;
+
+			if( otherType.Equals(TextUnitType_character.Instance) )
 				return true;
 
-			if( candidate.UnitType.Equals(TextUnitType_character.Instance) )
-				return EndsLine( (TextUnit_character) candidate )
-				&& !other.UnitType.Equals( TextUnitType_text.Instance )
-				&& !other.UnitType.Equals( TextUnitType_paragraph.Instance );
-			if( candidate.UnitType.Equals( TextUnitType_word.Instance) )
-				return EndsLine( (TextUnit_word) candidate )
-				&& !other.UnitType.Equals( TextUnitType_text.Instance )
+			if( otherType.Equals(TextUnitType_word.Instance)
+			&&(EndsLine(unit)||EndsParagraph(unit)||EndsWord(unit)) )
+				return true;
+
+			if( otherType.Equals(TextUnitType_line.Instance)
+			&&(EndsParagraph(unit)||EndsWord(unit)) )
+				return true;
+
+			return false;
+		
+		}
+		public virtual bool UnitEndsOther( TextUnit_word unit, I_textUnit other ) {
+			I_textUnitType otherType=other.UnitType;
+
+			if( otherType.Equals( TextUnitType_character.Instance ) 
+			|| otherType.Equals( TextUnitType_word.Instance ) )
+				return true;
+
+			if( otherType.Equals( TextUnitType_line.Instance) )
+				return EndsLine( unit ) || EndsParagraph( unit );
+			
+			if( otherType.Equals( TextUnitType_paragraph.Instance ) )
+				return EndsParagraph( unit );
+
+			return false;
+
+		}
+		public virtual bool UnitEndsOther(TextUnit_line unit, I_textUnit other) {
+			I_textUnitType otherType = other.UnitType;
+
+			if( otherType.Equals(TextUnitType_character.Instance)
+			||otherType.Equals(TextUnitType_word.Instance)
+			||otherType.Equals(TextUnitType_line.Instance))
+				return true;
+
+			if( otherType.Equals(TextUnitType_paragraph.Instance) )
+				return EndsParagraph(unit);
+
+			return false;
 		}
 
 	}

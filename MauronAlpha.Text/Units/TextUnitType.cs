@@ -23,8 +23,7 @@ namespace MauronAlpha.Text.Units {
 			return Name == other.Name;
 		}
 
-		public abstract I_textUnit New {
-			get;
-		}}
+		public abstract I_textUnit New { get; }
+
 	}
 }
