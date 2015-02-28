@@ -147,7 +147,7 @@ namespace MauronAlpha.Text.Units {
 							//no adequate neighbor
 							if( neighbors.Right.IsEmpty ) {
 								neighbor = UnitType.New;
-								neighbor.SetContext(Context.Instance.ShiftRelativeToUnit(this,1,false);
+								neighbor.SetContext(Context.Instance.ShiftRelativeToUnit(this,1,false));
 							} else
 								neighbor = neighbors.Right.FirstElement;
 							

@@ -10,7 +10,7 @@ namespace MauronAlpha.Text.Encoding {
 
 		public abstract string Name { get; }
 
-		public TextUnit_text TextFromString(string text) {
+		public TextUnit_text StringAsTextUnit (string text) {
 			TextUnit_text unit = new TextUnit_text();
 			unit.SetContext(new TextContext(-1,-1,-1,-1));
 
@@ -34,8 +34,14 @@ namespace MauronAlpha.Text.Encoding {
 					word = new TextUnit_word(line,true);
 				}
 			}
-			return this;
+			return unit;
 		}
+
+		public I_textEncoding StringToTextUnit( string text, I_textUnit unit, bool updateParent, bool updateChild ) {
+			TextUnit_text stuff = StringAsTextUnit(text);
+
+		}
+		
 
 		//Special Characters
 		public abstract char EmptyCharacter { get; }

@@ -8,7 +8,7 @@ namespace MauronAlpha.Text.Interfaces {
 		
 		string Name { get; }
 
-		I_textEncoding StringAsTextUnit( string text);
+		TextUnit_text StringAsTextUnit( string text);
 		I_textEncoding StringToTextUnit( string text, I_textUnit unit, bool updateParent, bool updateChild);
 
 		char EmptyCharacter { get; }

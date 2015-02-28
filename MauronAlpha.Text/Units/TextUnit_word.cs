@@ -15,7 +15,7 @@ namespace MauronAlpha.Text.Units {
 			UNIT_parent = parent;
 
 			if( updateParent ) {
-				parent.AddChildAtIndex( parent.ChildCount, this, false, false );
+				parent.InsertChildAtIndex( parent.ChildCount, this, false, false );
 			}
 
 			SetContext(parent.Context.Instance.SetWord(parent.ChildCount));

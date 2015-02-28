@@ -14,9 +14,6 @@ namespace MauronAlpha.Text.Units {
 		public TextUnit_line(TextUnit_paragraph parent, bool updateParent ):this() {
 			UNIT_parent = parent;
 		}
-		public TextUnit_line( string text ) : this() {
-			SetText( text );
-		}
 
 		//Count
 		public override TextContext CountAsContext {

@@ -211,7 +211,13 @@ namespace MauronAlpha.HandlingData {
 			Data.InsertRange(key, new T[1] { obj });
 			return this;
 		}
-		
+		public MauronCode_dataList<T> Join(MauronCode_dataList<T> other) {
+			if(IsReadOnly)
+				throw Error("Is protected!,(Join)",this,ErrorType_protected.Instance);
+			foreach(T obj in other)
+				AddValue(obj);
+			return this;
+		}
 
 		//Modifiers: Remove
 		public MauronCode_dataList<T> Clear ( ) {

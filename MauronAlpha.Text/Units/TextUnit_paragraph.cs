@@ -15,7 +15,7 @@ namespace MauronAlpha.Text.Units {
 			UNIT_parent = parent;
 
 			if(updateParent)
-				parent.InsertChildAtIndex(parent.ChildCount, this, false);
+				parent.InsertChildAtIndex(parent.ChildCount, this, false, false);
 		}
 
 		//Index
