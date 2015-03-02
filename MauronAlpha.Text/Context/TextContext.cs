@@ -165,12 +165,12 @@ namespace MauronAlpha.Text.Context {
 			}
 			if( child.UnitType.Equals(TextUnitType_word.Instance) ) {
 				SetWord(index);
-				child.UpdateContext();
+				child.UpdateContext(true);
 				return this;
 			}
 			if( child.UnitType.Equals(TextUnitType_character.Instance) ) {
 				SetCharacter(index);
-				child.UpdateContext();
+				child.UpdateContext(true);
 				return this;
 			}
 			return this;

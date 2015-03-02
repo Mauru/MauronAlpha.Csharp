@@ -15,7 +15,7 @@ namespace MauronAlpha.Text.Units {
 			UNIT_parent = parent;			
 		}
 		public TextUnit_character ( char character ):this() {
-			SetChar( character );
+			SetChar( character , false );
 		}
 
 		//Statics
@@ -67,10 +67,17 @@ namespace MauronAlpha.Text.Units {
 		}
 
 		//Methods
-		public TextUnit_character SetChar(char code) {
+		public TextUnit_character SetChar(char code, bool updateParent) {
 			if( IsReadOnly )
 				throw Error("Is protected!,(SetChar)", this, ErrorType_protected.Instance);
+
 			TXT_char = code;
+
+			if(updateParent 
+			&& IsChild 
+			&& Encoding.UnitEndsOther(this,Parent))
+				Parent.HandleEndAtIndex(Index, false);
+
 			return this;
 		}
 

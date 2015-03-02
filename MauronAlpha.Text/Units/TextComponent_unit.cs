@@ -231,7 +231,8 @@ namespace MauronAlpha.Text.Units {
 		//Neighbors
 		public TextUnitNeighbors Neighbors {
 			get {
-				MauronCode_dataIndex<I_textUnit> result = new MauronCode_dataIndex<I_textUnit>().SetValue(0,this);
+				TextUnitNeighbors result= new TextUnitNeighbors(this);
+				
 				if(!IsChild||!CanHaveParent)
 					return result.SetIsReadOnly(true);
 
