@@ -20,6 +20,7 @@ namespace MauronAlpha.Text.Interfaces {
 		TextContext Context { get; }
 		TextContext CountAsContext { get; }
 
+		string Id { get; }
 		string AsString { get; }
 
 		int ChildCount { get; }
@@ -28,8 +29,11 @@ namespace MauronAlpha.Text.Interfaces {
 		bool IsEmpty { get; }
 		bool IsParent { get; }
 		bool IsChild { get; }
+		bool IsFull { get; }
 		bool CanHaveChildren { get; }
 		bool CanHaveParent { get; }
+		bool EndsParent { get; }
+
 		
 		MauronCode_dataList<I_textUnit> Children { get; }
 		TextUnitNeighbors Neighbors { get; }
@@ -37,7 +41,7 @@ namespace MauronAlpha.Text.Interfaces {
 		I_textUnit Parent { get; }
 		I_textUnit SetContext (TextContext context);
 		I_textUnit UpdateContext( bool updateChildren );
-		I_textUnit HandleEndAtIndex( int index, bool reVerify );
+		I_textUnit HandleEndAtIndex( int index );
 
 		I_textEncoding Encoding { get; }
 

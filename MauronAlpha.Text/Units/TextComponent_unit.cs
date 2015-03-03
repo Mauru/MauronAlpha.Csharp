@@ -32,6 +32,8 @@ namespace MauronAlpha.Text.Units {
 
 		//Booleans
 		public virtual bool Equals (I_textUnit other) {
+			if(Id.Equals(other.Id))
+				return true;
 			if(!SUB_unitType.Equals(other.UnitType))
 				return false;
 			if(IsParent!=other.IsParent)
@@ -55,6 +57,11 @@ namespace MauronAlpha.Text.Units {
 				return (Children.Count>0);
 			}
 		}
+		public bool IsFull {
+			get { 
+				return !IsEmpty && Children.LastElement.EndsParent;
+			}
+		}
 		public bool IsChild {
 			get {
 				if( !CanHaveParent )
@@ -67,6 +74,11 @@ namespace MauronAlpha.Text.Units {
 		}
 		public bool CanHaveParent {
 			get { return SUB_unitType.CanHaveParent; }
+		}
+		public virtual bool EndsParent {
+			get {
+				return IsChild && Encoding.UnitEndsOther(this,Parent);
+			}
 		}
 		public virtual bool IsEmpty {
 			get {
@@ -102,6 +114,34 @@ namespace MauronAlpha.Text.Units {
 				index++;
 				unit.UpdateContext( updateChildren );
 			}
+			return this;
+		}
+		public I_textUnit HandleEndAtIndex( int index ){
+			if(IsReadOnly)
+				throw Error("Is protected!,(HandleEndAtIndex)",this,ErrorType_protected.Instance);
+			if(index<0 || index >= ChildCount)
+				throw Error("Index out of bounds!,{"+index+"},(HandleEndAtIndex)",this,ErrorType_index.Instance);
+			if(index==ChildCount-1)
+				return this;
+
+			MauronCode_dataList<I_textUnit> children = Children.Range(index);
+
+			I_textUnit nextUnit;
+
+			TextUnitNeighbors neighbors = Neighbors;
+
+			//create new neighbor if necessary
+			if(neighbors.Right.IsEmpty) {
+				nextUnit = UnitType.New;
+				Parent.InsertChildAtIndex(Index+1,nextUnit,false,true);
+			} else
+				nextUnit = neighbors.Right.FirstElement;
+			
+			//Move units
+			foreach(I_textUnit child in children) {
+				nextUnit.InsertChildAtIndex(nextUnit.ChildCount,child, true, true);
+			}
+
 			return this;
 		}
 
@@ -232,21 +272,6 @@ namespace MauronAlpha.Text.Units {
 		public TextUnitNeighbors Neighbors {
 			get {
 				TextUnitNeighbors result= new TextUnitNeighbors(this);
-				
-				if(!IsChild||!CanHaveParent)
-					return result.SetIsReadOnly(true);
-
-				MauronCode_dataList<I_textUnit> children = Parent.Children;
-				int s = children.IndexOf(this);
-				MauronCode_dataList<I_textUnit> left;
-				if(s > 0) {
-					left = children.Range(0, s-1);
-					result.Prepend(left);
-				}
-				if(s < children.Count-1){
-					left = children.Range(s+1, children.Count-1);
-					result.Append(left);
-				}
 				return result;
 			}
 		}

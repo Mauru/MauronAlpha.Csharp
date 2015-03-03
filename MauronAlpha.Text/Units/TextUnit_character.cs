@@ -76,7 +76,7 @@ namespace MauronAlpha.Text.Units {
 			if(updateParent 
 			&& IsChild 
 			&& Encoding.UnitEndsOther(this,Parent))
-				Parent.HandleEndAtIndex(Index, false);
+				Parent.HandleEndAtIndex(Index);
 
 			return this;
 		}

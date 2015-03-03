@@ -2,6 +2,7 @@
 using MauronAlpha.Text.Interfaces;
 using MauronAlpha.Text.Units;
 using MauronAlpha.Text.Context;
+using MauronAlpha.Text.Collections;
 
 namespace MauronAlpha.Text.Encoding {
 	
@@ -37,8 +38,43 @@ namespace MauronAlpha.Text.Encoding {
 			return unit;
 		}
 
+		//Append text to a textUnit
 		public I_textEncoding StringToTextUnit( string text, I_textUnit unit, bool updateParent, bool updateChild ) {
-			TextUnit_text stuff = StringAsTextUnit(text);
+			
+			TextUnit_text newText = StringAsTextUnit(text);
+			if(newText.IsEmpty)
+				return this;
+			
+			//UnitType is Text
+			if(unit.UnitType.Equals(TextUnitType_text.Instance)) {
+				foreach(I_textUnit child in newText.Children) 
+					unit.InsertChildAtIndex(unit.ChildCount,child,false,true);
+
+				return this;
+			}
+
+			//Paragraph
+			if(unit.UnitType.Equals(TextUnitType_paragraph.Instance)) {
+				
+				//the last unit is allready full
+				if(!unit.IsEmpty && unit.IsFull){
+					
+					TextUnitNeighbors neighbors = unit.Neighbors;
+					
+					//create neighbor
+					if(neighbors.Right.IsEmpty){}
+						
+						
+
+				}
+					
+
+			}
+
+				
+
+
+
 
 		}
 		
