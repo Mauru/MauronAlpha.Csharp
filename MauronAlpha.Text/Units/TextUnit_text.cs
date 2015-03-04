@@ -12,19 +12,9 @@ namespace MauronAlpha.Text.Units {
 		//constructor
 		public TextUnit_text():base(TextUnitType_text.Instance) {}
 		public TextUnit_text( string text ) : this() {
-			SetText( text );
+			AppendString(text);
 		}
 
-		//Methods
-		public TextUnit_text SetText(string text) {
-			if( IsReadOnly )
-				throw Error("Is protected!,(SetText)", this, ErrorType_protected.Instance);
-
-			Encoding.StringToTextUnit(text, this, true, true);
-			
-			return this;
-		}
-		
 		//Context
 		public override TextContext Context {
 			get {
@@ -143,5 +133,17 @@ namespace MauronAlpha.Text.Units {
 				return new TextUnit_paragraph();
 			}
 		}
+
+		public override I_textUnitType ParentType {
+			get {
+				return TextUnitType_text.Instance;
+			}
+		}
+		public override I_textUnitType ChildType {
+			get {
+				return TextUnitType_paragraph.Instance;
+			}
+		}
+
 	}
 }

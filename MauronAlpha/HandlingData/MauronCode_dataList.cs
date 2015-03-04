@@ -334,6 +334,30 @@ namespace MauronAlpha.HandlingData {
 			}
 		}
 
+		//Return Modifiers: Remove
+		public T Pop {
+			get {
+				if(IsReadOnly)
+					throw Error("Is protected!,(Pop)",this,ErrorType_protected.Instance);
+				if(IsEmpty)
+					throw Error("Is empty!,(Pop)",this,ErrorType_index.Instance);
+				T obj = LastElement;
+				RemoveByKey(Count-1);
+				return obj;
+			}
+		}
+		public T Shift {
+			get {
+				if( IsReadOnly )
+					throw Error("Is protected!,(Shift)", this, ErrorType_protected.Instance);
+				if( IsEmpty )
+					throw Error("Is empty!,(Shift)", this, ErrorType_index.Instance);
+				T obj = FirstElement;
+				RemoveByKey(0);
+				return obj;
+			}
+		}
+
 		//Numeric (int)
 		public int Count {
 			get { return Data.Count; }

@@ -13,6 +13,9 @@ namespace MauronAlpha.Text.Interfaces {
 		I_textUnit New {
 			get;
 		}
+
+		I_textUnitType ParentType { get; }
+		I_textUnitType ChildType { get; }
 	}
 
 }

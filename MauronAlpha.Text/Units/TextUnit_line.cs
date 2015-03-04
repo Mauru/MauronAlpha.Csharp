@@ -62,6 +62,7 @@ namespace MauronAlpha.Text.Units {
 
 	}
 
+	//Description of the UnitType
 	public class TextUnitType_line:TextUnitType {
 		
 		public override string Name {
@@ -81,6 +82,18 @@ namespace MauronAlpha.Text.Units {
 				return new TextUnit_line();
 			}
 		}
+
+		public override I_textUnitType ParentType {
+			get {
+				return TextUnitType_paragraph.Instance;
+			}
+		}
+		public override I_textUnitType ChildType {
+			get {
+				return TextUnitType_word.Instance;
+			}
+		}
+
 	}
 
 }

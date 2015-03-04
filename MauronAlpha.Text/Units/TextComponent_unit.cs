@@ -107,15 +107,23 @@ namespace MauronAlpha.Text.Units {
 			return this;
 		}
 		
-		public I_textUnit UpdateContext( bool updateChildren ) {
-			int index = 0;
-			foreach(I_textUnit unit in DATA_children) {
-				unit.Context.SetRelativeContext( unit, Context, index, false );
-				index++;
-				unit.UpdateContext( updateChildren );
-			}
+		public I_textUnit UpdateContextFromParent( bool updateChildren ) {
+			if(IsReadOnly)
+				throw Error("Is protected!,(UpdateContextFromParent)",this,ErrorType_protected.Instance);
+
+			if( IsChild )
+				DATA_context.InheritValues( this.UnitType, Parent ); 
+				
 			return this;
 		}
+		public I_textUnit UpdateChildContext( bool chainChildren ) {
+			if(IsReadOnly)
+				throw Error("Is protected!,(UpdateChildContext)",this,ErrorType_protected.Instance);
+			foreach(I_textUnit unit in DATA_children)
+				unit.UpdateContextFromParent( chainChildren );
+			return this;
+		}
+		
 		public I_textUnit HandleEndAtIndex( int index ){
 			if(IsReadOnly)
 				throw Error("Is protected!,(HandleEndAtIndex)",this,ErrorType_protected.Instance);
@@ -144,15 +152,52 @@ namespace MauronAlpha.Text.Units {
 
 			return this;
 		}
+		public I_textUnit RemoveFromParent( bool updateChildContext ) {
+			if( IsReadOnly )
+				throw Error("Is protected!,(RemoveFromParent)", this, ErrorType_protected.Instance);
+			
+			if( !IsChild )
+				return this;
 
-		public I_textUnit InsertChildAtIndex (int n, I_textUnit unit, bool updateParent, bool updateChildren) {
+			Parent.RemoveChildAtIndex(Index, false, true );
+			UNIT_parent = null;
+			Context.SetValue(UnitType.ParentType,0);
+			
+			if( !updateChildContext )
+				return this;
+
+			foreach(I_textUnit unit in DATA_children)
+				unit.UpdateContextFromParent(true);
+
+			return this;
+
+		}
+
+		public I_textUnit InsertUnitAtIndex (int n, I_textUnit unit, bool updateOrigin, bool updateChildren) {
+			if(IsReadOnly)
+				throw Error("Is protected!,(InsertUnitAtIndex)",this,ErrorType_protected.Instance);
+			if(n<0||n>ChildCount)
+				throw Error("Index out of bounds!,{"+n+"},(InsertUnitAtIndex)",this,ErrorType_bounds.Instance);
+
+			if( updateOrigin && unit.IsChild )
+				unit.RemoveFromParent( false );
+			
+
+
+			
+
+		}
+		public I_textUnit InsertChildAtIndex (int n, I_textUnit unit, bool updateOrigin, bool updateChildren) {
 			if(IsReadOnly)
 				throw Error("Is protected!,(InsertChildAtIndex)",this, ErrorType_protected.Instance);
+			if( n < 0|| n > ChildCount )
+				throw Error("Index out of bounds!,{"+n+"},(InsertChildAtIndex)", this, ErrorType_bounds.Instance);
 
 			//remove from old parent
-			if( updateParent 
-			&& unit.IsChild 
-			&& !unit.Parent.Equals( this ) ) {
+			if( updateOrigin 
+				&& unit.IsChild 
+				&& !unit.Parent.Equals( this ) 
+			) {
 				unit.Parent.RemoveChildAtIndex( unit.Index, false, true );
 				bool displace =  Encoding.UnitEndsOther( unit, unit.Parent );
 				
@@ -187,29 +232,108 @@ namespace MauronAlpha.Text.Units {
 							//no adequate neighbor
 							if( neighbors.Right.IsEmpty ) {
 								neighbor = UnitType.New;
-								neighbor.SetContext(Context.Instance.ShiftRelativeToUnit(this,1,false));
+								neighbor.SetContext(Context.Instance.AddValue(this.UnitType,1));
 							} else
 								neighbor = neighbors.Right.FirstElement;
 							
 							//1: add each unit to new neighbor
 							neighbor.InsertChildAtIndex( index, child, false, true );
 							index++;
-							neighbor.UpdateContext( true );
+							neighbor.UpdateContextFromParent( true );
 
 						} else {
 							//Child get shifted into direction
-							child.Context.ShiftRelativeToUnit( child, 1, true );
+							child.Context.AddValue( child.UnitType, 1 );
+							child.UpdateChildContext( true );
 						}
 					}
 				}
 
 			}
 
-
 			return this;
 		}
-		public I_textUnit RemoveChildAtIndex (int n, bool updateParent, bool updateChildren) { return this; }
-		public I_textUnit SetParent (I_textUnit unit, bool updateParent, bool updateChildren) { return this; }
+		public I_textUnit RemoveChildAtIndex (int n, bool updateOrigin, bool updateChildren) { return this; }
+		public I_textUnit SetParent (I_textUnit unit, bool updateOrigin, bool updateChildren) { return this; }
+
+		public I_textUnit AppendString (string text) {
+			if(IsReadOnly)
+				throw Error("Is protected!,(AppendString)",this,ErrorType_protected.Instance);
+
+			TextUnit_text newText=Encoding.StringAsTextUnit(text);
+			if( newText.IsEmpty )
+				return this;
+
+			//UnitType is Text
+			if( UnitType.Equals(TextUnitType_text.Instance) ) {
+				foreach( I_textUnit child in newText.Children )
+					InsertChildAtIndex(ChildCount, child, false, true);
+				return this;
+			}
+
+			//Paragraph
+			if( UnitType.Equals(TextUnitType_paragraph.Instance) ) {
+
+				//the unit is allready full
+				if( IsFull ) {
+
+					TextUnitNeighbors neighbors = Neighbors;
+					I_textUnit nextUnit;
+
+					//create neighbor
+					if( neighbors.Right.IsEmpty ) {
+						nextUnit = UnitType.New;
+						Parent.InsertChildAtIndex(Index+1, nextUnit, false, true);
+					}
+					else
+						nextUnit=neighbors.Right.FirstElement;
+
+					return nextUnit.InsertUnitAtIndex(0, newText, true, true);
+
+				}
+
+				MauronCode_dataList<I_textUnit> insertMe = newText.Children.SetIsReadOnly(false);
+				while(  newText.ChildCount > 0 ) {
+					I_textUnit fragment = newText.Shift;
+				}
+
+
+				return this;
+			}
+
+			//Line
+			if( UnitType.Equals(TextUnitType_line.Instance) ) {
+
+				//The unit is allready full
+				if( IsFull ) {
+
+
+
+				}
+
+			}
+
+		}
+
+		//Child modifiers:return
+		public I_textUnit Pop {
+			get {
+				if( IsReadOnly )
+					throw Error("Is protected!,(Pop)",this,ErrorType_protected.Instance);
+				if( !IsParent )
+					throw Error("No children!,(Pop)",this,ErrorType_index.Instance);
+				return DATA_children.Pop;
+			}
+		}
+		public I_textUnit Shift {
+			get {
+				if( IsReadOnly )
+					throw Error("Is protected!,(Shift)", this, ErrorType_protected.Instance);
+				if( !IsParent )
+					throw Error("No children!,(Shift)", this, ErrorType_index.Instance);
+				return DATA_children.Shift;
+			}
+		}
 		
 		//Context
 		protected TextContext DATA_context;

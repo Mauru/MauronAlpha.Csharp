@@ -25,5 +25,8 @@ namespace MauronAlpha.Text.Units {
 
 		public abstract I_textUnit New { get; }
 
+		public abstract I_textUnitType ParentType { get; }
+		public abstract I_textUnitType ChildType { get; }
+
 	}
 }

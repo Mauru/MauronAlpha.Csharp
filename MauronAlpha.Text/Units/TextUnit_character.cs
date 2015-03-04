@@ -6,6 +6,7 @@ using MauronAlpha.Text.Context;
 
 namespace MauronAlpha.Text.Units {
 	
+	//A character in a word
 	public class TextUnit_character:TextComponent_unit {
 
 		//Constructors
@@ -83,6 +84,7 @@ namespace MauronAlpha.Text.Units {
 
 	}
 
+	//Description of the unitType
 	public class TextUnitType_character : TextUnitType {
 		
 		public override string Name {
@@ -108,6 +110,18 @@ namespace MauronAlpha.Text.Units {
 				return new TextUnit_character();
 			}
 		}
+	
+		public override I_textUnitType ParentType {
+			get {
+				return TextUnitType_word.Instance;
+			}
+		}
+		public override I_textUnitType ChildType {
+			get {
+				return Instance;
+			}
+		}
+	
 	}
 
 }

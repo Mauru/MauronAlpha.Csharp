@@ -2,6 +2,7 @@
 
 using MauronAlpha.Interfaces;
 using MauronAlpha.HandlingErrors;
+using MauronAlpha.HandlingData;
 
 using MauronAlpha.Text.Interfaces;
 using MauronAlpha.Text.Units;
@@ -130,50 +131,68 @@ namespace MauronAlpha.Text.Context {
 			return this;
 		}
 
-		public TextContext ShiftRelativeToUnit( I_textUnit child, int offset, bool updateChildren ) {
+		public TextContext InheritValues( I_textUnitType targetType, I_textUnit origin) {
 			if( IsReadOnly )
-				throw Error( "Is protected!,(ShiftRelativeToUnit)", this, ErrorType_protected.Instance );
-			if( child.UnitType.Equals( TextUnitType_text.Instance ) ){}
-				//Do nothing
-			else if( child.UnitType.Equals( TextUnitType_paragraph.Instance ) )
-				SetParagraph( Character+offset );
-			else if( child.UnitType.Equals( TextUnitType_line.Instance ) )
-				SetLine( Line+offset );
-			else if( child.UnitType.Equals( TextUnitType_word.Instance ) )
-				SetWord( Word+offset );
-			else if( child.UnitType.Equals( TextUnitType_character.Instance ) )
-				SetCharacter(Character+offset);
+				throw Error("Is protected!,(InheritValues)", this, ErrorType_protected.Instance);
+
+			if( targetType.Equals(TextUnitType_text.Instance) )
+				return this;
+
+			else if( targetType.Equals(TextUnitType_paragraph.Instance) ) {
+				ID_txt = origin.Context.TextId;
+			}
+
+			else if( targetType.Equals(TextUnitType_line.Instance) ) {
+				ID_txt = origin.Context.TextId;
+				INT_paragraph = origin.Context.Paragraph;
+			}
+
+			else if( targetType.Equals(TextUnitType_word.Instance) ) {
+				ID_txt=origin.Context.TextId;
+				INT_paragraph=origin.Context.Paragraph;
+				INT_line=origin.Context.Line;
+			}
+
+			else if( targetType.Equals(TextUnitType_character.Instance) ) {
+				ID_txt=origin.Context.TextId;
+				INT_paragraph=origin.Context.Paragraph;
+				INT_line=origin.Context.Line;
+				INT_word=origin.Context.Word;
+			}
+
+			return this;
+				
+
 			
-			if(updateChildren)
-				child.UpdateContext( true );
+		}
+		public TextContext SetValue( I_textUnitType unitType, int value ) {
+			if(IsReadOnly)
+				throw Error("Is protected!,(SetValue)",this,ErrorType_protected.Instance);
+			if(unitType.Equals(TextUnitType_text.Instance))
+				return this;
+
+			if( unitType.Equals(TextUnitType_paragraph.Instance) )
+				INT_paragraph = value;
+			else if( unitType.Equals(TextUnitType_line.Instance) )
+				INT_line=value;
+			else if( unitType.Equals(TextUnitType_word.Instance) )
+				INT_word=value;
+			else
+				INT_character=value;
 
 			return this;
 		}
-		public TextContext SetRelativeContext( I_textUnit child, TextContext parent, int index, bool updateChildren ) {
-			if( IsReadOnly )
-				throw Error("Is protected!,(ShiftRelativeToUnit)", this, ErrorType_protected.Instance);
-			if( child.UnitType.Equals(TextUnitType_text.Instance) ) {
-				return this;
-			}
-			if( child.UnitType.Equals(TextUnitType_paragraph.Instance) ) {
-				SetParagraph(index);
-				return this;
-			}
-			if( child.UnitType.Equals(TextUnitType_line.Instance) ) {
-				SetLine(index);
-				return this;
-			}
-			if( child.UnitType.Equals(TextUnitType_word.Instance) ) {
-				SetWord(index);
-				child.UpdateContext(true);
-				return this;
-			}
-			if( child.UnitType.Equals(TextUnitType_character.Instance) ) {
-				SetCharacter(index);
-				child.UpdateContext(true);
-				return this;
-			}
+		public TextContext AddValue( I_textUnitType unitType, int value ) {
+			if(IsReadOnly)
+				throw Error("Is protected!,(AddValue)",this,ErrorType_protected.Instance);
+			SetValue( unitType, Value(unitType)+value);
 			return this;
+		}
+
+		public MauronCode_dataList<int> AsList {
+			get {
+				return new MauronCode_dataList<int>(){INT_paragraph, INT_line, INT_word, INT_character};
+			}
 		}
 
 		//Index (text)
@@ -190,6 +209,17 @@ namespace MauronAlpha.Text.Context {
 		}
 
 		//Index int
+		public int Value(I_textUnitType unitType) {
+			if(unitType.Equals(TextUnitType_paragraph.Instance))
+				return INT_paragraph;
+			if(unitType.Equals(TextUnitType_line.Instance))
+				return INT_line;
+			if(unitType.Equals(TextUnitType_word.Instance))
+				return INT_word;
+			if(unitType.Equals(TextUnitType_character.Instance))
+				return INT_character;
+			return 0;
+		}
 		private int INT_paragraph = 0;
 		public int Paragraph  { get {
 			return INT_paragraph;

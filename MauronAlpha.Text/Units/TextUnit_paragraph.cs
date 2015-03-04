@@ -106,6 +106,18 @@ namespace MauronAlpha.Text.Units {
 				return new TextUnit_paragraph();
 			}
 		}
+
+		public override I_textUnitType ParentType {
+			get {
+				return TextUnitType_text.Instance;
+			}
+		}
+		public override I_textUnitType ChildType {
+			get {
+				return TextUnitType_line.Instance;
+			}
+		}
+
 	}
 
 }

@@ -43,8 +43,10 @@ namespace MauronAlpha.Text.Units {
 		public TextUnit_character CharacterByIndex( int n ) {
 			return ChildByIndex( n );
 		}
+	
 	}
 
+	//Decsription of the UnitType
 	public class TextUnitType_word : TextUnitType {
 		
 		public override string Name {
@@ -64,6 +66,18 @@ namespace MauronAlpha.Text.Units {
 				return new TextUnit_word();
 			}
 		}
+
+		public override I_textUnitType ParentType {
+			get {
+				return TextUnitType_line.Instance;
+			}
+		}
+		public override I_textUnitType ChildType {
+			get {
+				return TextUnitType_character.Instance;
+			}
+		}
+
 	}
 
 }
