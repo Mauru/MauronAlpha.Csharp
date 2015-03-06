@@ -53,9 +53,7 @@ namespace MauronAlpha.Text.Interfaces {
 
 		I_textUnit InsertChildAtIndex (int n, I_textUnit unit, bool updateOrigin, bool updateChildren);
 		I_textUnit RemoveChildAtIndex (int n, bool updateOrigin, bool updateChildren);
-
-		I_textUnit InsertUnitAtIndex( int n, I_textUnit unit, bool updateOrigin, bool updateChildren );
-
+		
 	}
 
 

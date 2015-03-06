@@ -87,7 +87,7 @@
       <Name>MauronAlpha.Forms</Name>
     </ProjectReference>
     <ProjectReference Include="..\MauronAlpha.Text\MauronAlpha.Text.csproj">
-      <Project>{8491848C-470B-4652-AEAE-547EAA8F2AD9}</Project>
+      <Project>{FC8F715D-8FA5-4CB7-8866-E2D72747D4AD}</Project>
       <Name>MauronAlpha.Text</Name>
     </ProjectReference>
     <ProjectReference Include="..\MauronAlpha.Geometry\MauronAlpha.Geometry.csproj">

@@ -89,14 +89,6 @@ namespace MauronAlpha.Text.Encoding {
 		public virtual bool IsZeroWidth(TextUnit_character unit) {
 			return unit.Character == ZeroWidth;
 		}
-		
-		protected MauronCode_dataList<I_textUnitType> TypeOrder = new MauronCode_dataList<I_textUnitType>() { 
-			TextUnitType_character.Instance,
-			TextUnitType_word.Instance,
-			TextUnitType_line.Instance,
-			TextUnitType_paragraph.Instance,
-			TextUnitType_text.Instance
-		};
 
 		public virtual bool UnitEndsOther(I_textUnit candidate, I_textUnit other) {
 			
@@ -115,7 +107,7 @@ namespace MauronAlpha.Text.Encoding {
 				return UnitEndsOther( unit, other );
 			}
 
-			return TypeOrder.IndexOf(candidate.UnitType) >= TypeOrder.IndexOf(other.UnitType);
+			return TextUnitType.Order.IndexOf(candidate.UnitType) >= TextUnitType.Order.IndexOf(other.UnitType);
 
 		}
 		public virtual bool UnitEndsOther (TextUnit_character unit, I_textUnit other) {

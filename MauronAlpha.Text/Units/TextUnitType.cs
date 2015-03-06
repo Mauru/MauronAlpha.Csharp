@@ -1,4 +1,5 @@
 ﻿using MauronAlpha.Text.Interfaces;
+using MauronAlpha.HandlingData;
 
 namespace MauronAlpha.Text.Units {
 
@@ -27,6 +28,14 @@ namespace MauronAlpha.Text.Units {
 
 		public abstract I_textUnitType ParentType { get; }
 		public abstract I_textUnitType ChildType { get; }
+
+		public static MauronCode_dataList<I_textUnitType> Order = new MauronCode_dataList<I_textUnitType>() { 
+			TextUnitType_character.Instance,
+			TextUnitType_word.Instance,
+			TextUnitType_line.Instance,
+			TextUnitType_paragraph.Instance,
+			TextUnitType_text.Instance
+		};
 
 	}
 }

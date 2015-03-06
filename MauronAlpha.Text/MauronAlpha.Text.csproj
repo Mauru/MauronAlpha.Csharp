@@ -66,13 +66,13 @@
       <Project>{07CAC8B6-0B7B-412D-A4BF-86E7B86B3826}</Project>
       <Name>MauronAlpha.Colors</Name>
     </ProjectReference>
-    <ProjectReference Include="..\MauronAlpha.Fonts\MauronAlpha.Fonts.csproj">
-      <Project>{D484DF06-76D6-4B93-9101-B053C8B4E663}</Project>
-      <Name>MauronAlpha.Fonts</Name>
-    </ProjectReference>
     <ProjectReference Include="..\MauronAlpha\MauronAlpha.csproj">
       <Project>{6A046817-9F14-4781-97C9-F89FEBC2097B}</Project>
       <Name>MauronAlpha</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MauronAlpha.Fonts\MauronAlpha.Fonts.csproj">
+      <Project>{D484DF06-76D6-4B93-9101-B053C8B4E663}</Project>
+      <Name>MauronAlpha.Fonts</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

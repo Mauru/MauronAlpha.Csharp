@@ -170,91 +170,38 @@ namespace MauronAlpha.Text.Units {
 				unit.UpdateContextFromParent(true);
 
 			return this;
-
 		}
-
-		public I_textUnit InsertUnitAtIndex (int n, I_textUnit unit, bool updateOrigin, bool updateChildren) {
-			if(IsReadOnly)
-				throw Error("Is protected!,(InsertUnitAtIndex)",this,ErrorType_protected.Instance);
-			if(n<0||n>ChildCount)
-				throw Error("Index out of bounds!,{"+n+"},(InsertUnitAtIndex)",this,ErrorType_bounds.Instance);
-
-			if( updateOrigin && unit.IsChild )
-				unit.RemoveFromParent( false );
-			
-
-
-			
-
-		}
-		public I_textUnit InsertChildAtIndex (int n, I_textUnit unit, bool updateOrigin, bool updateChildren) {
+		
+		public I_textUnit InsertChildAtIndex (int n, I_textUnit unit, bool updateOrigin, bool updateChildren)  {
 			if(IsReadOnly)
 				throw Error("Is protected!,(InsertChildAtIndex)",this, ErrorType_protected.Instance);
 			if( n < 0|| n > ChildCount )
 				throw Error("Index out of bounds!,{"+n+"},(InsertChildAtIndex)", this, ErrorType_bounds.Instance);
+			if (!unit.UnitType.Equals (UnitType.ChildType))
+				throw Error ("Invalid child!,(InsertChildAtIndex)", this, ErrorType_scope.Instance);
 
-			//remove from old parent
-			if( updateOrigin 
-				&& unit.IsChild 
-				&& !unit.Parent.Equals( this ) 
-			) {
-				unit.Parent.RemoveChildAtIndex( unit.Index, false, true );
-				bool displace =  Encoding.UnitEndsOther( unit, unit.Parent );
-				
-				//This is were things might get complicated
-				if(displace) {
-				
-				}
-			}
-
-			//update Children and their context
-			if( updateChildren ) {
-				int childCount = ChildCount;
-
-				//check if the unit terminates the new parent
-				bool displace =  Encoding.UnitEndsOther( unit, this );
-
-				//We are actually inserting the unit and need to update the context
-				if( childCount > 1 && n < childCount -1 ) {
-					MauronCode_dataList<I_textUnit> result = DATA_children.Range( n );
-					int index = 0;
-					foreach( I_textUnit child in result ) {
-
-						//Displace unit to next logical item
-						if( displace ) {
-							//remove
-							RemoveChildAtIndex( n, false, false );
-							
-							//figure out neighbor
-							TextUnitNeighbors neighbors = Neighbors;
-							I_textUnit neighbor;
-
-							//no adequate neighbor
-							if( neighbors.Right.IsEmpty ) {
-								neighbor = UnitType.New;
-								neighbor.SetContext(Context.Instance.AddValue(this.UnitType,1));
-							} else
-								neighbor = neighbors.Right.FirstElement;
-							
-							//1: add each unit to new neighbor
-							neighbor.InsertChildAtIndex( index, child, false, true );
-							index++;
-							neighbor.UpdateContextFromParent( true );
-
-						} else {
-							//Child get shifted into direction
-							child.Context.AddValue( child.UnitType, 1 );
-							child.UpdateChildContext( true );
-						}
-					}
-				}
-
-			}
+			//we check if we are removing the unit from a position BEFORE its new position
 
 			return this;
 		}
-		public I_textUnit RemoveChildAtIndex (int n, bool updateOrigin, bool updateChildren) { return this; }
-		public I_textUnit SetParent (I_textUnit unit, bool updateOrigin, bool updateChildren) { return this; }
+		public I_textUnit RemoveChildAtIndex (int n, bool reIndex) { return this; }
+		public I_textUnit SetParent (I_textUnit unit, bool updateChildContext) { 
+			if (IsReadOnly)
+				throw Error ("Is protected!,(SetParent)", this, ErrorType_protected.Instance);
+			if (!unit.UnitType.Equals (UnitType.ParentType))
+				throw Error ("Invalid parent!,(SetParent)", this, ErrorType_scope.Instance);
+			if(!CanHaveParent)
+				throw Error("Unit can not have a parent!,(SetParent)",this,ErrorType_scope.Instance);
+			if (IsChild && Parent.Equals (unit))
+				return this;
+
+			UNIT_parent = unit;
+
+			if (updateChildContext)
+				UpdateChildContext (true);
+
+			return this; 
+		}
 
 		public I_textUnit AppendString (string text) {
 			if(IsReadOnly)
