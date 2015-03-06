@@ -123,7 +123,39 @@ namespace MauronAlpha.Text.Units {
 				unit.UpdateContextFromParent( chainChildren );
 			return this;
 		}
-		
+		public I_textUnit UpdateDependencies(int index) {
+			if(IsReadOnly)
+				throw Error("Is protected!,(UpdateDependencies)",this,ErrorType_protected.Instance);
+			if(index<0)
+				index = DATA_children.FirstIndex;
+			if(index>=ChildCount)
+				index = DATA_children.LastIndex;
+
+			//0 Is Empty
+			if(IsEmpty) {
+				//0.a - check for next neighbor
+				if(IsChild) {
+					MauronCode_dataList<I_textUnit> neighbors = Neighbors.Right;
+					if(neighbors.IsEmpty)
+						return this;				
+					
+					//0.a.1 Next neighbor has children, shift to this unit
+					I_textUnit nextUnit = neighbors.FirstElement;
+					foreach(I_textUnit unit in nextUnit.Children) {
+						unit.RemoveFromParent(false);
+						InsertChildAtIndex(ChildCount,unit,false,false);
+					}
+					UpdateChildContext(true);
+					nextUnit.UpdateDependencies(0);
+
+				}
+			}
+
+			MauronCode_dataList<I_textUnit> check = DATA_children.Range(index);
+
+
+		}
+
 		public I_textUnit HandleEndAtIndex( int index ){
 			if(IsReadOnly)
 				throw Error("Is protected!,(HandleEndAtIndex)",this,ErrorType_protected.Instance);
@@ -171,7 +203,8 @@ namespace MauronAlpha.Text.Units {
 
 			return this;
 		}
-		
+
+
 		public I_textUnit InsertChildAtIndex (int n, I_textUnit unit, bool updateOrigin, bool updateChildren)  {
 			if(IsReadOnly)
 				throw Error("Is protected!,(InsertChildAtIndex)",this, ErrorType_protected.Instance);
@@ -184,7 +217,19 @@ namespace MauronAlpha.Text.Units {
 
 			return this;
 		}
-		public I_textUnit RemoveChildAtIndex (int n, bool reIndex) { return this; }
+		public I_textUnit RemoveChildAtIndex (int n, bool reIndex) { 
+			if(IsReadOnly)
+				throw Error("Is protected!,(RemoveChildAtIndex)",this,ErrorType_protected.Instance);
+			if(n<0||n>=ChildCount)
+				throw Error("Invalid index!,{"+n+"},(RemoveChildAtIndex)",this,ErrorType_index.Instance);
+
+			DATA_children.RemoveByKey(n);
+
+			if(reIndex)
+				UpdateDependencies(n);
+
+			return this; 
+		}
 		public I_textUnit SetParent (I_textUnit unit, bool updateChildContext) { 
 			if (IsReadOnly)
 				throw Error ("Is protected!,(SetParent)", this, ErrorType_protected.Instance);
