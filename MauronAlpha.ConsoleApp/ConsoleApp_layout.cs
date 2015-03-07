@@ -94,15 +94,19 @@ namespace MauronAlpha.ConsoleApp {
 
 		//Methods
 		public I_consoleLayout Draw( ) {
+
+			//No console defined
 			if( UNIT_console == null ) {
 				Exception( "No Console defined!,(Draw)", this, ErrorResolution.DoNothing );
 				return this;
 			}
 			I_consoleOutput output = ( I_consoleOutput ) UNIT_console.Output;
 
+			//Determine maxWidth
 			Vector2d lineIndex=new Vector2d();
 			int maxWidth = ( int ) Controller.Context.Size.Width;
 
+			//Draw header
 			I_consoleUnit header = Member( "header" );
 			TextContext headerContext = header.Content.CountAsContext;
 
@@ -110,11 +114,12 @@ namespace MauronAlpha.ConsoleApp {
 				if( n >= headerContext.Line ) {
 					output.WriteLine( new TextUnit_line() );
 					break;
-				}
+				}				
 				TextUnit_line line = header.LineAsOutput( n );
 				output.WriteLine( line, maxWidth );
 			}
 
+			//Draw Content
 			I_consoleUnit content = Member( "content" );
 			TextContext mainContext = content.Content.CountAsContext;
 
@@ -122,12 +127,12 @@ namespace MauronAlpha.ConsoleApp {
 
 			for( int n=0; n < content.Context.Size.Height; n++ ) {
 				if( n >= mainContext.Line ) {
-					output.WriteLine( new TextUnit_line( n+"#EMPTY" ) );
+					TextUnit_text lineText = new TextUnit_text(n+"#EmptyLine#");
+					output.WriteLine( lineText.LineByIndex(0) );
 				} else {
 					TextUnit_line line = content.LineAsOutput( n );
-					TextUnit_word preface = new TextUnit_word();
-					preface.SetText( n+"#" );
-					line.InsertChildAtIndex( 0, preface, false, true );
+					TextUnit_text insertMe = new TextUnit_text(n+"# ");
+					line.InsertChildAtIndex(0,insertMe.WordByIndex(0), true);
 					output.WriteLine( line, maxWidth );
 				}
 			}

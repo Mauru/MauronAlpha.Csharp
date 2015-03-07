@@ -103,6 +103,7 @@ namespace MauronAlpha.Text.Units {
 		public I_textUnit SetContext(TextContext context) {
 			if(IsReadOnly)
 				throw Error("Is protected!,(SetContext)",this,ErrorType_protected.Instance);
+
 			DATA_context = context;
 			return this;
 		}
@@ -119,101 +120,109 @@ namespace MauronAlpha.Text.Units {
 		public I_textUnit UpdateChildContext( bool chainChildren ) {
 			if(IsReadOnly)
 				throw Error("Is protected!,(UpdateChildContext)",this,ErrorType_protected.Instance);
-			foreach(I_textUnit unit in DATA_children)
+			
+			for(int index=0; index<ChildCount; index++) {
+				I_textUnit unit = DATA_children.Value(index);
+				unit.Context.SetIsReadOnly(false).SetValue(unit.UnitType,index);
 				unit.UpdateContextFromParent( chainChildren );
+			}
 			return this;
 		}
-		public I_textUnit UpdateDependencies(int index) {
-			if(IsReadOnly)
-				throw Error("Is protected!,(UpdateDependencies)",this,ErrorType_protected.Instance);
-			if(index<0)
-				index = DATA_children.FirstIndex;
-			if(index>=ChildCount)
-				index = DATA_children.LastIndex;
 
-			//0 Is Empty
-			if(IsEmpty) {
-				//0.a - check for next neighbor
-				if(IsChild) {
-					MauronCode_dataList<I_textUnit> neighbors = Neighbors.Right;
-					if(neighbors.IsEmpty)
-						return this;				
-					
-					//0.a.1 Next neighbor has children, shift to this unit
-					I_textUnit nextUnit = neighbors.FirstElement;
-					foreach(I_textUnit unit in nextUnit.Children) {
-						unit.RemoveFromParent(false);
-						InsertChildAtIndex(ChildCount,unit,false,false);
-					}
-					UpdateChildContext(true);
-					nextUnit.UpdateDependencies(0);
+		public I_textUnit HandleLooseEnds() {
+			if( IsReadOnly )
+				throw Error("Is protected!,(HandleLooseEnds)", this, ErrorType_protected.Instance);
+			
+			int index = EndIndex;
 
-				}
+			if(index > -1)
+				return this;
+			
+			MauronCode_dataList<I_textUnit> neighbors = Neighbors.Right;
+			if(neighbors.IsEmpty)
+				return this;
+			
+			I_textUnit nextUnit = neighbors.FirstElement;
+
+			MauronCode_dataList<I_textUnit> moveMe=new MauronCode_dataList<I_textUnit>();
+			int otherEnd = nextUnit.EndIndex;
+			if(otherEnd > -1)
+				moveMe = nextUnit.Children.Range(0,otherEnd);
+			else
+				moveMe = nextUnit.Children;
+
+			foreach(I_textUnit unit in moveMe) {
+				nextUnit.RemoveChildAtIndex(unit.Index, false);
+				InsertChildAtIndex(ChildCount, unit, false);
 			}
 
-			MauronCode_dataList<I_textUnit> check = DATA_children.Range(index);
+			nextUnit.UpdateChildContext(true);
+			nextUnit.HandleLooseEnds();
 
+			if(EndIndex<0)
+				return HandleLooseEnds();
 
+			return this;
 		}
-
-		public I_textUnit HandleEndAtIndex( int index ){
+		
+		public I_textUnit HandleEnds(){
 			if(IsReadOnly)
 				throw Error("Is protected!,(HandleEndAtIndex)",this,ErrorType_protected.Instance);
-			if(index<0 || index >= ChildCount)
-				throw Error("Index out of bounds!,{"+index+"},(HandleEndAtIndex)",this,ErrorType_index.Instance);
+			
+			int index = EndIndex;
+			if(index<0)
+				return this;
 			if(index==ChildCount-1)
 				return this;
 
-			MauronCode_dataList<I_textUnit> children = Children.Range(index);
-
+			//We actually need to move stuff
 			I_textUnit nextUnit;
-
 			TextUnitNeighbors neighbors = Neighbors;
 
 			//create new neighbor if necessary
 			if(neighbors.Right.IsEmpty) {
 				nextUnit = UnitType.New;
-				Parent.InsertChildAtIndex(Index+1,nextUnit,false,true);
+				Parent.InsertChildAtIndex(Index+1, nextUnit, false);
 			} else
 				nextUnit = neighbors.Right.FirstElement;
-			
-			//Move units
-			foreach(I_textUnit child in children) {
-				nextUnit.InsertChildAtIndex(nextUnit.ChildCount,child, true, true);
+
+			MauronCode_dataList<I_textUnit> moveMe = DATA_children.Range(index+1);
+			DATA_children.RemoveByRange(index+1,ChildCount-1);
+			foreach(I_textUnit unit in moveMe){
+				nextUnit.InsertChildAtIndex(0, unit, true);
 			}
 
-			return this;
-		}
-		public I_textUnit RemoveFromParent( bool updateChildContext ) {
-			if( IsReadOnly )
-				throw Error("Is protected!,(RemoveFromParent)", this, ErrorType_protected.Instance);
-			
-			if( !IsChild )
-				return this;
-
-			Parent.RemoveChildAtIndex(Index, false, true );
-			UNIT_parent = null;
-			Context.SetValue(UnitType.ParentType,0);
-			
-			if( !updateChildContext )
-				return this;
-
-			foreach(I_textUnit unit in DATA_children)
-				unit.UpdateContextFromParent(true);
+			if(EndIndex > -1)
+				return HandleEnds();
 
 			return this;
 		}
 
-
-		public I_textUnit InsertChildAtIndex (int n, I_textUnit unit, bool updateOrigin, bool updateChildren)  {
+		public I_textUnit InsertChildAtIndex (int n, I_textUnit unit, bool reIndex)  {
 			if(IsReadOnly)
 				throw Error("Is protected!,(InsertChildAtIndex)",this, ErrorType_protected.Instance);
 			if( n < 0|| n > ChildCount )
 				throw Error("Index out of bounds!,{"+n+"},(InsertChildAtIndex)", this, ErrorType_bounds.Instance);
-			if (!unit.UnitType.Equals (UnitType.ChildType))
-				throw Error ("Invalid child!,(InsertChildAtIndex)", this, ErrorType_scope.Instance);
+			if (!CanHaveChildren || !unit.UnitType.Equals (UnitType.ChildType))
+				throw Error ("Invalid child!,{"+unit.UnitType.Name+"},(InsertChildAtIndex)", this, ErrorType_scope.Instance);
 
-			//we check if we are removing the unit from a position BEFORE its new position
+			DATA_children.InsertValueAt(n, unit);
+			unit.SetParent(this);
+			unit.UpdateContextFromParent(true);
+			unit.Context.SetIsReadOnly(false).SetValue(unit.UnitType,n);
+
+			if( reIndex ) {
+
+				if(n<ChildCount-1) {
+					MauronCode_dataList<I_textUnit> needUpdate = DATA_children.Range(n+1);
+					foreach(I_textUnit updateMe in needUpdate)
+						updateMe.Context.AddValue(updateMe.UnitType, 1);
+				}
+						
+				if(unit.EndsParent)
+					HandleEnds();
+
+			}
 
 			return this;
 		}
@@ -225,86 +234,32 @@ namespace MauronAlpha.Text.Units {
 
 			DATA_children.RemoveByKey(n);
 
-			if(reIndex)
-				UpdateDependencies(n);
+			if(reIndex) {
+				
+				if(n<ChildCount-1){
+					MauronCode_dataList<I_textUnit> needUpdate = DATA_children.Range(n);
+					foreach( I_textUnit updateMe in needUpdate )
+						updateMe.Context.AddValue(updateMe.UnitType, -1);
+				}
+
+				if(!DATA_children.LastElement.EndsParent)
+					Parent.HandleLooseEnds();
+
+			}
 
 			return this; 
 		}
-		public I_textUnit SetParent (I_textUnit unit, bool updateChildContext) { 
+		public I_textUnit SetParent (I_textUnit unit) { 
 			if (IsReadOnly)
 				throw Error ("Is protected!,(SetParent)", this, ErrorType_protected.Instance);
 			if (!unit.UnitType.Equals (UnitType.ParentType))
-				throw Error ("Invalid parent!,(SetParent)", this, ErrorType_scope.Instance);
+				throw Error ("Invalid parent!,{"+unit.UnitType.Name+"},(SetParent)", this, ErrorType_scope.Instance);
 			if(!CanHaveParent)
 				throw Error("Unit can not have a parent!,(SetParent)",this,ErrorType_scope.Instance);
-			if (IsChild && Parent.Equals (unit))
-				return this;
 
 			UNIT_parent = unit;
 
-			if (updateChildContext)
-				UpdateChildContext (true);
-
 			return this; 
-		}
-
-		public I_textUnit AppendString (string text) {
-			if(IsReadOnly)
-				throw Error("Is protected!,(AppendString)",this,ErrorType_protected.Instance);
-
-			TextUnit_text newText=Encoding.StringAsTextUnit(text);
-			if( newText.IsEmpty )
-				return this;
-
-			//UnitType is Text
-			if( UnitType.Equals(TextUnitType_text.Instance) ) {
-				foreach( I_textUnit child in newText.Children )
-					InsertChildAtIndex(ChildCount, child, false, true);
-				return this;
-			}
-
-			//Paragraph
-			if( UnitType.Equals(TextUnitType_paragraph.Instance) ) {
-
-				//the unit is allready full
-				if( IsFull ) {
-
-					TextUnitNeighbors neighbors = Neighbors;
-					I_textUnit nextUnit;
-
-					//create neighbor
-					if( neighbors.Right.IsEmpty ) {
-						nextUnit = UnitType.New;
-						Parent.InsertChildAtIndex(Index+1, nextUnit, false, true);
-					}
-					else
-						nextUnit=neighbors.Right.FirstElement;
-
-					return nextUnit.InsertUnitAtIndex(0, newText, true, true);
-
-				}
-
-				MauronCode_dataList<I_textUnit> insertMe = newText.Children.SetIsReadOnly(false);
-				while(  newText.ChildCount > 0 ) {
-					I_textUnit fragment = newText.Shift;
-				}
-
-
-				return this;
-			}
-
-			//Line
-			if( UnitType.Equals(TextUnitType_line.Instance) ) {
-
-				//The unit is allready full
-				if( IsFull ) {
-
-
-
-				}
-
-			}
-
 		}
 
 		//Child modifiers:return
@@ -341,9 +296,9 @@ namespace MauronAlpha.Text.Units {
 		//As String
 		public virtual string AsString { 
 			get {
-				string result="";
+				string result = "";
 				foreach(I_textUnit unit in Children)
-					result+= unit.AsString;
+					result += unit.AsString;
 				return result; 
 			}
 		}
@@ -357,6 +312,18 @@ namespace MauronAlpha.Text.Units {
 			}
 		}
 		public abstract int Index { get; }
+		public int EndIndex {
+			get {
+				if(IsEmpty)
+					return -1;
+				for(int index=0; index<ChildCount; index++){
+					I_textUnit unit = DATA_children.Value(index);
+					if(unit.EndsParent)
+						return index;
+				}
+				return -1;
+			}
+		}
 
 		//Characters
 		public virtual TextUnit_character FirstCharacter {

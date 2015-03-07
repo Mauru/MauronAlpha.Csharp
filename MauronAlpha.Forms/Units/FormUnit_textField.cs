@@ -19,9 +19,7 @@ namespace MauronAlpha.Forms.Units {
        
 		private TextUnit_text UNIT_text = new TextUnit_text();
 		public FormUnit_textField SetText (string text) {
-			UNIT_text = new TextUnit_text();
-			
-			UNIT_text.SetText(text);
+			UNIT_text = new TextUnit_text(text);
 			return this;
 		}
 		public TextUnit_text Text {

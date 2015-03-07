@@ -11,16 +11,9 @@ namespace MauronAlpha.Text.Units {
 
 		//Constructors
 		public TextUnit_word():base(TextUnitType_word.Instance) {}
-		public TextUnit_word(TextUnit_line parent, bool updateParent):this() {
-			UNIT_parent = parent;
-
-			if( updateParent ) {
-				parent.InsertChildAtIndex( parent.ChildCount, this, false, false );
-			}
-
-			SetContext(parent.Context.Instance.SetWord(parent.ChildCount));
+		public TextUnit_word(TextUnit_line parent):this() {
+			parent.InsertChildAtIndex(parent.ChildCount, this, false);
 		}
-		public TextUnit_word(string word):this(){}
 		
 		//Count
 		public override TextContext CountAsContext {

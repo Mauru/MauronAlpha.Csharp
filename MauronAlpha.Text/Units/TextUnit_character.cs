@@ -11,9 +11,8 @@ namespace MauronAlpha.Text.Units {
 
 		//Constructors
 		public TextUnit_character():base(TextUnitType_character.Instance) {}
-		public TextUnit_character (TextUnit_word parent, bool updateDependencies)
-			: this() {
-			UNIT_parent = parent;			
+		public TextUnit_character (TextUnit_word parent) : this() {
+			parent.InsertChildAtIndex(parent.ChildCount, this, false);
 		}
 		public TextUnit_character ( char character ):this() {
 			SetChar( character , false );
@@ -74,10 +73,10 @@ namespace MauronAlpha.Text.Units {
 
 			TXT_char = code;
 
-			if(updateParent 
-			&& IsChild 
-			&& Encoding.UnitEndsOther(this,Parent))
-				Parent.HandleEndAtIndex(Index);
+			if( updateParent 
+				&& IsChild 
+				&& Encoding.UnitEndsOther(this,Parent) )
+			Parent.HandleEnds();
 
 			return this;
 		}

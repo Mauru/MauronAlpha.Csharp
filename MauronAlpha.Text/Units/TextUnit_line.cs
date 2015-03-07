@@ -11,8 +11,8 @@ namespace MauronAlpha.Text.Units {
 
 		//Constructors
 		public TextUnit_line():base(TextUnitType_line.Instance) {}
-		public TextUnit_line(TextUnit_paragraph parent, bool updateParent ):this() {
-			UNIT_parent = parent;
+		public TextUnit_line(TextUnit_paragraph parent):this() {
+			parent.InsertChildAtIndex(parent.ChildCount, this, false);
 		}
 
 		//Count
@@ -29,7 +29,9 @@ namespace MauronAlpha.Text.Units {
 
 		//Int : Index
 		public override int Index {
-			get { return Context.Line; }
+			get { 
+				return Context.Line; 
+			}
 		}
 
 		//Querying

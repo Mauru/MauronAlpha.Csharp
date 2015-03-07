@@ -11,11 +11,8 @@ namespace MauronAlpha.Text.Units {
 
 		//constructors
 		public TextUnit_paragraph():base(TextUnitType_paragraph.Instance){}
-		public TextUnit_paragraph(TextUnit_text parent, bool updateParent):this() {
-			UNIT_parent = parent;
-
-			if(updateParent)
-				parent.InsertChildAtIndex(parent.ChildCount, this, false, false);
+		public TextUnit_paragraph ( TextUnit_text parent ) : base(TextUnitType_paragraph.Instance) { 
+			parent.InsertChildAtIndex(parent.ChildCount, this, false);			
 		}
 
 		//Index

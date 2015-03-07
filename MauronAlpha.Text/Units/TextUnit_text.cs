@@ -10,9 +10,11 @@ namespace MauronAlpha.Text.Units {
 	I_textUnit {
 		
 		//constructor
-		public TextUnit_text():base(TextUnitType_text.Instance) {}
-		public TextUnit_text( string text ) : this() {
-			AppendString(text);
+		public TextUnit_text():base(TextUnitType_text.Instance) {
+			
+		}
+		public TextUnit_text(string text):this() {
+			Encoding.StringToUnit(text, this);
 		}
 
 		//Context

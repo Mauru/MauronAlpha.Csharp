@@ -11,31 +11,32 @@ namespace MauronAlpha.Text.Encoding {
 
 		public abstract string Name { get; }
 
-		public TextUnit_text StringAsTextUnit (string text) {
+		public TextUnit_text StringAsUnit (string text) {
 			TextUnit_text unit = new TextUnit_text();
+			return StringToUnit(text, unit);
+		}
+		public TextUnit_text StringToUnit(string text, TextUnit_text unit) {
+			unit.Clear();
 			unit.SetContext(new TextContext(-1,-1,-1,-1));
 
-			TextUnit_paragraph paragraph = new TextUnit_paragraph(unit, true);
-			TextUnit_line line = new TextUnit_line(paragraph, true);
-			TextUnit_word word = new TextUnit_word(line,true);
+			TextUnit_paragraph paragraph = new TextUnit_paragraph(unit);
+			TextUnit_line line = new TextUnit_line(paragraph);
+			TextUnit_word word = new TextUnit_word(line);
 			TextUnit_character character;
 
 			foreach(char c in text){
-				character = new TextUnit_character( word, false );
+				character = new TextUnit_character(word);
 				character.SetChar(c, false);
 
-				word.InsertChildAtIndex(word.ChildCount,character, false, true);
-				if(EndsParagraph(character)) {
-					paragraph = new TextUnit_paragraph(unit,true);
-				}
-				if( EndsLine(character) ) {
-					line = new TextUnit_line(paragraph,true);
-				}
-				if(EndsWord(character)) {
-					word = new TextUnit_word(line,true);
-				}
+				word.InsertChildAtIndex(word.ChildCount,character, true);
+				if(EndsParagraph(character))
+					paragraph = new TextUnit_paragraph(unit);
+				if( EndsLine(character) )
+					line = new TextUnit_line(paragraph);
+				if(EndsWord(character))
+					word = new TextUnit_word(line);
 			}
-			return unit;
+			return unit;		
 		}
 
 		//Special Characters

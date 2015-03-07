@@ -17,7 +17,7 @@ namespace MauronAlpha.Text.Context {
 		//Constructors
 		public TextContext():base() {}
 		public TextContext(string textId, int paragraph, int line, int word, int character) {
-			ID_txt = textId;
+			STR_textId = textId;
 			INT_paragraph = paragraph;
 			INT_line = line;
 			INT_word = word;
@@ -32,7 +32,7 @@ namespace MauronAlpha.Text.Context {
 
 		//Booleans
 		public bool Equals(TextContext other) {
-			return ID_txt == other.TextId
+			return STR_textId == other.TextId
 			&& INT_paragraph == other.Paragraph
 			&& INT_line == other.Line
 			&& INT_word == other.Word
@@ -47,7 +47,7 @@ namespace MauronAlpha.Text.Context {
 
 		//Methods
 		public TextContext Instance { get {
-			return new TextContext(ID_txt, INT_paragraph, INT_line, INT_word, INT_character);
+			return new TextContext(STR_textId, INT_paragraph, INT_line, INT_word, INT_character);
 		} }
 		public TextContext SetIsReadOnly(bool state) {
 			B_isReadOnly = state;
@@ -56,7 +56,7 @@ namespace MauronAlpha.Text.Context {
 		public TextContext SetContext(string id, int paragraph, int line, int word, int character) {
 			if( IsReadOnly )
 				throw Error("Is protected!,(SetContext)", this, ErrorType_protected.Instance);
-			ID_txt = id;
+			STR_textId = id;
 			INT_paragraph = paragraph;
 			INT_line = line;
 			INT_word = word;
@@ -66,7 +66,7 @@ namespace MauronAlpha.Text.Context {
 		public TextContext SetTextId(string n) {
 			if( IsReadOnly )
 				throw Error("Is protected!,(SetTextId)", this, ErrorType_protected.Instance);
-			ID_txt = n;
+			STR_textId = n;
 			return this;
 		}
 		public TextContext SetParagraph(int n) {
@@ -139,31 +139,28 @@ namespace MauronAlpha.Text.Context {
 				return this;
 
 			else if( targetType.Equals(TextUnitType_paragraph.Instance) ) {
-				ID_txt = origin.Context.TextId;
+				STR_textId = origin.Context.TextId;
 			}
 
 			else if( targetType.Equals(TextUnitType_line.Instance) ) {
-				ID_txt = origin.Context.TextId;
+				STR_textId = origin.Context.TextId;
 				INT_paragraph = origin.Context.Paragraph;
 			}
 
 			else if( targetType.Equals(TextUnitType_word.Instance) ) {
-				ID_txt=origin.Context.TextId;
+				STR_textId=origin.Context.TextId;
 				INT_paragraph=origin.Context.Paragraph;
 				INT_line=origin.Context.Line;
 			}
 
 			else if( targetType.Equals(TextUnitType_character.Instance) ) {
-				ID_txt=origin.Context.TextId;
+				STR_textId=origin.Context.TextId;
 				INT_paragraph=origin.Context.Paragraph;
 				INT_line=origin.Context.Line;
 				INT_word=origin.Context.Word;
 			}
 
 			return this;
-				
-
-			
 		}
 		public TextContext SetValue( I_textUnitType unitType, int value ) {
 			if(IsReadOnly)
@@ -182,6 +179,15 @@ namespace MauronAlpha.Text.Context {
 
 			return this;
 		}
+		public TextContext SetValue (I_textUnitType unitType, string value) {
+			if( IsReadOnly )
+				throw Error("Is protected!,(SetValue)", this, ErrorType_protected.Instance);
+			if( unitType.Equals(TextUnitType_text.Instance) )
+				return this;
+
+			STR_textId = value;
+			return this;
+		}
 		public TextContext AddValue( I_textUnitType unitType, int value ) {
 			if(IsReadOnly)
 				throw Error("Is protected!,(AddValue)",this,ErrorType_protected.Instance);
@@ -196,10 +202,10 @@ namespace MauronAlpha.Text.Context {
 		}
 
 		//Index (text)
-		private string ID_txt="";
+		private string STR_textId="";
 		public string TextId {
 			get {
-				return ID_txt;
+				return STR_textId;
 			}	
 		}
 		public string AsString {
@@ -221,21 +227,29 @@ namespace MauronAlpha.Text.Context {
 			return 0;
 		}
 		private int INT_paragraph = 0;
-		public int Paragraph  { get {
-			return INT_paragraph;
-		} }
+		public int Paragraph  { 
+			get {
+				return INT_paragraph;
+			}
+		}
 		private int INT_line = 0;
-		public int Line { get {
-			return INT_line;
-		} }
+		public int Line { 
+			get {
+				return INT_line;
+			}
+		}
 		private int INT_word = 0;
-		public int Word { get {
-			return INT_word;
-		} }
+		public int Word { 
+			get {
+				return INT_word;
+			}
+		}
 		private int INT_character = 0;
-		public int Character { get {
-			return INT_character;
-		}}
+		public int Character { 
+			get {
+				return INT_character;
+			}
+		}
 
 	}
 
