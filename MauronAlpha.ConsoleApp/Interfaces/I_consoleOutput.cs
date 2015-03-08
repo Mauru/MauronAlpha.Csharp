@@ -8,6 +8,7 @@ namespace MauronAlpha.ConsoleApp.Interfaces {
 		
 		I_consoleOutput WriteLine(TextUnit_line unit, int maxWidth);
 		I_consoleOutput WriteLine( TextUnit_line unit );
+		I_consoleOutput SetCaretPosition(I_consoleUnit focus, CaretPosition position);
 	}
 
 }

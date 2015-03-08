@@ -10,10 +10,7 @@ using MauronAlpha.HandlingData;
 using MauronAlpha.Layout.Layout2d.Context;
 using MauronAlpha.Geometry.Geometry2d.Units;
 
-
-
 namespace MauronAlpha.ConsoleApp.Win {
-
 
 	class TestProgram {
 
@@ -21,8 +18,8 @@ namespace MauronAlpha.ConsoleApp.Win {
 				
 				//1: We start by grabbing the size and position of the Context Window
 				Vector2d size = new Vector2d(
-					System.Console.LargestWindowWidth,
-					System.Console.LargestWindowHeight
+					System.Console.WindowWidth,
+					System.Console.WindowHeight
 				);
 				Vector2d position = new Vector2d(
 					System.Console.WindowLeft,
@@ -44,4 +41,5 @@ namespace MauronAlpha.ConsoleApp.Win {
 		}
 	
 	}
+
 }

@@ -18,7 +18,12 @@ namespace MauronAlpha.ConsoleApp {
 	I_eventController,
 	I_eventSubscriber {
 
-		
+		//Constructor
+		public ConsoleApp_commandModel():base() {}
+		public ConsoleApp_commandModel(MauronConsole console){
+			MAU_console = console;
+		}
+
 		private EventHandler EVENT_handler;
 		public EventHandler EventHandler {
 			get {
@@ -100,6 +105,10 @@ namespace MauronAlpha.ConsoleApp {
 		}
 	
 		//Methods
+		public virtual ConsoleApp_commandModel Initiate() {
+			ActivateInput(MAU_console.Input,MAU_console);
+			return this;
+		}
 		public ConsoleApp_commandModel CommandModel {
 			get {
 				return this;

@@ -60,5 +60,13 @@ namespace MauronAlpha.ConsoleApp {
 
 			return this;
 		}
+
+		public I_consoleOutput SetCaretPosition (I_consoleUnit focus, CaretPosition position) {
+			Vector2d pos=position.AsVector;
+			pos.Add(focus.Context.Position.AsVector);
+
+			System.Console.SetCursorPosition(position.X, position.Y);
+			return this;
+		}
 	}
 }

@@ -11,6 +11,7 @@ namespace MauronAlpha.ConsoleApp.Interfaces {
 
 		TextUnit_text Content { get; }
 
+		CaretPosition CaretPosition { get; }
 	}
 
 }

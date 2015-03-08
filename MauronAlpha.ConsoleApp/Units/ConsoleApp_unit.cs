@@ -44,6 +44,13 @@ namespace MauronAlpha.ConsoleApp.Units {
 			return FORM_content.LineByIndex(n);
 		}
 
+		private CaretPosition DATA_position = new CaretPosition();
+		public virtual CaretPosition CaretPosition {
+			get {
+				return DATA_position;
+			}
+		}
+
 	}
 
 	public class ConsoleLayout_header : ConsoleApp_unit {

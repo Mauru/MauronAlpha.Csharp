@@ -53,6 +53,12 @@ namespace MauronAlpha.ConsoleApp {
 			
 			LAYOUT_console.Draw();
 
+			//7: Set initial caret position
+			SetFocus("header");
+			SetFocus("content");
+
+			//8: Activate Input
+			CommandModel.Initiate();
 		}
 
 		//State of the Program
@@ -76,7 +82,7 @@ namespace MauronAlpha.ConsoleApp {
 		public ConsoleApp_commandModel CommandModel {
 			get {
 				if(HANDLER_commands == null) 
-					HANDLER_commands = new ConsoleApp_commandModel();
+					HANDLER_commands = new ConsoleApp_commandModel(this);
 				return HANDLER_commands;
 			}
 		}
@@ -143,6 +149,13 @@ namespace MauronAlpha.ConsoleApp {
 					OUTPUT_console=new ConsoleApp_output(this);
 				return (I_layoutRenderer) OUTPUT_console;
 			}
+		}
+
+		//Methods
+		public I_consoleController SetFocus(string member) {
+			I_consoleUnit unit = LayoutModel.Member(member);
+			Output.SetCaretPosition(unit,unit.CaretPosition);
+			return this;
 		}
 		
 		//This is basically a process state trigger

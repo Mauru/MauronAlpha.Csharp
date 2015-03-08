@@ -123,11 +123,9 @@ namespace MauronAlpha.ConsoleApp {
 			I_consoleUnit content = Member( "content" );
 			TextContext mainContext = content.Content.CountAsContext;
 
-			System.Console.WriteLine( content.Context.AsString );
-
 			for( int n=0; n < content.Context.Size.Height; n++ ) {
 				if( n >= mainContext.Line ) {
-					TextUnit_text lineText = new TextUnit_text(n+"#EmptyLine#");
+					TextUnit_text lineText = new TextUnit_text(""+n);
 					output.WriteLine( lineText.LineByIndex(0) );
 				} else {
 					TextUnit_line line = content.LineAsOutput( n );
@@ -137,13 +135,31 @@ namespace MauronAlpha.ConsoleApp {
 				}
 			}
 
+			//Draw footer
 			I_consoleUnit footer=Member( "footer" );
 			TextContext footerContext = footer.Content.CountAsContext;
+
+			for( int n=0; n<footer.Context.Size.Height; n++ ) {
+				if( n>=footerContext.Line ) {
+					output.WriteLine(new TextUnit_line());
+					break;
+				}
+				TextUnit_line line=footer.LineAsOutput(n);
+				output.WriteLine(line, maxWidth);
+			}
 
 			return this;
 
 		}
 
+		private CaretPosition DATA_caret = new CaretPosition();
+		public CaretPosition CaretPosition {
+			get {
+				return DATA_caret;
+			}
+		}
+
+		
 	}
 
 

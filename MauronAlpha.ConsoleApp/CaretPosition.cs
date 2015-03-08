@@ -1,6 +1,7 @@
 ﻿using System;
 using MauronAlpha.HandlingData;
 using MauronAlpha.Text.Units;
+using MauronAlpha.Geometry.Geometry2d.Units;
 
 namespace MauronAlpha.ConsoleApp {
 
@@ -8,8 +9,24 @@ namespace MauronAlpha.ConsoleApp {
 	public class CaretPosition:MauronCode_dataObject {
 		
 		//constructor
-		public CaretPosition(TextUnit_text text)
-			: base(DataType_object.Instance) {
+		public CaretPosition() : base(DataType_object.Instance) {}
+
+		private Vector2d V_position = new Vector2d();
+		public Vector2d AsVector {
+			get{
+				return V_position;
+			}
+		}
+
+		public int X {
+			get {
+				return (int) V_position.X;
+			}
+		}
+		public int Y {
+			get {
+				return (int) V_position.Y;
+			}
 		}
 		
 	}
