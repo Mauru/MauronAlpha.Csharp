@@ -109,6 +109,7 @@ namespace MauronAlpha.Text.Units {
 	
 	}
 
+	//Description of a text unit 
 	public class TextUnitType_text:TextUnitType,
 	I_textUnitType {
 		

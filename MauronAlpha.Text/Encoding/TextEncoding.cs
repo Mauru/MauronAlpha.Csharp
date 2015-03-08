@@ -28,7 +28,7 @@ namespace MauronAlpha.Text.Encoding {
 				character = new TextUnit_character(word);
 				character.SetChar(c, false);
 
-				word.InsertChildAtIndex(word.ChildCount,character, true);
+				//word.InsertChildAtIndex(word.ChildCount,character, true);
 				if(EndsParagraph(character))
 					paragraph = new TextUnit_paragraph(unit);
 				if( EndsLine(character) )
