@@ -20,6 +20,9 @@ namespace MauronAlpha.ConsoleApp {
 			DATA_activeSequence.Add(key);
 			return this;
 		}
+		public I_consoleData EvaluateSequence(KeySequenceMap map) {
+		
+		}
 
 
 

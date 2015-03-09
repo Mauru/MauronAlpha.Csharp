@@ -134,6 +134,7 @@ namespace MauronAlpha.ConsoleApp {
 
 		public ConsoleApp_commandModel AppendToSequence( KeyPress key ){
 			ContentModel.AppendToSequence(key);
+			ContentModel.EvaluateSequence();
 			return this;
 		}
 
