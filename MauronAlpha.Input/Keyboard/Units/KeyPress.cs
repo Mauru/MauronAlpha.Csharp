@@ -1,13 +1,15 @@
-﻿using MauronAlpha.HandlingData;
+﻿using System;
+using MauronAlpha.HandlingData;
 using MauronAlpha.Events;
 
 
 namespace MauronAlpha.Input.Keyboard.Units {
 
-	public class KeyPress:MauronCode_dataObject {
+	public class KeyPress:KeyboardComponent,
+	IEquatable<KeyPress> {
 		
 		//constructor
-		public KeyPress():base(DataType_object.Instance){}
+		public KeyPress():base(){}
 
 		//Character Code
 		private char CHAR_key;
@@ -21,8 +23,16 @@ namespace MauronAlpha.Input.Keyboard.Units {
 			return this;
 		}
 
-
 		//Booleans
+		public bool Equals(KeyPress other) {
+			if(Id.Equals(other.Id))
+				return true;
+			return B_isFunction == other.IsFunction
+			&& B_isAltKeyDown == other.IsAltKeyDown
+			&& B_isCtrlKeyDown == other.IsCtrlKeyDown
+			&& B_isShiftKeyDown == other.IsShiftKeyDown
+			&& CHAR_key.Equals(other.Key);
+		}
 		
 		//Boolean : Special Key
 		private bool B_isFunction = false;

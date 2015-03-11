@@ -33,7 +33,9 @@ namespace MauronAlpha.ConsoleApp.Collections {
 			KeyPress  key = e.KeyPress;
 			if( !commandModel.AllowsInput )
 				return false;
-			commandModel.AppendToSequence( key );
+
+			commandModel.EvaluateInput();
+
 			return true;
 		}
 	}

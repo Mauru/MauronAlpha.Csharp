@@ -4,6 +4,7 @@ using MauronAlpha.Forms.Units;
 using System;
 
 using MauronAlpha.Input.Keyboard.Units;
+using MauronAlpha.Input.Keyboard.Collections;
 
 namespace MauronAlpha.ConsoleApp {
 

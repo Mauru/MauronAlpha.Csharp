@@ -1,10 +1,9 @@
 ﻿using System.Collections.Generic;
 using MauronAlpha.HandlingData;
 
-using MauronAlpha.Input.Keyboard.Collections;
 using MauronAlpha.Input.Keyboard.Units;
 
-namespace MauronAlpha.Input.Keyboard {
+namespace MauronAlpha.Input.Keyboard.Collections {
 
 	//A class that keeps information on KeyboardMappings
 	public class KeyMap:MauronCode_dataObject {

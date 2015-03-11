@@ -45,7 +45,6 @@
     <Compile Include="Collections\ConsoleApp_eventTriggers.cs" />
     <Compile Include="ConsoleApp_commandModel.cs" />
     <Compile Include="ConsoleApp_component.cs" />
-    <Compile Include="ConsoleApp_data.cs" />
     <Compile Include="ConsoleApp_input.cs" />
     <Compile Include="ConsoleApp_layout.cs" />
     <Compile Include="ConsoleApp_output.cs" />
@@ -53,7 +52,7 @@
     <Compile Include="CaretPosition.cs" />
     <Compile Include="ConsoleApp_window.cs" />
     <Compile Include="ConsoleApp_keyMap.cs" />
-    <Compile Include="Interfaces\I_consoleData.cs" />
+    <Compile Include="Interfaces\I_consoleInput.cs" />
     <Compile Include="Interfaces\I_consoleLayout.cs" />
     <Compile Include="Interfaces\I_consoleController.cs" />
     <Compile Include="Interfaces\I_consoleOutput.cs" />

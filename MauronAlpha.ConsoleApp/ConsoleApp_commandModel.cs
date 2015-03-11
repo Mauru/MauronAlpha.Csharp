@@ -24,15 +24,6 @@ namespace MauronAlpha.ConsoleApp {
 			MAU_console = console;
 		}
 
-		private EventHandler EVENT_handler;
-		public EventHandler EventHandler {
-			get {
-				if(EVENT_handler == null)
-					EVENT_handler = new EventHandler();
-				return EVENT_handler;
-			}
-		}
-
 		//Booleans
 		public bool Equals (I_eventController other) {
 			return Id==other.Id;
@@ -48,6 +39,15 @@ namespace MauronAlpha.ConsoleApp {
 		}
 		
 		//Event Model
+		private EventHandler EVENT_handler;
+		public EventHandler EventHandler {
+			get {
+				if( EVENT_handler==null )
+					EVENT_handler=new EventHandler();
+				return EVENT_handler;
+			}
+		}
+
 		public bool ReceiveEvent (EventUnit_event e) {
 			EventHandler.DELEGATE_trigger trigger=TriggerOfCode(e.Code);
 			bool result=trigger(e);
@@ -94,16 +94,6 @@ namespace MauronAlpha.ConsoleApp {
 			}
 		}
 
-		//The Content
-		private I_consoleData DATA_console;
-		public I_consoleData ContentModel {
-			get {
-				if(DATA_console == null)
-					DATA_console = new ConsoleApp_data();
-				return DATA_console;
-			}
-		}
-	
 		//Methods
 		public virtual ConsoleApp_commandModel Initiate() {
 			ActivateInput(MAU_console.Input,MAU_console);
@@ -131,11 +121,9 @@ namespace MauronAlpha.ConsoleApp {
 			return this;
 
 		}
-
-		public ConsoleApp_commandModel AppendToSequence( KeyPress key ){
-			ContentModel.AppendToSequence(key);
-			ContentModel.EvaluateSequence();
-			return this;
+		public ConsoleApp_commandModel EvaluateInput() {
+			if(INPUT_keyBoard.ActiveSequence.FirstElement)
+			return this;	
 		}
 
 	}

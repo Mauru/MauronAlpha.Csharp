@@ -3,13 +3,10 @@
 namespace MauronAlpha.Input.Keyboard.Units {
 
 
-	public class SpecialKey:MauronCode_dataObject {
+	public class SpecialKey:KeyboardComponent {
 
 		//constructor
-		public SpecialKey(
-			string name,
-			KeyScript action
-		):base(DataType_maintaining.Instance){
+		public SpecialKey(string name, KeyScript action):base(){
 			SetName(name);
 		}
 

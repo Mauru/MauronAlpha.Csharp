@@ -40,7 +40,7 @@ namespace MauronAlpha.ConsoleApp {
 			UNIT_window.SetContext(context);
 
 			//4: Define the Command-Model for the Console
-			ConsoleApp_commandModel model=new ConsoleApp_commandModel();
+			ConsoleApp_commandModel model = new ConsoleApp_commandModel();
 
 			//5: Define the console Output
 			OUTPUT_console = new ConsoleApp_output( this );
@@ -87,13 +87,6 @@ namespace MauronAlpha.ConsoleApp {
 			}
 		}
 
-		//This is basically the Contained Data
-		public I_consoleData ContentModel {
-			get {
-				return CommandModel.ContentModel;
-			}
-		}
-		
 		//Booleans
 		public bool AllowsInput {
 			get {
