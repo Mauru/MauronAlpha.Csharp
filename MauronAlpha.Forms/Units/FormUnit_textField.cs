@@ -9,10 +9,13 @@ using MauronAlpha.Layout.Layout2d.Units;
 using MauronAlpha.Layout.Layout2d.Context;
 using MauronAlpha.Layout.Layout2d.Interfaces;
 
+using MauronAlpha.Input.Keyboard.Units;
+
 namespace MauronAlpha.Forms.Units {
 	
 	//A Entity waiting for user input
-	public class FormUnit_textField : FormComponent_unit, I_layoutUnit {
+	public class FormUnit_textField : FormComponent_unit,
+	I_layoutUnit {
 		
 		//constructor
 		public FormUnit_textField():base( FormType_textField.Instance ) {}
@@ -31,6 +34,11 @@ namespace MauronAlpha.Forms.Units {
 
 		public TextUnit_line LineByIndex (int n) {
 			return UNIT_text.LineByIndex(n);
+		}
+
+		public override bool EVENT_keyUp (KeyPress key) {
+			
+			return true;
 		}
 
 		

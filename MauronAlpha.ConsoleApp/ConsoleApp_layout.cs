@@ -16,6 +16,8 @@ using MauronAlpha.ConsoleApp.Units;
 using MauronAlpha.Text.Units;
 using MauronAlpha.Text.Context;
 
+using MauronAlpha.Forms.Interfaces;
+
 namespace MauronAlpha.ConsoleApp {
 
 	//Sets up the layout
@@ -152,14 +154,11 @@ namespace MauronAlpha.ConsoleApp {
 
 		}
 
-		private CaretPosition DATA_caret = new CaretPosition();
-		public CaretPosition CaretPosition {
-			get {
-				return DATA_caret;
+		public I_formComponent ActiveInput { 
+			get { 
+				return Member("content").Input; 
 			}
 		}
-
-		
 	}
 
 

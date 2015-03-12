@@ -4,6 +4,7 @@ using MauronAlpha.Layout.Layout2d.Interfaces;
 
 using MauronAlpha.Geometry.Geometry2d.Units;
 
+using MauronAlpha.Forms.Interfaces;
 using MauronAlpha.Forms.Units;
 
 using MauronAlpha.ConsoleApp.Interfaces;
@@ -48,6 +49,12 @@ namespace MauronAlpha.ConsoleApp.Units {
 		public virtual CaretPosition CaretPosition {
 			get {
 				return DATA_position;
+			}
+		}
+
+		public I_formComponent Input {
+			get {
+				return FORM_content;
 			}
 		}
 

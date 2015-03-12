@@ -121,8 +121,9 @@ namespace MauronAlpha.ConsoleApp {
 			return this;
 
 		}
-		public ConsoleApp_commandModel EvaluateInput() {
-			if(INPUT_keyBoard.ActiveSequence.FirstElement)
+		public virtual ConsoleApp_commandModel EvaluateInput() {
+			KeyPress key = INPUT_keyBoard.ActiveSequence.FirstElement;
+			LayoutModel.ActiveInput.EVENT_keyUp(key);
 			return this;	
 		}
 

@@ -1,11 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using MauronAlpha.Input.Keyboard.Units;
 
 namespace MauronAlpha.Forms.Interfaces {
 
 	//Interface for form components
-	public interface I_formComponent {}
+	public interface I_formComponent {
+		
+		bool EVENT_keyUp(KeyPress key);
+	}
 
 }

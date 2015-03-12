@@ -3,7 +3,8 @@ using MauronAlpha.Text.Units;
 
 namespace MauronAlpha.Text.Interfaces {
 	
-	public interface I_textUnitType:IEquatable<I_textUnitType> {
+	public interface I_textUnitType:IEquatable<I_textUnitType>,
+	IComparable<I_textUnitType> {
 		
 		string Name { get; }
 

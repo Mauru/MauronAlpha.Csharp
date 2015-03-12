@@ -29,6 +29,32 @@ namespace MauronAlpha.Text.Units {
 		public abstract I_textUnitType ParentType { get; }
 		public abstract I_textUnitType ChildType { get; }
 
+		public static TextUnitType_character Character {
+			get {
+				return TextUnitType_character.Instance;
+			}
+		}
+		public static TextUnitType_word Word {
+			get {
+				return TextUnitType_word.Instance;
+			}
+		}
+		public static TextUnitType_line Line {
+			get {
+				return TextUnitType_line.Instance;
+			}
+		}
+		public static TextUnitType_paragraph Paragraph {
+			get {
+				return TextUnitType_paragraph.Instance;
+			}
+		}
+		public static TextUnitType_text Text {
+			get {
+				return TextUnitType_text.Instance;
+			}
+		}
+
 		public static MauronCode_dataList<I_textUnitType> Order = new MauronCode_dataList<I_textUnitType>() { 
 			TextUnitType_character.Instance,
 			TextUnitType_word.Instance,
@@ -37,5 +63,11 @@ namespace MauronAlpha.Text.Units {
 			TextUnitType_text.Instance
 		};
 
-	}
+		public int CompareTo(I_textUnitType other) {
+			int pos = Order.IndexOf(this);
+			int otherPos = Order.IndexOf(other);
+
+			return pos.CompareTo(otherPos);
+		}
+}
 }

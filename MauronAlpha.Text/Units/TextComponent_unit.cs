@@ -198,6 +198,27 @@ namespace MauronAlpha.Text.Units {
 			return this;
 		}
 
+		public I_textUnit InsertUnitAtIndex (int n, I_textUnit unit, bool reIndex) {
+			
+			if(IsReadOnly)
+				throw Error("Is protected!,(InsertUnitAtIndex)",this,ErrorType_protected.Instance);
+
+			if(n<0||n>ChildCount)
+				throw Error("Index out of bounds!,{"+n+"},(InsertUnitAtIndex)",this,ErrorType_index.Instance);
+
+			if(unit.UnitType.Equals(UnitType.ChildType))
+				return InsertChildAtIndex(n,unit,reIndex);
+
+			//Unit is further up the chain
+			if(UnitType.CompareTo(unit.UnitType)<0)
+				return this;
+			
+			//unit is further down the chain				
+
+
+
+
+		}
 		public I_textUnit InsertChildAtIndex (int n, I_textUnit unit, bool reIndex)  {
 			if(IsReadOnly)
 				throw Error("Is protected!,(InsertChildAtIndex)",this, ErrorType_protected.Instance);
