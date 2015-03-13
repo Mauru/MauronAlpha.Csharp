@@ -63,6 +63,10 @@ namespace MauronAlpha.Text.Units {
 			TextUnitType_text.Instance
 		};
 
+		public int Difference(I_textUnitType other) {
+			return Order.IndexOf(other) - Order.IndexOf(this);
+		}
+
 		public int CompareTo(I_textUnitType other) {
 			int pos = Order.IndexOf(this);
 			int otherPos = Order.IndexOf(other);

@@ -206,18 +206,27 @@ namespace MauronAlpha.Text.Units {
 			if(n<0||n>ChildCount)
 				throw Error("Index out of bounds!,{"+n+"},(InsertUnitAtIndex)",this,ErrorType_index.Instance);
 
+			//Unit is a regular Child
 			if(unit.UnitType.Equals(UnitType.ChildType))
 				return InsertChildAtIndex(n,unit,reIndex);
 
 			//Unit is further up the chain
-			if(UnitType.CompareTo(unit.UnitType)<0)
+			if(UnitType.CompareTo(unit.UnitType)<0){
+				
 				return this;
+			}
+				
+			
 			
 			//unit is further down the chain				
+			else if(UnitType.CompareTo(unit.UnitType)>0)
+				return this;
 
+			//unit is of the same type, we effectively "split" this unit
+			foreach(I_textUnit child in unit.Children)
+				InsertChildAtIndex(n,child,true);
 
-
-
+			return this;
 		}
 		public I_textUnit InsertChildAtIndex (int n, I_textUnit unit, bool reIndex)  {
 			if(IsReadOnly)
