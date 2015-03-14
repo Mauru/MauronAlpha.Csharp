@@ -210,24 +210,11 @@ namespace MauronAlpha.Text.Units {
 			if(unit.UnitType.Equals(UnitType.ChildType))
 				return InsertChildAtIndex(n,unit,reIndex);
 
-			//Unit is further up the chain
-			if(UnitType.CompareTo(unit.UnitType)<0){
+			MauronCode_dataList<I_textUnit> characters = unit.Characters;
+			//This is a character, we want to add after or before this
+			if(!CanHaveChildren) {}
 				
 
-				return this;
-			}
-				
-			
-			
-			//unit is further down the chain				
-			else if(UnitType.CompareTo(unit.UnitType)>0)
-				return this;
-
-			//unit is of the same type, we effectively "split" this unit
-			foreach(I_textUnit child in unit.Children)
-				InsertChildAtIndex(n,child,true);
-
-			return this;
 		}
 		public I_textUnit InsertChildAtIndex (int n, I_textUnit unit, bool reIndex)  {
 			if(IsReadOnly)
@@ -292,6 +279,20 @@ namespace MauronAlpha.Text.Units {
 
 			return this; 
 		}
+
+		/// <summary>If unit has a parent return it, if not create one. Return it.</summary>
+		public I_textUnit FindOrMakeParent { 
+			get {
+				if(!CanHaveParent)
+					throw Error("Unit can not have parent!,(FindMakeParent)",this,ErrorType_scope.Instance);
+				if(IsChild)
+					return Parent;
+				I_textUnit parent = UnitType.ParentType.New;
+				parent.InsertChildAtIndex(0,this,true);
+				return parent;
+			}
+		}
+
 
 		//Child modifiers:return
 		public I_textUnit Pop {
@@ -379,6 +380,18 @@ namespace MauronAlpha.Text.Units {
 				if(DATA_children == null)
 					DATA_children = new MauronCode_dataList<I_textUnit>();
 				return DATA_children;
+			}
+		}
+		public MauronCode_dataList<I_textUnit> Characters {
+			get {
+				MauronCode_dataList<I_textUnit> result=new MauronCode_dataList<I_textUnit>();
+				if(IsEmpty)
+					return result;
+				if(!CanHaveChildren)
+					return result.Add(this);
+				foreach(I_textUnit unit in DATA_children)
+					result.Join(unit.Characters);
+				return result;
 			}
 		}
 

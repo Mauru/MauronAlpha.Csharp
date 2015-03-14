@@ -35,6 +35,7 @@ namespace MauronAlpha.Text.Interfaces {
 		bool CanHaveParent { get; }
 		bool EndsParent { get; }
 		
+		MauronCode_dataList<I_textUnit> Characters { get; }
 		MauronCode_dataList<I_textUnit> Children { get; }
 		TextUnitNeighbors Neighbors { get; }
 
@@ -50,7 +51,8 @@ namespace MauronAlpha.Text.Interfaces {
 
 		I_textUnit HandleEnds();
 		I_textUnit HandleLooseEnds();
-		
+
+		I_textUnit InsertUnitAtIndex (int n, I_textUnit unit, bool reIndex);		
 		I_textUnit InsertChildAtIndex (int n, I_textUnit unit, bool reIndex);
 		I_textUnit RemoveChildAtIndex (int n, bool reIndex);
 

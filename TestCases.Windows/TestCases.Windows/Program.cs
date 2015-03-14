@@ -8,11 +8,7 @@ public class Test {
 	public static void Main ( ) {
 		System.Console.WriteLine("-Program start-");
 
-
-		FormUnit_textField field = new FormUnit_textField();
-		field.SetText("Hi, I am a textField");
-		
-		System.Console.WriteLine(field.LineByIndex(0).AsString);
+		System.Console.WriteLine(TextUnitType.Character.Difference(TextUnitType.Text));	
 
 		System.Console.WriteLine("-Program end-");
 		System.Console.ReadKey();

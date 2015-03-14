@@ -17,6 +17,8 @@ namespace MauronAlpha.Text.Interfaces {
 
 		I_textUnitType ParentType { get; }
 		I_textUnitType ChildType { get; }
+
+		int Difference(I_textUnitType other);
 	}
 
 }
