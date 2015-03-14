@@ -93,6 +93,12 @@ namespace MauronAlpha.ConsoleApp {
 				return CommandModel.AllowsInput;
 			}
 		}
+		private bool B_canExit = false;
+		public bool CanExit {
+			get { 
+				return B_canExit;
+			}
+		}
 
 		//The Layout of the console
 		private ConsoleApp_layout LAYOUT_console;
@@ -118,7 +124,6 @@ namespace MauronAlpha.ConsoleApp {
 		private ConsoleApp_input INPUT_console;
 		public ConsoleApp_input Input {
 			get {
-
 				if( INPUT_console == null ){
 					INPUT_console = new ConsoleApp_input( CommandModel );
 					CommandModel.ActivateInput( INPUT_console, this );

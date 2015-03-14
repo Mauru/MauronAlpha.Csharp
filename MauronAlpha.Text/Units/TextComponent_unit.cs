@@ -213,6 +213,7 @@ namespace MauronAlpha.Text.Units {
 			//Unit is further up the chain
 			if(UnitType.CompareTo(unit.UnitType)<0){
 				
+
 				return this;
 			}
 				

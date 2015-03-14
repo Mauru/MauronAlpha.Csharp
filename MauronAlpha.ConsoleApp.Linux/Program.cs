@@ -9,13 +9,16 @@ namespace MauronAlpha.ConsoleApp.Linux
 	{
 		public static void Main (string[] args)	{
 
-			Layout2d_context context = new Layout2_context (
+			Layout2d_context context = new Layout2d_context (
 				System.Console.WindowLeft,
 				System.Console.WindowTop,
 				System.Console.WindowWidth,
 				System.Console.WindowHeight
 			);
 			MauronConsole m = new MauronConsole ("Linux Version", context);
+			while (!m.CanExit) {
+				m.Idle ();
+			}
 		}
 	}
 }
