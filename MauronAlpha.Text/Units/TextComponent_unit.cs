@@ -212,7 +212,9 @@ namespace MauronAlpha.Text.Units {
 
 			MauronCode_dataList<I_textUnit> characters = unit.Characters;
 			//This is a character, we want to add after or before this
-			if(!CanHaveChildren) {}
+			if(!CanHaveChildren) {
+				
+			}
 				
 
 		}
