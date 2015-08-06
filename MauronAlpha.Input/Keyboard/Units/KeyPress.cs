@@ -2,7 +2,6 @@
 using MauronAlpha.HandlingData;
 using MauronAlpha.Events;
 
-
 namespace MauronAlpha.Input.Keyboard.Units {
 
 	public class KeyPress:KeyboardComponent,
@@ -10,41 +9,70 @@ namespace MauronAlpha.Input.Keyboard.Units {
 		
 		//constructor
 		public KeyPress():base(){}
+		public KeyPress(char key) : this() {
+			SetChar(key);
+			SetKeyName("" + key);
+		}
+		public KeyPress(string keyName) : this() {
+			SetKeyName(keyName);
+		}
+
+		//string description
+		public string AsString {
+			get {
+				string result = "";
+				if (IsCtrlKeyDown)
+					result += "[CTRL]";
+				if (IsAltKeyDown)
+					result += "[ALT]";
+				if (IsShiftKeyDown)
+					result += "[SHIFT]";
+				if (IsFunction||KeyName!=null)
+					result += "["+KeyName+"]";
+				result += CHAR_key;
+				return result;
+			}
+		}
 
 		//Character Code
-		private char CHAR_key;
-		public char Key {
+		private char CHAR_key = '\u0000';
+		public char Char {
 			get {
 				return CHAR_key;
 			}
 		}
-		public KeyPress SetKey(char key){
+		public KeyPress SetChar(char key) {
 			CHAR_key = key;
+			return this;
+		}
+		private string STR_key;
+		public string KeyName {
+			get {
+				return STR_key;
+			}
+		}
+		public KeyPress SetKeyName(string str) {
+			STR_key = str;
 			return this;
 		}
 
 		//Booleans
 		public bool Equals(KeyPress other) {
-			if(Id.Equals(other.Id))
-				return true;
-			return B_isFunction == other.IsFunction
-			&& B_isAltKeyDown == other.IsAltKeyDown
-			&& B_isCtrlKeyDown == other.IsCtrlKeyDown
-			&& B_isShiftKeyDown == other.IsShiftKeyDown
-			&& CHAR_key.Equals(other.Key);
+			if (B_isAltKeyDown != other.IsAltKeyDown
+			|| B_isCtrlKeyDown != other.IsCtrlKeyDown
+			|| B_isShiftKeyDown != other.IsShiftKeyDown)
+				return false;
+			if (IsFunction && other.IsFunction)
+				return KeyName == other.KeyName;
+			return Char == other.Char;
 		}
 		
 		//Boolean : Special Key
-		private bool B_isFunction = false;
 		public bool IsFunction {
 			get {
-				return B_isFunction;
+				return (CHAR_key == '\u0000');
 			}
-		}
-		public KeyPress SetIsFunction(bool status) {
-			B_isFunction = status;
-			return this;
-		}		
+		}	
 
 		//Boolean Modifiers
 		private bool B_isAltKeyDown = false;

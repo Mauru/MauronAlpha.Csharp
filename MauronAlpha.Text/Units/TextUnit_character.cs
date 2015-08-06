@@ -25,6 +25,30 @@ namespace MauronAlpha.Text.Units {
 			}
 		}
 
+		public TextUnit_character Copy {
+			get {
+				TextUnit_character copy = new TextUnit_character();
+				copy.SetChar(Character,false);
+				return copy;
+			}
+		}
+
+		//Boolean
+		public bool IsAtEndOfWord {
+			get {
+				if (!IsChild)
+					return true;
+				if (Index + 1 >= Parent.ChildCount)
+					return true;
+				return false;
+			}
+		}
+		public bool IsRealCharacter {
+			get {
+				return Encoding.IsRealCharacter(this);
+			}
+		}
+
 		//As String
 		public override string AsString {
 			get {
@@ -80,7 +104,7 @@ namespace MauronAlpha.Text.Units {
 
 			return this;
 		}
-
+		
 	}
 
 	//Description of the unitType

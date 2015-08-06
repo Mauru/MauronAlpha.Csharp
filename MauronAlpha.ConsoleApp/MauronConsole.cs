@@ -19,8 +19,7 @@ namespace MauronAlpha.ConsoleApp {
 
 	//A Console Application Wrapper
 	public class MauronConsole : MauronCode_project, 
-	I_layoutController,
-	I_consoleController {
+	I_layoutController {
 		
 		//Constructors
 		public MauronConsole(string name, Layout2d_context context):base(
@@ -40,7 +39,7 @@ namespace MauronAlpha.ConsoleApp {
 			UNIT_window.SetContext(context);
 
 			//4: Define the Command-Model for the Console
-			ConsoleApp_commandModel model = new ConsoleApp_commandModel();
+			ConsoleApp_commandModel model = new ConsoleApp_commandModel(this);
 
 			//5: Define the console Output
 			OUTPUT_console = new ConsoleApp_output( this );
@@ -48,6 +47,7 @@ namespace MauronAlpha.ConsoleApp {
 			//6: Define the "looks" of the console
 			LAYOUT_console = new ConsoleApp_layout( this );
 			LAYOUT_console.ApplyTo( UNIT_window );
+			OUTPUT_console.SetScreenBufferSize(UNIT_window.Size.AsVector);
 
 			LAYOUT_console.Member("header").SetContent(name);
 			
@@ -72,7 +72,7 @@ namespace MauronAlpha.ConsoleApp {
 		public EventHandler EventHandler {
 			get {
 				if( HANDLER_events == null )
-				HANDLER_events = new EventHandler();
+			    	HANDLER_events = new EventHandler();
 				return HANDLER_events;
 			}
 		}
@@ -126,14 +126,14 @@ namespace MauronAlpha.ConsoleApp {
 			get {
 				if( INPUT_console == null ){
 					INPUT_console = new ConsoleApp_input( CommandModel );
-					CommandModel.ActivateInput( INPUT_console, this );
+					//CommandModel.ActivateInput( INPUT_console, this );
 				}
 				return INPUT_console;
 			}
 		}
 
-		//Outputs
 		private I_consoleOutput OUTPUT_console;
+		//Outputs
 		public I_consoleOutput Output {
 			get {
 				if( OUTPUT_console==null )
@@ -149,8 +149,10 @@ namespace MauronAlpha.ConsoleApp {
 			}
 		}
 
+		public I_layoutUnit MainScreen { get { return UNIT_window; } }
+
 		//Methods
-		public I_consoleController SetFocus(string member) {
+		public MauronConsole SetFocus(string member) {
 			I_consoleUnit unit = LayoutModel.Member(member);
 			Output.SetCaretPosition(unit,unit.CaretPosition);
 			return this;

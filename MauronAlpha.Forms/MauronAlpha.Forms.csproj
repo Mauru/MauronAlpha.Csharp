@@ -40,7 +40,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataObjects\CaretPosition.cs" />
     <Compile Include="FormComponent.cs" />
+    <Compile Include="Interfaces\I_caretSource.cs" />
     <Compile Include="Interfaces\I_formComponent.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Units\FormComponent_unit.cs" />

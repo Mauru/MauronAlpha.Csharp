@@ -1,4 +1,5 @@
 ﻿using MauronAlpha.HandlingErrors;
+using MauronAlpha.HandlingData;
 using MauronAlpha.Text.Interfaces;
 
 using MauronAlpha.Text.Units;
@@ -14,6 +15,18 @@ namespace MauronAlpha.Text.Units {
 		public TextUnit_line(TextUnit_paragraph parent):this() {
 			parent.InsertChildAtIndex(parent.ChildCount, this, false);
 		}
+		public TextUnit_line(string text) : this() {
+			SetText(text);
+		}
+
+		//return a copy of the line - without parent assocations
+		public TextUnit_line Copy { get {
+			TextUnit_line copy = new TextUnit_line();
+			foreach (TextUnit_word word in Children)
+				copy.InsertChildAtIndex(copy.ChildCount,word.Copy,false);
+			copy.ReIndex(0,true,false);
+			return copy;
+		} }
 
 		//Count
 		public override TextContext CountAsContext {
@@ -26,7 +39,15 @@ namespace MauronAlpha.Text.Units {
 				return result.SetIsReadOnly(true);
 			}
 		}
-
+		public int CountRealCharacters {
+			get {
+				int result = 0;
+				foreach (TextUnit_character ch in Characters)
+					if (ch.IsRealCharacter)
+						result++;
+				return result;
+			}
+		}
 		//Int : Index
 		public override int Index {
 			get { 
@@ -34,11 +55,65 @@ namespace MauronAlpha.Text.Units {
 			}
 		}
 
+
+		//Methods
+		public TextUnit_line SetText(string text) {
+			if (IsReadOnly)
+				throw Error("Is protected!,(SetText)", this, ErrorType_protected.Instance);
+			base.Clear();
+			TextUnit_text txt = new TextUnit_text(text);
+			MauronCode_dataList<TextUnit_word> words = txt.Words;
+			foreach (TextUnit_word word in words)
+				InsertChildAtIndex(ChildCount, word, false);
+			Parent.ReIndex(Index, true, false);
+			return this;
+		}
+		public TextUnit_line PrependText(string text, bool updateParent) {
+			if (IsReadOnly)
+				throw Error("Is protected!,(PrependText)", this, ErrorType_protected.Instance);
+			TextUnit_text txt = new TextUnit_text(text);
+			MauronCode_dataList<TextUnit_word> words = txt.Words;
+			for (int n = 0; n < words.Count; n++)
+				InsertChildAtIndex(n, words.Value(n), false);
+			if (updateParent)
+				Parent.ReIndex(Index, true, true);
+			return this;
+		}
+		public TextUnit_line AppendText(string text, bool updateParent) {
+			if (IsReadOnly)
+				throw Error("Is protected!,(PrependText)", this, ErrorType_protected.Instance);
+			TextUnit_text txt = new TextUnit_text(text);
+			MauronCode_dataList<TextUnit_word> words = txt.Words;
+			foreach (TextUnit_word word in words)
+				InsertChildAtIndex(ChildCount, word, false);
+			if (updateParent)
+				Parent.ReIndex(Index, true, true);
+			return this;
+		}
+
 		//Querying
-		public TextUnit_word ChildByIndex( int n ) {
+		public new TextUnit_word ChildByIndex( int n ) {
 			if( n<0||n>ChildCount )
 				throw Error( "Index out of bounds!,{"+n+"},(ChildByIndex)", this, ErrorType_index.Instance );
 			return (TextUnit_word) DATA_children.Value( n );
+		}
+		public TextUnit_word FirstChild {
+			get {
+				if (ChildCount > 0)
+					return ChildByIndex(0);
+				else if (IsReadOnly)
+					throw Error("Is protected!,(FirstChild)", this, ErrorType_protected.Instance);
+				TextUnit_word result = new TextUnit_word();
+				InsertChildAtIndex(0, result, true);
+				return ChildByIndex(0);
+			}
+		}
+		public TextUnit_word LastChild {
+			get {
+				if (ChildCount == 0)
+					return FirstChild;
+				return ChildByIndex(ChildCount - 1);
+			}
 		}
 		public TextUnit_word WordByIndex( int n ) {
 			return ChildByIndex(n);

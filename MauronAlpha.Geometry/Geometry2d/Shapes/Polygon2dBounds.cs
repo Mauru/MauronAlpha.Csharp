@@ -4,11 +4,13 @@ using MauronAlpha.Geometry.Geometry2d.Interfaces;
 using MauronAlpha.Geometry.Geometry2d.Shapes;
 using MauronAlpha.Geometry.Shapes;
 
+using MauronAlpha.Interfaces;
+
 using MauronAlpha.Geometry.Geometry2d.Transformation;
 
 namespace MauronAlpha.Geometry.Geometry2d.Collections {
 
-public class Polygon2dBounds : GeometryComponent2d, I_polygonShape2d {
+public class Polygon2dBounds : GeometryComponent2d, I_polygonShape2d, I_protectable<Polygon2dBounds> {
 
 	//Constructors
 	private Polygon2dBounds():base() {}
@@ -61,33 +63,43 @@ public class Polygon2dBounds : GeometryComponent2d, I_polygonShape2d {
 	Vector2d V_min;
 	Vector2d V_max;
 
+	private bool B_isReadOnly = false;
+	public bool IsReadOnly { get { return B_isReadOnly; } }
+	public Polygon2dBounds SetIsReadOnly(bool state) {
+		B_isReadOnly = state;
+		return this;
+	}
+	public bool Equals(I_polygonShape2d other) {
+		if (Id.Equals(other.Id))
+			return true;
+		return Points.Equals(other.Points);
+	}
+
 	public Vector2d Min {
 		get {
-			if( V_min == null ) {
+			if( V_min == null )
 				throw NullError( "Invalid or empty polygon!,(Min)", this, typeof( Vector2d ) );
-			}
-			return V_min.Instance.SetIsReadOnly( true );
+			return V_min.SetIsReadOnly( true );
 		}
 	}
 	public Vector2d Max {
 		get {
-			if( V_max == null ) {
+			if( V_max == null )
 				throw NullError( "Invalid or empty polygon!,(Max)", this, typeof( Vector2d ) );
-			}
-			return V_max.Instance.SetIsReadOnly( true );
+			return V_max.SetIsReadOnly( true );
 		}
 	}
 	public Vector2d Center {
 		get {
-			if( V_center == null ) {
+			if( V_center == null )
 				throw NullError( "Invalid or empty polygon!,(Max)", this, typeof( Vector2d ) );
-			}
-			return V_center.Instance.SetIsReadOnly( true );
+
+			return V_center.SetIsReadOnly( true );
 		}
 	}
 	public Vector2d Size {
 		get {
-			return Min.Difference( Max );
+			return Min.Difference( Max ).SetIsReadOnly(true);
 		}
 	}
 
@@ -97,8 +109,6 @@ public class Polygon2dBounds : GeometryComponent2d, I_polygonShape2d {
 			return new Polygon2dBounds(V_min, V_max, V_center);
 		}
 	}
-
-	#region I_polygonShape2d Members
 
 	public Transformation.Matrix2d Matrix {
 		get {
@@ -135,84 +145,13 @@ public class Polygon2dBounds : GeometryComponent2d, I_polygonShape2d {
 		}
 	}
 
-	public bool Equals( I_polygonShape2d other ) {
-		return TransformedPoints.Equals(other.TransformedPoints);
-	}
 
-	public bool IsReadOnly {
-		get {
-			return false;
-		}
-	}
 
 	public I_polygonShape2d Cloned {
 		get {
 			return Instance;
 		}
 	}
-
-	#endregion
 }
 }
 
-/*
-public Polygon2dBounds Instance {
-	get {
-		Polygon2dBounds instance = new Polygon2dBounds( V_center, V_min, V_max );
-		return instance;
-	}
-}
-
-	//Default properties
-	private Vector2d V_min;
-	private Vector2d V_max;
-	private Vector2d V_center;
-	private Vector2d V_size;
-
-
-
-
-
-
-
-
-
-public Vector2d Size {
-	get {
-		if( V_size == null ) {
-			V_size = TopLeft.Difference( BottomRight ).Normalized;
-		}
-		return V_size;
-	}
-}
-public Vector2d TopLeft {
-	get {
-		return V_min.SetIsReadOnly( true );
-	}
-}
-public Vector2d BottomRight {
-	get {
-		return V_max.SetIsReadOnly( true );
-	}
-}
-public Vector2d Center {
-	get {
-		if( V_center == null ) {
-			V_center = TopLeft.Instance.Add( TopLeft.Difference( BottomRight ).Divide( 2 ) );
-		}
-		return V_center.SetIsReadOnly( true );
-	}
-}
-
-public Rectangle2d AsRectangle {
-	get {
-		return new Rectangle2d( V_min, V_max.Difference( V_min ) );
-	}
-}
-public string AsString {
-	get {
-		return AsRectangle.AsString;
-	}
-}
-
- * */

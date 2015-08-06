@@ -1,5 +1,5 @@
 ﻿using System;
-
+using MauronAlpha.HandlingErrors;
 using MauronAlpha.ConsoleApp;
 using MauronAlpha.Projects;
 
@@ -15,7 +15,7 @@ namespace MauronAlpha.ConsoleApp.Win {
 	class TestProgram {
 
 		static void Main (string[] args) {
-				
+
 				//1: We start by grabbing the size and position of the Context Window
 				Vector2d size = new Vector2d(
 					System.Console.WindowWidth,
@@ -30,14 +30,13 @@ namespace MauronAlpha.ConsoleApp.Win {
 				Layout2d_context context = new Layout2d_context( position, size );
 
 				//3: We initiate the mauronConsole
-				MauronConsole console = new MauronConsole( "MauronConsole (Windows)", context );
+				MauronConsole console = new MauronConsole("MauronConsole (Windows)", context);
 
 				//4: Start the FrameWork, create an activity-loop
-				ProjectComponent_statusCode statusCode = new ProjectComponent_statusCode( console );
-				while ( !statusCode.CanExit ) {
+				ProjectComponent_statusCode statusCode = new ProjectComponent_statusCode(console);
+				while (!statusCode.CanExit) {
 					statusCode = console.Idle();
-				}
-				
+				}				
 		}
 	
 	}

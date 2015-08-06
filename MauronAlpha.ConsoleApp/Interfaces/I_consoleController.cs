@@ -11,5 +11,7 @@ namespace MauronAlpha.ConsoleApp.Interfaces {
 
 		bool AllowsInput { get; }
 
+		I_consoleController Debug(string message);
+
 	}
 }

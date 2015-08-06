@@ -6,6 +6,7 @@ using MauronAlpha.Events;
 
 using MauronAlpha.Layout.Layout2d.Interfaces;
 using MauronAlpha.Layout.Layout2d.Context;
+using MauronAlpha.Layout.Layout2d.Position;
 using MauronAlpha.Layout.Layout2d.Collections;
 
 namespace MauronAlpha.Layout.Layout2d.Units {	
@@ -79,6 +80,11 @@ namespace MauronAlpha.Layout.Layout2d.Units {
 				&& ( UNIT_parent == null );
 			}
 		}
+		public virtual bool HasOwnRenderManager { 
+			get { 
+				return (CTRL_render != null);
+			}
+		}
 
 		//Context
 		private Layout2d_context CONTEXT_layout;
@@ -99,6 +105,12 @@ namespace MauronAlpha.Layout.Layout2d.Units {
 				return EVENT_handler;
 			}
 		}
+
+		//Double Sizes
+		public virtual double Height { get { return Context.Size.Height; } }
+		public virtual double Width { get { return Context.Size.Width; } }
+		public virtual double MaxHeight { get { return Context.MaxSize.Height; } }
+		public virtual double MaxWidth { get { return Context.MaxSize.Width; } }
 
 		//Relational Data > Children
 		private Layout2d_unitCollection DATA_children;
@@ -147,7 +159,29 @@ namespace MauronAlpha.Layout.Layout2d.Units {
 			return this;
 		}
 
+		public Layout2d_position Position { get { return Context.Position; } }
+
+		public Layout2d_size Size { get { return Context.Size; } }
+
+		//Relational Data > Index Information
+		public long NextChildIndex {
+			get {
+				if (DATA_children == null)
+					return 0;
+				return DATA_children.NextIndex;
+			}
+		}
+
 		//Virtuals
+		//Root is the master container a unit is situated in
+		public virtual I_layoutUnit Root {
+			get {
+				I_layoutUnit result=this;
+				while (result.IsChild)
+					result = result.Parent;
+				return result;
+			}
+		}
 		public virtual I_layoutUnit ChildByIndex (long index) {
 			if( !DATA_children.IsEmpty||!DATA_children.ContainsIndex(index) )
 				throw Error("Invalid index!,{"+index+"},(ChildByIndex)", this, ErrorType_index.Instance);
@@ -187,14 +221,37 @@ namespace MauronAlpha.Layout.Layout2d.Units {
 
 			return this;
 		}
-		
-		//Relational Data > Index Information
-		public long NextChildIndex { 
+		//Request a Render update
+		public virtual I_layoutUnit RequestRender(Layout2d_renderChain chain) {
+			if (HasOwnRenderManager)
+				RenderManager.HandleRenderRequest(chain.Add(this));
+			if (!IsChild)
+				return this;
+			Parent.RequestRender(chain.Add(this));
+			return this;
+		}
+		public virtual I_layoutUnit RequestRender() {
+			if (HasOwnRenderManager)
+				RenderManager.HandleRenderRequest(new Layout2d_renderChain().Add(this));
+			if (!IsChild)
+				return this;
+			Parent.RequestRender(new Layout2d_renderChain().Add(this));
+			return this;
+		}
+
+		private I_layoutRenderer CTRL_render;
+		public I_layoutRenderer RenderManager {
 			get {
-				if(DATA_children == null)
-					return 0;
-				return DATA_children.NextIndex;
-			}
+				if (CTRL_render == null)
+					throw NullError("RenderManager is undefined!,(RenderManager)", this, typeof(I_layoutRenderer));
+				return CTRL_render;
+			}			
+		}
+		public Layout2d_unit SetRenderManager(I_layoutRenderer renderManager) {
+			if (IsReadOnly)
+				throw Error("Is protected!,(SetRenderManager)", this, ErrorType_protected.Instance);
+			CTRL_render = renderManager;
+			return this;
 		}
 	}	
 

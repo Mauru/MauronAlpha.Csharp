@@ -18,6 +18,9 @@ namespace MauronAlpha.Input.Keyboard.Collections {
 	
 		//Constructor
 		public KeyPressSequence():base() {}
+		public KeyPressSequence(KeyPress key) : this() {
+			Add(key);
+		}
 
 		//String
 		public string AsString {
@@ -25,7 +28,7 @@ namespace MauronAlpha.Input.Keyboard.Collections {
 				string result = "";
 				foreach( KeyPress key in DATA_input){
 					if( !key.IsModifier )
-						result+= key.Key;
+						result+= key.Char;
 								
 				}
 				return result;
@@ -53,6 +56,9 @@ namespace MauronAlpha.Input.Keyboard.Collections {
 			MauronCode_dataList<KeyPress> values = DATA_input.ValuesAsList;
 			return values.Equals(other.AsList);
 		}
+		public bool Equals(KeyPress key) {
+			return DATA_input.Count == 1 && DATA_input.ValuesAsList.FirstElement.Equals(key);
+		}
 
 		//Methods
 		public KeyPressSequence SetIsReadOnly(bool state) {
@@ -71,6 +77,11 @@ namespace MauronAlpha.Input.Keyboard.Collections {
 		public KeyPress FirstElement { 
 			get {
 				return DATA_input.ValuesAsList.FirstElement;
+			}
+		}
+		public KeyPress LastElement {
+			get {
+				return DATA_input.ValuesAsList.LastElement;
 			}
 		}
 	}

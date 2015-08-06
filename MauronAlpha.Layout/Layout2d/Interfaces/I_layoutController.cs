@@ -13,6 +13,8 @@ namespace MauronAlpha.Layout.Layout2d.Interfaces {
 		I_layoutRenderer Output { get; }
 
 		Layout2d_context Context { get;	}
+
+		I_layoutUnit MainScreen { get; }
 	}
 
 }

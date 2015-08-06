@@ -42,7 +42,9 @@ namespace MauronAlpha.ConsoleApp {
 				input.SetIsAltKeyDown(true);
 
 			//Set the character 
-			input.SetKey( key.KeyChar );
+			input.SetChar( key.KeyChar );
+			input.SetKeyName(key.Key.ToString());
+
 			AppendToSequence(input);
             
 			//throw a new Keyboardevent

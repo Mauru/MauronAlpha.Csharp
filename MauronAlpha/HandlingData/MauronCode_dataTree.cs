@@ -584,7 +584,17 @@ namespace MauronAlpha.HandlingData {
 		object ICloneable.Clone ( ) {
 			return Instance;
 		}
-	
+
+		public MauronCode_dataList<KeyValuePair<TKey, TValue>> AsKeyValuePairs {
+			get {
+				MauronCode_dataList<KeyValuePair<TKey, TValue>> result = new MauronCode_dataList<KeyValuePair<TKey,TValue>>();
+				foreach (TKey key in DATA_keys)
+					if (IsSet(key))
+						result.Add(new KeyValuePair<TKey, TValue>(key, Value(key)));
+				return result;
+			}
+		}
+
 		//Enumerator
 		public IEnumerator<TValue> GetEnumerator() {
 			return new Enumerator_dataTree<TKey,TValue>(this);

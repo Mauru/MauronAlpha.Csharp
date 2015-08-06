@@ -23,8 +23,16 @@ namespace MauronAlpha.Layout.Layout2d.Context {
 			CONTEXT_position = new Layout2d_position(position);
 			CONTEXT_size = new Layout2d_size(size);
 		}
+		public Layout2d_context(Layout2d_position position, Layout2d_size size)
+			: this() {
+			CONTEXT_position = position;
+			CONTEXT_size = size;
+		}
 		public Layout2d_context( int x, int y, int width, int height):this( new Vector2d(x,y),new Vector2d(width,height)) {}
-		protected Layout2d_context( Layout2d_context source ) : this(source.Position.AsVector, source.Size.AsVector) {}
+		protected Layout2d_context( Layout2d_context source ) : this(source.Position.AsVector, source.Size.AsVector) {
+			SetResizeMode(ResizeMode);
+			SetMaxSize(MaxSize);
+		}
 
 		//As string
 		public string AsString {
@@ -42,7 +50,15 @@ namespace MauronAlpha.Layout.Layout2d.Context {
 				return CONTEXT_size.SetIsReadOnly(true);
 			}
 		}
-		
+		private Layout2d_size CONTEXT_maxSize;
+		public Layout2d_size MaxSize {
+			get {
+				if (CONTEXT_maxSize == null)
+					CONTEXT_maxSize = new Layout2d_size(-1,-1);
+				return CONTEXT_maxSize.SetIsReadOnly(true);
+			}
+		}
+
 		//Position
 		private Layout2d_position CONTEXT_position;
 		public Layout2d_position Position {
@@ -68,17 +84,40 @@ namespace MauronAlpha.Layout.Layout2d.Context {
 			}
 		}
 
+		private Layout2d_resizeMode CONTEXT_resize = ResizeMode_fixed.Instance;
+		public Layout2d_resizeMode ResizeMode { get { return CONTEXT_resize; } }
+		public Layout2d_context SetResizeMode(Layout2d_resizeMode mode) {
+			CONTEXT_resize = mode;
+			return this;
+		}
+		public Layout2d_context SetResizeMode(string mode) {
+			CONTEXT_resize = Layout2d_resizeMode.ByString(mode);
+			return this;
+		}
+		public Layout2d_context SetMaxSize(Vector2d v) {
+			CONTEXT_maxSize =new Layout2d_size(v);
+			return this;
+		}
+		public Layout2d_context SetMaxSize(int x, int y) {
+			CONTEXT_maxSize = new Layout2d_size(x,y);
+			return this;
+		}
+		public Layout2d_context SetMaxSize(Layout2d_size v) {
+			CONTEXT_maxSize = v;
+			return this;
+		}
+		
 		//Methods
-
 		public Layout2d_context Instance {
 			get {
-				return new Layout2d_context(CONTEXT_position.AsVector, CONTEXT_size.AsVector);
+				return new Layout2d_context(Position, Size).SetMaxSize(MaxSize).SetResizeMode(ResizeMode);
 			}
 		}
         public Layout2d_context SetSize(Layout2d_size size) {
             CONTEXT_size = size;
             return this;
         }
+
 		public Layout2d_context SetPosition (Layout2d_position position) {
 			CONTEXT_position = position;
 			return this;

@@ -1,5 +1,6 @@
 ﻿using MauronAlpha.Layout.Layout2d.Interfaces;
 using MauronAlpha.Forms.Interfaces;
+using MauronAlpha.Forms.Units;
 
 namespace MauronAlpha.ConsoleApp.Interfaces {
 
@@ -9,9 +10,10 @@ namespace MauronAlpha.ConsoleApp.Interfaces {
 
 		I_consoleLayout Draw();
 
+		bool HasMember(string member);
 		new I_consoleUnit Member (string name);
 
-		I_formComponent ActiveInput { get; }
+		FormUnit_textField ActiveInput { get; }
 
 	}
 

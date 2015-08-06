@@ -2,8 +2,6 @@
 using MauronAlpha.Mathematics;
 using MauronAlpha.HandlingErrors;
 
-
-
 namespace MauronAlpha.Geometry.Geometry2d.Units {
 
 	//coordinates
@@ -123,6 +121,18 @@ namespace MauronAlpha.Geometry.Geometry2d.Units {
 			}
 		}
 
+		//Calculations
+		public double Angle(Vector2d other) {
+			return Math.Atan2(other.Y - Y, other.X - X);
+		}
+		public double Distance(Vector2d other) {
+			double x = other.X-X;
+			double y = other.Y-Y;
+			return Math.Sqrt(
+				x*x+y*y
+			);
+		}
+
 		#region Transformation
 		//stretch or compress around a point
 		public Vector2d Transform(Vector2d v, Vector2d s){
@@ -138,7 +148,7 @@ namespace MauronAlpha.Geometry.Geometry2d.Units {
 		}
 		
 		//stretch or compress by [-1+] around a point
-		public Vector2d Transform (Vector2d v, Double n) {
+		public Vector2d Transform (Vector2d v, double n) {
 			#region ReadOnly Check
 			if( IsReadOnly ) {
                 throw Error("Is protected!,(Transform)", this, ErrorType_protected.Instance);
@@ -201,6 +211,16 @@ namespace MauronAlpha.Geometry.Geometry2d.Units {
 			#endregion
 			SetX(X+n);
 			SetY(Y+n);
+			return this;
+		}
+		public Vector2d Add(long x, long y) {
+			#region ReadOnly Check
+			if (IsReadOnly)
+				throw Error("Is protected!,(Add)", this, ErrorType_protected.Instance);
+
+			#endregion
+			SetX(X + x);
+			SetY(Y + y);
 			return this;
 		}
 		//subtract
@@ -277,16 +297,20 @@ namespace MauronAlpha.Geometry.Geometry2d.Units {
 				throw Error("Is protected!,(Divide)", this, ErrorType_protected.Instance);
 			}
 			#endregion
-			if( v.X!=0 ) {
+			if( v.X!=0 )
 				SetX(X/v.X);
-			}
-			if( v.Y!=0 ) {
+			if( v.Y!=0 )
 				SetY(Y/v.Y);
-			}
 			return this;
 		}
 		#endregion
 		
+		//Spawning
+		public Vector2d Project(double angle, double distance) {
+			double rad = Math.PI * angle / 180;
+			return new Vector2d(distance * Math.Cos(rad), distance * Math.Sin(rad)).Add(this);
+		}
+
 		#region Comparison
 		//boolean
 		public bool SmallerOrEqual (long n) {
@@ -309,7 +333,7 @@ namespace MauronAlpha.Geometry.Geometry2d.Units {
 		}
 
 		public int CompareTo (long other) {
-			if( X==other&&Y==other )
+			if( X == other && Y == other )
 				return 0;
 			if( X>other&&Y>other )
 				return 1;

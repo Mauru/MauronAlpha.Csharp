@@ -90,6 +90,9 @@ namespace MauronAlpha.Text.Units {
 				return true;
 			}
 		}
+        public virtual bool HasChildAtIndex(int index) {
+            return CanHaveChildren && index >= 0 && index < ChildCount;
+        }
 
 		//Methods
 		public I_textUnit SetIsReadOnly(bool state) {
@@ -107,7 +110,16 @@ namespace MauronAlpha.Text.Units {
 			DATA_context = context;
 			return this;
 		}
-		
+
+		//Delete this unit
+		public I_textUnit Delete(bool reIndexParent) {
+			Clear();
+			if (IsChild)
+				Parent.RemoveChildAtIndex(Index, reIndexParent);
+			return this;
+		}
+
+		//Update this units perceived position in a text from its parent
 		public I_textUnit UpdateContextFromParent( bool updateChildren ) {
 			if(IsReadOnly)
 				throw Error("Is protected!,(UpdateContextFromParent)",this,ErrorType_protected.Instance);
@@ -117,11 +129,16 @@ namespace MauronAlpha.Text.Units {
 				
 			return this;
 		}
-		public I_textUnit UpdateChildContext( bool chainChildren ) {
+		//Update the units children's perceived position
+		public I_textUnit UpdateChildContext( int indexOffset, bool chainChildren ) {
 			if(IsReadOnly)
 				throw Error("Is protected!,(UpdateChildContext)",this,ErrorType_protected.Instance);
+            
+            //Invalid index, do nothing
+            if (indexOffset < 0 || indexOffset >= ChildCount)
+                return this;
 			
-			for(int index=0; index<ChildCount; index++) {
+			for(int index=indexOffset; index<ChildCount; index++) {
 				I_textUnit unit = DATA_children.Value(index);
 				unit.Context.SetIsReadOnly(false).SetValue(unit.UnitType,index);
 				unit.UpdateContextFromParent( chainChildren );
@@ -129,6 +146,46 @@ namespace MauronAlpha.Text.Units {
 			return this;
 		}
 
+        public I_textUnit ReIndex(int indexOffset, bool chainChildren, bool chainParent) {
+			//Read only check
+            if (IsReadOnly)
+                throw Error("Is protected!,(ReIndex)", this, ErrorType_protected.Instance);
+
+			//Is the index offset out of bounds?
+            if (indexOffset < 0 || indexOffset >= ChildCount)
+                return (chainParent)? ReIndex_up():this;
+
+			//We update the context of all children
+            UpdateChildContext(indexOffset, false);
+
+			//Do we handle children of this item?
+            if (!chainChildren)
+                return (chainParent)? ReIndex_up():this;
+
+			//Get a list of all applicable candidates for reIndexing
+            MauronCode_dataList<I_textUnit> candidates = DATA_children.Range(indexOffset);
+            foreach (I_textUnit child in candidates)
+            {
+                child.ReIndex(0, true, false);
+                if (child.EndsParent)
+                    HandleEnds();
+            }
+
+            return (chainParent)? ReIndex_up():this;
+        }
+
+		//ReIndex parents
+		private I_textUnit ReIndex_up() {
+			if (!IsChild)
+				return this;
+			int nextIndex = Context.Value(UnitType)+1;
+			if (!Parent.HasChildAtIndex(nextIndex))
+				return this;
+			Parent.ReIndex(nextIndex, true, true);
+			return this;
+		}
+        
+        //Check if this unit has a propper end, correct if necessary
 		public I_textUnit HandleLooseEnds() {
 			if( IsReadOnly )
 				throw Error("Is protected!,(HandleLooseEnds)", this, ErrorType_protected.Instance);
@@ -156,7 +213,7 @@ namespace MauronAlpha.Text.Units {
 				InsertChildAtIndex(ChildCount, unit, false);
 			}
 
-			nextUnit.UpdateChildContext(true);
+			nextUnit.UpdateChildContext(0,true);
 			nextUnit.HandleLooseEnds();
 
 			if(EndIndex<0)
@@ -165,6 +222,7 @@ namespace MauronAlpha.Text.Units {
 			return this;
 		}
 		
+        //Handle any unity in children that end this unit prematurely
 		public I_textUnit HandleEnds(){
 			if(IsReadOnly)
 				throw Error("Is protected!,(HandleEndAtIndex)",this,ErrorType_protected.Instance);
@@ -188,9 +246,8 @@ namespace MauronAlpha.Text.Units {
 
 			MauronCode_dataList<I_textUnit> moveMe = DATA_children.Range(index+1);
 			DATA_children.RemoveByRange(index+1,ChildCount-1);
-			foreach(I_textUnit unit in moveMe){
+			foreach(I_textUnit unit in moveMe)
 				nextUnit.InsertChildAtIndex(0, unit, true);
-			}
 
 			if(EndIndex > -1)
 				return HandleEnds();
@@ -198,26 +255,56 @@ namespace MauronAlpha.Text.Units {
 			return this;
 		}
 
-		public I_textUnit InsertUnitAtIndex (int n, I_textUnit unit, bool reIndex) {
-			
-			if(IsReadOnly)
-				throw Error("Is protected!,(InsertUnitAtIndex)",this,ErrorType_protected.Instance);
+        public I_textUnit InsertUnitAtIndex(int index, I_textUnit unit, bool reIndex) {
+            if (!CanHaveChildren && !IsChild)
+                throw Error("Unit can not have any children and no parent defined!,(InsertUnitAtIndex)", this, ErrorType_scope.Instance);
+            if (index > ChildCount || index < 0)
+                throw Error("Index out of bounds!{" + index + "},(InsertUnitAtIndex)", this, ErrorType_index.Instance);
 
-			if(n<0||n>ChildCount)
-				throw Error("Index out of bounds!,{"+n+"},(InsertUnitAtIndex)",this,ErrorType_index.Instance);
+            if (unit.UnitType.Equals(UnitType.ChildType))
+                return InsertChildAtIndex(index, unit, reIndex);
 
-			//Unit is a regular Child
-			if(unit.UnitType.Equals(UnitType.ChildType))
-				return InsertChildAtIndex(n,unit,reIndex);
+            I_textUnit target = this;
 
-			MauronCode_dataList<I_textUnit> characters = unit.Characters;
-			//This is a character, we want to add after or before this
-			if(!CanHaveChildren) {
-				
-			}
-				
+            //we need to handle the case of this being a character, we do it by Inserting at the next viable parent
+            if (UnitType.Equals(TextUnitType_character.Instance)) {
+                //handle direction ( < )
+                if (index <= 0) {
+                    target = (Parent.HasChildAtIndex(Index - 1)) ? Parent.ChildByIndex(Index - 1) : Parent.NewChildAtIndex(Index - 1, reIndex);
+                    return target.InsertUnitAtIndex(target.ChildCount, unit, reIndex);
+                }
 
-		}
+                // handle direction ( > )
+                target = (Parent.HasChildAtIndex(Index + 1)) ? Parent.ChildByIndex(index + 1) : Parent.NewChildAtIndex(Index + 1, reIndex);
+                return target.InsertUnitAtIndex(0, unit, reIndex);
+            }
+
+            //This unit is a word, we can actually do the whole procedure here
+            if(UnitType.Equals(TextUnitType_word.Instance)) {
+                MauronCode_dataList<I_textUnit> characters = unit.Characters;
+                foreach(I_textUnit child in characters) {
+                    InsertChildAtIndex(ChildCount,child,false);
+                }
+                if(reIndex)
+                    Parent.ReIndex(Index, true, true);
+                return this;
+            }
+
+
+            //child is new - create
+            if (index == ChildCount) {
+                I_textUnit child = NewChildAtIndex(ChildCount, reIndex);
+                return child.InsertUnitAtIndex(0, unit, reIndex);
+            }
+
+            //target exists
+            target = ChildByIndex(index);
+            target.InsertUnitAtIndex(0, unit, false);
+            if (reIndex)
+                return ReIndex(index, true, true);
+
+            return this;               
+        }
 		public I_textUnit InsertChildAtIndex (int n, I_textUnit unit, bool reIndex)  {
 			if(IsReadOnly)
 				throw Error("Is protected!,(InsertChildAtIndex)",this, ErrorType_protected.Instance);
@@ -236,7 +323,7 @@ namespace MauronAlpha.Text.Units {
 				if(n<ChildCount-1) {
 					MauronCode_dataList<I_textUnit> needUpdate = DATA_children.Range(n+1);
 					foreach(I_textUnit updateMe in needUpdate)
-						updateMe.Context.AddValue(updateMe.UnitType, 1);
+						updateMe.Context.SetIsReadOnly(false).AddValue(updateMe.UnitType, 1);
 				}
 						
 				if(unit.EndsParent)
@@ -282,6 +369,25 @@ namespace MauronAlpha.Text.Units {
 			return this; 
 		}
 
+        public virtual I_textUnit ChildByIndex(int index)
+        {
+            if (!HasChildAtIndex(index))
+                throw Error("Invalid index!,{" + index + "},(ChildByIndex)", this, ErrorType_index.Instance);
+            return DATA_children.Value(index);
+        }
+        public virtual I_textUnit NewChildAtIndex(int index, bool reIndex) {
+            if (!CanHaveChildren)
+                throw Error("Unit can not have children!,(NewChildAtIndex)", this, ErrorType_scope.Instance);
+            if (index < 0 || index > ChildCount)
+                throw Error("Index out of bounds!,{" + index + "},(NewChildAtIndex)", this, ErrorType_bounds.Instance);
+            if (IsReadOnly)
+                throw Error("Is protected!,(NewChildAtIndex)", this, ErrorType_protected.Instance);
+            I_textUnit child = UnitType.ChildType.New;
+            InsertChildAtIndex(index, child, reIndex);
+
+            return child;
+        }
+
 		/// <summary>If unit has a parent return it, if not create one. Return it.</summary>
 		public I_textUnit FindOrMakeParent { 
 			get {
@@ -294,7 +400,6 @@ namespace MauronAlpha.Text.Units {
 				return parent;
 			}
 		}
-
 
 		//Child modifiers:return
 		public I_textUnit Pop {
@@ -384,7 +489,7 @@ namespace MauronAlpha.Text.Units {
 				return DATA_children;
 			}
 		}
-		public MauronCode_dataList<I_textUnit> Characters {
+        public MauronCode_dataList<I_textUnit> Characters {
 			get {
 				MauronCode_dataList<I_textUnit> result=new MauronCode_dataList<I_textUnit>();
 				if(IsEmpty)
@@ -408,9 +513,13 @@ namespace MauronAlpha.Text.Units {
 		//Parent
 		protected I_textUnit UNIT_parent;
 		public I_textUnit Parent {
-			get { 
-				if(UNIT_parent == null)
-					throw NullError("Parent is null!,(Parent)",this,typeof(TextComponent_unit));
+			get {
+				if (UNIT_parent == null) {
+					if (!CanHaveParent)
+						return this;
+					I_textUnit parent = UnitType.ParentType.New;
+					parent.InsertChildAtIndex(0,this,true);
+				}
 				return UNIT_parent;
 			}
 		}

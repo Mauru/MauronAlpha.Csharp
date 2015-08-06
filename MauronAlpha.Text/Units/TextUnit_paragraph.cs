@@ -1,4 +1,5 @@
 ﻿using MauronAlpha.HandlingErrors;
+using MauronAlpha.HandlingData;
 using MauronAlpha.Text.Interfaces;
 
 using MauronAlpha.Text.Units;
@@ -22,15 +23,49 @@ namespace MauronAlpha.Text.Units {
 			}
 		}
 
+		public TextUnit_paragraph Copy {
+			get {
+				TextUnit_paragraph copy = new TextUnit_paragraph();
+				foreach (TextUnit_line unit in Children)
+					copy.InsertChildAtIndex(copy.ChildCount, unit, false);
+				copy.ReIndex(0,true,false);
+				return copy;
+			}
+		}
+
 		//Querying
-		public TextUnit_line ChildByIndex(int n) {
+		public new TextUnit_line ChildByIndex(int n) {
 			if(n >= ChildCount)
 				throw Error("Invalid Index!,{"+n+"},(ChildByIndex)",this,ErrorType_index.Instance);
 			return (TextUnit_line) DATA_children.Value(n);
 		}
+		public TextUnit_line FirstChild {
+			get {
+				if (ChildCount > 0)
+					return ChildByIndex(0);
+				else if (IsReadOnly)
+					throw Error("Is protected!,(FirstChild)", this, ErrorType_protected.Instance);
+				TextUnit_line result = new TextUnit_line();
+				InsertChildAtIndex(0, result, true);
+				return ChildByIndex(0);
+			}
+		}
+		public TextUnit_line LastChild {
+			get {
+				if (ChildCount == 0)
+					return FirstChild;
+				return ChildByIndex(ChildCount - 1);
+			}
+		}
 		public TextUnit_line LineByIndex(int n) {
 			return ChildByIndex(n);
 		}
+		public TextUnit_line NewLine { get {
+			if (IsReadOnly)
+				throw Error("Is protected!,(NewLine)", this, ErrorType_protected.Instance);
+			InsertChildAtIndex(ChildCount, new TextUnit_line(), true);
+			return LastChild;
+		} }
 		public TextUnit_word WordByIndex( int index ) {
 			int offset = 0;
 			TextContext count = CountAsContext;
@@ -67,6 +102,24 @@ namespace MauronAlpha.Text.Units {
 			throw Error( "Invalid index!{"+index+"},(CharacterByIndex)", this, ErrorType_index.Instance );
 		}
 
+		public MauronCode_dataList<TextUnit_line> Lines {
+			get {
+				MauronCode_dataList<TextUnit_line> result = new MauronCode_dataList<TextUnit_line>();
+				for (int index = 0; index < ChildCount; index++)
+					result.Add(ChildByIndex(index));
+				return result;
+			}
+		}
+		public MauronCode_dataList<TextUnit_word> Words {
+			get {
+				MauronCode_dataList<TextUnit_word> result = new MauronCode_dataList<TextUnit_word>();
+				foreach (TextUnit_line line in Children)
+					foreach (TextUnit_word word in line.Children)
+						result.Add(word);
+				return result;
+			}
+		}
+		
 		//Count
 		public override TextContext CountAsContext {
 			get {

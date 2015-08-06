@@ -12,7 +12,9 @@ namespace MauronAlpha.Geometry.Geometry2d.Interfaces {
 Interface for all Polygon-based Shapes in 2d Space
 =========================================================================*/
 public interface I_polygonShape2d {
-    
+
+	string Id { get; }
+
     //Get the current state of the Shape
     Matrix2d Matrix { get; }
 

@@ -16,16 +16,10 @@ namespace MauronAlpha.Geometry.Geometry2d.Shapes {
 		public Rectangle2d ( Vector2d size ):this(0 ,0 ,size.X ,size.Y) {}
         
 		private Rectangle2d(Vector2dList points):this(){
-            if (points.Count != 4) {
+            if (points.Count != 4)
 				throw Error( "Invalid Rectangle!,{" + points.Count + "},(Constructor)", this, ErrorType_constructor.Instance );
-            }
-
-			//order the points
-			points = points.Ordered_asLRTB;
 
 			SetPoints(points);
-
-
 		}
 
         private Rectangle2d (Vector2d position, Vector2d size):this(

@@ -56,6 +56,7 @@
     <Compile Include="HandlingData\Sorting\Sort_quickSort.cs" />
     <Compile Include="HandlingErrors\ErrorType_outOfSynch.cs" />
     <Compile Include="HandlingErrors\ErrorType_precision.cs" />
+    <Compile Include="HandlingErrors\ErrorType_parse.cs" />
     <Compile Include="HandlingErrors\ErrorType_scope.cs" />
     <Compile Include="HandlingErrors\ErrorType_limit.cs" />
     <Compile Include="HandlingErrors\ErrorType_divideByZero.cs" />
@@ -68,9 +69,6 @@
     <Compile Include="HandlingData\DataType.cs" />
     <Compile Include="HandlingData\I_instantiable.cs" />
     <Compile Include="ExplainingCode\I_Singleton.cs" />
-    <Compile Include="Files\MauronCode_file.cs" />
-    <Compile Include="Files\MauronCode_filehandler.cs" />
-    <Compile Include="Files\MauronCode_filereference.cs" />
     <Compile Include="HandlingData\I_data.cs" />
     <Compile Include="HandlingData\I_dataObject.cs" />
     <Compile Include="HandlingData\I_dataDictionary.cs" />
@@ -100,9 +98,6 @@
     <Compile Include="ExplainingCode\Definition.cs" />
     <Compile Include="Devices\Device.cs" />
     <Compile Include="Devices\PC.cs" />
-    <Compile Include="Files\FileReference.cs" />
-    <Compile Include="Files\FileType.cs" />
-    <Compile Include="Files\FileTypes\FileType_mau.cs" />
     <Compile Include="ExplainingCode\LanguageComponent.cs" />
     <Compile Include="ExplainingCode\MauronAlphaCode.cs" />
     <Compile Include="HandlingErrors\MauronCode_exception.cs" />

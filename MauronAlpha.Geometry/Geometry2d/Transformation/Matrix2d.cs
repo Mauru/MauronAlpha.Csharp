@@ -75,7 +75,7 @@ namespace MauronAlpha.Geometry.Geometry2d.Transformation {
 		}
 		#endregion
 
-		#region DOUBLE Rotation GET, SET<RET,E>
+		#region double Rotation GET, SET<RET,E>
 		protected double INT_rotation=0;
 		public double Rotation {
 			get {	

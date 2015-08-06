@@ -19,9 +19,8 @@ namespace MauronAlpha.Input.Keyboard.Events {
 		private KeyPress K_key;
 		public KeyPress KeyPress {
 			get { 
-				if (K_key == null) {
+				if (K_key == null)
 					NullError ("KeyPress can not be null!", this,typeof(KeyPress));
-				}
 				return K_key;
 			}
 		}

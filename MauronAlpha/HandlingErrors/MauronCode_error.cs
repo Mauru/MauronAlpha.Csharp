@@ -35,7 +35,7 @@ namespace MauronAlpha.HandlingErrors {
 				string className = frame.GetMethod().DeclaringType.Name;
 				string methodName = frame.GetMethod().Name;
 				int lineNumber = frame.GetFileLineNumber();
-				System.Console.WriteLine("#"+i+" "+className+" - "+methodName+ "("+lineNumber+")", this);
+				System.Console.WriteLine("#"+i+" "+className+" - "+methodName+ "(Line: "+lineNumber+")", this);
 			}
 			return this;
 		}

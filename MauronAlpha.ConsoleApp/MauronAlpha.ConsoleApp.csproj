@@ -43,15 +43,18 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Collections\ConsoleApp_eventTriggers.cs" />
+    <Compile Include="Collections\ConsoleApp_keyCommands.cs" />
     <Compile Include="ConsoleApp_commandModel.cs" />
     <Compile Include="ConsoleApp_component.cs" />
     <Compile Include="ConsoleApp_input.cs" />
     <Compile Include="ConsoleApp_layout.cs" />
     <Compile Include="ConsoleApp_output.cs" />
     <Compile Include="ConsoleApp_settings.cs" />
-    <Compile Include="CaretPosition.cs" />
     <Compile Include="ConsoleApp_window.cs" />
-    <Compile Include="ConsoleApp_keyMap.cs" />
+    <Compile Include="Units\ConsoleLayout_debug.cs" />
+    <Compile Include="Units\ConsoleLayout_content.cs" />
+    <Compile Include="Units\ConsoleLayout_footer.cs" />
+    <Compile Include="Units\ConsoleLayout_header.cs" />
     <Compile Include="Interfaces\I_consoleInput.cs" />
     <Compile Include="Interfaces\I_consoleLayout.cs" />
     <Compile Include="Interfaces\I_consoleController.cs" />
@@ -65,6 +68,10 @@
     <VisualStudio AllowExistingFolder="true" />
   </ProjectExtensions>
   <ItemGroup>
+    <ProjectReference Include="..\MauronAlpha.Files\MauronAlpha.Files.csproj">
+      <Project>{8868f07d-6273-455c-92fa-41f2cdb450b7}</Project>
+      <Name>MauronAlpha.Files</Name>
+    </ProjectReference>
     <ProjectReference Include="..\MauronAlpha\MauronAlpha.csproj">
       <Project>{6A046817-9F14-4781-97C9-F89FEBC2097B}</Project>
       <Name>MauronAlpha</Name>

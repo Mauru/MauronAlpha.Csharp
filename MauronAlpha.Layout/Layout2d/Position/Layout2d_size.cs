@@ -6,6 +6,8 @@ using MauronAlpha.HandlingErrors;
 using MauronAlpha.Geometry.Geometry2d.Units;
 using MauronAlpha.Geometry.Geometry2d.Shapes;
 
+using MauronAlpha.Layout.Layout2d.Interfaces;
+
 namespace MauronAlpha.Layout.Layout2d.Position {
 
 	//Proxy unit describing the size of a layout Object
@@ -19,6 +21,7 @@ namespace MauronAlpha.Layout.Layout2d.Position {
 		public Layout2d_size (Vector2d size) : this() {
 			V_size = size;
 		}
+		public Layout2d_size(double x, double y) : this(new Vector2d(x, y)) { }
 
 		//As Vector
 		private Vector2d V_size;
@@ -43,6 +46,9 @@ namespace MauronAlpha.Layout.Layout2d.Position {
 		}
 
 		//Booleans
+		public bool Equals(double x, double y) {
+			return (Height == y && Width == x);
+		}
 		public bool Equals(Layout2d_size other) {
 			return V_size.Equals(other.AsVector);
 		}

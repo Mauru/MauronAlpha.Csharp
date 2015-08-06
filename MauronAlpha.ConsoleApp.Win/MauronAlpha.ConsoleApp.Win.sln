@@ -1,6 +1,8 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.31101.0
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MauronAlpha.ConsoleApp.Win", "MauronAlpha.ConsoleApp.Win.csproj", "{20E867C0-B506-4446-9ED3-EFAB361F6772}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MauronAlpha.ConsoleApp", "..\MauronAlpha.ConsoleApp\MauronAlpha.ConsoleApp.csproj", "{2EA00431-E460-4D40-8817-CC4E08B9B568}"
@@ -22,6 +24,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MauronAlpha.Fonts", "..\MauronAlpha.Fonts\MauronAlpha.Fonts.csproj", "{D484DF06-76D6-4B93-9101-B053C8B4E663}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MauronAlpha.Colors", "..\MauronAlpha.Colors\MauronAlpha.Colors.csproj", "{07CAC8B6-0B7B-412D-A4BF-86E7B86B3826}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MauronAlpha.Files", "..\MauronAlpha.Files\MauronAlpha.Files.csproj", "{8868F07D-6273-455C-92FA-41F2CDB450B7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -201,6 +205,21 @@ Global
 		{07CAC8B6-0B7B-412D-A4BF-86E7B86B3826}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{07CAC8B6-0B7B-412D-A4BF-86E7B86B3826}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{07CAC8B6-0B7B-412D-A4BF-86E7B86B3826}.Release|x86.ActiveCfg = Release|Any CPU
+		{8868F07D-6273-455C-92FA-41F2CDB450B7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8868F07D-6273-455C-92FA-41F2CDB450B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8868F07D-6273-455C-92FA-41F2CDB450B7}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{8868F07D-6273-455C-92FA-41F2CDB450B7}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{8868F07D-6273-455C-92FA-41F2CDB450B7}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{8868F07D-6273-455C-92FA-41F2CDB450B7}.DontCompile|Any CPU.ActiveCfg = Debug|Any CPU
+		{8868F07D-6273-455C-92FA-41F2CDB450B7}.DontCompile|Any CPU.Build.0 = Debug|Any CPU
+		{8868F07D-6273-455C-92FA-41F2CDB450B7}.DontCompile|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{8868F07D-6273-455C-92FA-41F2CDB450B7}.DontCompile|Mixed Platforms.Build.0 = Debug|Any CPU
+		{8868F07D-6273-455C-92FA-41F2CDB450B7}.DontCompile|x86.ActiveCfg = Debug|Any CPU
+		{8868F07D-6273-455C-92FA-41F2CDB450B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8868F07D-6273-455C-92FA-41F2CDB450B7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8868F07D-6273-455C-92FA-41F2CDB450B7}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{8868F07D-6273-455C-92FA-41F2CDB450B7}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{8868F07D-6273-455C-92FA-41F2CDB450B7}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

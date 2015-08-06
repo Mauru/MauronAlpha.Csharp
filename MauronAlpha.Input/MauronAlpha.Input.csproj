@@ -48,6 +48,10 @@
       <Project>{425A4B94-31DF-4569-B68C-EDEAF82163A7}</Project>
       <Name>MauronAlpha.Events</Name>
     </ProjectReference>
+    <ProjectReference Include="..\MauronAlpha.Files\MauronAlpha.Files.csproj">
+      <Project>{8868f07d-6273-455c-92fa-41f2cdb450b7}</Project>
+      <Name>MauronAlpha.Files</Name>
+    </ProjectReference>
     <ProjectReference Include="..\MauronAlpha\MauronAlpha.csproj">
       <Project>{6A046817-9F14-4781-97C9-F89FEBC2097B}</Project>
       <Name>MauronAlpha</Name>

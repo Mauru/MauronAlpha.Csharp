@@ -31,13 +31,24 @@ namespace MauronAlpha.Layout.Layout2d.Position {
 			}
 		}
 
+		public double Y {
+			get {
+				return V_position.Y;
+			}
+		}
+		public double X {
+			get {
+				return V_position.X;
+			}
+		}
+
 		//As String
 		public string AsString {
 			get { return V_position.AsString; }
 		}
 
 		//As Vector
-		private Vector2d V_position;
+		private Vector2d V_position = new Vector2d();
 		public Vector2d AsVector {
 			get {
 				if( V_position==null )

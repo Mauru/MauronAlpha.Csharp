@@ -5,6 +5,7 @@ using MauronAlpha.Events.Interfaces;
 using MauronAlpha.Layout.Layout2d.Units;
 using MauronAlpha.Layout.Layout2d.Collections;
 using MauronAlpha.Layout.Layout2d.Context;
+using MauronAlpha.Layout.Layout2d.Position;
 
 namespace MauronAlpha.Layout.Layout2d.Interfaces {
     
@@ -21,13 +22,15 @@ namespace MauronAlpha.Layout.Layout2d.Interfaces {
         bool HasParent { get; }
         bool HasChildren { get; }
 
+		Layout2d_position Position { get; }
+		Layout2d_size Size { get; }
+
+		I_layoutUnit Root { get; }
         I_layoutUnit Parent { get; }
         I_layoutUnit ChildByIndex(long index);
 		I_layoutUnit AddChildAtIndex (long index, I_layoutUnit unit, bool updateRelations);
 		
 		long NextChildIndex { get; }
-
-
 
 		I_layoutUnit SetParent( I_layoutUnit parent, bool updateRelations );
 		I_layoutUnit SetContext( Layout2d_context context );
@@ -37,7 +40,10 @@ namespace MauronAlpha.Layout.Layout2d.Interfaces {
 
 		Layout2d_unitType UnitType { get; }
 
-		Layout2d_context Context { get;	}
+		Layout2d_context Context { get; }
+
+		I_layoutUnit RequestRender();
+		I_layoutUnit RequestRender(Layout2d_renderChain chain);
 
     }
 

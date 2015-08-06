@@ -34,7 +34,8 @@ namespace MauronAlpha.Text.Interfaces {
 		bool CanHaveChildren { get; }
 		bool CanHaveParent { get; }
 		bool EndsParent { get; }
-		
+        bool HasChildAtIndex(int index);
+
 		MauronCode_dataList<I_textUnit> Characters { get; }
 		MauronCode_dataList<I_textUnit> Children { get; }
 		TextUnitNeighbors Neighbors { get; }
@@ -47,7 +48,8 @@ namespace MauronAlpha.Text.Interfaces {
 		I_textUnit SetParent( I_textUnit unit );
 		
 		I_textUnit UpdateContextFromParent(bool updateChildContext);
-		I_textUnit UpdateChildContext( bool chainChildren );
+		I_textUnit UpdateChildContext( int indexOffset, bool chainChildren );
+        I_textUnit ReIndex(int indexOffset, bool chainChildren, bool chainParent);
 
 		I_textUnit HandleEnds();
 		I_textUnit HandleLooseEnds();
@@ -57,6 +59,10 @@ namespace MauronAlpha.Text.Interfaces {
 		I_textUnit RemoveChildAtIndex (int n, bool reIndex);
 
 		I_textEncoding Encoding { get; }
+
+        I_textUnit ChildByIndex(int index);
+
+        I_textUnit NewChildAtIndex(int index, bool reIndex);
 
 		TextUnit_character FirstCharacter { get; }
 		TextUnit_character LastCharacter { get; }

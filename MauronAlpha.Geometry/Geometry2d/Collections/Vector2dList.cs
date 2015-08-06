@@ -53,9 +53,8 @@ namespace MauronAlpha.Geometry.Geometry2d.Collections {
 
 		public Vector2dList AddValue( Vector2d v, bool reorderIndex ) {
 			base.AddValue( v );
-			if( reorderIndex ) {
+			if( reorderIndex )
 				B_isOrdered = false;
-			}
 			return this;
 		}
 		public Vector2dList AddValues( ICollection<Vector2d> values, bool reorderIndex ) {
@@ -68,24 +67,12 @@ namespace MauronAlpha.Geometry.Geometry2d.Collections {
 			return this;
 		}
 
-		//Order a list by its Vectors from topleft to bottomright we go X,XY> : //WARNING! We are loosing the long/int precision here!
-		public Vector2dList Ordered_asLRTB {
-			get {
-				if( IsReadOnly )
-					throw Error( "Protected!,(Ordered_asLRTB)", this, ErrorType_protected.Instance );
-				base.SortWith( Vector2d.Compare );
-				return this;
-			}
-		}
-
 		//Modify Content
 		public Vector2dList Bulk_Add( Vector2d v ) {
-			if( IsReadOnly ) {
+			if( IsReadOnly )
 				throw Error( "Protected!,(Add)", this, ErrorType_protected.Instance );
-			}
-			foreach( Vector2d p in this ) {
+			foreach( Vector2d p in this )
 				p.Add( v );
-			}
 			return this;
 		}
 		public Vector2dList Bulk_Subtract( Vector2d v ) {
@@ -144,6 +131,9 @@ namespace MauronAlpha.Geometry.Geometry2d.Collections {
                 return result;
             }
         }
+		public Vector2dList Copy {
+			get { return Instance; }
+		}
 
 		//has the list been ordered?
 		private bool B_isOrdered = false;

@@ -39,6 +39,13 @@ namespace MauronAlpha.Text.Encoding {
 			return unit;		
 		}
 
+		public virtual MauronCode_dataList<TextUnit_character> StringToCharacters(string str) {
+			MauronCode_dataList<TextUnit_character> result = new MauronCode_dataList<TextUnit_character>();
+			foreach (char c in str)
+				result.Add(new TextUnit_character(c));
+			return result;
+		}
+
 		//Special Characters
 		public abstract char EmptyCharacter { get; }
 		public abstract char WhiteSpace { get; }
@@ -89,6 +96,21 @@ namespace MauronAlpha.Text.Encoding {
 		}
 		public virtual bool IsZeroWidth(TextUnit_character unit) {
 			return unit.Character == ZeroWidth;
+		}
+		public virtual bool IsRealCharacter(TextUnit_character unit) {
+			if (IsZeroWidth(unit))
+				return false;
+			if (IsNewLine(unit))
+				return false;
+			if (IsParagraph(unit))
+				return false;
+			if (IsTab(unit))
+				return true;
+			if (IsWhiteSpace(unit))
+				return true;
+			if (IsEmptyCharacter(unit))
+				return false;
+			return true;
 		}
 
 		public virtual bool UnitEndsOther(I_textUnit candidate, I_textUnit other) {

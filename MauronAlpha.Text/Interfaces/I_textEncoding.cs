@@ -1,5 +1,6 @@
 ﻿using System;
 using MauronAlpha.Text.Units;
+using MauronAlpha.HandlingData;
 
 namespace MauronAlpha.Text.Interfaces {
 	
@@ -10,6 +11,8 @@ namespace MauronAlpha.Text.Interfaces {
 
 		TextUnit_text StringToUnit( string text, TextUnit_text unit );
 		TextUnit_text StringAsUnit ( string text );
+
+		MauronCode_dataList<TextUnit_character> StringToCharacters(string str);
 
 		char EmptyCharacter { get; }
 		char WhiteSpace { get; }
@@ -24,6 +27,7 @@ namespace MauronAlpha.Text.Interfaces {
 		bool IsParagraph(TextUnit_character unit);
 		bool IsNewLine (TextUnit_character unit);
 		bool IsZeroWidth(TextUnit_character unit);
+		bool IsRealCharacter(TextUnit_character unit);
 
 		bool EndsLine( TextUnit_character unit );
 		bool EndsLine( TextUnit_word unit );

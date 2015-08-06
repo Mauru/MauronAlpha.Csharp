@@ -10,6 +10,10 @@ namespace MauronAlpha.Geometry.Geometry2d.Collections {
 			base.AddValue( segment );
 			return this;
 		}
+		public new Segment2dList SetIsReadOnly(bool state) {
+			base.SetIsReadOnly(state);
+			return this;
+		}
 	}
 
 }

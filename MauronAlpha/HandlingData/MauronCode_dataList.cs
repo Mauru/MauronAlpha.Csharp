@@ -136,6 +136,12 @@ namespace MauronAlpha.HandlingData {
 			sorter.Sort(this, comparer);
 			return this;
 		}
+		public MauronCode_dataList<T> Reverse() {
+			if (IsReadOnly)
+				throw Error("Is protected!,(Reversed)", this, ErrorType_protected.Instance);
+			Data.Reverse();
+			return this;
+		}
 
 		//Modifiers: Each
 		public MauronCode_dataList<T> Each (Delegate_performEach doStuff) {
@@ -200,6 +206,13 @@ namespace MauronAlpha.HandlingData {
 			foreach( T obj in collection ) {
 				AddValue(obj);
 			}
+			return this;
+		}
+		public MauronCode_dataList<T> AddValuesFrom(MauronCode_dataList<T> other) {
+			if (IsReadOnly)
+				throw Error("Is protected!,(AddValuesFrom)", this, ErrorType_protected.Instance);
+			foreach (T item in other)
+				Add(item);
 			return this;
 		}
 		public MauronCode_dataList<T> InsertValueAt (int key, T obj) {
@@ -271,6 +284,66 @@ namespace MauronAlpha.HandlingData {
 			}
 			return this;
 		}
+		public MauronCode_dataList<T> RemoveByRange(int start) {
+			#region ReadOnly Check
+			if (IsReadOnly) {
+				throw Error("ReadOnly!,(RemoveByRange)", this, ErrorType_protected.Instance);
+			}
+			#endregion
+			#region Error Check
+			if (start < 0 || start >= Count) {
+				throw Error("Range start out of bounds! {" + start + "},(RemoveByRange)", this, ErrorType_index.Instance);
+			}
+			#endregion
+			for (int n = start; n <= Count; n++) {
+				RemoveByKey(start);
+			}
+			return this;
+		}
+		public MauronCode_dataList<T> Split(int start) {
+			#region ReadOnly Check
+			if (IsReadOnly) {
+				throw Error("ReadOnly!,(RemoveByRange)", this, ErrorType_protected.Instance);
+			}
+			#endregion
+			int count = Count;
+			#region Error Check
+			if (start < 0 || start >= count) {
+				throw Error("Range start out of bounds! {" + start + "},(RemoveByRange)", this, ErrorType_index.Instance);
+			}
+
+			MauronCode_dataList<T> result = new MauronCode_dataList<T>();
+
+			#endregion
+			for (int n = start; n <= count; n++) {
+				result.Add(Value(start));
+				RemoveByKey(start);
+			}
+			return result;
+		}
+		public MauronCode_dataList<T> Extract(int start, int end) {
+			#region ReadOnly Check
+			if (IsReadOnly) {
+				throw Error("ReadOnly!,(RemoveByRange)", this, ErrorType_protected.Instance);
+			}
+			#endregion
+			#region Error Check
+			if (start < 0 || start >= Count) {
+				throw Error("Range start out of bounds! {" + start + "},(RemoveByRange)", this, ErrorType_index.Instance);
+			}
+			if (end < 0 || end >= Count || end < start) {
+				throw Error("Range end out of bounds! {" + end + "},(RemoveByRange)", this, ErrorType_index.Instance);
+			}
+
+			MauronCode_dataList<T> result = new MauronCode_dataList<T>();
+
+			#endregion
+			for (int n = start; n <= end; n++) {
+				result.Add(Value(start));
+				RemoveByKey(start);
+			}
+			return result;
+		}
 		public MauronCode_dataList<T> RemoveLastElement ( ) {
 			#region ReadOnly Check
 			if( IsReadOnly ) {
@@ -332,6 +405,9 @@ namespace MauronAlpha.HandlingData {
 				#endregion
 				return Data[LastIndex];
 			}
+		}
+		public T this[int key] {
+			get { return Value(key);}
 		}
 
 		//Return Modifiers: Remove
