@@ -77,6 +77,15 @@ namespace MauronAlpha.HandlingData {
 			}
 			return true;
 		}
+		public bool Equals_unsorted(MauronCode_dataList<T> other) {
+			long count = Count;
+			if (count != other.Count)
+				return false;
+			foreach (T val in Data)
+				if(!other.ContainsValue(val))
+					return false;
+			return true;
+		}
 		internal bool B_isReadOnly=false;
 		public bool IsReadOnly {
 			get {
@@ -128,6 +137,26 @@ namespace MauronAlpha.HandlingData {
 				index++;
 			}
 			return this;
+		}
+
+		public MauronCode_dataStack<T> AsReversedStack {
+			get {
+				MauronCode_dataStack<T> result = new MauronCode_dataStack<T>();
+				int index = Count - 1;
+				if (index < 0)
+					return result;
+				for (int n = index; n >= 0; n--)
+					result.Add(Data[n]);
+				return result;
+			}
+		}
+		public MauronCode_dataStack<T> AsStack {
+			get {
+				MauronCode_dataStack<T> result = new MauronCode_dataStack<T>();
+				foreach (T child in Data)
+					result.Add(child);
+				return result;
+			}
 		}
 
 		//Sorting
@@ -360,13 +389,18 @@ namespace MauronAlpha.HandlingData {
 		
 		//Queries: List
 		public MauronCode_dataList<T> Range (int start, int end) {
-			if( start<0||start>=Count ) {
-				throw Error("Range start out of bounds! {"+start+"}", this, ErrorType_index.Instance);
-			}
-			if( end<0||end>=Count||end<start ) {
-				throw Error("Range end out of bounds! {"+end+"}", this, ErrorType_index.Instance);
-			}
-			MauronCode_dataList<T> result=new MauronCode_dataList<T>();
+			MauronCode_dataList<T> result = new MauronCode_dataList<T>();
+			if (start < 0)
+				start =0;
+			int count = Count;
+			if (count == 0)
+				return result;
+			if (start >= count)
+				return result;
+			if( end < 0 )
+				return result;
+			if (end >= count)
+				end = count-1;
 			for( int n=start; n<=end; n++ ) {
 				T obj=Value(n);
 				result.AddValue(obj);

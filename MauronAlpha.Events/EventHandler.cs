@@ -36,6 +36,10 @@ namespace MauronAlpha.Events {
 			Subscribers.RegisterByCode(eventCode, source, model);
 			return;
 		}
+		public void SubscribeToCode(string eventCode, I_eventSubscriber source) {
+			Subscribers.RegisterByCode(eventCode, source, EventModels.Continous);
+			return;
+		}
 		public EventSubscriberList Subscriptions {
 			get {
 				return Subscribers.Instance.SetIsReadOnly(true);
@@ -58,44 +62,30 @@ namespace MauronAlpha.Events {
 
 		//Check if an event code matches a subscription : Return the number of Processed Receivers
 		public long CheckForTrigger (EventUnit_event e, I_eventSender sender, EventUnit_timeStamp timestamp) {
-			MauronCode_dataList<EventUnit_subscription> subscriptions=Subscriptions.ByCode(e.Code);
+			MauronCode_dataList<EventUnit_subscription> subscriptions = Subscriptions.ByCode(e.Code);
 
-			long count_processed=0;
-			bool result=true;
+			long count_processed = 0;
+			bool result = true;
 
 			MauronCode_dataList<EventUnit_subscription> unsubribe_these = new MauronCode_dataList<EventUnit_subscription>();
 
 			foreach( EventUnit_subscription subscription in subscriptions ) {
 
-				result = true;
+				result = subscription.Subscriber.ReceiveEvent(e);
+				if(result)
+					count_processed++;
 
-				//Does the subscription have a condition
-				if( subscription.SubscriptionModel.UsesCondition ) {
-					result = subscription.Condition(e, subscription);
-				}
-
-				//If condition has been met or no condition 
-				if( result ) {
-					
-					if( subscription.SubscriptionModel.UsesTrigger ) {
-						subscription.Subscriber.ReceiveEvent(e);
-						count_processed++;
-					}
-
-				}
 
 				//Does the subscription only receive the check once, regardLess of the result of condition
-				if( subscription.SubscriptionModel.IsSingle ) {
+				if( subscription.SubscriptionModel.IsSingle )
 					unsubribe_these.Add(subscription);
-				}
 
 				//Can the subscription only be checked N times ?
 				if( subscription.SubscriptionModel.UsesExecutionLimit ) {
 					subscription.ItterateExecutionCount(timestamp);
 
-					if( subscription.SubscriptionModel.ExecutionLimit<=subscription.ExecutionCount ) {
+					if( subscription.SubscriptionModel.ExecutionLimit<=subscription.ExecutionCount )
 						unsubribe_these.Add(subscription);
-					}
 				}
 
 			}
@@ -111,15 +101,27 @@ namespace MauronAlpha.Events {
 			return count_processed;
 		}
 
+		public bool DoNothing(EventUnit_event e) {
+			 return false;
+		}
+		public DELEGATE_trigger NothingHappens {
+			get { return DoNothing; }
+		}
+
 		//Boolean Delegate : Receive an event
 		public delegate bool DELEGATE_ReceiveEvent(EventUnit_event e);
 		//Boolean Delegate : Send an event
 		public delegate bool DELEGATE_SubmitEvent(EventUnit_event e);
+		
 		//Boolean Delegate : The condition for a trigger to occure
 		public delegate bool DELEGATE_condition(EventUnit_event e, EventUnit_subscription subscription);
 		//Boolean Delegate : The trigger to execute
 		public delegate bool DELEGATE_trigger(EventUnit_event e);
 
+		public EventUnit_event GenerateEvent(string code, I_eventSender sender) {
+			EventUnit_event e = new EventUnit_event(sender, code);
+			return e;
+		}
 
 		public EventHandler SubmitEvent(EventUnit_event e, I_eventSender sender) {
 			CheckForTrigger(e, sender, SystemClock.TimeStamp);
@@ -128,9 +130,8 @@ namespace MauronAlpha.Events {
 
 		public EventUnit_timeStamp TimeStamp {
 			get {
-				if(!HasSource) {
+				if(!HasSource)
 					return Clock.TimeStamp;
-				}
 				return Source.TimeStamp;
 			}
 		}

@@ -15,6 +15,7 @@ namespace MauronAlpha.ConsoleApp.Collections {
 
 		public bool IsCommand(KeyPress key) {
 			KeyPressSequence test = new KeyPressSequence(key);
+
 			// && DATA_commands.ContainsKey(DATA_map.Value(command))
 			foreach (KeyPressSequence command in DATA_map.Keys) { 
 				if(command.Equals(test))

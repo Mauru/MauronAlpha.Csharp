@@ -8,14 +8,10 @@ namespace MauronAlpha.Events.Units
         public EventUnit_subscription(
             string code,
 			I_eventSubscriber subscriber,
-            I_eventSubscriptionModel subscriptionModel,
-		    EventHandler.DELEGATE_condition condition,
-            EventHandler.DELEGATE_trigger trigger     
+            I_eventSubscriptionModel subscriptionModel
         ):base() {
 			IE_subscriber = subscriber;
 			IE_subscriptionModel = subscriptionModel;
-			D_condition = condition;
-			D_trigger = trigger;
 			STR_code = code;			
         }
 
@@ -42,19 +38,6 @@ namespace MauronAlpha.Events.Units
 
 		public static bool CONDITION_compareEventCode(EventUnit_event unit, EventUnit_subscription subscription){
 			return unit.Code == subscription.Code;
-		}
-
-        EventHandler.DELEGATE_condition D_condition;
-		public EventHandler.DELEGATE_condition Condition {
-			get {
-				return D_condition;
-			}
-		}
-        EventHandler.DELEGATE_trigger D_trigger;
-		public EventHandler.DELEGATE_trigger Trigger {
-			get {
-				return D_trigger;
-			}
 		}
 
 		private long INT_executionCount = 0;

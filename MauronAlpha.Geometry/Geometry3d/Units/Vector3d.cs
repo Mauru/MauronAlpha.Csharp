@@ -2,7 +2,7 @@
 
 namespace MauronAlpha.Geometry.Geometry3d.Units {
 
-	public class Vector3d : GeometryComponent3d {
+	public class Vector3d : GeometryComponent3d,IEquatable<Vector3d>,IComparable<Vector3d> {
 		public double X=0;
 		public double Y=0;
 		public double Z=0;
@@ -23,10 +23,22 @@ namespace MauronAlpha.Geometry.Geometry3d.Units {
 			Z+=v.Z;
 			return this;
 		}
+		public Vector3d Add(double x, double y, double z) {
+			X += x;
+			Y += y;
+			Z += z;
+			return this;
+		}
 		public Vector3d Subtract (Vector3d v) {
 			X-=v.X;
 			Y-=v.Y;
 			Z-=v.Z;
+			return this;
+		}
+		public Vector3d Subtract(double x, double y, double z) {
+			X -= x;
+			Y -= y;
+			Z -= z;
 			return this;
 		}
 		public Vector3d Difference (Vector3d v) {
@@ -50,6 +62,25 @@ namespace MauronAlpha.Geometry.Geometry3d.Units {
 			return (v.ToString==this.ToString);
 		}
 
+
+		public int CompareTo(Vector3d other) {
+			if (X < other.X)
+				return -1;
+			else if (X > other.X)
+				return 1;
+
+			if (Y < other.Y)
+				return -1;
+			else if (Y > other.Y)
+				return 1;
+
+			if (Z < other.Z)
+				return -1;
+			else if (Z > other.Z)
+				return 1;
+
+			return 0;
+		}
 	}
 
 }

@@ -1,0 +1,33 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.31101.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MauronAlpha.TextProcessing", "MauronAlpha.TextProcessing.csproj", "{11A15196-27E5-4DD0-AF26-81ED59A006D8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MauronAlpha", "..\MauronAlpha\MauronAlpha.csproj", "{6A046817-9F14-4781-97C9-F89FEBC2097B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		DontCompile|Any CPU = DontCompile|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{11A15196-27E5-4DD0-AF26-81ED59A006D8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{11A15196-27E5-4DD0-AF26-81ED59A006D8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{11A15196-27E5-4DD0-AF26-81ED59A006D8}.DontCompile|Any CPU.ActiveCfg = Debug|Any CPU
+		{11A15196-27E5-4DD0-AF26-81ED59A006D8}.DontCompile|Any CPU.Build.0 = Debug|Any CPU
+		{11A15196-27E5-4DD0-AF26-81ED59A006D8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{11A15196-27E5-4DD0-AF26-81ED59A006D8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6A046817-9F14-4781-97C9-F89FEBC2097B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6A046817-9F14-4781-97C9-F89FEBC2097B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6A046817-9F14-4781-97C9-F89FEBC2097B}.DontCompile|Any CPU.ActiveCfg = DontCompile|Any CPU
+		{6A046817-9F14-4781-97C9-F89FEBC2097B}.DontCompile|Any CPU.Build.0 = DontCompile|Any CPU
+		{6A046817-9F14-4781-97C9-F89FEBC2097B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6A046817-9F14-4781-97C9-F89FEBC2097B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

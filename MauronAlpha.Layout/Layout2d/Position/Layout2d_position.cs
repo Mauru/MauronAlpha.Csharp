@@ -51,8 +51,6 @@ namespace MauronAlpha.Layout.Layout2d.Position {
 		private Vector2d V_position = new Vector2d();
 		public Vector2d AsVector {
 			get {
-				if( V_position==null )
-					V_position=new Vector2d();
 				return V_position.Instance.SetIsReadOnly(true);
 			}
 		}
@@ -68,7 +66,11 @@ namespace MauronAlpha.Layout.Layout2d.Position {
 			B_isReadOnly = status;
 			return this;
 		}
-	
+
+		public Layout2d_position Set(float x, float y) {
+			V_position.Set(x, y);
+			return this;
+		}
 	}
 
 }

@@ -118,12 +118,13 @@ namespace MauronAlpha.ConsoleApp {
 		}
 		public virtual ConsoleApp_commandModel EvaluateInput() {
 			KeyPress key = INPUT_keyBoard.ActiveSequence.LastElement;
+
 			MauronCode_dataTree<KeyPressSequence, string> commands = KeyboardCommands.Commands;
 			foreach (KeyValuePair<KeyPressSequence, string> command in commands.AsKeyValuePairs) {
 				if (command.Key.Equals(key))
 					LayoutModel.Member("debug").SetContent(command.Value);
 			}
-			/*
+			
 			if (KeyboardCommands.IsCommand(key))
 				LayoutModel.Member("debug").SetContent("Found command for ("+key.KeyName+")");
 			else
@@ -137,7 +138,7 @@ namespace MauronAlpha.ConsoleApp {
 			}
 			else {
 				LayoutModel.Member("footer").PrependContent("Command key pressed: " + key.KeyName,true);
-			}*/
+			}
 			return this;
 		}
 

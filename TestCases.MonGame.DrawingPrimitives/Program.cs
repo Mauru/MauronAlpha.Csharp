@@ -1,4 +1,5 @@
 ﻿using System;
+using MauronAlpha.MonoGame.Scripts;
 
 namespace MauronAlpha.MonoGame {
 #if WINDOWS || LINUX
@@ -13,8 +14,9 @@ namespace MauronAlpha.MonoGame {
         [STAThread]
         static void Main()
         {
-			using (var game = new MonoGameWrapper())
-                game.Run();
+			GameLogic logic = new TestLogic();
+			MonoGameWrapper Game = new MonoGameWrapper(logic);
+			Game.Run();
         }
     }
 #endif

@@ -35,6 +35,9 @@
     <WarningLevel>4</WarningLevel>
     <Optimize>false</Optimize>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'MonoGame|AnyCPU'">
+    <OutputPath>bin\MonoGame\</OutputPath>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -48,11 +51,14 @@
     <Compile Include="ExplainingCode\I_MauronCode.cs" />
     <Compile Include="ExplainingCode\MauronCode_component.cs" />
     <Compile Include="HandlingData\Collections\DataComponent_collection.cs" />
+    <Compile Include="HandlingData\DataPile.cs" />
     <Compile Include="HandlingData\Hashing\Murmur2.unsafe.cs" />
     <Compile Include="HandlingData\Interfaces\I_dataCollection.cs" />
     <Compile Include="HandlingData\I_protectable.cs" />
     <Compile Include="HandlingData\MauronCode_dataComponent.cs" />
+    <Compile Include="HandlingData\MauronCode_dataStack.cs" />
     <Compile Include="HandlingData\MauronCode_dataTree.cs" />
+    <Compile Include="HandlingData\MauronCode_dataReference.cs" />
     <Compile Include="HandlingData\Sorting\Sort_quickSort.cs" />
     <Compile Include="HandlingErrors\ErrorType_outOfSynch.cs" />
     <Compile Include="HandlingErrors\ErrorType_precision.cs" />
@@ -84,6 +90,7 @@
     </Compile>
     <Compile Include="HandlingErrors\ExceptionHandler.cs" />
     <Compile Include="ExplainingCode\I_MauronAlphaCode.cs" />
+    <Compile Include="Interfaces\I_equatable.cs" />
     <Compile Include="Interfaces\I_instantiable.cs" />
     <Compile Include="Interfaces\I_protectable.cs" />
     <Compile Include="Projects\ProjectComponent_statusCode.cs" />
@@ -123,7 +130,6 @@
   <ItemGroup>
     <None Include="Documentation\How Events Work.mau" />
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

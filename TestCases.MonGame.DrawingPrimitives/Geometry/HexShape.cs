@@ -14,7 +14,7 @@ namespace MauronAlpha.MonoGame.Geometry {
 			Matrix.SetTranslation(center);
 		}
 
-		public TriangleList Vertices {
+		public override TriangleList Vertices {
 			get {
 				Vector2d centroid = Center;
 				Vector2dList pts = TransformedPoints;
@@ -30,6 +30,7 @@ namespace MauronAlpha.MonoGame.Geometry {
 				return result;
 			}
 		}
+		
 		public new Vector2d Center { 
 			get {
 			Vector2dList pts = TransformedPoints;

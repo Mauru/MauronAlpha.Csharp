@@ -18,7 +18,7 @@ namespace MauronAlpha.Geometry.Geometry2d.Shapes {
 
 		public Polygon2d( Vector2dList points ) : this() {
 
-			DATA_points = points.Cloned;
+			Initialize(points);
 		
 		}
 
@@ -36,16 +36,18 @@ namespace MauronAlpha.Geometry.Geometry2d.Shapes {
 
 		public Polygon2d ResetTempStates() {
 			DATA_points_transformed = null;
+			DATA_segments = null;
 			SHAPE_bounds = null;
 			return this;
 		}
 
-
-
 		//Segments - Built on request
+		private Segment2dList DATA_segments;
 		public virtual Segment2dList Segments {
 			get {
-				return BuildSegments(Points);
+				if(DATA_segments==null)
+					DATA_segments = BuildSegments(TransformedPoints);
+				return DATA_segments;
 			}
 		}
 		public static Segment2dList BuildSegments( Vector2dList points ) {
@@ -126,17 +128,28 @@ namespace MauronAlpha.Geometry.Geometry2d.Shapes {
 		
 		//Equals
 		public bool Equals( Polygon2d other ) {
-
-			return Transformed.Points.Equals( other.Transformed.Points );
+			if(Id.Equals(other.Id))
+				return true;
+			if (!M_matrix.Equals(other.Matrix))
+				return false;
+			if(!DATA_points.Equals(other.Points))
+				return false;
+			return true;
 
 		}
 		public bool Equals( I_polygonShape2d other ) {
-			return TransformedPoints.Equals( other.TransformedPoints );
+			if(Id.Equals(other.Id))
+				return true;
+			if (!M_matrix.Equals(other.Matrix))
+				return false;
+			if(!DATA_points.Equals(other.Points))
+				return false;
+			return true;
 		}
 
 		public I_polygonShape2d Cloned {
 			get {
-				return new Polygon2d( DATA_points.Cloned ).SetMatrix( Matrix.Instance );
+				return new Polygon2d().FromShape(this);
 			}
 		}
 
@@ -161,43 +174,60 @@ namespace MauronAlpha.Geometry.Geometry2d.Shapes {
 				return new Polygon2d( this );
 			}
 		}
-		public Polygon2d FromShape( Polygon2d s ) {
+		public Polygon2d FromShape( Polygon2d shape ) {
 			if( IsReadOnly )
 				throw Error( "Is Protected!,(FromShape)", this, ErrorType_protected.Instance );
-			Vector2dList points = new Vector2dList();
-			foreach( Vector2d p in s.Points )
-				points.AddValue( p.Cloned );
-			SetPoints( points );
-			SetMatrix( s.Matrix );
+
+			DATA_points = shape.Points;
+			M_matrix = shape.Matrix;
+
+			if (shape.CalculatedTransform)
+				DATA_points_transformed = shape.TransformedPoints;
+			if (shape.CalculatedBounds)
+				SHAPE_bounds = shape.Bounds;
+			if (shape.CalculatedSegments)
+				DATA_segments = shape.Segments;
+
+			M_matrix = shape.Matrix;
 
 			return this;
 		}
 
+		//Check what states have been calculated
+		public bool CalculatedTransform {
+			get {
+				return DATA_points_transformed != null;
+			}
+		}
+		public bool CalculatedBounds {
+			get {
+				return SHAPE_bounds != null;
+			}
+		}
+		public bool CalculatedSegments {
+			get {
+				return DATA_segments != null;
+			}
+		}
+
+
+		//Apply Transformations
 		public Polygon2d SetMatrix (Matrix2d m) {
 			if( IsReadOnly )
 				throw Error("Is Protected!,(SetMatrix)", this, ErrorType_protected.Instance);
 
 			M_matrix=m;
+			ResetTempStates();
 
 			return this;
-		}
-
-		private Vector2dList DATA_transformed;
-		public Polygon2d Transformed {
-			get {
-				if(DATA_transformed==null)
-					DATA_transformed = Matrix.ApplyTo( DATA_points.Cloned );
-
-				Polygon2d result = new Polygon2d( points );
-
-				return result;
-			}
 		}
 
 		public Polygon2d SetRotation( double n ) {
 			if( IsReadOnly )
 				throw Error( "Is Protected!,(SetRotation)", this, ErrorType_protected.Instance );
+
 			ResetTempStates();
+
 			//update the matrix
 			Matrix.SetRotation( n );
 			return this;
@@ -207,9 +237,10 @@ namespace MauronAlpha.Geometry.Geometry2d.Shapes {
 		}
 
 		public Polygon2d SetScale(Vector2d v) {
-			if( IsReadOnly ) {
+			if( IsReadOnly )
 				throw Error("Is Protected!,(SetScale)", this, ErrorType_protected.Instance);
-			}
+			ResetTempStates();
+
 			Matrix.SetScale(v);
 			return this;
 		}
@@ -224,6 +255,7 @@ namespace MauronAlpha.Geometry.Geometry2d.Shapes {
 			if( IsReadOnly )
 				throw Error("Is Protected!,(SetPosition)", this, ErrorType_protected.Instance);
 			//Update Matrix
+			ResetTempStates();
 			Matrix.SetTranslation(v);
 			return this;
 		}
@@ -235,9 +267,9 @@ namespace MauronAlpha.Geometry.Geometry2d.Shapes {
 		}
 
 		public Polygon2d Move( Vector2d v ) {
-			if( IsReadOnly ) {
+			if( IsReadOnly )
 				throw Error( "Is Protected!,(Move)", this, ErrorType_protected.Instance );
-			}
+			ResetTempStates();
 			//Update matrix
 			Matrix.Translation.Add( v );
 			return this;
@@ -294,7 +326,7 @@ namespace MauronAlpha.Geometry.Geometry2d.Shapes {
 			}
 		}
 		public override Vector2d Position {
-			get { return Matrix.Translation;}
+			get { return Matrix.Translation; }
 		}
 		public Vector2d Center {
 			get {
@@ -330,21 +362,22 @@ namespace MauronAlpha.Geometry.Geometry2d.Shapes {
 		}
 		public bool HitTest(Vector2d v){		
 			//Coarse
-			if( v.X<Bounds.Min.X||v.X>Bounds.Max.X||v.Y<Bounds.Min.Y||v.Y>Bounds.Max.Y ) {
+			if( v.X<Bounds.Min.X||v.X>Bounds.Max.X||v.Y<Bounds.Min.Y||v.Y>Bounds.Max.Y )
 				return false;
-			}
 
 			bool result=false;
 
-            double[] vx = new double[Points.Count];
-            double[] vy = new double[Points.Count];
+			Vector2dList points = TransformedPoints;
 
-			for(int n=0;n<Points.Count;n++) {
-				vx[n] = Points.Value(n).X;
-                vy[n] = Points.Value(n).Y;
+			double[] vx = new double[points.Count];
+			double[] vy = new double[points.Count];
+
+			for (int n = 0; n < points.Count; n++) {
+				vx[n] = points.Value(n).X;
+				vy[n] = points.Value(n).Y;
 			}
 			int i, j;
-			for( i=0, j=Points.Count-1; i<Points.Count; j=i++ ) {
+			for (i = 0, j = points.Count - 1; i < points.Count; j = i++) {
 				if( ((vy[i]>v.Y)!=(vy[j]>v.Y))&&(v.X<(vx[j]-vx[i])*(v.Y-vy[i])/(vy[j]-vy[i])+vx[i])) { result=!result; }
 			}
 			return result;

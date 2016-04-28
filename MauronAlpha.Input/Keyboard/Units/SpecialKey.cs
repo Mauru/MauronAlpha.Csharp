@@ -2,24 +2,19 @@
 
 namespace MauronAlpha.Input.Keyboard.Units {
 
-
-	public class SpecialKey:KeyboardComponent {
+	public abstract class SpecialKey:KeyboardComponent {
 
 		//constructor
-		public SpecialKey(string name, KeyScript action):base(){
-			SetName(name);
+		public SpecialKey():base(){
 		}
-
-		//The scripted action
-		public delegate void KeyScript();
 
 		//name
-		private string STR_name;
-		public string Name { get { return STR_name; } }
-		public SpecialKey SetName(string name){
-			STR_name=name;
-			return this;
-		}
+		public abstract string Name { get; }
 
+		public bool Equals(SpecialKey other) {
+			return Name.Equals(other.Name);
+		}
+	
 	}
+
 }

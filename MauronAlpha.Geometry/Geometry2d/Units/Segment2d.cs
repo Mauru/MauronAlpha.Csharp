@@ -130,7 +130,7 @@ namespace MauronAlpha.Geometry.Geometry2d.Units {
 
 		#region I_mathComponent
 		//add
-		public Segment2d Add(long n) {
+		public Segment2d Add(double n) {
 			A.Add(n);
 			B.Add(n);
 			return this;
@@ -140,11 +140,11 @@ namespace MauronAlpha.Geometry.Geometry2d.Units {
 			B.Add(n.B);
 			return this;
 		}
-		I_mathComponent I_mathComponent.Add (long n) {
+		I_mathComponent I_mathComponent.Add (double n) {
 			return Add(n);
 		}
 		//subtract
-		public Segment2d Subtract(long n) {
+		public Segment2d Subtract(double n) {
 			A.Subtract(n);
 			B.Subtract(n);
 			return this;
@@ -154,11 +154,11 @@ namespace MauronAlpha.Geometry.Geometry2d.Units {
 			B.Subtract(n.B);
 			return this;
 		}
-		I_mathComponent I_mathComponent.Subtract (long n) {
+		I_mathComponent I_mathComponent.Subtract (double n) {
 			return Subtract(n);
 		}
 		//multiply
-		public Segment2d Multiply(long n) {
+		public Segment2d Multiply(double n) {
 			A.Multiply(n);
 			B.Multiply(n);
 			return this;
@@ -168,11 +168,11 @@ namespace MauronAlpha.Geometry.Geometry2d.Units {
 			B.Multiply(n.B);
 			return this;
 		}
-		I_mathComponent I_mathComponent.Multiply (long n) {
+		I_mathComponent I_mathComponent.Multiply (double n) {
 			return Multiply(n);
 		}
 		//divide
-		public Segment2d Divide(long n) {
+		public Segment2d Divide(double n) {
 			A.Divide(n);
 			B.Divide(n);
 			return this;
@@ -182,7 +182,7 @@ namespace MauronAlpha.Geometry.Geometry2d.Units {
 			B.Divide(n.B);
 			return this;
 		}
-		I_mathComponent I_mathComponent.Divide (long n) {
+		I_mathComponent I_mathComponent.Divide (double n) {
 			return Divide(n);
 		}
 
@@ -190,19 +190,19 @@ namespace MauronAlpha.Geometry.Geometry2d.Units {
 		public bool SmallerOrEqual (Segment2d n) {
 			return A.SmallerOrEqual(n.A)&&B.SmallerOrEqual(n.B);
 		}
-		public bool SmallerOrEqual (long n) {
+		public bool SmallerOrEqual (double n) {
 			return A.SmallerOrEqual(n)&&B.SmallerOrEqual(n);
 		}
 		public bool LargerOrEqual (Segment2d n) {
 			return A.LargerOrEqual(n.A)&&B.LargerOrEqual(n.B);
 		}
-		public bool LargerOrEqual (long n) {
+		public bool LargerOrEqual (double n) {
 			return A.LargerOrEqual(n)&&B.LargerOrEqual(n);
 		}
 		public object Clone ( ) {
 			return Instance;
 		}
-		public int CompareTo (long other) {
+		public int CompareTo (double other) {
 			if(A.CompareTo(other)==0&&B.CompareTo(other)==0) return 0;
 			if( A.CompareTo(other)==1&&B.CompareTo(other)==1) return 1;
 			return -1;
@@ -214,7 +214,7 @@ namespace MauronAlpha.Geometry.Geometry2d.Units {
 				return 1;
 			return -1;
 		}
-		public bool Equals (long other) {
+		public bool Equals (double other) {
 			return (A.Equals(other)&&B.Equals(other));
 		}
 		public bool Equals (Segment2d other) {

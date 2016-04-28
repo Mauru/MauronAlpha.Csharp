@@ -319,11 +319,12 @@ namespace MauronAlpha.HandlingData {
 				return result;
 			}
 		}
-		public long IndexByKey (TKey key) {
-			for( long index=0; index<DATA_keys.Length; index++ ) {
-				if( KeyByIndex(index).Equals(key) ) {
-					return index;
-				}
+		public long IndexByKey(TKey key) {
+			long n = -1;
+			foreach (TKey k in DATA_keys) {
+				n++;
+				if (k.Equals(key))
+					return n;
 			}
 			return -1;
 		}
@@ -397,6 +398,13 @@ namespace MauronAlpha.HandlingData {
 				}
 				return result;
 			}
+		}
+		public bool TryGet(TKey key, ref TValue val) {
+			long index = IndexByKey(key);
+			if (index < 0)
+				return false;
+			val = DATA_values[index];
+			return true;
 		}
 
 		//Methods

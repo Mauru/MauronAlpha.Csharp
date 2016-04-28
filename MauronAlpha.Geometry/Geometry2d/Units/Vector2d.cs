@@ -203,7 +203,7 @@ namespace MauronAlpha.Geometry.Geometry2d.Units {
 			SetY(Y+v.Y);
 			return this;
 		}
-		public Vector2d Add (long n) {
+		public Vector2d Add (double n) {
 			#region ReadOnly Check
 			if( IsReadOnly ) {
                 throw Error("Is protected!,(Add)", this, ErrorType_protected.Instance);
@@ -213,7 +213,7 @@ namespace MauronAlpha.Geometry.Geometry2d.Units {
 			SetY(Y+n);
 			return this;
 		}
-		public Vector2d Add(long x, long y) {
+		public Vector2d Add(double x, double y) {
 			#region ReadOnly Check
 			if (IsReadOnly)
 				throw Error("Is protected!,(Add)", this, ErrorType_protected.Instance);
@@ -224,7 +224,7 @@ namespace MauronAlpha.Geometry.Geometry2d.Units {
 			return this;
 		}
 		//subtract
-		public Vector2d Subtract (long n) {
+		public Vector2d Subtract (double n) {
 			#region ReadOnly Check
 			if( IsReadOnly ) {
 				throw Error("Is protected!,(Subtract)", this, ErrorType_protected.Instance);
@@ -244,7 +244,7 @@ namespace MauronAlpha.Geometry.Geometry2d.Units {
 			SetY(Y-v.Y);
 			return this;
 		}
-        public Vector2d Subtract(long x, long y)
+        public Vector2d Subtract(double x, double y)
         {
             #region ReadOnly Check
             if (IsReadOnly)
@@ -258,7 +258,7 @@ namespace MauronAlpha.Geometry.Geometry2d.Units {
         }
 		
         //multiply
-		public Vector2d Multiply (long n) {
+		public Vector2d Multiply (double n) {
 			#region ReadOnly Check
 			if( IsReadOnly ) {
 				throw Error("Is protected!,(Multiply)", this, ErrorType_protected.Instance);
@@ -279,7 +279,7 @@ namespace MauronAlpha.Geometry.Geometry2d.Units {
 			return this;
 		}
 		//divide
-		public Vector2d Divide (long n) {
+		public Vector2d Divide (double n) {
 			#region ReadOnly Check
 			if( IsReadOnly ) {
 				throw Error("Is protected!,(Divide)", this, ErrorType_protected.Instance);
@@ -313,13 +313,13 @@ namespace MauronAlpha.Geometry.Geometry2d.Units {
 
 		#region Comparison
 		//boolean
-		public bool SmallerOrEqual (long n) {
+		public bool SmallerOrEqual (double n) {
 			return X<=n&&Y<=n;
 		}
 		public bool SmallerOrEqual (Vector2d n) {
 			return (X<=n.X&&Y<=n.Y);
 		}
-		public bool LargerOrEqual (long n) {
+		public bool LargerOrEqual (double n) {
 			return X>=n&&Y>=n;
 		}
 		public bool LargerOrEqual (Vector2d n) {
@@ -328,11 +328,11 @@ namespace MauronAlpha.Geometry.Geometry2d.Units {
 		public bool Equals (Vector2d other) {
 			return (other.X==X&&other.Y==Y);
 		}
-		public bool Equals (long other) {
+		public bool Equals (double other) {
 			return X==other&&Y==other;
 		}
 
-		public int CompareTo (long other) {
+		public int CompareTo (double other) {
 			if( X == other && Y == other )
 				return 0;
 			if( X>other&&Y>other )
@@ -353,20 +353,31 @@ namespace MauronAlpha.Geometry.Geometry2d.Units {
 		#endregion
 
 		#region I_mathComponent
-		I_mathComponent I_mathComponent.Add (long n) {
+		I_mathComponent I_mathComponent.Add (double n) {
 			return Add(n);
 		}
-		I_mathComponent I_mathComponent.Subtract (long n) {
+		I_mathComponent I_mathComponent.Subtract (double n) {
 			return Subtract(n);
 		}
-		I_mathComponent I_mathComponent.Multiply (long n) {
+		I_mathComponent I_mathComponent.Multiply (double n) {
 			return Multiply(n);
 		}
-		I_mathComponent I_mathComponent.Divide (long n) {
+		I_mathComponent I_mathComponent.Divide (double n) {
 			return Divide(n);
 		}
 		#endregion
 
+
+		public int IntX {
+			get {
+				return (int) X;
+			}
+		}
+		public int IntY {
+			get {
+				return (int) Y;
+			}
+		}
 	}
 
 }

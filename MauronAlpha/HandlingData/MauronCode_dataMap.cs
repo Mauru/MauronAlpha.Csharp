@@ -54,11 +54,11 @@ namespace MauronAlpha.HandlingData {
             }
         }
         public int IndexOfKey(string key) {
-            for (int n = 0; n < DATA_keys.Length; n++) {
-                string k = DATA_keys[n];
-                if (k == key) {
+			int n = -1;
+            foreach(string s in Keys) {
+				n++;        
+                if (key == s)
                     return n;
-                }
             }
             //Exception("Invalid Index!", this, ErrorResolution.ReturnNegativeIndex);
             return -1;
@@ -132,6 +132,13 @@ namespace MauronAlpha.HandlingData {
 		}
 		public TValue ValueByIndex(long index) {
 			return DATA_values.Value(index);
+		}
+
+		public bool TryGet(string key, ref TValue result) {
+			int n = IndexOfKey(key);
+			if (n < 0)
+				return false;
+			return DATA_values.TryGet(n, ref result);
 		}
 		#endregion
 

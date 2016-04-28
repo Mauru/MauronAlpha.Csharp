@@ -32,7 +32,7 @@ namespace MauronAlpha.Geometry {
 		//return PI
 		public static double PI {
 			get {
-				return (double) Math.PI;
+				return Math.PI;
 			}
 		}
 	}

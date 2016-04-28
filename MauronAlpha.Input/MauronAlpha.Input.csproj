@@ -28,15 +28,21 @@
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'MonoGame|AnyCPU'">
+    <OutputPath>bin\MonoGame\</OutputPath>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Keyboard\Collections\KeyPressSequenceMap.cs" />
+    <Compile Include="Keyboard\Collections\KeyCommands.cs" />
+    <Compile Include="Keyboard\Units\KeyCommand.cs" />
+    <Compile Include="Keyboard\Collections\KeyModifierMap.cs" />
+    <Compile Include="Keyboard\Collections\KeyModifiers.cs" />
+    <Compile Include="Keyboard\Collections\SpecialKeys.cs" />
     <Compile Include="Keyboard\KeyboardComponent.cs" />
+    <Compile Include="Keyboard\Units\KeyModifier.cs" />
     <Compile Include="Keyboard\Units\KeyPress.cs" />
-    <Compile Include="Keyboard\Collections\KeyPressSequence.cs" />
-    <Compile Include="Keyboard\Collections\KeyboardMap.cs" />
     <Compile Include="Keyboard\Units\SpecialKey.cs" />
     <Compile Include="Keyboard\Collections\SpecialKeyMap.cs" />
     <Compile Include="Keyboard\Events\Event_keyUp.cs" />
@@ -47,10 +53,6 @@
     <ProjectReference Include="..\MauronAlpha.Events\MauronAlpha.Events.csproj">
       <Project>{425A4B94-31DF-4569-B68C-EDEAF82163A7}</Project>
       <Name>MauronAlpha.Events</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\MauronAlpha.Files\MauronAlpha.Files.csproj">
-      <Project>{8868f07d-6273-455c-92fa-41f2cdb450b7}</Project>
-      <Name>MauronAlpha.Files</Name>
     </ProjectReference>
     <ProjectReference Include="..\MauronAlpha\MauronAlpha.csproj">
       <Project>{6A046817-9F14-4781-97C9-F89FEBC2097B}</Project>

@@ -2,35 +2,58 @@
 using MauronAlpha.HandlingData;
 using MauronAlpha.Events;
 
+using MauronAlpha.Input.Keyboard.Collections;
+
 namespace MauronAlpha.Input.Keyboard.Units {
 
 	public class KeyPress:KeyboardComponent,
 	IEquatable<KeyPress> {
-		
+
+		public static KeyPress None {
+			get {
+				return new KeyPress();
+			}
+		}
+
 		//constructor
 		public KeyPress():base(){}
 		public KeyPress(char key) : this() {
-			SetChar(key);
-			SetKeyName("" + key);
+			CHAR_key = key;
 		}
-		public KeyPress(string keyName) : this() {
-			SetKeyName(keyName);
+		public KeyPress(char key, MauronCode_dataList<KeyModifier> modifiers) : this(key) {
+			DATA_modifiers = modifiers;
+		}
+		public KeyPress(SpecialKey key)	: this() {
+			KEY_function = key;
+		}
+		public KeyPress(SpecialKey key, MauronCode_dataList<KeyModifier> modifiers)	: this(key) {
+			DATA_modifiers = modifiers;
+		}
+
+		private SpecialKey KEY_function = SpecialKeys.None;
+		public SpecialKey Function { get { return KEY_function; } }
+
+		private MauronCode_dataList<KeyModifier> DATA_modifiers = new MauronCode_dataList<KeyModifier>();
+		public MauronCode_dataList<KeyModifier> Modifiers { get { return DATA_modifiers; } }
+
+		//Copy
+		public KeyPress Copy {
+			get {
+				if (IsFunction)
+					return new KeyPress(Function, Modifiers);
+				return new KeyPress(Char, Modifiers);
+			}
 		}
 
 		//string description
 		public string AsString {
 			get {
 				string result = "";
-				if (IsCtrlKeyDown)
-					result += "[CTRL]";
-				if (IsAltKeyDown)
-					result += "[ALT]";
-				if (IsShiftKeyDown)
-					result += "[SHIFT]";
-				if (IsFunction||KeyName!=null)
-					result += "["+KeyName+"]";
-				result += CHAR_key;
-				return result;
+				foreach (KeyModifier modifier in Modifiers)
+					result += "[" + modifier.Name + "]";
+				if (IsFunction)
+					return result += "[" + Function.Name + "]";
+				return result += "[" + CHAR_key + "]";
 			}
 		}
 
@@ -41,67 +64,50 @@ namespace MauronAlpha.Input.Keyboard.Units {
 				return CHAR_key;
 			}
 		}
-		public KeyPress SetChar(char key) {
-			CHAR_key = key;
-			return this;
-		}
-		private string STR_key;
-		public string KeyName {
-			get {
-				return STR_key;
-			}
-		}
-		public KeyPress SetKeyName(string str) {
-			STR_key = str;
-			return this;
-		}
 
 		//Booleans
 		public bool Equals(KeyPress other) {
-			if (B_isAltKeyDown != other.IsAltKeyDown
-			|| B_isCtrlKeyDown != other.IsCtrlKeyDown
-			|| B_isShiftKeyDown != other.IsShiftKeyDown)
+			if (!Modifiers.Equals_unsorted(other.Modifiers))
 				return false;
-			if (IsFunction && other.IsFunction)
-				return KeyName == other.KeyName;
+			if (IsFunction != other.IsFunction)
+				return false;
+			else if (IsFunction)
+				return Function.Equals(other.Function);
 			return Char == other.Char;
 		}
 		
 		//Boolean : Special Key
 		public bool IsFunction {
 			get {
-				return (CHAR_key == '\u0000');
+				return !Function.Equals(SpecialKeys.None);
 			}
-		}	
+		}
+		public bool IsEnter {
+			get {
+				return KEY_function.Equals(SpecialKeys.Enter);
+			}
+		}
+		public bool IsSpace {
+			get {
+				return KEY_function.Equals(SpecialKeys.Space);
+			}
+		}
 
 		//Boolean Modifiers
-		private bool B_isAltKeyDown = false;
-		public bool IsAltKeyDown { get { return B_isAltKeyDown; } }
-		public KeyPress SetIsAltKeyDown (bool status) {
-			B_isAltKeyDown = status;
-			return this;
-		}
-
-		private bool B_isShiftKeyDown = false;
-		public bool IsShiftKeyDown { get { return B_isShiftKeyDown; } }
-		public KeyPress SetIsShiftKeyDown (bool status) {
-			B_isShiftKeyDown = status;
-			return this;
-		}
-
-		private bool B_isCtrlKeyDown = false;
-		public bool IsCtrlKeyDown { get { return B_isCtrlKeyDown; } }
-		public KeyPress SetIsCtrlKeyDown (bool status) {
-			B_isCtrlKeyDown = status;
-			return this;
-		}
+		public bool IsAltKeyDown { get { return Modifiers.ContainsValue(KeyModifiers.Alt); } }
+		public bool IsShiftKeyDown { get { return Modifiers.ContainsValue(KeyModifiers.Shift); } }
+		public bool IsCtrlKeyDown { get { return Modifiers.ContainsValue(KeyModifiers.Ctrl); } }
 
 		public bool IsModifier { 
 			get {
-				return IsCtrlKeyDown || IsAltKeyDown || IsShiftKeyDown;
+				return Modifiers.Count > 0;
 			}
 		}
-
+		public bool IsEmpty {
+			get {
+				return !IsFunction && Char == '\u0000' && !IsModifier;
+			}
+		}
 	}
 
 }

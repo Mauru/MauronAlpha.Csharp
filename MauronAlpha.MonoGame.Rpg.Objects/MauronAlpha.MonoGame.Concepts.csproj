@@ -1,0 +1,80 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{E8727538-C254-42D6-9444-A5C0DB4FD315}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>MauronAlpha.MonoGame.Concepts</RootNamespace>
+    <AssemblyName>MauronAlpha.MonoGam.Concepts</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'MonoGame|AnyCPU'">
+    <OutputPath>bin\MonoGame\</OutputPath>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Collections\SpellComponents.cs" />
+    <Compile Include="GameConcept.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Quantifiers\ConceptQuantifier.cs" />
+    <Compile Include="Units\Action.cs" />
+    <Compile Include="Units\Potion.cs" />
+    <Compile Include="Units\Spell.cs" />
+    <Compile Include="Units\SpellComponent.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MauronAlpha.MonoGame.Entities\MauronAlpha.MonoGame.Entities.csproj">
+      <Project>{b3546cdc-2ca5-45b9-ae71-1b75706a2eb0}</Project>
+      <Name>MauronAlpha.MonoGame.Entities</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MauronAlpha.MonoGame.Inventory\MauronAlpha.MonoGame.Inventory.csproj">
+      <Project>{b717d7b0-e992-438d-bf47-04ab5009c820}</Project>
+      <Name>MauronAlpha.MonoGame.Inventory</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MauronAlpha.MonoGame.Quantifiers\MauronAlpha.MonoGame.Quantifiers\MauronAlpha.MonoGame.Quantifiers.csproj">
+      <Project>{2d7e07b0-a6a9-4da2-8695-49e4502a140f}</Project>
+      <Name>MauronAlpha.MonoGame.Quantifiers</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MauronAlpha\MauronAlpha.csproj">
+      <Project>{6a046817-9f14-4781-97c9-f89febc2097b}</Project>
+      <Name>MauronAlpha</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

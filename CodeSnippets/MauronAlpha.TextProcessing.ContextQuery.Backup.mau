@@ -1,0 +1,495 @@
+		//Solves to best possible state down to word
+		public static ContextQuery SolveToEdit(Text text, TextContext context) {
+
+			//Paragraph
+			Paragraph paragraph = null;
+			if (!text.TryIndex(context.Paragraph, ref paragraph)) {
+				if (context.Paragraph <= 0) {
+					paragraph = text.FirstChild;
+					context = paragraph.Start.Copy;
+				}
+				else {
+					paragraph = text.LastChild;
+					context = paragraph.Edit.Copy;
+				}
+			}
+
+			//Line
+			Line line = null;
+			if (!paragraph.TryIndex(context.Line, ref line)) {
+				if (context.Line <= 0) {
+					line = paragraph.FirstChild;
+					context = line.Start.Copy;
+				}
+				else {
+					line = paragraph.LastChild;
+					context = line.Edit.Copy;
+				}
+			}
+
+			//Word
+			Word word = null;
+			if (!line.TryIndex(context.Word, ref word)) {
+				if (context.Word <= 0) {
+					word = line.FirstChild;
+					context = word.Start.Copy;
+				}
+				else {
+					word = line.LastChild;
+					context = word.Edit.Copy;
+				}
+			}
+
+			//Character
+			Character character = null;
+			if (!word.TryIndex(context.Word, ref character)) {
+				if (context.Character <= 0) {
+					character = word.FirstChild;
+					context = word.Start.Copy;
+				}
+				else {
+					character = word.LastChild;
+					context = character.Edit.Copy;
+				}
+			}
+			return new ContextQuery(text, context);
+		}
+
+		//return a result even if it means creating an empty one
+		public Character ForceCharacter() {
+			if (Character != null)
+				return Character;
+
+			if (Word != null)
+				return Word.LastChild;
+
+			if (Line != null)
+				return Line.LastCharacter;
+
+			if (Paragraph != null)
+				return Paragraph.LastCharacter;
+
+			return Text.LastCharacter;
+		}
+		public Character ForceCharacter(bool toEdit) {
+			if (!toEdit)
+				return ForceCharacter();
+			Context.SetMin(0, 0, 0, 0);
+			Paragraph p = null;
+			if (!Text.TryIndex(Context.Paragraph, ref p))
+				p = Text.NewChild;
+
+			Line l = null;
+			if (!p.TryIndex(Context.Line, ref l))
+				l = p.NewChild;
+			Word w = null;
+			if (!l.TryIndex(Context.Word, ref w))
+				w = l.NewChild;
+			Character c = null;
+			if (!w.TryIndex(Context.Character, ref c))
+				c = w.NewChild;
+			return c;
+		}
+
+		public Word ForceWord() {
+			if (Word != null)
+				return Word;
+
+			if (Line != null)
+				return Line.LastChild;
+
+			if (Paragraph != null)
+				return Paragraph.LastWord;
+
+			return Text.LastWord;
+		}
+		public Word ForceWord(bool toEdit) {
+			if (!toEdit)
+				return ForceWord();
+			Context.SetMin(0, 0, 0, 0);
+
+			//get the line
+			Line l = ForceLine(true);
+			Word w = null;
+			if (l.IsParagraphBreak) {
+				l = l.Parent.Next.FirstChild;
+				D_context = l.Context;
+				return l.FirstChild;
+			}
+
+			//attempt direct word
+			if (l.TryIndex(Context.Word, ref w)){
+				return w;
+			}
+			if (l.IsEmpty) {
+				w = l.NewChild;
+				D_context = w.Context;
+				return w;
+			}
+			if (l.HasLineBreak) {
+				w = l.LastChild;
+				D_context = w.Context;
+				return w;
+			}
+			w = l.NewChild;
+			D_context = w.Context;
+			return w;
+		}
+
+		//return editable word, assume p doesnt have a required line
+		private bool GetWordOfP_noLine(Paragraph p, bool asUtility, ref Word w) {
+			Line l = null;
+			//p is Empty
+			if (p.IsEmpty) {
+				l = p.NewChild;
+				w = l.FirstChild;
+				D_context = w.End;
+				return true;
+			}
+
+			//last line of P is a PBreak
+			if (p.HasParagraphBreak) {
+				//step to next paragraph (create if required)
+				p = p.Next;
+
+				//get its first line
+				l = p.FirstChild;
+
+				//it is empty
+				if (l.IsEmpty) {
+					w = l.FirstChild;
+					D_context = w.End;
+					return true;
+				}
+
+				//get first word of l
+				w = l.FirstChild;
+
+				//w is empty
+				if (w.IsEmpty) {
+					D_context = w.End;
+					return true;
+				}
+
+				//needs to be utility word
+				if (asUtility) {
+					w = new Word();
+					l.Insert(w, 0);
+					D_context = w.End;
+					return true;
+				}
+
+				//w is utility
+				if (w.IsUtility) {
+					w = new Word();
+					l.Insert(w, 0);
+					D_context = w.End;
+					return true;
+				}
+
+				//regular word
+				D_context = w.Start;
+				return true;
+			}
+
+			//no PBreak, create new line ( we know last line of p is not a pBreak )
+
+			//get last line of p
+			l = p.LastChild;
+
+			//is empty
+			if (l.IsEmpty) {
+				w = l.NewChild;
+				D_context = w.End;
+				return true;
+			}
+
+			//l has linebreak, new line
+			if (l.HasLineBreak) {
+				l = p.NewChild;
+				w = l.NewChild;
+				D_context = w.End;
+				return true;
+			}
+
+			// append to last line of p
+
+			//need new word (utility)
+			if (asUtility) {
+				w = l.NewChild;
+				D_context = w.End;
+				return true;
+			}
+
+			//get last word of l
+			w = l.LastChild;
+
+			//last word is utility anyway
+			if (w.IsUtility) {
+				w = l.NewChild;
+				D_context = w.End;
+				return true;
+			}
+
+			//we can append to the last word
+			D_context = w.End.Copy.Add(0, 0, 0, 1);
+			return true;
+		}
+		//return editable word, assume l is a paragraph break, want to insert to the LEFT of it
+		private bool GetWordOfPBreakL_left(Line l, bool asUtility, ref Word w) {
+
+			Paragraph p = l.Parent;
+			
+			//no previous line! malformed paragraph!
+			if (!l.TryStepLeft(ref l)) {
+				w = new Word();
+				Line newL = new Line();
+				newL.TryAdd(w);
+				newL.TryAdd(Words.LineBreak);
+				p.Insert(newL, 0);
+				D_context = w.End;
+				return true;
+			}
+
+			//we got the previous line
+
+			//is empty (but needs linebreak at end)! malformed line!
+			if (l.IsEmpty) {
+				w = new Word();
+				l.TryAdd(w);
+				l.TryAdd(Words.LineBreak);
+				D_context = w.End;
+				return true;
+			}
+
+			//get last word of l
+			w = l.LastChild;
+
+			//w is Empty but needs LineBreak!
+			if (w.IsEmpty) {
+				l.TryAdd(Words.LineBreak);
+				D_context = w.End;
+				return true;
+			}
+
+			
+			//w is not a lBreak, fix!
+			if (!w.IsLineBreak) {
+				l.TryAdd(Words.LineBreak);
+
+				//need new word 
+				if(asUtility||w.IsUtility) {
+					w = new Word();
+					int index = w.Index;
+					l.Insert(w,index);
+					D_context = w.End;
+					return true;
+				}
+
+				D_context = w.End;
+				return true;
+			}
+
+			//no previous word
+			if(!w.TryStepLeft(ref w)) {
+				w = new Word();
+				l.Insert(w,0);
+				D_context = w.Start;
+				return true;
+			}
+
+			//need new word
+			if(asUtility || w.IsUtility) {
+				int index = w.Index;
+				w = new Word();
+				l.Insert(w,index+1);
+				D_context = w.End;
+				return true;
+			}
+
+			//can use that word
+			D_context = w.End.Copy.Add(0,0,0,1);
+			return true;
+		}
+		//return editable word, assume, l is paragraph break, want to insert to the RIGHT of it
+		private bool GetWordOfPBreakL_right(Line l, bool asUtility, ref Word w) {
+
+			Paragraph p = l.Parent;
+
+			//get next paragraph
+			p = p.Next;
+
+			l = p.FirstChild;
+			//malformed
+			if (l.IsParagraphBreak) {
+				l = new Line();
+				p.Insert(l, 0);
+				w = new Word();
+				l.TryAdd(w);
+				D_context = w.Start;
+				return true;
+			}
+
+			//get first word of l
+			w = l.FirstChild;
+
+			if (w.IsEmpty) {
+				D_context = w.Start;
+				return true;
+			}
+
+			if (asUtility || w.IsUtility) {
+				w = new Word();
+				l.Insert(w, 0);
+				D_context = w.Start;
+				return true;
+			}
+
+			D_context = w.Start;
+			return true;
+		}
+
+		//return editable word, assume l is not a pBreak
+		private bool GetWordOfL(Line l, bool asUtility, ref Word w) {
+
+			//is empty
+			if (l.IsEmpty) {
+				w = l.FirstChild;
+				D_context = w.Start;
+				return true;
+			}
+
+			if()
+
+
+
+		}
+
+		public bool GetWord(bool asUtility, ref Word w) {
+			Context.SetMin(0, 0, 0, 0);
+
+			Paragraph p = null;
+			if (!Text.TryIndex(Context.Paragraph, ref p)) {
+				if (Context.Paragraph >= Text.Count)
+					p = Text.NewChild;
+				else
+					return false;
+			}
+
+			//attempt to get the line
+
+			Line l = null;
+			//didnt find line
+			if (!p.TryIndex(Context.Line, ref l))
+				return GetWordOfP_noLine(p, asUtility, ref w);
+
+			//l is a pBreak
+			if (l.IsParagraphBreak) {
+
+				//need to decide where to create new word
+
+				//left
+				if (Context.Character <= 0)
+					return GetWordOfPBreakL_left(l,asUtility, ref w);
+
+				//right
+				return GetWordOfPBreakL_right(l, asUtility, ref w);
+			}
+
+			//we know l is not a paragraph break
+
+			//get the weeerd
+			if (!l.TryIndex(Context.Word, ref w)) {
+
+				return GetWordOfL(l, ref w);
+
+				if (l.HasLineBreak) {
+					Line nextL = null;
+					if (l.TryStepRight(ref nextL)) {
+						if (nextL.IsParagraphBreak) {
+							nextL = new Line();
+							p.Insert(nextL, l.Index + 1);
+							w = new Word();
+							nextL.TryAdd(w);
+							nextL.TryAdd(Words.LineBreak);
+							D_context = w.Start;
+							return true;
+						}
+						w = nextL.FirstChild;
+						if (w.IsEmpty) {
+							D_context = w.Start;
+							return true;
+						}
+						if (asUtility) {
+							w = new Word();
+							nextL.Insert(w, 0);
+							D_context = w.Start;
+							return true;
+						}
+						if (w.IsUtility) {
+							w = new Word();
+							nextL.Insert(w, 0);
+							D_context = w.Start;
+							return true;
+						}
+						D_context = w.Start;
+						return true;
+					}
+				}
+			}
+		}
+
+		public Line ForceLine() {
+			if (Line != null)
+				return Line;
+
+			if (Paragraph != null)
+				return Paragraph.LastChild;
+
+			return Text.LastLine;
+		}
+		public Line ForceLine(bool toEdit) {
+			if (!toEdit)
+				return ForceLine();
+			Context.SetMin(0, 0, 0, 0);
+
+			Paragraph p = ForceParagraph(true);
+
+			Line l = null;
+			if (p.TryIndex(Context.Line, ref l))
+				return l;
+			if (p.HasParagraphBreak) { 
+				p = p.Next;
+				D_context = p.Context;
+			}
+			if (p.IsEmpty) {
+				l = p.NewChild;
+				D_context = l.Context;
+				return l;
+			}
+			if (D_context.Line >= p.Count) {
+				l = p.NewChild;
+				D_context = l.Context;
+				return l;
+			}
+			l = p.LastChild;
+			D_context = l.Context;
+			return l;
+		}
+
+		public Paragraph ForceParagraph() {
+			if (Paragraph != null)
+				return Paragraph;
+
+			return Text.LastChild;
+		}
+		public Paragraph ForceParagraph(bool toEdit) {
+			if (!toEdit)
+				return ForceParagraph();
+			Context.SetMin(0, 0, 0, 0);
+			Paragraph p = null;
+			if (!Text.TryIndex(Context.Paragraph, ref p))
+				p = Text.NewChild;
+			return p;
+		}
+	

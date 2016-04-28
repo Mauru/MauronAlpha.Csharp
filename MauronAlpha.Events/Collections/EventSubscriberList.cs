@@ -44,7 +44,7 @@ namespace MauronAlpha.Events.Collections
 				SetValue (code, entry);
 			}
 			entry = Value (code);
-			EventUnit_subscription subscription=new EventUnit_subscription(code, subscriber, model, EventUnit_subscription.CONDITION_compareEventCode, subscriber.TriggerOfCode(code));
+			EventUnit_subscription subscription=new EventUnit_subscription(code, subscriber, model);
 			entry.Add(subscription);
 			SetValue(code,entry);
 			

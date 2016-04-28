@@ -1,4 +1,4 @@
-﻿
+﻿using System.Collections;
 
 namespace MauronAlpha.HandlingData.Interfaces {
 	
@@ -9,4 +9,6 @@ namespace MauronAlpha.HandlingData.Interfaces {
 		I_dataCollection<Type_key,Type_value> SetValue(Type_key key, Type_value value);
 
 	}
+
+
 }

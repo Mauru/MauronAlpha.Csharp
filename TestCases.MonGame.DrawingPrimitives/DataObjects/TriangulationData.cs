@@ -1,15 +1,17 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
 using MauronAlpha.MonoGame.Collections;
-using MauronAlpha.Geometry.Geometry2d.Shapes;
+using MauronAlpha.MonoGame.Geometry;
 
 namespace MauronAlpha.MonoGame.DataObjects {
 
-	public class TriangulationData {
+	public class TriangulationData:MonoGameComponent {
+
+		public TriangulationData() : base() { }
 
 		public VertexBuffer VertexBuffer;
 		public TriangleList Triangles;
 		public VertexPositionColor[] Vertices;
-		public Polygon2d Polygon;
+		public PolyShape Polygon;
 
 	}
 }

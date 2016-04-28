@@ -55,6 +55,7 @@ namespace MauronAlpha.Events.Units {
 			EventHandler.CheckForTrigger(e, sender, TimeStamp);
 			return this;
 		}
-    }
+   
+	}
 
 }

@@ -2,12 +2,12 @@
 
 namespace MauronAlpha.Mathematics {
 	
-	public interface I_mathComponent:ICloneable,IComparable<long>,IEquatable<long> {
-		I_mathComponent Add(long n);
-		I_mathComponent Subtract(long n);
-		I_mathComponent Multiply(long n);
-		I_mathComponent Divide(long n);		
-		bool SmallerOrEqual(long n);
-		bool LargerOrEqual(long n);
+	public interface I_mathComponent:ICloneable,IComparable<double>,IEquatable<double> {
+		I_mathComponent Add(double n);
+		I_mathComponent Subtract(double n);
+		I_mathComponent Multiply(double n);
+		I_mathComponent Divide(double n);		
+		bool SmallerOrEqual(double n);
+		bool LargerOrEqual(double n);
 	}
 }

@@ -2,6 +2,7 @@
 
 using MauronAlpha.MonoGame.Collections;
 using MauronAlpha.MonoGame.DataObjects;
+using MauronAlpha.MonoGame.Geometry;
 
 using MauronAlpha.Geometry.Geometry2d.Shapes;
 using MauronAlpha.Geometry.Geometry2d.Utility;
@@ -17,7 +18,7 @@ namespace MauronAlpha.MonoGame.Utility {
 			Device = device;
 		}
 
-		public TriangulationData Triangulate(Polygon2d poly) {
+		public TriangulationData Triangulate(PolyShape poly) {
 
 			TriangulationData data = new TriangulationData();
 			data.Polygon = poly;
@@ -39,7 +40,7 @@ namespace MauronAlpha.MonoGame.Utility {
 			System.Console.WriteLine(msg+" : " +value);
 		}
 
-		public VertexBuffer ToBuffer(Polygon2d poly) {
+		public VertexBuffer ToBuffer(PolyShape poly) {
 			return Triangulate(poly).VertexBuffer;
 		}
 		public VertexBuffer ToBuffer(TriangleList triangles) {

@@ -35,6 +35,9 @@
     <WarningLevel>4</WarningLevel>
     <Optimize>false</Optimize>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'MonoGame|AnyCPU'">
+    <OutputPath>bin\MonoGame\</OutputPath>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -47,7 +50,7 @@
   <ItemGroup>
     <Compile Include="Geometry2d\Interfaces\I_polygon2d.cs" />
     <Compile Include="Geometry2d\Shapes\Ngon2d.cs" />
-    <Compile Include="Geometry2d\Shapes\Polygon2dBounds.cs" />
+    <Compile Include="Geometry2d\Units\Polygon2dBounds.cs" />
     <Compile Include="Geometry2d\Collections\Segment2dList.cs" />
     <Compile Include="Geometry2d\Interfaces\I_polygonShape2d.cs" />
     <Compile Include="Geometry2d\Shapes\Triangle2d.cs" />

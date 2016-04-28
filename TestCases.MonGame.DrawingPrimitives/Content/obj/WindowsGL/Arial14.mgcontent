@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:/Users/mauru/Desktop/Coding/mauronAlpha.cSharp/TestCases.MonGame.DrawingPrimitives/Content/Arial14.spritefont</SourceFile>
+  <SourceTime>2015-08-21T10:06:15.9006205+02:00</SourceTime>
+  <DestFile>C:/Users/mauru/Desktop/Coding/mauronAlpha.cSharp/TestCases.MonGame.DrawingPrimitives/Content/bin/WindowsGL/Arial14.xnb</DestFile>
+  <DestTime>2015-08-21T10:08:32.484351+02:00</DestTime>
+  <Importer>FontDescriptionImporter</Importer>
+  <ImporterTime>2015-05-13T21:31:52+02:00</ImporterTime>
+  <Processor>FontDescriptionProcessor</Processor>
+  <ProcessorTime>2015-05-13T21:31:52+02:00</ProcessorTime>
+  <Parameters>
+    <Key>TextureFormat</Key>
+    <Value>Compressed</Value>
+  </Parameters>
+  <Dependencies />
+  <BuildAsset />
+  <BuildOutput />
+</PipelineBuildEvent>
