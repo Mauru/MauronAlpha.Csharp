@@ -1,4 +1,5 @@
 ﻿using System;
+using MauronAlpha.Console;
 
 namespace MauronAlpha.TestCases.Console {
 	

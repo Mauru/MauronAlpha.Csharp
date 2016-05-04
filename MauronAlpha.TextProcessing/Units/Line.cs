@@ -6,7 +6,11 @@ namespace MauronAlpha.TextProcessing.Units {
 	//Defines a line in string analyzations
 	public class Line:TextUnit {
 
-		public Line() : base() {	}
+		public override TextUnitType UnitType {
+			get { return TextUnitTypes.Line; }
+		}
+
+		public Line() : base(TextUnitTypes.Line) {	}
 		public Line(Word unit):this() {
 			Words.Add(unit);
 			unit.SetParent(this, 0);
@@ -52,16 +56,20 @@ namespace MauronAlpha.TextProcessing.Units {
 			get {
 				if (IsEmpty)
 					return Context.Copy;
+
+				Paragraph p = Parent;
+
+				if (IsParagraphBreak)
+					return new TextContext(p.Index + 1, 0, 0, 0);
+
+				if (HasLineBreak)
+					return new TextContext(p.Index, Index + 1, 0, 0);
+
 				Word w = LastChild;
-				if (w.IsEmpty)
-					return w.Context.Copy;
-				if (w.IsParagraphBreak)
-					return Parent.Next.Start;
-				if (w.IsLineBreak)
-					return Context.Copy.SetLine(Index+1);
 				if (w.IsUtility)
-					return w.Context.Copy.SetWord(w.Index + 1);
-				return w.LastChild.Context.Copy.Add(0, 0, 0, 1);
+					return new TextContext(p.Index, Index, w.Index+1, 0);
+
+				return new TextContext(p.Index, Index, w.Index, w.Count);
 			}
 		}
 
@@ -403,6 +411,37 @@ namespace MauronAlpha.TextProcessing.Units {
 			return Words.Value(index);
 		}
 
+		public Words ChildrenAfterIndex(int index) {
+			return Words.Range(index + 1);
+		}
+
+		public Words ChildrenBeforeIndex(int index) {
+			return Words.Range(0, index);
+		}
+
+		public Words ChildrenByRange(int start, int end) {
+			if (start < 0)
+				start = 0;
+			if (end < 0)
+				end = 0;
+			return Words.Range(start, end);
+		}
+
+		public Lines LookRight {
+			get {
+				if (!HasParent)
+					return new Lines();
+				return Parent.ChildrenAfterIndex(Index);
+			}
+		}
+		public Lines LookLeft {
+			get {
+				if (!HasParent)
+					return new Lines();
+				return Parent.ChildrenBeforeIndex(Index);
+			}
+		}
+
 		public Characters Characters {
 			get {
 				Characters result = new Characters();
@@ -445,5 +484,19 @@ namespace MauronAlpha.TextProcessing.Units {
 			Index = index;
 		}
 	}
+
+	public class TextUnitType_line : TextUnitType {
+		public override string Name {
+			get {
+				return "Line";
+			}
+		}
+		public static TextUnitType_line Instance {
+			get {
+				return new TextUnitType_line();
+			}
+		}
+	}
+
 
 }

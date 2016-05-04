@@ -5,7 +5,12 @@ namespace MauronAlpha.TextProcessing.Units {
 	
 	public class Paragraph:TextUnit {
 
-		public Paragraph()	: base() {}
+		public override TextUnitType UnitType {
+			get { return TextUnitTypes.Paragraph; }
+		}
+
+		//constructors
+		public Paragraph()	: base(TextUnitTypes.Paragraph) {}
 		public Paragraph(Line line)	: this() {
 			TryAdd(line);
 		}
@@ -23,6 +28,7 @@ namespace MauronAlpha.TextProcessing.Units {
 			SetText(text);
 		}
 
+		//Context
 		public TextContext Context {
 			get {
 				return Parent.Context.Copy.SetParagraph(Index);
@@ -295,6 +301,40 @@ namespace MauronAlpha.TextProcessing.Units {
 			}
 		}
 
+		public Lines ChildrenAfterIndex(int index) {
+			return Lines.Range(index + 1);
+		}
+
+		public Lines ChildrenBeforeIndex(int index) {
+			return Lines.Range(0, index);
+		}
+
+		public Lines ChildrenByRange(int start, int end) {
+			if (start < 0)
+				start = 0;
+			if (end < 0)
+				end = 0;
+			return Lines.Range(start, end);
+		}
+
+		public Paragraphs LookRight {
+			get {
+				if (!HasParent)
+					return new Paragraphs();
+				return Parent.ChildrenAfterIndex(Index);
+			}
+		}
+		public Paragraphs LookLeft {
+			get {
+				if (!HasParent)
+					return new Paragraphs();
+				return Parent.ChildrenBeforeIndex(Index);
+			}
+		}
+
+
+
+
 		//Split the line at index
 		public Lines SplitAt(int index) {
 			if (index <= 0)
@@ -438,6 +478,21 @@ namespace MauronAlpha.TextProcessing.Units {
 			Parent.Insert(paragraphs, Index + 1);
 			Parent.TryInlineMergeAtIndex(Index + count - 1);
 		}
+	}
+
+	public class TextUnitType_paragraph : TextUnitType {
+
+		public override string Name {
+			get {
+				return "Paragraph";
+			}
+		}
+		public static TextUnitType_paragraph Instance {
+			get {
+				return new TextUnitType_paragraph();
+			}
+		}
+
 	}
 
 }

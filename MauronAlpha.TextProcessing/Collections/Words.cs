@@ -124,5 +124,9 @@ namespace MauronAlpha.TextProcessing.Collections {
 		public new Words Range(int index) {
 			return new Words(base.Range(index));
 		}
+		public new Words Range(int start, int end) {
+			return new Words(base.Range(start, end));
+		}
+
 	}
 }

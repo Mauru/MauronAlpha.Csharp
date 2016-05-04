@@ -4,16 +4,15 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{2B14E6AB-FF3B-42C8-B6F9-5C2A6A35F266}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <ProjectGuid>{F3EA0810-D9BA-44B8-A8E7-45F7D9970678}</ProjectGuid>
+    <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>MauronAlpha.TestCases.Console</RootNamespace>
-    <AssemblyName>MauronAlpha.TestCases.Console</AssemblyName>
+    <RootNamespace>MauronAlpha.Console</RootNamespace>
+    <AssemblyName>MauronAlpha.Console</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -23,16 +22,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'MonoGame|AnyCPU'">
-    <OutputPath>bin\MonoGame\</OutputPath>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -44,17 +39,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Program.cs" />
+    <Compile Include="ConsoleComponent.cs" />
+    <Compile Include="ConsoleInput.cs" />
+    <Compile Include="ConsoleInputManager.cs" />
+    <Compile Include="ConsoleKeyConverter.cs" />
+    <Compile Include="ConsoleRenderer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\MauronAlpha.Console\MauronAlpha.Console.csproj">
-      <Project>{f3ea0810-d9ba-44b8-a8e7-45f7d9970678}</Project>
-      <Name>MauronAlpha.Console</Name>
-    </ProjectReference>
     <ProjectReference Include="..\MauronAlpha.Events\MauronAlpha.Events.csproj">
       <Project>{425a4b94-31df-4569-b68c-edeaf82163a7}</Project>
       <Name>MauronAlpha.Events</Name>
@@ -83,6 +75,9 @@
       <Project>{6a046817-9f14-4781-97c9-f89febc2097b}</Project>
       <Name>MauronAlpha</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

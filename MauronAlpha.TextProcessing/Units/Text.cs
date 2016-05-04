@@ -5,6 +5,18 @@ namespace MauronAlpha.TextProcessing.Units {
 	
 	public class Text:TextUnit {
 
+		//Constructor
+		public Text() : base(TextUnitTypes.Text) { }
+		public Text(Paragraphs data) : this() {
+			foreach (Paragraph p in data) {
+				TryAdd(p);
+			}
+		}
+
+		public override TextUnitType UnitType {
+			get { return TextUnitTypes.Text; }
+		}
+
 		public TextContext Context = new TextContext();
 		public TextConfiguration Configuration = new TextConfiguration();
 
@@ -268,6 +280,22 @@ namespace MauronAlpha.TextProcessing.Units {
 			Word word = WordByContext(context);
 		}
 
+		public Paragraphs ChildrenAfterIndex(int index) {
+			return Paragraphs.Range(index + 1);
+		}
+
+		public Paragraphs ChildrenBeforeIndex(int index) {
+			return Paragraphs.Range(0, index);
+		}
+
+		public Paragraphs ChildrenByRange(int start, int end) {
+			if (start < 0)
+				start = 0;
+			if (end < 0)
+				end = 0;
+			return Paragraphs.Range(start, end);
+		}
+
 		public Paragraphs Paragraphs = new Paragraphs();
 		public Paragraph NewChild {
 			get {
@@ -443,6 +471,21 @@ namespace MauronAlpha.TextProcessing.Units {
 			return word.NewChild;
 		}
 
+	}
+
+	public class TextUnitType_text : TextUnitType {
+		
+		public override string Name {
+			get {
+				return "Text";
+			}
+		}
+
+		public static TextUnitType_text Instance {
+			get {
+				return new TextUnitType_Text();
+			}
+		}
 	}
 
 }

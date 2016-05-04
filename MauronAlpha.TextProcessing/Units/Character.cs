@@ -1,45 +1,20 @@
 ﻿using MauronAlpha.TextProcessing.DataObjects;
+using MauronAlpha.TextProcessing.Collections;
 
 namespace MauronAlpha.TextProcessing.Units {
 	
 	//Defines a character in string analyzations
 	public class Character:TextUnit {
 
-		public TextContext Context {
+		public override TextUnitType UnitType {
 			get {
-				return Parent.Context.Copy.SetCharacter(Index);
-			}
-		}
-		public TextContext Edit {
-			get {
-				if (IsEmpty)
-					return Context;
-				if(IsParagraphBreak) {
-					Paragraph p = Paragraph;
-					return p.Context.Copy.SetParagraph(p.Index + 1);
-				}
-				if (IsLineBreak) {
-					Line l = Line;
-					return l.Context.Copy.SetLine(l.Index + 1);
-				}
-				if (IsUtility) {
-					Word w = Parent;
-					return w.Context.Copy.SetWord(w.Index + 1);
-				}
-				return Context.Copy.SetCharacter(Index + 1);
-			}
-		}
-		
-		public Encoding Encoding {
-			get {
-				if (HasParent)
-					return Parent.Encoding;
-				return MauronAlpha.TextProcessing.DataObjects.Encoding.Instance;
+				return TextUnitTypes.Character;
 			}
 		}
 
-		public Character() : base() { }
-		public Character(char ch) : base() {
+		//constructors
+		public Character() : base(TextUnitTypes.Character) { }
+		public Character(char ch) : this() {
 			if (Encoding.IsParagraphBreak(ch))
 				IsParagraphBreak = true;
 			else if (Encoding.IsLineBreak(ch))
@@ -53,6 +28,41 @@ namespace MauronAlpha.TextProcessing.Units {
 		}
 
 		public char Symbol;
+
+		public TextContext Context {
+			get {
+				return Parent.Context.Copy.SetCharacter(Index);
+			}
+		}
+		public TextContext Edit {
+			get {
+				if (IsEmpty)
+					return Context;
+
+				Paragraph p = Paragraph;
+
+				if(IsParagraphBreak)
+					return new TextContext(p.Index + 1, 0, 0, 0);
+
+				Line l = Line;
+				if (IsLineBreak)	
+					return new TextContext(p.Index,l.Index+1,0,0);
+
+				Word w  = Parent;
+				if (IsUtility)
+					return new TextContext(p.Index, l.Index, w.Index + 1, 0);
+
+				return Context.Copy.SetCharacter(Index + 1);
+			}
+		}
+	
+		public Encoding Encoding {
+			get {
+				if (HasParent)
+					return Parent.Encoding;
+				return MauronAlpha.TextProcessing.DataObjects.Encoding.Instance;
+			}
+		}
 
 		public string AsString {
 			get {
@@ -218,6 +228,31 @@ namespace MauronAlpha.TextProcessing.Units {
 			Index = index;
 		}
 
+		public Characters LookRight { 
+			get {
+				if (!HasParent)
+					return new Characters();
+				return Parent.ChildrenAfterIndex(Index);
+			}
+		}
+		public Characters LookLeft {
+			get {
+				if (!HasParent)
+					return new Characters();
+				return Parent.ChildrenBeforeIndex(Index);
+			}
+		}
+	}
+
+	public class TextUnitType_character : TextUnitType {
+		public override string Name {
+			get { return "Character"; }
+		}
+		public static TextUnitType_character Instance {
+			get {
+				return new TextUnitType_character();
+			}
+		}
 	}
 
 }

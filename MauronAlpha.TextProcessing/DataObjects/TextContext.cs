@@ -51,6 +51,13 @@
 			Character = character;
 			return this;
 		}
+		public TextContext Set(TextContext ctx) {
+			Paragraph = ctx.Paragraph;
+			Line = ctx.Line;
+			Word = ctx.Word;
+			Character = ctx.Character;
+			return this;
+		}
 		public TextContext SetMin(int paragraph, int line, int word, int character) {
 			if (Paragraph < paragraph)
 				Paragraph = paragraph;

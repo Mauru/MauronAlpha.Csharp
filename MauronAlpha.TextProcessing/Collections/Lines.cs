@@ -92,6 +92,9 @@ namespace MauronAlpha.TextProcessing.Collections {
 		public new Lines Range(int index) {
 			return new Lines(base.Range(index));
 		}
+		public new Lines Range(int start,int end) {
+			return new Lines(base.Range(start,end));
+		}
 
 		//tests if this is a self-contained paragraph and fixes if necessary - returns true if fixes were needed
 		public bool FixAsContainedParagraph() {

@@ -5,7 +5,14 @@ namespace MauronAlpha.TextProcessing.Units {
 	
 	public class Word:TextUnit {
 
-		public Word() : base() { }
+		public override TextUnitType UnitType {
+			get { 
+				return TextUnitTypes.Word;
+			}
+		}
+
+		//constructors
+		public Word() : base(TextUnitTypes.Word) { }
 		public Word(Character unit)	: this() {
 			Characters.Add(unit);
 			unit.SetParent(this, 0);
@@ -42,17 +49,19 @@ namespace MauronAlpha.TextProcessing.Units {
 			get {
 				if (IsEmpty)
 					return Context.Copy;
-				Character c = LastChild;
-				if (c.IsEmpty)
-					return c.Context.Copy;
-				if (c.IsParagraphBreak)
-					return new TextContext(Paragraph.Index + 1, 0, 0, 0);
-				TextContext context = Context;
-				if (c.IsLineBreak)
-					return context.Copy.SetWord(0);
-				if (c.IsUtility)
-					return context.Copy.SetWord(Index + 1);
-				return c.Context.Copy.Add(0, 0, 0, 1);
+
+				Paragraph p = Paragraph;
+				if (IsParagraphBreak)
+					return new TextContext(p.Index + 1, 0, 0, 0);
+
+				Line l = Parent;
+				if (IsLineBreak)
+					return new TextContext(p.Index, l.Index + 1, 0, 0);
+
+				if (IsUtility)
+					return new TextContext(p.Index, l.Index, Index + 1,0);
+
+				return new TextContext(p.Index, l.Index, Index, Count);
 			}
 		}
 
@@ -265,6 +274,19 @@ namespace MauronAlpha.TextProcessing.Units {
 			return true;
 		}
 
+		public Character CreateEmptyCharacterAtIndex(int index) {
+			if (IsEmpty)
+				return NewChild;
+			if (Index >= Count)
+				return NewChild;
+
+			Characters.ShiftIndex(index, this);
+			Character newC = new Character();
+			newC.SetParent(this, index);
+			Characters.InsertValueAt(index, newC);
+			return newC;
+		}
+
 		public Characters Characters = new Characters();
 		//Split the line at index
 		public Characters SplitAt(int index) {
@@ -347,7 +369,50 @@ namespace MauronAlpha.TextProcessing.Units {
 			DATA_parent = unit;
 			Index = index;
 		}
-	
+		
+		public Characters ChildrenAfterIndex(int index) {
+			return Characters.Range(index+1);
+		}
+
+		public Characters ChildrenBeforeIndex(int index) {
+			return Characters.Range(0, index);
+		}
+
+		public Characters ChildrenByRange(int start, int end) {
+			if (start < 0)
+				start = 0;
+			if (end < 0)
+				end = 0;
+			return Characters.Range(start, end);
+		}
+
+		public Words LookRight {
+			get {
+				if(!HasParent)
+					return new Words();
+				return Parent.ChildrenAfterIndex(Index);
+			}
+		}
+		public Words LookLeft {
+			get {
+				if(!HasParent)
+					return new Words();
+				return Parent.ChildrenBeforeIndex(Index);
+			}
+		}
+	}
+
+	public class TextUnitType_word : TextUnitType {
+		public override string Name {
+			get {
+				return "Word";
+			}
+		}
+		public static TextUnitType_word Instance {
+			get {
+				return new TextUnitType_word();
+			}
+		}
 	}
 
 }

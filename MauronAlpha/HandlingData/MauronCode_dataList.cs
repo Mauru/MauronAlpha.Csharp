@@ -253,6 +253,15 @@ namespace MauronAlpha.HandlingData {
 			Data.InsertRange(key, new T[1] { obj });
 			return this;
 		}
+		public MauronCode_dataList<T> InsertValuesAt(int key, IEnumerable<T> values) {
+			#region ReadOnly Check
+			if (IsReadOnly) {
+				throw Error("ReadOnly!,(InsertValueAt)", this, ErrorType_protected.Instance);
+			}
+			#endregion
+			Data.InsertRange(key, values);
+			return this;
+		}
 		public MauronCode_dataList<T> Join(MauronCode_dataList<T> other) {
 			if(IsReadOnly)
 				throw Error("Is protected!,(Join)",this,ErrorType_protected.Instance);

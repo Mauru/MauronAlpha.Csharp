@@ -21,6 +21,9 @@ namespace MauronAlpha.TextProcessing.Collections {
 		public new Characters Range(int index) {
 			return new Characters(base.Range(index));
 		}
+		public new Characters Range(int start,int end) {
+			return new Characters(base.Range(start,end));
+		}
 
 		public bool HasUtility {
 			get {
