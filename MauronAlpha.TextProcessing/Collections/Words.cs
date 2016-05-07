@@ -6,11 +6,15 @@ namespace MauronAlpha.TextProcessing.Collections {
 
 	public class Words:MauronCode_dataList<Word> {
 
+		//Constructors
 		public Words(): base() {}
-		public Words(MauronCode_dataList<Word> data):this() {
+		public Words(Word w) :this() {
+			Add(w);
+		}
+		public Words(MauronCode_dataList<Word> data) :this() {
 			base.AddValuesFrom(data);
 		}
-		public Words(Characters data) : this() {
+		public Words(Characters data) :this() {
 			if (data.IsEmpty) return;
 			Word w = new Word();
 			Add(w);
@@ -31,11 +35,15 @@ namespace MauronAlpha.TextProcessing.Collections {
 				index++;
 			}
 		}
-		public Words(string text): this(new Characters(text)) {}
+		
+		public Words(string text) :this(new Characters(text)) {}
 
-		public void Add(string word) {
+		//Modifiers
+		public Words Add(string word) {
 			Characters data = new Characters(word);
-			if (data.IsEmpty) return;
+			if (data.IsEmpty) 
+				return this;
+
 			Word w = new Word();
 			Add(w);
 			int index = 0;
@@ -54,8 +62,27 @@ namespace MauronAlpha.TextProcessing.Collections {
 					w.TryAdd(c);
 				index++;
 			}
+			return this;
+		}
+		public Words ShiftIndex(int index, Line parent) {
+			MauronCode_dataList<Word> candidates = Range(index);
+			foreach (Word unit in candidates)
+				unit.SetParent(parent, unit.Index + 1);
+			return this;
+		}
+		public Words UnShiftIndex(int index, Line parent) {
+			MauronCode_dataList<Word> candidates = Range(index);
+			foreach (Word unit in candidates)
+				unit.SetParent(parent, unit.Index - 1);
+			return this;
 		}
 
+		public new Words Reverse() {
+			base.Reverse();
+			return this;
+		}
+
+		//Boolean Conditionals
 		public bool HasLineOrParagraphBreak {
 			get {
 				foreach (Word unit in this)
@@ -81,46 +108,7 @@ namespace MauronAlpha.TextProcessing.Collections {
 			}
 		}
 
-		public void ShiftIndex(int index, Line parent) {
-			MauronCode_dataList<Word> candidates = Range(index);
-			foreach (Word unit in candidates)
-				unit.SetParent(parent, unit.Index + 1);
-		}
-		public void UnShiftIndex(int index, Line parent) {
-			MauronCode_dataList<Word> candidates = Range(index);
-			foreach (Word unit in candidates)
-				unit.SetParent(parent, unit.Index - 1);
-		}
-
-		public static Word LineBreak {
-			get {
-				Word unit = new Word(Characters.LineBreak);
-				return unit;
-			}
-		}
-		public static Word ParagraphBreak {
-			get {
-				Word unit = new Word(Characters.ParagraphBreak);
-				return unit;
-			}
-		}
-		public static Word Tab {
-			get {
-				Word unit = new Word(Characters.Tab);
-				return unit;
-			}
-		}
-		public static Word WhiteSpace {
-			get {
-				Word unit = new Word(Characters.WhiteSpace);
-				return unit;
-			}
-		}
-
-		public new Words Reverse() {
-			base.Reverse();
-			return this;
-		}
+		//Queries
 		public new Words Range(int index) {
 			return new Words(base.Range(index));
 		}
@@ -128,5 +116,7 @@ namespace MauronAlpha.TextProcessing.Collections {
 			return new Words(base.Range(start, end));
 		}
 
+
 	}
+
 }

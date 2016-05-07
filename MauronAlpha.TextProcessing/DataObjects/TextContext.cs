@@ -86,6 +86,11 @@
 				return "{" + Paragraph + ":" + Line + ":" + Word + ":" + Character + "}";
 			}
 		}
-	
+
+		public static TextContext None {
+			get {
+				return new TextContext();
+			}
+		}
 	}
 }

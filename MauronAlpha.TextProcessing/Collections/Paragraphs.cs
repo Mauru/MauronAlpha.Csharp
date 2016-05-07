@@ -5,11 +5,12 @@ namespace MauronAlpha.TextProcessing.Collections {
 	
 	public class Paragraphs:MauronCode_dataList<Paragraph> {
 
-		public Paragraphs() : base() { }
-		public Paragraphs(MauronCode_dataList<Paragraph> data): this() {
+		// Constructors
+		public Paragraphs() :base() { }
+		public Paragraphs(MauronCode_dataList<Paragraph> data) :this() {
 			base.AddValuesFrom(data);
 		}
-		public Paragraphs(Lines data) : this() {
+		public Paragraphs(Lines data) :this() {
 			if (data.IsEmpty) return;
 			Paragraph p = new Paragraph();
 			Add(p);
@@ -28,8 +29,7 @@ namespace MauronAlpha.TextProcessing.Collections {
 					p.TryAdd(l);
 			}
 		}
-
-		public Paragraphs(Characters data) {
+		public Paragraphs(Characters data) :this() {
 			if (data.IsEmpty) return;
 			Paragraph p = new Paragraph();
 			Add(p);
@@ -53,15 +53,18 @@ namespace MauronAlpha.TextProcessing.Collections {
 			}
 		}
 
-		public void ShiftIndex(int index, Text parent) {
+		//Modifiers
+		public Paragraphs ShiftIndex(int index, Text parent) {
 			MauronCode_dataList<Paragraph> candidates = Range(index);
 			foreach (Paragraph unit in candidates)
 				unit.SetParent(parent, unit.Index + 1);
+			return this;
 		}
-		public void UnShiftIndex(int index, Text parent) {
+		public Paragraphs UnShiftIndex(int index, Text parent) {
 			MauronCode_dataList<Paragraph> candidates = Range(index);
 			foreach (Paragraph unit in candidates)
 				unit.SetParent(parent, unit.Index - 1);
+			return this;
 		}
 
 		public new Paragraphs Range(int index) {

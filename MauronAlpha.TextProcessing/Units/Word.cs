@@ -2,7 +2,8 @@
 using MauronAlpha.TextProcessing.DataObjects;
 
 namespace MauronAlpha.TextProcessing.Units {
-	
+
+	//Defines a "word" in string analyzations - this can also mean a Utility character
 	public class Word:TextUnit {
 
 		public override TextUnitType UnitType {
@@ -96,7 +97,13 @@ namespace MauronAlpha.TextProcessing.Units {
 				return Characters.Count;
 			}
 		}
-		
+
+		public void SetParent(Line unit, int index) {
+			DATA_parent = unit;
+			Index = index;
+		}
+
+		//Boolean properties
 		public bool HasParent {
 			get {
 				if (DATA_parent == null)
@@ -161,6 +168,8 @@ namespace MauronAlpha.TextProcessing.Units {
 				return false;
 			return true;
 		}
+		
+		//Boolean Modifiers
 		public bool TryAdd(Character character) {
 			if (!Allows(character))
 				return false;
@@ -274,29 +283,7 @@ namespace MauronAlpha.TextProcessing.Units {
 			return true;
 		}
 
-		public Character CreateEmptyCharacterAtIndex(int index) {
-			if (IsEmpty)
-				return NewChild;
-			if (Index >= Count)
-				return NewChild;
-
-			Characters.ShiftIndex(index, this);
-			Character newC = new Character();
-			newC.SetParent(this, index);
-			Characters.InsertValueAt(index, newC);
-			return newC;
-		}
-
-		public Characters Characters = new Characters();
-		//Split the line at index
-		public Characters SplitAt(int index) {
-			if (index <= 0)
-				return new Characters(Characters.RemoveByRange(0));
-			if (index >= Count)
-				return new Characters();
-			return new Characters(Characters.RemoveByRange(index));
-		}
-
+		//Relational Properties & Methods
 		public Text Text {
 			get {
 				return Paragraph.Parent;
@@ -319,7 +306,7 @@ namespace MauronAlpha.TextProcessing.Units {
 				return DATA_parent;
 			}
 		}
-	
+
 		public Word Next {
 			get {
 				if (IsParagraphBreak)
@@ -333,12 +320,27 @@ namespace MauronAlpha.TextProcessing.Units {
 			}
 		}
 
+		public Words LookRight {
+			get {
+				if (!HasParent)
+					return new Words();
+				return Parent.ChildrenAfterIndex(Index);
+			}
+		}
+		public Words LookLeft {
+			get {
+				if (!HasParent)
+					return new Words();
+				return Parent.ChildrenBeforeIndex(Index);
+			}
+		}
+
 		public Character NewChild {
 			get {
 				Character unit = Characters.Empty;
 				unit.SetParent(this, Count);
 				Characters.Add(unit);
-				return unit;					
+				return unit;
 			}
 		}
 		public Character LastChild {
@@ -364,20 +366,39 @@ namespace MauronAlpha.TextProcessing.Units {
 				return LastChild;
 			return Characters.Value(index);
 		}
+		public Character CreateEmptyCharacterAtIndex(int index) {
+			if (IsEmpty)
+				return NewChild;
+			if (Index >= Count)
+				return NewChild;
 
-		public void SetParent(Line unit, int index) {
-			DATA_parent = unit;
-			Index = index;
+			Characters.ShiftIndex(index, this);
+			Character newC = new Character();
+			newC.SetParent(this, index);
+			Characters.InsertValueAt(index, newC);
+			return newC;
 		}
-		
+
+		public Characters Characters = new Characters();
+		public Characters CharactersUntilUtility {
+			get {
+				Characters result = new Characters();
+				foreach(Character u in Characters) {
+					if (u.IsUtility)
+						return result;
+					else
+						result.Add(u);
+				}
+				return result;
+			}
+		}
+
 		public Characters ChildrenAfterIndex(int index) {
-			return Characters.Range(index+1);
+			return Characters.Range(index + 1);
 		}
-
 		public Characters ChildrenBeforeIndex(int index) {
 			return Characters.Range(0, index);
 		}
-
 		public Characters ChildrenByRange(int start, int end) {
 			if (start < 0)
 				start = 0;
@@ -386,20 +407,15 @@ namespace MauronAlpha.TextProcessing.Units {
 			return Characters.Range(start, end);
 		}
 
-		public Words LookRight {
-			get {
-				if(!HasParent)
-					return new Words();
-				return Parent.ChildrenAfterIndex(Index);
-			}
+		//Split the line at index
+		public Characters SplitAt(int index) {
+			if (index <= 0)
+				return new Characters(Characters.RemoveByRange(0));
+			if (index >= Count)
+				return new Characters();
+			return new Characters(Characters.RemoveByRange(index));
 		}
-		public Words LookLeft {
-			get {
-				if(!HasParent)
-					return new Words();
-				return Parent.ChildrenBeforeIndex(Index);
-			}
-		}
+
 	}
 
 	public class TextUnitType_word : TextUnitType {

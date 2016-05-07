@@ -1,6 +1,7 @@
 ﻿using MauronAlpha.TextProcessing.Units;
 
 namespace MauronAlpha.TextProcessing.Collections {
+	
 	public class TextUnitTypes:TextComponent {
 
 		public static TextUnitType Text { get {
@@ -44,4 +45,5 @@ namespace MauronAlpha.TextProcessing.Collections {
 			}
 		}
 	}
+
 }

@@ -172,6 +172,15 @@ namespace MauronAlpha.TextProcessing.Units {
 			Lines.Add(line);
 			return true;
 		}
+		public bool TryAdd(Lines lines) {
+			if (HasParagraphBreak)
+				return false;
+			foreach (Line l in lines) {
+				l.SetParent(this, Count);
+				Lines.Add(l);
+			}
+			return true;
+		}
 		public bool Insert(Line unit, int index) {
 			if (index < 0)
 				index = 0;
@@ -198,6 +207,7 @@ namespace MauronAlpha.TextProcessing.Units {
 				return false;
 			if (index < count && count > 0 && data.HasParagraphBreak)
 				return false;
+
 			int offset = index;
 			Lines shift = Lines.Range(index);
 			foreach (Line l in data) {
@@ -301,6 +311,18 @@ namespace MauronAlpha.TextProcessing.Units {
 			}
 		}
 
+		public Lines LinesUntilParagraphBreak {
+			get {
+				Lines result = new Lines();
+				foreach (Line u in Lines) {
+					if (!u.IsParagraphBreak)
+						result.Add(u);
+					else
+						break;
+				}
+				return result;
+			}
+		}
 		public Lines ChildrenAfterIndex(int index) {
 			return Lines.Range(index + 1);
 		}

@@ -10,6 +10,7 @@ namespace MauronAlpha.TextProcessing.Units {
 			get { return TextUnitTypes.Line; }
 		}
 
+		//constructors
 		public Line() : base(TextUnitTypes.Line) {	}
 		public Line(Word unit):this() {
 			Words.Add(unit);
@@ -99,10 +100,17 @@ namespace MauronAlpha.TextProcessing.Units {
 		}
 
 		public int Index;
-
 		public int Count {
 			get {
 				return Words.Count;
+			}
+		}
+		public int VisualLength {
+			get {
+				int result = 0;
+				foreach (Character unit in Characters)
+					result += unit.VisualLength;
+				return result;
 			}
 		}
 		public int CountCharacters() {
@@ -112,15 +120,56 @@ namespace MauronAlpha.TextProcessing.Units {
 			return result;
 		}
 
-		public int VisualLength {
-			get {
-				int result = 0;
-				foreach (Character unit in Characters)
-					result += unit.VisualLength;
-				return result;
-			}
+		//Relational Modifiers
+		public void SetParent(Paragraph unit, int index) {
+			DATA_parent = unit;
+			Index = index;
 		}
 
+		//Boolean properties
+		public bool HasParent {
+			get {
+				if (DATA_parent == null)
+					return false;
+				return true;
+			}
+		}
+		public bool IsEmpty {
+			get {
+				return Words.IsEmpty;
+			}
+		}
+		public bool IsParagraphBreak {
+			get {
+				if (IsEmpty)
+					return false;
+				return Words.LastElement.IsParagraphBreak;
+			}
+		}
+		public bool HasLineBreak {
+			get {
+				return Words.HasLineBreak;
+			}
+		}
+		public bool HasLineOrParagraphBreak {
+			get {
+				return Words.HasLineOrParagraphBreak;
+			}
+		}
+		
+		//Boolean Queries
+		public bool Allows(Word word) {
+			if (IsEmpty)
+				return true;
+			if (HasLineOrParagraphBreak)
+				return false;
+			return true;
+		}
+		public bool HasIndex(int index) {
+			if (IsEmpty)
+				return false;
+			return Words.ContainsKey(index);
+		}
 		//Test for word to the left of index - if any end the paragraph or line return false
 		public bool TestForLeftEnd(int index) {
 			if (IsEmpty)
@@ -138,40 +187,10 @@ namespace MauronAlpha.TextProcessing.Units {
 				prev = ByIndex(index - 1);
 			if (prev != null && prev.IsLineBreak || prev.IsParagraphBreak)
 				return false;
-			return true;			
-		}
-
-		public bool TryInlineMergeAtIndex(int index) {
-			if (IsEmpty)
-				return false;
-			Word target = null;
-			Word next = null;
-
-			bool foundTarget = TryIndex(index, ref target);
-			bool foundNext = TryIndex(index, ref next);
-
-			if (!foundTarget || !foundNext)
-				return false;
-
-			if (target.IsUtility || next.IsUtility)
-				return false;
-
-			Characters chars = next.Characters;
-			Remove(next.Index);
-
-			foreach (Character c in chars)
-				target.TryAdd(c);
-
 			return true;
 		}
 
-		public bool Allows(Word word) {
-			if (IsEmpty)
-				return true;
-			if (HasLineOrParagraphBreak)
-				return false;
-			return true;
-		}
+		//Boolean Modifiers
 		public bool TryAdd(Word word) {
 			if (!Allows(word))
 				return false;
@@ -290,39 +309,28 @@ namespace MauronAlpha.TextProcessing.Units {
 			return false;
 		}
 
-		public bool HasParent {
-			get {
-				if (DATA_parent == null)
-					return false;
-				return true;
-			}
-		}
-		public bool IsEmpty {
-			get {
-				return Words.IsEmpty;
-			}
-		}
-		public bool IsParagraphBreak {
-			get {
-				if (IsEmpty)
-					return false;
-				return Words.LastElement.IsParagraphBreak;
-			}
-		}
-		public bool HasLineBreak {
-			get {
-				return Words.HasLineBreak;
-			}
-		}
-		public bool HasLineOrParagraphBreak {
-			get {
-				return Words.HasLineOrParagraphBreak;
-			}
-		}
-		public bool HasIndex(int index) {
+		public bool TryInlineMergeAtIndex(int index) {
 			if (IsEmpty)
 				return false;
-			return Words.ContainsKey(index);
+			Word target = null;
+			Word next = null;
+
+			bool foundTarget = TryIndex(index, ref target);
+			bool foundNext = TryIndex(index, ref next);
+
+			if (!foundTarget || !foundNext)
+				return false;
+
+			if (target.IsUtility || next.IsUtility)
+				return false;
+
+			Characters chars = next.Characters;
+			Remove(next.Index);
+
+			foreach (Character c in chars)
+				target.TryAdd(c);
+
+			return true;
 		}
 		public bool Remove(int index) {
 			if (IsEmpty)
@@ -336,6 +344,7 @@ namespace MauronAlpha.TextProcessing.Units {
 			return true;
 		}
 
+		//Relational Queries
 		public Text Text {
 			get {
 				return Parent.Parent;
@@ -351,21 +360,6 @@ namespace MauronAlpha.TextProcessing.Units {
 					unit.TryAdd(this);
 				}
 				return DATA_parent;
-			}
-		}
-
-		public Line Next {
-			get {
-				if (LastChild.IsParagraphBreak)
-					return Parent.Next.FirstChild;
-				Line result = null;
-				bool found = Parent.TryIndex(Index + 1, ref result);
-				if (found)
-					return result;
-				if (IsParagraphBreak)
-					return Parent.Next.FirstChild;
-				return Parent.NewChild;
-
 			}
 		}
 
@@ -414,17 +408,42 @@ namespace MauronAlpha.TextProcessing.Units {
 		public Words ChildrenAfterIndex(int index) {
 			return Words.Range(index + 1);
 		}
-
 		public Words ChildrenBeforeIndex(int index) {
 			return Words.Range(0, index);
 		}
-
 		public Words ChildrenByRange(int start, int end) {
 			if (start < 0)
 				start = 0;
 			if (end < 0)
 				end = 0;
 			return Words.Range(start, end);
+		}
+		public Words WordsUntilLineBreak {
+			get {
+				Words result = new Words();
+				foreach (Word u in Words) {
+					if (!u.IsLineOrParagraphBreak)
+						result.Add(u);
+					else
+						break;
+				}
+				return result;
+			}
+		}
+
+		public Line Next {
+			get {
+				if (LastChild.IsParagraphBreak)
+					return Parent.Next.FirstChild;
+				Line result = null;
+				bool found = Parent.TryIndex(Index + 1, ref result);
+				if (found)
+					return result;
+				if (IsParagraphBreak)
+					return Parent.Next.FirstChild;
+				return Parent.NewChild;
+
+			}
 		}
 
 		public Lines LookRight {
@@ -479,10 +498,6 @@ namespace MauronAlpha.TextProcessing.Units {
 			}
 		}
 
-		public void SetParent(Paragraph unit, int index) {
-			DATA_parent = unit;
-			Index = index;
-		}
 	}
 
 	public class TextUnitType_line : TextUnitType {

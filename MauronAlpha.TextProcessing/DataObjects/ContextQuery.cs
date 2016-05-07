@@ -76,7 +76,6 @@ namespace MauronAlpha.TextProcessing.DataObjects {
 
 			TrySolve(false);
 		}
-
 		public ContextQuery(Text text, TextContext context, bool resultMode) {
 			Text = text;
 			D_context = context;
@@ -399,8 +398,7 @@ namespace MauronAlpha.TextProcessing.DataObjects {
 
 			//a: we found a text that is empty
 			if (LastKnownTextUnitType.Equals(TextUnitTypes.Text)) {
-				
-				//text is empty
+				//create new word and add c
 				Word w = Text.FirstWord;
 				w.TryAdd(c);
 
@@ -410,9 +408,25 @@ namespace MauronAlpha.TextProcessing.DataObjects {
 				return new ContextQuery(Text, c.Context, c.Paragraph, c.Line, c.Parent, c, c.Context);
 			}
 
-			//b: we found a Paragraph that is Empty
+			//b: we found a Paragraph
 			if (LastKnownTextUnitType.Equals(TextUnitTypes.Paragraph)) {
 				Paragraph p = check.Paragraph;
+
+				//is empty
+				if(p.IsEmpty) {
+					p.FirstChild.TryAdd(new Word(c));
+					if(p.HasParent && p.Index > 0) {
+						TextRange result = ReIndexer.TryMergeWith(p.Parent.ByIndex(p.Index-1),p);
+
+
+					}
+
+
+				}
+
+				if(p.HasParagraphBreak) {
+
+				}
 
 				p.TryAdd(new Line(c));
 

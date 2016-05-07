@@ -60,6 +60,12 @@ namespace MauronAlpha.MonoGame.Entities.Collections {
 			return Being.DoesNotExist;
 		}
 
+		public int Count {
+			get {
+				return Members.Count;
+			}
+		}
+
 		public bool WasMember(Being member) {
 			if (member.IsNull || IsNull)
 				return false;
