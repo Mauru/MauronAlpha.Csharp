@@ -119,7 +119,7 @@ namespace MauronAlpha.Events {
 		public delegate bool DELEGATE_trigger(EventUnit_event e);
 
 		public EventUnit_event GenerateEvent(string code, I_eventSender sender) {
-			EventUnit_event e = new EventUnit_event(sender, code);
+			EventUnit_event e = new EventUnit_event(code);
 			return e;
 		}
 

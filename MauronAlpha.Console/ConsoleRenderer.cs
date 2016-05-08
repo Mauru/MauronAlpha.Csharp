@@ -9,13 +9,13 @@ namespace MauronAlpha.Console {
 	//Used to render the console
 	public class ConsoleRenderer:ConsoleComponent,I_layoutRenderer {
 
-		ConsoleInputManager Manager;
-		public ConsoleRenderer(ConsoleInputManager manager) : base() {
-			Manager = manager;
+		ConsoleWindow Window;
+		public ConsoleRenderer(ConsoleWindow window) : base() {
+			Window = window;
 		}
 
 		public void Update() {
-			FormUnit_textField text = Manager.Text;
+			FormUnit_textField text = Window.Text;
 			Vector2d pos = text.Position.AsVector;
 			foreach (Line line in text.Lines) {
 				int x = (int) pos.X;
@@ -24,9 +24,7 @@ namespace MauronAlpha.Console {
 				string output = line.AsVisualString.PadRight(System.Console.BufferWidth);
 				System.Console.Write(output);
 			}
-			System.Console.SetCursorPosition(0, (int) Manager.DebugTxt.Position.Y);
-			System.Console.Write(Manager.DebugTxt.LastLine.AsString.PadRight(System.Console.BufferWidth));
-			SetCaretPosition(Manager.Text.CaretPosition);
+			System.Console.SetCursorPosition((int)pos.X,(int)pos.Y);
 		}
 
 		public I_layoutRenderer Clear() {

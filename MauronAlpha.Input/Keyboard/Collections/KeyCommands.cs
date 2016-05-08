@@ -9,10 +9,10 @@ namespace MauronAlpha.Input.Keyboard.Collections {
 			KeyCommand com = new KeyCommand(key, command);
 			base.Add(com);
 		}
-		public bool Try(KeyPress key) {
+		public bool Try(KeyPress key, ref KeyCommand command) {
 			foreach (KeyCommand com in Data)
 				if (com.Equals(key)) {
-					com.Command();
+					command = com;
 					return true;
 				}
 			return false;

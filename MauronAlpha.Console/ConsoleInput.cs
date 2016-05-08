@@ -5,26 +5,23 @@ using MauronAlpha.Input.Keyboard.Collections;
 using MauronAlpha.TextProcessing.Units;
 using MauronAlpha.TextProcessing.Collections;
 using System;
+using MauronAlpha.Events.Collections;
+
+using MauronAlpha.Input.Keyboard.Events;
 
 namespace MauronAlpha.Console {
 
-	public class ConsoleInput : ConsoleComponent, I_eventSender {
+	public class ConsoleInput : ConsoleComponent, I_sender<Event_keyUp> {
+		Subscriptions<Event_keyUp> Subscriptions = new Subscriptions<Event_keyUp>(); 
 		ConsoleKeyConverter Converter = new ConsoleKeyConverter();
 
-		public MauronAlpha.Events.EventHandler Events { get { return HANDLER_events; } }
-		MauronAlpha.Events.EventHandler HANDLER_events = new MauronAlpha.Events.EventHandler();
 		KeyPress DATA_lastKey = KeyPress.None;
 
 		public void Listen() {
 			ConsoleKeyInfo input = System.Console.ReadKey(true);
 			DATA_lastKey = Converter.ConvertConsoleKey(input);
 
-			SendEvent(Events.GenerateEvent("input", this));
-		}
-
-		public I_eventSender SendEvent(Events.Units.EventUnit_event e) {
-			Events.SubmitEvent(e, this);
-			return this;
+			Subscriptions.ReceiveEvent(new Event_keyUp(this, DATA_lastKey));
 		}
 
 		public KeyPress LastKey {
@@ -51,6 +48,13 @@ namespace MauronAlpha.Console {
 			if (key.Function.Equals(SpecialKeys.Tab))
 				return Characters.Tab;
 			return Characters.Empty;
+		}
+
+		public void Subscribe(I_subscriber<Event_keyUp> s) {
+			Subscriptions.Add(s);
+		}
+		public void UnSubscribe(I_subscriber<Event_keyUp> s) {
+			Subscriptions.Remove(s);
 		}
 	}
 }

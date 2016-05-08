@@ -15,4 +15,13 @@ namespace MauronAlpha.Events.Interfaces {
 		
     }
 
+	public interface I_subscriber<T> where T:EventUnit_event {
+
+		bool ReceiveEvent( T e );
+		bool Equals(I_subscriber<T> other);
+
+		string Id { get; }
+
+	}
+
 }

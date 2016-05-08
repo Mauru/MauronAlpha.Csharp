@@ -282,6 +282,10 @@ namespace MauronAlpha.TextProcessing.DataObjects {
 
 		public abstract TextUnitType SourceUnit { get; }
 
+		public bool Equals(TextOperationType other) {
+			return Name.Equals(other.Name);
+		}
+
 	}
 
 	public class TextOperation_nothing : TextOperationType {

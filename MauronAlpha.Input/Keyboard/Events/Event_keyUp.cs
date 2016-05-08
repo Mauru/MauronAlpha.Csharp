@@ -9,10 +9,12 @@ namespace MauronAlpha.Input.Keyboard.Events {
 
 		//The Event code
 		public static string EventCode="keyUp";
+		public I_sender<Event_keyUp> Sender;
 
 		//constructor
-		public Event_keyUp(I_eventSender sender,KeyPress key):base(sender,Event_keyUp.EventCode){
+		public Event_keyUp(I_sender<Event_keyUp> sender,KeyPress key):base(Event_keyUp.EventCode){
 			SetKeyPress (key);
+			Sender = sender;
 		}
 
 		//The keypress
@@ -28,8 +30,6 @@ namespace MauronAlpha.Input.Keyboard.Events {
 			K_key = key;
 			return this;
 		}
-
-
 
 	}
 }

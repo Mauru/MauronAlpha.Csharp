@@ -40,6 +40,7 @@
   <ItemGroup>
     <Compile Include="Collections\EventModels.cs" />
     <Compile Include="Collections\EventTriggers.cs" />
+    <Compile Include="Collections\Subscriptions.cs" />
     <Compile Include="Interfaces\I_eventController.cs" />
     <Compile Include="Interfaces\I_eventHandler.cs" />
     <Compile Include="Interfaces\I_eventSender.cs" />
@@ -56,6 +57,7 @@
     <Compile Include="Units\EventUnit_event.cs" />
     <Compile Include="Units\EventUnit_subscriptionModel.cs" />
     <Compile Include="Units\EventUnit_timeStamp.cs" />
+    <Compile Include="Units\Subscription.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup />
