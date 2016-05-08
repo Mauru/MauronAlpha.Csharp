@@ -142,6 +142,58 @@ namespace MauronAlpha.TextProcessing.Units {
 			}
 		}
 
+		//Conditional Queries with boolean saves ("Tries")
+		public bool TryNext(ref Character unit) {
+			if (!HasParent)
+				return false;
+			return Parent.TryIndex(Index + 1, ref unit);
+		}
+		public bool TryPrevious(ref Character unit) {
+			if (!HasParent)
+				return false;
+			if (Index <= 0)
+				return false;
+			return Parent.TryIndex(Index - 1, ref unit);
+		}
+		public bool TryBehind(ref Character unit) {
+			if (!HasParent)
+				return false;
+
+			// in word
+			if (Index > 0)
+				return Parent.TryIndex(Index - 1, ref unit);
+
+			Word w = null;
+			if (!Parent.TryBehind(ref w))
+				return false;
+
+			unit = w.LastChild;
+			return true;
+		}
+		public bool TryAhead(ref Character unit) {
+			if (!HasParent)
+				return false;
+
+			//in line
+			if (Parent.TryIndex(Index + 1, ref unit))
+				return true;
+
+			Word w = null;
+			if (!Parent.TryAhead(ref w))
+				return false;
+
+			if (w.IsEmpty)
+				return false;
+
+			unit = w.FirstChild;
+			return true;
+		}
+
+		public void SetParent(Word unit, int index) {
+			DATA_parent = unit;
+			Index = index;
+		}
+
 		public Text Text {
 			get { 
 				return Paragraph.Parent; 
@@ -183,51 +235,8 @@ namespace MauronAlpha.TextProcessing.Units {
 				return Parent.Next.FirstChild;
 			}
 		}
-		public bool TryNext(ref Character unit) {
-			if (!HasParent)
-				return false;
-			return Parent.TryIndex(Index + 1, ref unit);
-		}
-		public bool TryPrevious(ref Character unit) {
-			if (!HasParent)
-				return false;
-			if (Index <= 0)
-				return false;
-			return Parent.TryIndex(Index - 1, ref unit);
-		}
-		public bool TryStepLeft(ref Character unit) {
-			if (!HasParent)
-				return false;
-			if (Index > 0) {
-				unit = Parent.ByIndex(Index - 1);
-				return true;
-			}
-			Word w = null;
-			if (!Parent.TryStepLeft(ref w))
-				return false;
-			unit = w.LastChild;
-			return true;
-		}
-		public bool TryStepRight(ref Character unit) {
-			if (!HasParent)
-				return false;
-			if (Index+1 < Parent.Count) {
-				unit = Parent.ByIndex(Index + 1);
-				return true;
-			}
-			Word w = null;
-			if (!Parent.TryStepRight(ref w))
-				return false;
-			if (w.IsEmpty)
-				return false;
-			unit = w.FirstChild;
-			return true;
-		}
-		public void SetParent(Word unit, int index) {
-			DATA_parent = unit;
-			Index = index;
-		}
-
+		
+		
 		public Characters LookRight { 
 			get {
 				if (!HasParent)

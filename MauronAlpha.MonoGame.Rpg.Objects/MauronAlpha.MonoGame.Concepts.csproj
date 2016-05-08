@@ -47,6 +47,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Quantifiers\ConceptQuantifier.cs" />
     <Compile Include="Units\Action.cs" />
+    <Compile Include="Units\Hierarchy.cs" />
     <Compile Include="Units\Potion.cs" />
     <Compile Include="Units\Spell.cs" />
     <Compile Include="Units\SpellComponent.cs" />

@@ -43,8 +43,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Collections\Attributes.cs" />
+    <Compile Include="Collections\Beings.cs" />
     <Compile Include="Collections\Conditions.cs" />
+    <Compile Include="Collections\Clan.cs" />
     <Compile Include="Collections\Group.cs" />
+    <Compile Include="Collections\Guild.cs" />
     <Compile Include="Collections\Location.cs" />
     <Compile Include="Collections\Memories.cs" />
     <Compile Include="Collections\ModifierActions.cs" />

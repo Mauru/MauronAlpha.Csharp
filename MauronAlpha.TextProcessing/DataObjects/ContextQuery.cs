@@ -30,7 +30,7 @@ namespace MauronAlpha.TextProcessing.DataObjects {
 		}
 
 		private Paragraph ResultP;
-		public readonly Paragraph Paragraph {
+		public Paragraph Paragraph {
 			get {
 				if (ResultP != null)
 					return ResultP;
@@ -40,7 +40,7 @@ namespace MauronAlpha.TextProcessing.DataObjects {
 		}
 
 		private Line ResultL;
-		public readonly Line Line {
+		public Line Line {
 			get {
 				if (ResultL != null)
 					return ResultL;
@@ -50,7 +50,7 @@ namespace MauronAlpha.TextProcessing.DataObjects {
 		}
 
 		private Word ResultW;
-		public readonly Word Word {
+		public Word Word {
 			get {
 				if (ResultW != null)
 					return ResultW;
@@ -60,7 +60,7 @@ namespace MauronAlpha.TextProcessing.DataObjects {
 		}
 
 		private Character ResultC;
-		public readonly Character Character {
+		public Character Character {
 			get {
 				if (ResultC != null)
 					return ResultC;
@@ -69,14 +69,30 @@ namespace MauronAlpha.TextProcessing.DataObjects {
 			}
 		}
 
-		//Solves strictly
-		public ContextQuery(Text text, TextContext context) {
+		public TextRange ToTextRange {
+			get {
+				TextUnitType result = LastKnownTextUnitType;
+				if (result.Equals(TextUnitTypes.Text))
+					return new TextRange(Text, Text.Start, Text.End);
+				if(result.Equals(TextUnitTypes.Paragraph))
+					return new TextRange(Paragraph.Parent,Paragraph.Start,Paragraph.End);
+				if(result.Equals(TextUnitTypes.Line))
+					return new TextRange(Line.Text, Line.Start, Line.End);
+				if (result.Equals(TextUnitTypes.Word))
+					return new TextRange(Word.Text, Word.Start, Word.End);
+				if (result.Equals(TextUnitTypes.Character))
+					return new TextRange(Character.Text, Character.Context,Character.Context);
+				return TextRange.None;
+			}
+		}
+
+		//Constructors
+		public ContextQuery() :base() {}
+		public ContextQuery(Text text, TextContext context) :this() {
 			Text = text;
 			D_context = context;
-
-			TrySolve(false);
 		}
-		public ContextQuery(Text text, TextContext context, bool resultMode) {
+		public ContextQuery(Text text, TextContext context, bool resultMode) :this() {
 			Text = text;
 			D_context = context;
 
@@ -86,17 +102,35 @@ namespace MauronAlpha.TextProcessing.DataObjects {
 			else
 				TrySolve();
 		}
-
-		public ContextQuery(Text text, TextContext context, TextContext result) {
+		public ContextQuery(Text text, TextContext context, TextContext result) :this() {
 			Text = text;
 			D_context = context;
 			D_result = result;
 		}
 
-		public bool IsSolved {
-			get {
-				return (D_result == null);
-			}
+		public ContextQuery(Text t) :this() {
+			D_context = t.End;
+			Text = t;
+		}
+		public ContextQuery(Paragraph p) :this() {
+			D_context = p.End;
+			Text = p.Parent;
+			ResultP = p;
+		}
+		public ContextQuery(Line l) :this() {
+			ResultL = l;
+			D_context = l.End;
+			Text = l.Text;
+		}
+		public ContextQuery(Word w) :this() {
+			ResultW = w;
+			D_context = w.End;
+			Text = w.Text;
+		}
+		public ContextQuery(Character c) :this() {
+			ResultC = c;
+			D_context = c.Context;
+			Text = c.Text;
 		}
 
 		//Used for instancing
@@ -177,7 +211,6 @@ namespace MauronAlpha.TextProcessing.DataObjects {
 			ResultC = c;
 			return true;		
 		}
-
 		//Solve the current context
 		public bool TrySolve() {
 			//ResetResult();
@@ -219,7 +252,25 @@ namespace MauronAlpha.TextProcessing.DataObjects {
 			return true;		
 		}
 
-		//return a new Character
+		//Check solved state by boolean
+		public bool SolvedIs(bool p, bool l, bool w, bool c) {
+			if (!SolvedP == p)
+				return false;
+			if (!SolvedL == l)
+				return false;
+			if (!SolvedL == w)
+				return false;
+			if (!SolvedL == c)
+				return false;
+			return true;
+		}
+		public bool IsSolved {
+			get {
+				return (D_result == null);
+			}
+		}
+
+		//return a new Character BEFORE the current position
 		public ContextQuery SolveForInsert() {
 			TextContext context = Result.Copy;
 			ContextQuery result = ForceResults();
@@ -361,19 +412,6 @@ namespace MauronAlpha.TextProcessing.DataObjects {
 			}
 		}
 
-		//Check solved state by boolean
-		public bool SolvedIs(bool p, bool l, bool w, bool c) {
-			if (!SolvedP == p)
-				return false;
-			if (!SolvedL == l)
-				return false;
-			if (!SolvedL == w)
-				return false;
-			if (!SolvedL == c)
-				return false;
-			return true;
-		}
-	
 		public TextUnitType LastKnownTextUnitType {
 			get {
 				if (SolvedC)
@@ -386,202 +424,6 @@ namespace MauronAlpha.TextProcessing.DataObjects {
 					return TextUnitTypes.Paragraph;
 				return TextUnitTypes.Text;
 			}
-		}
-	
-		//Insertion
-		public ContextQuery InsertCharacter(Character c) {
-			
-			//we trim down to where we are
-			ContextQuery check = new ContextQuery(Text, D_result, true);	
-
-			//we want to find out what the current position is
-
-			//a: we found a text that is empty
-			if (LastKnownTextUnitType.Equals(TextUnitTypes.Text)) {
-				//create new word and add c
-				Word w = Text.FirstWord;
-				w.TryAdd(c);
-
-				if(c.IsParagraphBreak)
-					c.Paragraph.FixParagraphEnd();
-
-				return new ContextQuery(Text, c.Context, c.Paragraph, c.Line, c.Parent, c, c.Context);
-			}
-
-			//b: we found a Paragraph
-			if (LastKnownTextUnitType.Equals(TextUnitTypes.Paragraph)) {
-				Paragraph p = check.Paragraph;
-
-				//is empty
-				if(p.IsEmpty) {
-					p.FirstChild.TryAdd(new Word(c));
-					if(p.HasParent && p.Index > 0) {
-						TextRange result = ReIndexer.TryMergeWith(p.Parent.ByIndex(p.Index-1),p);
-
-
-					}
-
-
-				}
-
-				if(p.HasParagraphBreak) {
-
-				}
-
-				p.TryAdd(new Line(c));
-
-				if(c.IsParagraphBreak)
-					c.Paragraph.FixParagraphEnd();
-
-				return new ContextQuery(Text, c.Context);
-			}
-
-			//c: we found a Line that is Empty
-			if(LastKnownTextUnitType.Equals(TextUnitTypes.Line)) {
-				Line l = check.Line;
-
-				l.TryAdd(new Word(c));
-				if(c.IsParagraphBreak)
-					c.Paragraph.FixParagraphEnd();
-
-				return new ContextQuery(Text, c.Context);
-			}
-
-			//d: we found a Word that is empty
-			if (LastKnownTextUnitType.Equals(TextUnitTypes.Word)) {
-				Word w = check.Word;
-
-				w.TryAdd(c);
-				if (c.IsParagraphBreak)
-					c.Paragraph.FixParagraphEnd();
-
-				return new ContextQuery(Text, c.Context);
-			}
-
-			//e: we found an actual Character
-			if (LastKnownTextUnitType.Equals(TextUnitTypes.Character)) {
-
-				Character root = check.Character;
-
-				//The actual work begins here
-				if (c.IsParagraphBreak) { 
-					TextSelector result = TextSelector.Next(root);
-					
-					//we just cut this stuff off
-					Characters cutC = root.Parent.SplitAt(check.Character.Index+1);
-
-					Word newW = null;
-					if (!cutC.IsEmpty) {
-						newW = new Word(cutC);
-						//have to merge cutC into next word...						
-					}
-
-					Words cutW = root.Line.SplitAt(check.Word.Index + 1);
-
-					Line newL = null;
-					if (!cutW.IsEmpty) {
-						newL = new Line(cutW);
-						//have to merge cutL into next line...
-					}
-
-					Paragraph newP = null;
-					Lines cutL = root.Paragraph.SplitAt(check.Paragraph.Index + 1);
-					if (!cutL.IsEmpty)
-						newP = new Paragraph(cutL);
-						//have to insert cutP into Text...
-					}
-
-					//Now we merge all cut Items together
-
-					TextSelector following = TextSelector.Next(root);
-					if(following.Lines.IsEmpty) {
-						check.Line.TryAdd(new Word(c));
-						c.Paragraph.FixParagraphEnd();
-					}
-
-					//TODO: do merge and append action
-
-					ContextQuery final = new ContextQuery(Text,c.Context);
-					return final;				
-				}
-
-				if(c.IsLineBreak) {
-
-					Character root = check.Character;
-					TextSelector result = TextSelector.Next(root);
-					
-					//we just cut this stuff off
-					Characters cutC = root.Parent.SplitAt(check.Character.Index+1);
-
-					Word newW = null;
-					if (!cutC.IsEmpty) {
-						newW = new Word(cutC);
-						//have to merge cutC into next word...						
-					}
-
-					Words cutW = root.Line.SplitAt(check.Word.Index + 1);
-
-					//Now we merge all cut Items together
-					
-					TextSelector following = TextSelector.Next(root);
-					if(following.Words.IsEmpty) {
-						check.Line.TryAdd(new Word(c));
-					}
-
-					//TODO: do merge and append action
-
-					ContextQuery final = new ContextQuery(Text,c.Context);
-					return final;
-
-				}
-
-				if (c.IsUtility) {
-
-					Character root = check.Character;
-					TextSelector result = TextSelector.Next(root);
-					
-					//we just cut this stuff off
-					Characters cutC = root.Parent.SplitAt(check.Character.Index+1);
-
-					Word newW = null;
-					if(!cutC.IsEmpty) {
-						newW = new Word(cutC);
-					}
-
-					TextSelector following = TextSelector.Next(root);
-					if(following.Characters.IsEmpty) {
-						check.Line.Insert(new Word(c),root.Parent.Index+1); //might want to use tryInlineMerge!
-					}
-
-					//TODO: do merge and append action
-
-					ContextQuery final = new ContextQuery(Text,c.Context);
-					return final;
-
-
-				}
-
-				//is regular character
-				else {
-					Character root = check.Character;
-					TextSelector result = TextSelector.Next(root);
-
-					//Here we actually need to know what root is
-					if(result.Characters.IsEmpty) {
-
-						if(root.IsEmpty)
-						
-
-					}
-
-				}
-
-
-			}
-
-
-			
-
 		}
 	
 	}

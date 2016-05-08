@@ -116,6 +116,16 @@ namespace MauronAlpha.TextProcessing.Collections {
 			return new Words(base.Range(start, end));
 		}
 
+		public static Word LineBreak {
+			get {
+				return new Word(Characters.LineBreak);
+			}
+		}
+		public static Word ParagraphBreak {
+			get {
+				return new Word(Characters.ParagraphBreak);
+			}
+		}
 
 	}
 

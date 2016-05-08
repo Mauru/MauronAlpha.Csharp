@@ -203,7 +203,7 @@ namespace MauronAlpha.TextProcessing.Units {
 				return true;
 			}
 			if (l.IsEmpty) {
-				if (!l.TryStepLeft(ref l))
+				if (!l.TryAhead(ref l))
 					return false;
 				unit = l.LastCharacter;
 				return true;
@@ -214,7 +214,7 @@ namespace MauronAlpha.TextProcessing.Units {
 				return true;
 			}
 			if (w.IsEmpty) {
-				if (!w.TryStepLeft(ref w))
+				if (!w.TryAhead(ref w))
 					return false;
 				unit = w.LastChild;
 				return true;
@@ -483,7 +483,7 @@ namespace MauronAlpha.TextProcessing.Units {
 
 		public static TextUnitType_text Instance {
 			get {
-				return new TextUnitType_Text();
+				return new TextUnitType_text();
 			}
 		}
 	}

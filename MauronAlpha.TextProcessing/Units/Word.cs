@@ -168,7 +168,65 @@ namespace MauronAlpha.TextProcessing.Units {
 				return false;
 			return true;
 		}
-		
+
+		//Relational Queries with conditional save ("tries")
+		public bool TryPrevious(ref Word result) {
+			if (Index == 0)
+				return false;
+			result = Parent.ByIndex(Index - 1);
+			return true;
+		}
+		public bool TryNext(ref Word result) {
+			if (DATA_parent == null)
+				return false;
+			if (!Parent.HasIndex(Index + 1))
+				return false;
+			result = Parent.ByIndex(Index + 1);
+			return true;
+		}
+		public bool TryIndex(int index, ref Character result) {
+			if (index < 0)
+				return false;
+			if (index >= Count)
+				return false;
+			result = Characters.Value(index);
+			return true;
+		}
+		public bool TryBehind(ref Word unit) {
+			if (!HasParent)
+				return false;
+
+			// in line
+			if (Index > 0)
+				return Parent.TryIndex(Index - 1, ref unit);
+
+			// in text
+			Line l = null;
+			if (!Parent.TryBehind(ref l))
+				return false;
+			unit = l.LastChild;
+
+			return true;
+		}
+		public bool TryAhead(ref Word unit) {
+			if (!HasParent)
+				return false;
+
+			//in line
+			if (Parent.TryIndex(Index + 1, ref unit))
+				return true;
+
+			Line l = null;
+			if (!Parent.TryAhead(ref l))
+				return false;
+
+			if (l.IsEmpty)
+				return false;
+
+			unit = l.FirstChild;
+			return true;
+		}
+
 		//Boolean Modifiers
 		public bool TryAdd(Character character) {
 			if (!Allows(character))
@@ -218,58 +276,20 @@ namespace MauronAlpha.TextProcessing.Units {
 				c.SetParent(this, c.Index + count);
 			return true;
 		}
-		public bool TryPrevious(ref Word result) {
-			if (Index == 0)
-				return false;
-			result = Parent.ByIndex(Index - 1);
-			return true;
-		}
-		public bool TryNext(ref Word result) {
-			if (DATA_parent == null)
-				return false;
-			if (!Parent.HasIndex(Index + 1))
-				return false;
-			result = Parent.ByIndex(Index + 1);
-			return true;
-		}
-		public bool TryIndex(int index, ref Character result) {
+		public bool Insert(Character c, int index) {
 			if (index < 0)
-				return false;
-			if (index >= Count)
-				return false;
-			result = Characters.Value(index);
+				index = 0;
+			int count = Count;
+			if (index > count)
+				index = count;
+			if (index < count)
+				Characters.ShiftIndex(index, this);
+			Characters.InsertValueAt(index, c);
+			c.SetParent(this, index);
 			return true;
 		}
-		public bool TryStepLeft(ref Word unit) {
-			if (!HasParent)
-				return false;
-
-			if (Index > 0) {
-				unit = Parent.ByIndex(Index - 1);
-				return true;
-			}
-
-			//no previous line
-			Line l = null;
-			if (!Parent.TryStepLeft(ref l))
-				return false;
-			unit = l.LastChild;
-			return true;
-		}
-		public bool TryStepRight(ref Word unit) {
-			if (!HasParent)
-				return false;
-			if (Index + 1 < Parent.Count) {
-				unit = Parent.ByIndex(Index + 1);
-				return true;
-			}
-			Line l = null;
-			if (!Parent.TryStepRight(ref l))
-				return false;
-			if (l.IsEmpty)
-				return false;
-			unit = l.FirstChild;
-			return true;
+		public bool TryAdd(Characters cc) {
+			return Insert(cc,Count);
 		}
 		public bool Remove(int index) {
 			if (index < 0)

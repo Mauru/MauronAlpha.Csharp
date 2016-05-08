@@ -3,6 +3,7 @@ using MauronAlpha.TextProcessing.DataObjects;
 
 namespace MauronAlpha.TextProcessing.Units {
 	
+	//Defines a paragraph in a text
 	public class Paragraph:TextUnit {
 
 		public override TextUnitType UnitType {
@@ -144,6 +145,39 @@ namespace MauronAlpha.TextProcessing.Units {
 			}
 		}
 
+		public bool Allows(Line line) {
+			if (IsEmpty)
+				return true;
+			if (LastChild.IsParagraphBreak)
+				return false;
+			return true;
+		}	
+
+		//Relational queries with conditional save ("Tries")
+		public bool TryPrevious(ref Paragraph result) {
+			if (Index <= 0)
+				return false;
+			result = Parent.ByIndex(Index - 1);
+			return true;
+		}
+		public bool TryNext(ref Paragraph result) {
+			if (DATA_parent == null)
+				return false;
+			return Parent.TryIndex(Index + 1, ref result);
+		}
+		public bool TryIndex(int index, ref Line result) {
+			if (IsEmpty)
+				return false;
+			if (index < 0)
+				return false;
+			int count = Count;
+			if (index >= count)
+				return false;
+			result = Lines.Value(index);
+			return true;
+		}
+
+		//Conditional Modifiers
 		public bool Remove(int index) {
 			if (IsEmpty)
 				return false;
@@ -154,13 +188,6 @@ namespace MauronAlpha.TextProcessing.Units {
 				return false;
 			Lines.RemoveByKey(index);
 			Lines.UnShiftIndex(index,this);
-			return true;
-		}
-		public bool Allows(Line line) {
-			if (IsEmpty)
-				return true;
-			if (LastChild.IsParagraphBreak)
-				return false;
 			return true;
 		}
 		public bool TryAdd(Line line) {
@@ -218,28 +245,6 @@ namespace MauronAlpha.TextProcessing.Units {
 			count = Words.Count;
 			foreach (Line l in shift)
 				l.SetParent(this, l.Index + count);
-			return true;
-		}
-		public bool TryPrevious(ref Paragraph result) {
-			if (Index <= 0)
-				return false;
-			result = Parent.ByIndex(Index - 1);
-			return true;
-		}
-		public bool TryNext(ref Paragraph result) {
-			if (DATA_parent == null)
-				return false;
-			return Parent.TryIndex(Index+1,ref result);
-		}
-		public bool TryIndex(int index, ref Line result) {
-			if (IsEmpty)
-				return false;
-			if (index < 0)
-				return false;
-			int count = Count;
-			if (index >= count)
-				return false;
-			result = Lines.Value(index);
 			return true;
 		}
 
@@ -353,9 +358,6 @@ namespace MauronAlpha.TextProcessing.Units {
 				return Parent.ChildrenBeforeIndex(Index);
 			}
 		}
-
-
-
 
 		//Split the line at index
 		public Lines SplitAt(int index) {

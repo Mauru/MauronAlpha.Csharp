@@ -8,65 +8,13 @@ namespace MauronAlpha.TextProcessing.DataObjects {
 	public class ReIndexer:TextComponent {
 
 		public static TextRange ReIndexWordAtOffset(Word w, int offset) {
-
-			if(offset<0)
-				offset = 0;
-
 			Character c = null;
-			if(!w.TryIndex(offset, ref c))
-				return new TextRange(w.Text,w.End,w.End);
+			if (!w.TryIndex(offset, ref c))
+				c = w.LastChild;
+			TextOperation result = TextOperation.ReIndexAhead(c);
 
-			TextSelector buffer = new TextSelector();
-
-			if (c.IsParagraphBreak) {
-
-				buffer.SetCharacters(c.Parent.SplitAt(c.Index + 1));
-				buffer.SetWords(c.Line.SplitAt(c.Parent.Index + 1));
-				buffer.SetLines(c.Paragraph.SplitAt(c.Line.Index + 1));
-
-				if (buffer.IsEmpty)
-					return new TextRange(c.Text, c.Parent.End, c.Parent.End);
-
-				Lines lines = ReIndexer.AssembleIntoLines(buffer).Lines;
-				if (lines.HasParagraphBreak) {
-					Paragraphs pp = new Paragraphs(lines);
-					c.Text.Insert(pp, c.Paragraph.Index + 1);
-					return new TextRange(c.Text, c.Parent.End, pp.LastElement.LastWord.End);
-				}
-				c.Paragraph.Next.Insert(lines, 0);
-				return new TextRange(c.Text, c.Paragraph.End, lines.LastElement.End);
-			}
-			else if (c.IsLineBreak) {
-
-				buffer.SetCharacters(c.Parent.SplitAt(c.Index + 1));
-				buffer.SetWords(c.Line.SplitAt(c.Parent.Index + 1));
-
-				if (buffer.IsEmpty)
-					return new TextRange(c.Text, c.Context, c.Context);
-
-				Lines ll = c.Line.LookRight;
-				if (ll.IsEmpty)
-					c.Paragraph.TryAdd(new Lines(buffer.Words));
-				return new TextRange(c.Text)
-
-
-			}
-
-
-
-			else if (c.IsUtility) {
-
-				buffer.SetCharacters(c.Parent.SplitAt(c.Index + 1));
-
-			}
-
-
-
-			
-
-
+			return TextOperation.CompleteOperations(result);
 		}
-
 
 		public static ReIndexer Result_NothingFound {
 			 get {
@@ -85,6 +33,12 @@ namespace MauronAlpha.TextProcessing.DataObjects {
 			return new TextSelector(buffer.Words);
 
 		}
+		public static TextSelector AssembleCharactersIntoWords(Characters cc) {
+
+			Words result = new Words(cc);
+			return new TextSelector(result);
+
+		}
 		public static TextSelector AssembleWordsIntoLines(TextSelector buffer) {
 			if (!buffer.HasWords)
 				return buffer;
@@ -95,6 +49,10 @@ namespace MauronAlpha.TextProcessing.DataObjects {
 			return new TextSelector(buffer.Lines);
 
 		}
+		public static TextSelector AssembleWordsIntoLines(Words ww) {
+			Lines result = new Lines(ww);
+			return new TextSelector(result);
+		}
 		public static TextSelector AssembleLinesIntoParagraphs(TextSelector buffer) {
 			if (!buffer.HasLines)
 				return buffer;
@@ -103,6 +61,12 @@ namespace MauronAlpha.TextProcessing.DataObjects {
 			buffer.Paragraphs.InsertValuesAt(0, result);
 
 			return new TextSelector(buffer.Paragraphs);
+
+		}
+		public static TextSelector AssembleLinesIntoParagraphs(Lines ll) {
+
+			Paragraphs result = new Paragraphs(ll);
+			return new TextSelector(result);
 
 		}
 
@@ -139,6 +103,20 @@ namespace MauronAlpha.TextProcessing.DataObjects {
 			assembler.InsertLines(buffer.Lines,0);
 
 			return new TextSelector(assembler.Lines);
+		}
+
+		public static TextSelector AssembleIntoParagraphs(TextSelector buffer) {
+
+			TextSelector step = ReIndexer.AssembleCharactersIntoWords(buffer.Characters);
+			step.AddWords(step.Words);
+			step.AddWords(buffer.Words);
+			step.SetLines(ReIndexer.AssembleWordsIntoLines(step.Words).Lines);
+			step.AddLines(buffer.Lines);
+
+			step.SetParagraphs(ReIndexer.AssembleLinesIntoParagraphs(step.Lines).Paragraphs);
+			step.AddParagraphs(buffer.Paragraphs);
+			return new TextSelector(step.Paragraphs);
+
 		}
 
 		//Mergers
@@ -222,18 +200,84 @@ namespace MauronAlpha.TextProcessing.DataObjects {
 			origin.TryAdd(ll);
 			return new TextRange(origin.Parent, origin.End, l.End);
 		}
-		public static TextRange MergeNext(Line origin) {
-			Line l = null;
-			if (!origin.TryNext(ref l)) {
-				Paragraph p = null;
-				if (origin.IsParagraphBreak)
-					return new TextRange(origin.Text, origin.End, origin.End);
-				if(!origin.Parent.TryNext(ref p))
-					return new TextRange(origin.Text, origin.End, origin.End);
-				Lines ll = p.LinesUntilParagraphBreak;
 
+		public static TextOperation MergeNext(Line o) {
+			//Find the next global line
+			Line n = null;
+			if (!o.TryAhead(ref n))
+				return new TextOperation(o.Parent, TextOperation.MergeAheadParagraph);
 
+			Words ww;
+			if (o.IsEmpty || !o.HasLineOrParagraphBreak) {
+				ww = n.WordsUntilLineBreak;
+				o.TryAdd(ww);
+				if (n.IsEmpty)
+					n.Parent.Remove(n.Index);
+				return new TextOperation(o.Parent, TextOperation.MergeAheadLine);
 			}
+
+			if (n.IsEmpty) {
+				n.Parent.Remove(n.Index);
+				return new TextOperation(o, TextOperation.MergeAheadLine);
+			}
+
+			if (o.IsParagraphBreak)
+				return new TextOperation(o, TextOperation.SplitAheadParagraph);
+
+			return new TextOperation(n, TextOperation.MergeAheadLine);			
 		}
+		public static TextOperation MergeNext(Word o) {
+			//Find next global word
+			Word n = null;
+			if (!o.TryAhead(ref n))
+				return new TextOperation(o.Parent, TextOperation.MergeAheadLine);
+
+			if (o.IsEmpty || !o.IsUtility) {
+				Characters cc = n.CharactersUntilUtility;
+				o.TryAdd(cc);
+				if (n.IsEmpty)
+					n.Parent.Remove(n.Index);
+				return new TextOperation(o, TextOperation.MergeAheadWord);
+			}
+
+			if (n.IsEmpty) {
+				n.Parent.Remove(n.Index);
+				return new TextOperation(o, TextOperation.MergeAheadWord);
+			}
+
+			if (o.IsParagraphBreak)
+				return new TextOperation(o, TextOperation.SplitAheadParagraph);
+
+			if (o.IsLineBreak)
+				return new TextOperation(o, TextOperation.SplitAheadLine);
+
+			return new TextOperation(n, TextOperation.MergeAheadWord);
+		}
+		public static TextOperation MergeNext(Paragraph o) {
+			//Find the next global paragraph
+			Paragraph  n = null;
+			if (!o.TryNext(ref n))
+				return new TextOperation(o.Parent, TextOperation.Nothing);
+
+			Lines ll;
+			if (o.IsEmpty || !o.HasParagraphBreak) {
+				ll = n.LinesUntilParagraphBreak;
+				o.TryAdd(ll);
+				if (n.IsEmpty)
+					n.Parent.Remove(n.Index);
+				return new TextOperation(o.Parent, TextOperation.MergeAheadParagraph);
+			}
+
+			if (n.IsEmpty) {
+				n.Parent.Remove(n.Index);
+				return new TextOperation(o, TextOperation.MergeAheadParagraph);
+			}
+
+			if(o.HasParagraphBreak)
+				return new TextOperation(o, TextOperation.SplitAheadParagraph);
+
+			return new TextOperation(n, TextOperation.MergeAheadParagraph);
+		}
+
 	}
 }

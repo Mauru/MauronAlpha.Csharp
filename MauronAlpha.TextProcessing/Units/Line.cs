@@ -190,7 +190,67 @@ namespace MauronAlpha.TextProcessing.Units {
 			return true;
 		}
 
-		//Boolean Modifiers
+		//Relational Queries with conditional save ("tries")	
+		public bool TryBehind(ref Line unit) {
+			if (!HasParent)
+				return false;
+			// in line
+			if (Index > 0)
+				return Parent.TryIndex(Index - 1, ref unit);
+
+			Paragraph p = null;
+			if (!Parent.TryPrevious(ref p))
+				return false;
+
+			unit = p.LastChild;
+
+			return true;
+		}
+		public bool TryAhead(ref Line unit) {
+			if (!HasParent)
+				return false;
+
+			//in paragraph
+			if (Parent.TryIndex(Index + 1, ref unit))
+				return true;
+
+			Paragraph p = null;
+			if (!Parent.TryNext(ref p))
+				return false;
+
+			if (p.IsEmpty)
+				return false;
+			unit = p.FirstChild;
+
+			return true;
+		}
+		public bool TryPrevious(ref Line result) {
+			if (Index == 0)
+				return false;
+			result = Parent.ByIndex(Index - 1);
+			return true;
+		}
+		public bool TryNext(ref Line result) {
+			if (DATA_parent == null)
+				return false;
+			if (!Parent.HasIndex(Index + 1))
+				return false;
+			result = Parent.ByIndex(Index + 1);
+			return true;
+		}
+		public bool TryIndex(int index, ref Word result) {
+			if (IsEmpty)
+				return false;
+			if (index < 0)
+				return false;
+			int count = Count;
+			if (index >= count)
+				return false;
+			result = Words.Value(index);
+			return true;
+		}
+		
+		// Relational Modifiers
 		public bool TryAdd(Word word) {
 			if (!Allows(word))
 				return false;
@@ -207,48 +267,6 @@ namespace MauronAlpha.TextProcessing.Units {
 				w.SetParent(this, Count);
 				Words.Add(w);
 			}
-			return true;
-		}
-		public bool TryStepLeft(ref Line unit) {
-			if (!HasParent)
-				return false;
-			if (Index > 0) { 
-				unit = Parent.ByIndex(Index - 1);
-				return true;
-			}
-			Paragraph p = null;
-			if (!Parent.TryPrevious(ref p))
-				return false;
-			unit = p.LastChild;
-			return true;
-		}
-		public bool TryStepRight(ref Line unit) {
-			if (!HasParent)
-				return false;
-			if (Index+1 < Parent.Count) {
-				unit = Parent.ByIndex(Index + 1);
-				return true;
-			}
-			Paragraph p = null;
-			if (!Parent.TryNext(ref p))
-				return false;
-			if (p.IsEmpty)
-				return false;
-			unit = p.FirstChild;
-			return true;
-		}
-		public bool TryPrevious(ref Line result) {
-			if (Index == 0)
-				return false;
-			result = Parent.ByIndex(Index - 1);
-			return true;
-		}
-		public bool TryNext(ref Line result) {
-			if (DATA_parent == null)
-				return false;
-			if (!Parent.HasIndex(Index + 1))
-				return false;
-			result = Parent.ByIndex(Index + 1);
 			return true;
 		}
 		public bool Insert(Word word, int index) {
@@ -290,17 +308,6 @@ namespace MauronAlpha.TextProcessing.Units {
 			count = data.Count;
 			foreach (Word w in shift) 
 				w.SetParent(this, w.Index + count);
-			return true;
-		}
-		public bool TryIndex(int index, ref Word result) {
-			if(IsEmpty)
-				return false;
-			if (index < 0)
-				return false;
-			int count = Count;
-			if (index >= count)
-				return false;
-			result = Words.Value(index);
 			return true;
 		}
 		public bool TryEnd() {
