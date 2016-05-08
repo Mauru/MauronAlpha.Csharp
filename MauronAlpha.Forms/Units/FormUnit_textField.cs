@@ -159,11 +159,6 @@ namespace MauronAlpha.Forms.Units {
 			DATA_caret.SetContext(DATA_text.Edit);
 			return true;
 		}
-		public bool Insert(TextContext context, Character unit) {
-			ContextQuery query = new ContextQuery(DATA_text, context);
-
-
-		}
 
 		//Methods
 		public void SetText(string text) {
@@ -214,15 +209,14 @@ namespace MauronAlpha.Forms.Units {
 		//Methods for updateing and changing the text
 		public void InsertAndUpdateContext(Character c) {
 			ContextQuery query = new ContextQuery(DATA_text, CaretPosition.Context);
-			
-			//Assume we are adding after the query
-			ContextQuery result = query.InsertCharacter(c);
+			query.TrySolve();
 
-			CaretPosition.SetContext(result.Context);
+			TextOperation op = TextOperation.InsertCharacter(c, query.Result);
+			TextOperation.CompleteOperations(op);
 
-
-
+			CaretPosition.SetContext(c.Context);
 		}
+	
 	}
 
 	//Form Description
