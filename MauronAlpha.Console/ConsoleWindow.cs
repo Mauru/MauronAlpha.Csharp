@@ -5,13 +5,7 @@ namespace MauronAlpha.Console {
 	
 	public class ConsoleWindow:ConsoleComponent {
 
-		public string Title;
-
-		public ConsoleRenderer Renderer;
-
-		public Vector2d Dimensions;
-
-		public FormUnit_textField Text;
+		public FormUnit_textField Text = new FormUnit_textField();
 
 	}
 

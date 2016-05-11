@@ -162,39 +162,45 @@ namespace MauronAlpha.Forms.Units {
 
 		//Methods
 		public void SetText(string text) {
-			DATA_text.Clear();
-			CaretPosition.Reset();
-			Word w = DATA_text.LastWord;
-			foreach (char c in text) {
-				Character newC = new Character(c);
-				if (newC.IsParagraphBreak) {
-					if (w.IsEmpty && w.Index <= 0)
-						w.TryAdd(newC);
-					else
-						w.Parent.Next.TryAdd(Words.ParagraphBreak);
-					w.Paragraph.FixParagraphEnd();
-					w = w.Paragraph.Next.FirstWord;
-				}
-				else if (newC.IsLineBreak) {
-					if (w.IsEmpty)
-						w.TryAdd(newC);
-					else
-						w.Parent.TryAdd(Words.LineBreak);
-					w = w.Parent.Next.FirstChild;
-				}
-				else if (w.IsUtility) {
-					if (w.IsEmpty)
-						w.TryAdd(newC);
-					w.Parent.TryAdd(new Word(newC));
-					w = w.Next;
-				}
-				else
-					w.TryAdd(newC);
-			}
-			DATA_caret.SetContext(DATA_text.Edit);
+			Characters cc = new Characters(text);
+			Paragraphs pp = new Paragraphs(cc);
+			DATA_text = new Text(pp);
+			CaretPosition.SetContext(DATA_text.End);
 		}
 		public void SetPosition(float x, float y) {
 			Position.Set(x, y);
+		}
+
+		public void AddAsLine(string text) {
+			ContextQuery query = new ContextQuery(DATA_text, CaretPosition.Context);
+			query.TrySolve();
+			if (!query.Line.HasLineOrParagraphBreak)
+				query.Line.TryAdd(Words.LineBreak);
+			Lines ll = new Lines(text);
+			query.Paragraph.Insert(ll,query.Line.Index+1);
+			TextOperation op = ReIndexer.MergeNext(query.Line);
+			TextOperation.CompleteOperations(op);
+			CaretPosition.SetContext(ll.LastElement.End);
+		}
+
+		public void AddAsParagraph(string text) {
+			ContextQuery query = new ContextQuery(DATA_text, CaretPosition.Context);
+			query.TrySolve();
+			if (!query.Character.IsParagraphBreak)
+				query.Word.Insert(Characters.ParagraphBreak, query.Character.Index + 1);
+			TextOperation.ReIndexAhead(query.Character);
+			Lines ll = new Lines(text);
+			query.Paragraph.Next.TryAdd(ll);
+			TextOperation.ReIndexAhead(query.Character);
+			CaretPosition.SetContext(ll.LastElement.End);
+		}
+
+		public void InsertAtWord(int index, string text) {
+			Word w = DATA_text.WordByIndex(index);
+			Words ww = new Words(text);
+			w.Parent.Insert(ww, w.Index);
+			TextOperation.ReIndexAhead(w.FirstChild);
+			CaretPosition.SetContext(ww.LastElement.End);
 		}
 
 		//debug

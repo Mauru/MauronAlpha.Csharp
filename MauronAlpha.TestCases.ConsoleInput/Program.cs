@@ -1,5 +1,6 @@
 ﻿using System;
-using MauronAlpha.Console;
+using MauronAlpha.Forms.Units;
+using MauronAlpha.TextProcessing.Units;
 
 namespace MauronAlpha.TestCases.Console {
 	
@@ -7,19 +8,15 @@ namespace MauronAlpha.TestCases.Console {
 		
 		static void Main(string[] args) {
 
-			ConsoleInputManager tool = new ConsoleInputManager();
-			tool.Start();
-			while (!tool.CanExit) {
-				tool.DoNothing();
-			}
+			FormUnit_textField text = new FormUnit_textField();
 
-			/*
-			//tests
-			TestText test = new TestText();
-			test.Start();
-			while(test.IsRunning) {
-				//nada
-			}*/
+			text.SetText("Test and stuff");
+			text.AddAsParagraph("Some more text.");
+			text.InsertAtWord(3, "INTERRUPT");
+			foreach (Line l in text.Lines)
+				System.Console.WriteLine(l.AsString);
+			System.Console.WriteLine(text.CountAsContext.AsString);
+			System.Console.ReadKey();
 
 		}
 	}

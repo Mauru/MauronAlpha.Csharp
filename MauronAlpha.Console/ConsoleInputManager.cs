@@ -10,6 +10,7 @@ using MauronAlpha.Input.Keyboard.Collections;
 using MauronAlpha.Layout.Layout2d.Interfaces;
 
 using MauronAlpha.TextProcessing.Collections;
+using MauronAlpha.TextProcessing.Units;
 using MauronAlpha.Events.Collections;
 
 namespace MauronAlpha.Console {
@@ -44,12 +45,15 @@ namespace MauronAlpha.Console {
 		public bool ReceiveEvent(Event_keyUp e) {
 			if (Subscriptions != null)
 				Subscriptions.ReceiveEvent(e);
-			System.Console.WriteLine("Received input event:" + e.KeyPress.AsString);
 			Input.Listen();
 			return true;
 		}
 		public bool Equals(I_subscriber<Event_keyUp> other) {
 			return Id.Equals(other.Id);
+		}
+
+		public Character CharacterOf(KeyPress key) {
+			return Input.KeyToCharacter(key);
 		}
 	}
 
