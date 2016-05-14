@@ -18,6 +18,10 @@ namespace MauronAlpha.TextProcessing.DataObjects {
 			}
 		}
 
+		public TextRange Complete() {
+			return TextOperation.CompleteOperations(this);
+		}
+
 		//constructors
 		public TextOperation() : base() { }
 		public TextOperation(Text unit, TextOperationType type)	: this() {

@@ -171,6 +171,12 @@ namespace MauronAlpha.Forms.Units {
 			Position.Set(x, y);
 		}
 
+		//Modifiers
+		public void Add(Character c) {
+			Word w = new ContextQuery(DATA_text,CaretPosition.Context).Word;
+			if (w.IsEmpty)
+				w.Add(c);
+		}
 		public void AddAsLine(string text) {
 			ContextQuery query = new ContextQuery(DATA_text, CaretPosition.Context);
 			query.TrySolve();
@@ -178,50 +184,53 @@ namespace MauronAlpha.Forms.Units {
 				query.Line.TryAdd(Words.LineBreak);
 			Lines ll = new Lines(text);
 			query.Paragraph.Insert(ll,query.Line.Index+1);
-			TextOperation op = ReIndexer.MergeNext(query.Line);
-			TextOperation.CompleteOperations(op);
+			ReIndexer.MergeNext(query.Line).Complete();
 			CaretPosition.SetContext(ll.LastElement.End);
 		}
-
 		public void AddAsParagraph(string text) {
 			ContextQuery query = new ContextQuery(DATA_text, CaretPosition.Context);
 			query.TrySolve();
 			if (!query.Character.IsParagraphBreak)
 				query.Word.Insert(Characters.ParagraphBreak, query.Character.Index + 1);
-			TextOperation.ReIndexAhead(query.Character);
+			TextOperation.ReIndexAhead(query.Character).Complete();
 			Lines ll = new Lines(text);
 			query.Paragraph.Next.TryAdd(ll);
-			TextOperation.ReIndexAhead(query.Character);
+			TextOperation.ReIndexAhead(query.Character).Complete();
 			CaretPosition.SetContext(ll.LastElement.End);
 		}
-
 		public void InsertAtWord(int index, string text) {
 			Word w = DATA_text.WordByIndex(index);
 			Words ww = new Words(text);
 			w.Parent.Insert(ww, w.Index);
-			TextOperation.ReIndexAhead(w.FirstChild);
+			TextOperation.ReIndexAhead(w.FirstChild).Complete();
 			CaretPosition.SetContext(ww.LastElement.End);
+		}
+		public void InsertAtWord(int index, Character c) {
+			Word w = DATA_text.WordByIndex(index);
+			w.Add(c);
+			Character cc = null;
+			if (!c.TryBehind(ref cc))
+				TextOperation.ReIndexAhead(c).Complete();
+			else
+				TextOperation.ReIndexAhead(cc).Complete();
+			CaretPosition.SetContext(c.Context);
+		}
+		public void InsertAndUpdateContext(Character c) {
+			ContextQuery query = new ContextQuery(DATA_text, CaretPosition.Context);
+			query.TrySolve();
+
+			TextOperation.InsertCharacter(c, query.Result).Complete();
+			CaretPosition.SetContext(c.Context);
 		}
 
 		//debug
 		public I_debugInterface DebugInterface;
-
 		public void Debug(string msg) {
 			if (DebugInterface == null)
 				return;
 			DebugInterface.SubmitDebugMessage("{FormUnit_textField} "+msg);
 		}
 	
-		//Methods for updateing and changing the text
-		public void InsertAndUpdateContext(Character c) {
-			ContextQuery query = new ContextQuery(DATA_text, CaretPosition.Context);
-			query.TrySolve();
-
-			TextOperation op = TextOperation.InsertCharacter(c, query.Result);
-			TextOperation.CompleteOperations(op);
-
-			CaretPosition.SetContext(c.Context);
-		}
 	
 	}
 

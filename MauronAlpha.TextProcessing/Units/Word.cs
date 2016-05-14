@@ -228,6 +228,11 @@ namespace MauronAlpha.TextProcessing.Units {
 		}
 
 		//Boolean Modifiers
+		public bool Add(Character c) {
+			Characters.Add(c);
+			c.SetParent(this, Count);
+			return true;
+		}
 		public bool TryAdd(Character character) {
 			if (!Allows(character))
 				return false;
