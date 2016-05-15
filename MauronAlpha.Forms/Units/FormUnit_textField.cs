@@ -141,23 +141,17 @@ namespace MauronAlpha.Forms.Units {
 		}
 		
 		//Methods
-		public bool AddAsLines(string text) {
+		public void AppendAsLines(string text) {
 			Lines ll = new Lines(text);
 			if (!IsEmpty)
 				LastLine.TryEnd();
 			Paragraph p = DATA_text.LastChild;
-			foreach (Line l in ll) {
-				if (p.IsEmpty)
-					p.TryAdd(l);
-				else if (p.HasParagraphBreak) {
-					p = p.Next;
-					p.TryAdd(l);
-				}
-				else
-					p.TryAdd(l);
-			}
+			if (p.HasParagraphBreak)
+				p = p.Next;
+			foreach (Line l in ll)
+				p.TryAdd(l);
+			TextOperation.ReIndex(ll.FirstElement).Complete();
 			DATA_caret.SetContext(DATA_text.Edit);
-			return true;
 		}
 
 		//Methods
@@ -172,10 +166,19 @@ namespace MauronAlpha.Forms.Units {
 		}
 
 		//Modifiers
-		public void Add(Character c) {
-			Word w = new ContextQuery(DATA_text,CaretPosition.Context).Word;
-			if (w.IsEmpty)
-				w.Add(c);
+		public void InsertAfterContext(Character c) {
+			ContextQuery cq = new ContextQuery(DATA_text,CaretPosition.Context);
+			cq.TrySolve();
+			cq.Word.Insert(c, cq.Result.Character+1);
+			TextOperation.ReIndex(c).Complete();
+			CaretPosition.SetContext(c.Context);
+		}
+		public void InsertBeforeContext(Character c) {
+			ContextQuery query = new ContextQuery(DATA_text, CaretPosition.Context);
+			query.TrySolve();
+
+			TextOperation.InsertCharacter(c, query.Result).Complete();
+			CaretPosition.SetContext(c.Context);
 		}
 		public void AddAsLine(string text) {
 			ContextQuery query = new ContextQuery(DATA_text, CaretPosition.Context);
@@ -215,13 +218,7 @@ namespace MauronAlpha.Forms.Units {
 				TextOperation.ReIndexAhead(cc).Complete();
 			CaretPosition.SetContext(c.Context);
 		}
-		public void InsertAndUpdateContext(Character c) {
-			ContextQuery query = new ContextQuery(DATA_text, CaretPosition.Context);
-			query.TrySolve();
 
-			TextOperation.InsertCharacter(c, query.Result).Complete();
-			CaretPosition.SetContext(c.Context);
-		}
 
 		//debug
 		public I_debugInterface DebugInterface;
@@ -229,9 +226,7 @@ namespace MauronAlpha.Forms.Units {
 			if (DebugInterface == null)
 				return;
 			DebugInterface.SubmitDebugMessage("{FormUnit_textField} "+msg);
-		}
-	
-	
+		}	
 	}
 
 	//Form Description

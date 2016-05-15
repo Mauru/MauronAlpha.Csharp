@@ -4,7 +4,7 @@ using MauronAlpha.MonoGame.Quantifiers.Units;
 
 namespace MauronAlpha.MonoGame.Entities.Utility {
 	
-	public static class MemoryMaker {
+	public static class MemoryMaker:EntityComponent {
 
 		public static Memory LearnedTrait(Being source, Trait trait, Location location, EntityValue<T_Time> time) {
 			Memory result = new Memory(MemoryType.LearnedTrait, source, trait, location, time);
@@ -15,5 +15,6 @@ namespace MauronAlpha.MonoGame.Entities.Utility {
 			Memory result = new Memory(MemoryType.SufferedCondition, source, condition, location, time);
 			return result;
 		}
+
 	}
 }

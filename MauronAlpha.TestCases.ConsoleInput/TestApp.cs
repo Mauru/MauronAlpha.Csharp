@@ -24,7 +24,7 @@ namespace MauronAlpha.TestCases.Console {
 		public void DoNothing() { }
 
 		public bool ReceiveEvent(Event_keyUp e) {
-			Window.Text.InsertAndUpdateContext(Input.CharacterOf(e.KeyPress));
+			Window.Text.InsertAfterContext(Input.CharacterOf(e.KeyPress));
 			System.Console.WriteLine("HI"+Window.Text.AsString);
 
 			//Renderer.Update();

@@ -65,6 +65,11 @@
 				return new EntityValue<T_Relation>();
 			}
 		}
+		public static EntityValue<T_Duration> Duration {
+			get {
+				return new EntityValue<T_Duration>();
+			}
+		}
 
 		public EntityValue<ET_type> InfinitePositive {
 			get {

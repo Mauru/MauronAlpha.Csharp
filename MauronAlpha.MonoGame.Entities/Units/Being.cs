@@ -35,6 +35,7 @@ namespace MauronAlpha.MonoGame.Entities.Units {
 
 		public Aspirations Aspirations = new Aspirations();
 		public Memories Memories = new Memories();
+		public Relations Relations = new Relations();
 
 		Location Location;
 
