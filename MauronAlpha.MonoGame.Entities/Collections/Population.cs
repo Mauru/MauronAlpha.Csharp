@@ -1,18 +1,16 @@
 ﻿using MauronAlpha.MonoGame.Entities.Units;
-using MauronAlpha.MonoGame.Quantifiers.Units;
+using MauronAlpha.MonoGame.Entities.Quantifiers;
 
 namespace MauronAlpha.MonoGame.Entities.Collections {
 	
-	public class Population:EntityComponent {
+	public class Population:Hierarchy {
 
 		Site Location;
-		EntityValue<T_Time> TimeFounded;
-		Crowd Members;
+		WorldTime TimeFounded;
 
-		public Population(Site site, EntityValue<T_Time> time) : base() {
-			Members = new Crowd(time);
+		public Population(Site site) : base() {
 			Location = site;
-			TimeFounded = time;
+			TimeFounded = Site.Clock.CurrentTime;
 		}
 
 

@@ -3,6 +3,7 @@
 	public class Location:EntityComponent {
 
 		Site Site;
+		Plane Plane;
 
 	}
 }

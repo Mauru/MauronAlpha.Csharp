@@ -221,4 +221,36 @@
 		public long Min { get { return -100; } }
 	}
 
+	public class T_Percent : EntityValueType {
+		public override string Name { get { return "Percent"; } }
+
+		public static T_Relation Instance {
+			get {
+				return new T_Relation();
+			}
+		}
+		bool B_isInFinitePoitive = false;
+		public bool IsInfinitePositive { get { return B_isInFinitePoitive; } }
+
+		public bool IsInfiniteNegative {
+			get {
+				return IsInfinitePositive;
+			}
+		}
+
+		public EntityValue<T_Relation> InfinitePositive {
+			get {
+				return new EntityValue<T_Relation>(true, false);
+			}
+		}
+		public EntityValue<T_Relation> Null {
+			get {
+				return new EntityValue<T_Relation>(true);
+			}
+		}
+
+		public long Max { get { return 100; } }
+		public long Min { get { return 0; } }
+
+	}
 }

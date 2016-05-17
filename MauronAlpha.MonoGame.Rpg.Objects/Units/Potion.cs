@@ -1,4 +1,4 @@
-﻿using MauronAlpha.MonoGame.Inventory.Units;
+﻿using MauronAlpha.MonoGame.Entities.Units;
 using MauronAlpha.MonoGame.Entities.Collections;
 using MauronAlpha.MonoGame.Quantifiers.Units;
 

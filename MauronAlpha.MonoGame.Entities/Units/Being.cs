@@ -7,6 +7,8 @@ namespace MauronAlpha.MonoGame.Entities.Units {
 
 	public class Being:EntityComponent {
 
+		public ConceptualName Name;
+
 		public readonly bool IsNull = false;
 
 		public Being(bool isNull) : base() {
