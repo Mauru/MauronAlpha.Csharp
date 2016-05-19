@@ -106,12 +106,15 @@ namespace MauronAlpha.TextProcessing.Units {
 				return false;
 			return true;
 		}
-
 		public bool HasLineAtIndex(int index) {
 			if (index < 0) return false;
 			int count = CountLines();
 			return index >= count;
 		}
+
+
+		//Conditional Modifiers
+
 		public bool TryAdd(Paragraph unit) {
 			if (!IsEmpty && FirstChild.IsEmpty)
 				Lines.RemoveByKey(0);
@@ -135,25 +138,6 @@ namespace MauronAlpha.TextProcessing.Units {
 			Paragraphs.InsertValueAt(index, unit);
 			unit.SetParent(this, index);
 			return true;
-		}
-		public bool Insert(Paragraphs data, int index) {
-			if (index < 0)
-				index = 0;
-			int count = Count;
-			if (index > count)
-				index = count;
-			int offset = index;
-			Paragraphs shift = Paragraphs.Range(index);
-			foreach (Paragraph p in data) {
-				Paragraphs.InsertValueAt(offset, p);
-				p.SetParent(this, offset);
-				offset++;
-			}
-			count = data.Count;
-			foreach (Paragraph p in shift)
-				p.SetParent(this, p.Index + count);
-			return true;
-			
 		}
 		public bool Remove(int index) {
 			if (IsEmpty)
@@ -264,6 +248,59 @@ namespace MauronAlpha.TextProcessing.Units {
 				target.TryAdd(l);
 
 			return true;
+		}
+
+		//Blind Modifiers
+		public Text Add(Paragraph data) {
+			int count = Count;
+			Paragraphs.Add(data);
+			data.SetParent(this, count);
+			return this;
+		}
+		public Text Add(Paragraphs pp) {
+			int count = Count;
+			int offset = 0;
+			foreach (Paragraph p in pp) {
+				Paragraphs.Add(p);
+				p.SetParent(this, count + offset);
+				offset++;
+			}
+			return this;
+		}
+		public Text Insert(Paragraphs data, int index) {
+			if (index < 0)
+				index = 0;
+			int count = Count;
+			if (index > count)
+				index = count;
+			int offset = index;
+			Paragraphs shift = Paragraphs.Range(index);
+			foreach (Paragraph p in data) {
+				Paragraphs.InsertValueAt(offset, p);
+				p.SetParent(this, offset);
+				offset++;
+			}
+			count = data.Count;
+			foreach (Paragraph p in shift)
+				p.SetParent(this, p.Index + count);
+			return this;
+		}
+		public Text Insert(Paragraph unit, int index) {
+			if (index < 0)
+				index = 0;
+			int count = Count;
+			if (index > count)
+				index = count;
+			if (IsEmpty) {
+				Paragraphs.Add(unit);
+				unit.SetParent(this, 0);
+				return this;
+			}
+
+			Paragraphs.ShiftIndex(index, this);
+			Paragraphs.InsertValueAt(index, unit);
+			unit.SetParent(this, index);
+			return this;
 		}
 
 		public void Clear() {

@@ -355,7 +355,7 @@ namespace MauronAlpha.TextProcessing.DataObjects {
 
 				if(w.IsUtility) {
 					int index = w.Index;
-					bool inserted = w.Parent.Insert(new Word(), index);
+					w.Parent.Insert(new Word(), index);
 					w = w.Parent.ByIndex(index);
 
 					return new ContextQuery(Text, w.Context).ForceResults();

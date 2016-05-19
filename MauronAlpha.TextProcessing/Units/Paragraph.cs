@@ -208,33 +208,31 @@ namespace MauronAlpha.TextProcessing.Units {
 			}
 			return true;
 		}
-		public bool Insert(Line unit, int index) {
-			if (index < 0)
-				index = 0;
-			if (index > Count)
-				index = Count;
-			if (IsEmpty) {
-				Lines.Add(unit);
-				unit.SetParent(this, 0);
-				return true;
-			}
-
-			Lines.ShiftIndex(index, this);
-			Lines.InsertValueAt(index, unit);
-			unit.SetParent(this, index);
-			return true;
-		}
-		public bool Insert(Lines data, int index) {
+		
+		//Blind modifiers
+		public Paragraph Insert(Line unit, int index) {
 			if (index < 0)
 				index = 0;
 			int count = Count;
 			if (index > count)
 				index = count;
-			if (index == count && index > 0 && LastChild.IsParagraphBreak)
-				return false;
-			if (index < count && count > 0 && data.HasParagraphBreak)
-				return false;
+			if (IsEmpty) {
+				Lines.Add(unit);
+				unit.SetParent(this, 0);
+				return this;
+			}
 
+			Lines.ShiftIndex(index, this);
+			Lines.InsertValueAt(index, unit);
+			unit.SetParent(this, index);
+			return this;
+		}
+		public Paragraph Insert(Lines data, int index) {
+			if (index < 0)
+				index = 0;
+			int count = Count;
+			if (index > count)
+				index = count;
 			int offset = index;
 			Lines shift = Lines.Range(index);
 			foreach (Line l in data) {
@@ -245,7 +243,23 @@ namespace MauronAlpha.TextProcessing.Units {
 			count = Words.Count;
 			foreach (Line l in shift)
 				l.SetParent(this, l.Index + count);
-			return true;
+			return this;
+		}
+		public Paragraph Add(Line data) {
+			int index = Count;
+			Lines.Add(data);
+			data.SetParent(this,index);
+			return this;
+		}
+		public Paragraph Add(Lines ll) {
+			int count = Count;
+			int offset = 0;
+			foreach (Line l in ll) {
+				Lines.Add(l);
+				l.SetParent(this, count + offset);
+				offset++;
+			}
+			return this;
 		}
 
 		//Attempt to merge line at index - return true if merge took place
@@ -362,10 +376,10 @@ namespace MauronAlpha.TextProcessing.Units {
 		//Split the line at index
 		public Lines SplitAt(int index) {
 			if (index <= 0)
-				return new Lines(Lines.RemoveByRange(0));
+				return new Lines(Lines.ExtractByRange(0));
 			if (index >= Count)
 				return new Lines();
-			return new Lines(Lines.RemoveByRange(index));
+			return new Lines(Lines.ExtractByRange(index));
 		}
 		public Lines Lines = new Lines();
 		public Line LastChild { 

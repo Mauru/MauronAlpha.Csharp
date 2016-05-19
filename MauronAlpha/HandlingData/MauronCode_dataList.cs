@@ -310,16 +310,19 @@ namespace MauronAlpha.HandlingData {
 			}
 			#endregion
 			#region Error Check
-			if( start<0||start>=Count ) {
+
+			int count = Count;
+
+			if (start < 0 || start >= count)
 				throw Error("Range start out of bounds! {"+start+"},(RemoveByRange)", this, ErrorType_index.Instance);
-			}
-			if( end<0||end>=Count||end<start ) {
+
+			if (end < 0 || end > count || end < start)
 				throw Error("Range end out of bounds! {"+end+"},(RemoveByRange)", this, ErrorType_index.Instance);
-			}
+
 			#endregion
-			for( int n=start; n<=end; n++ ) {
+			for (int n = start; n < end; n++)
 				RemoveByKey(start);
-			}
+
 			return this;
 		}
 		public MauronCode_dataList<T> RemoveByRange(int start) {
@@ -328,14 +331,16 @@ namespace MauronAlpha.HandlingData {
 				throw Error("ReadOnly!,(RemoveByRange)", this, ErrorType_protected.Instance);
 			}
 			#endregion
+
+			int count = Count;
 			#region Error Check
-			if (start < 0 || start >= Count) {
+			if (start < 0 || start >= count)
 				throw Error("Range start out of bounds! {" + start + "},(RemoveByRange)", this, ErrorType_index.Instance);
-			}
+
 			#endregion
-			for (int n = start; n <= Count; n++) {
+			for (int n = start; n < count; n++)
 				RemoveByKey(start);
-			}
+
 			return this;
 		}
 		public MauronCode_dataList<T> Split(int start) {
@@ -366,21 +371,27 @@ namespace MauronAlpha.HandlingData {
 			}
 			#endregion
 			#region Error Check
-			if (start < 0 || start >= Count) {
-				throw Error("Range start out of bounds! {" + start + "},(RemoveByRange)", this, ErrorType_index.Instance);
-			}
-			if (end < 0 || end >= Count || end < start) {
-				throw Error("Range end out of bounds! {" + end + "},(RemoveByRange)", this, ErrorType_index.Instance);
-			}
+
+			int count = Count;
+
+			if (start < 0 || start >= count)
+				throw Error("Range start out of bounds! {" + start + "},(Extract)", this, ErrorType_index.Instance);
+
+			if (end < 0 || end > count || end < start)
+				throw Error("Range end out of bounds! {" + end + "},(Extract)", this, ErrorType_index.Instance);
 
 			MauronCode_dataList<T> result = new MauronCode_dataList<T>();
 
 			#endregion
-			for (int n = start; n <= end; n++) {
+			for (int n = start; n < end; n++) {
 				result.Add(Value(start));
 				RemoveByKey(start);
 			}
 			return result;
+		}
+		public MauronCode_dataList<T> ExtractByRange(int start) {
+			int count = Count;
+			return Extract(start, count + 1);
 		}
 		public MauronCode_dataList<T> RemoveLastElement ( ) {
 			#region ReadOnly Check

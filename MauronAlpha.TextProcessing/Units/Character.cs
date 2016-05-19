@@ -235,8 +235,7 @@ namespace MauronAlpha.TextProcessing.Units {
 				return Parent.Next.FirstChild;
 			}
 		}
-		
-		
+			
 		public Characters LookRight { 
 			get {
 				if (!HasParent)

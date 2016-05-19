@@ -250,7 +250,7 @@ namespace MauronAlpha.TextProcessing.Units {
 			return true;
 		}
 		
-		// Relational Modifiers
+		//Conditional Modifiers
 		public bool TryAdd(Word word) {
 			if (!Allows(word))
 				return false;
@@ -269,53 +269,11 @@ namespace MauronAlpha.TextProcessing.Units {
 			}
 			return true;
 		}
-		public bool Insert(Word word, int index) {
-			if (index < 0)
-				index=0;
-			if (index > Count)
-				index = Count;
-			if (IsEmpty) { 
-				Words.Add(word);
-				word.SetParent(this, 0);
-				return true;
-			}
-
-			Words.ShiftIndex(index, this);
-			Words.InsertValueAt(index, word);
-			word.SetParent(this, index);
-
-			return true;
-		}
-		public bool Insert(Words data, int index) {
-			if (IsParagraphBreak)
-				return false;
-			if (!IsEmpty && data.HasParagraphBreak)
-				return false;
-			if (HasLineBreak && data.HasLineBreak)
-				return false;
-			if (index < 0)
-				index = 0;
-			int count = Count;
-			if (index >= count)
-				index = count;
-			int offset = index;
-			Words shift = Words.Range(index);
-			foreach (Word w in data) {
-				Words.InsertValueAt(offset,w);
-				w.SetParent(this, offset);
-				offset++;
-			}
-			count = data.Count;
-			foreach (Word w in shift) 
-				w.SetParent(this, w.Index + count);
-			return true;
-		}
 		public bool TryEnd() {
 			if (!HasLineOrParagraphBreak)
 				return TryAdd(Words.LineBreak);
 			return false;
 		}
-
 		public bool TryInlineMergeAtIndex(int index) {
 			if (IsEmpty)
 				return false;
@@ -351,6 +309,60 @@ namespace MauronAlpha.TextProcessing.Units {
 			return true;
 		}
 
+		//Blind modifiers
+		public Line Insert(Word word, int index) {
+			if (index < 0)
+				index = 0;
+			int count = Count;
+			if (index > count)
+				index = count;
+			if (IsEmpty) {
+				Words.Add(word);
+				word.SetParent(this, 0);
+				return this;
+			}
+
+			Words.ShiftIndex(index, this);
+			Words.InsertValueAt(index, word);
+			word.SetParent(this, index);
+
+			return this;
+		}
+		public Line Insert(Words data, int index) {
+			if (index < 0)
+				index = 0;
+			int count = Count;
+			if (index >= count)
+				index = count;
+			int offset = index;
+			Words shift = Words.Range(index);
+			foreach (Word w in data) {
+				Words.InsertValueAt(offset, w);
+				w.SetParent(this, offset);
+				offset++;
+			}
+			count = data.Count;
+			foreach (Word w in shift)
+				w.SetParent(this, w.Index + count);
+			return this;
+		}
+		public Line Add(Word w) {
+			int count = Count;
+			Words.Add(w);
+			w.SetParent(this, count);
+			return this;
+		}
+		public Line Add(Words ww) {
+			int count = Count;
+			int offset = 0;
+			foreach (Word w in ww) {
+				Words.Add(w);
+				w.SetParent(this, count + offset);
+				offset++;
+			}
+			return this;
+		}
+
 		//Relational Queries
 		public Text Text {
 			get {
@@ -374,10 +386,10 @@ namespace MauronAlpha.TextProcessing.Units {
 		//Split the line at index
 		public Words SplitAt(int index) {
 			if (index <= 0)
-				return new Words(Words.RemoveByRange(0));
+				return new Words(Words.ExtractByRange(0));
 			if (index >= Count)
 				return new Words();
-			return new Words(Words.RemoveByRange(index));
+			return new Words(Words.ExtractByRange(index));
 		}
 
 		public Word LastChild {

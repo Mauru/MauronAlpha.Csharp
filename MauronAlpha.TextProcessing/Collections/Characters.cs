@@ -14,6 +14,15 @@ namespace MauronAlpha.TextProcessing.Collections {
 					Add(new Character(c));
 		}
 
+		public string AsVisualString {
+			get {
+				string result = "";
+				foreach (Character c in this)
+					result += c.AsVisualString;
+				return result;
+			}
+		}
+
 		public new Characters Reverse() {
 			base.Reverse();
 			return this;

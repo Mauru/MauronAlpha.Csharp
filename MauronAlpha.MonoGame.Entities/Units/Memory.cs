@@ -7,7 +7,7 @@ namespace MauronAlpha.MonoGame.Entities.Units {
 	
 	public class Memory:EntityComponent {
 
-		EntityValue<T_Time> TimeCreated;
+		WorldTime TimeCreated;
 
 		EntityComponent Target;
 		EntityComponent Source;

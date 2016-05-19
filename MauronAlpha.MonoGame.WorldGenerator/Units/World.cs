@@ -1,8 +1,8 @@
 ﻿using MauronAlpha.MonoGame.Entities.Units;
-using MauronAlpha.MonoGame.Entities.DataObjects;
 using MauronAlpha.MonoGame.Entities.Collections;
+using MauronAlpha.MonoGame.WorldGenerator.DataObjects;
 
-namespace MauronAlpha.MonoGame.WorldGenerator.Utility {
+namespace MauronAlpha.MonoGame.WorldGenerator.Units {
 	
 	public class World {
 
@@ -25,7 +25,8 @@ namespace MauronAlpha.MonoGame.WorldGenerator.Utility {
 			Site start = Start.NewSite;
 
 
-			BluePrint.CreateGeography(start);
+			BluePrint.CreateGeography(start,this);
+			BluePrint.CreateBasicHistory(start,this);
 		
 			
 

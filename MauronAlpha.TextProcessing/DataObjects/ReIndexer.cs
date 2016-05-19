@@ -184,7 +184,7 @@ namespace MauronAlpha.TextProcessing.DataObjects {
 				ll = data.Lines;
 				l = ll.LastElement;
 
-				origin.TryAdd(ll);
+				origin.Add(ll);
 				return new TextRange(origin.Parent, origin.End, l.End);
 			}
 
@@ -197,7 +197,7 @@ namespace MauronAlpha.TextProcessing.DataObjects {
 			ll = data.Lines;
 			l = ll.LastElement;
 
-			origin.TryAdd(ll);
+			origin.Add(ll);
 			return new TextRange(origin.Parent, origin.End, l.End);
 		}
 
@@ -210,7 +210,7 @@ namespace MauronAlpha.TextProcessing.DataObjects {
 			Words ww;
 			if (o.IsEmpty || !o.HasLineOrParagraphBreak) {
 				ww = n.WordsUntilLineBreak;
-				o.TryAdd(ww);
+				o.Add(ww);
 				if (n.IsEmpty)
 					n.Parent.Remove(n.Index);
 				return new TextOperation(o.Parent, TextOperation.MergeAheadLine);
@@ -234,7 +234,7 @@ namespace MauronAlpha.TextProcessing.DataObjects {
 
 			if (o.IsEmpty || !o.IsUtility) {
 				Characters cc = n.CharactersUntilUtility;
-				o.TryAdd(cc);
+				o.Add(cc);
 				if (n.IsEmpty)
 					n.Parent.Remove(n.Index);
 				return new TextOperation(o, TextOperation.MergeAheadWord);
@@ -262,7 +262,7 @@ namespace MauronAlpha.TextProcessing.DataObjects {
 			Lines ll;
 			if (o.IsEmpty || !o.HasParagraphBreak) {
 				ll = n.LinesUntilParagraphBreak;
-				o.TryAdd(ll);
+				o.Add(ll);
 				if (n.IsEmpty)
 					n.Parent.Remove(n.Index);
 				return new TextOperation(o.Parent, TextOperation.MergeAheadParagraph);

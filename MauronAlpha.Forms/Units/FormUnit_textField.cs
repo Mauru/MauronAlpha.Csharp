@@ -219,7 +219,6 @@ namespace MauronAlpha.Forms.Units {
 			CaretPosition.SetContext(c.Context);
 		}
 
-
 		//debug
 		public I_debugInterface DebugInterface;
 		public void Debug(string msg) {

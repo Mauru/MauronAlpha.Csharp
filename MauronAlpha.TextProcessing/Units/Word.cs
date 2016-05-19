@@ -227,12 +227,7 @@ namespace MauronAlpha.TextProcessing.Units {
 			return true;
 		}
 
-		//Boolean Modifiers
-		public bool Add(Character c) {
-			Characters.Add(c);
-			c.SetParent(this, Count);
-			return true;
-		}
+		//Conditional Modifiers
 		public bool TryAdd(Character character) {
 			if (!Allows(character))
 				return false;
@@ -259,11 +254,35 @@ namespace MauronAlpha.TextProcessing.Units {
 			character.SetParent(this, index);
 			return true;
 		}
-		public bool Insert(Characters data, int index) {
-			if (IsUtility)
+		public bool Remove(int index) {
+			if (index < 0)
+				index = 0;
+			if (IsEmpty)
 				return false;
-			if (!IsEmpty && data.HasUtility)
+			if (index >= Count)
 				return false;
+			Characters.UnShiftIndex(index,this);
+			Characters.RemoveByKey(index);
+			return true;
+		}
+
+		//Blind Modifiers
+		public Word Add(Character c) {
+			Characters.Add(c);
+			c.SetParent(this, Count);
+			return this;
+		}
+		public Word Add(Characters cc) {
+			int count = Count;
+			int offset = 0;
+			foreach (Character c in cc) {
+				Characters.Add(c);
+				c.SetParent(this, count + offset);
+				offset++;
+			}
+			return this;
+		}
+		public Word Insert(Characters data, int index) {
 			if (index < 0)
 				index = 0;
 			int count = Count;
@@ -279,9 +298,9 @@ namespace MauronAlpha.TextProcessing.Units {
 			count = data.Count;
 			foreach (Character c in shift)
 				c.SetParent(this, c.Index + count);
-			return true;
+			return this;
 		}
-		public bool Insert(Character c, int index) {
+		public Word Insert(Character c, int index) {
 			if (index < 0)
 				index = 0;
 			int count = Count;
@@ -291,21 +310,7 @@ namespace MauronAlpha.TextProcessing.Units {
 				Characters.ShiftIndex(index, this);
 			Characters.InsertValueAt(index, c);
 			c.SetParent(this, index);
-			return true;
-		}
-		public bool TryAdd(Characters cc) {
-			return Insert(cc,Count);
-		}
-		public bool Remove(int index) {
-			if (index < 0)
-				index = 0;
-			if (IsEmpty)
-				return false;
-			if (index >= Count)
-				return false;
-			Characters.UnShiftIndex(index,this);
-			Characters.RemoveByKey(index);
-			return true;
+			return this;
 		}
 
 		//Relational Properties & Methods
@@ -435,10 +440,12 @@ namespace MauronAlpha.TextProcessing.Units {
 		//Split the line at index
 		public Characters SplitAt(int index) {
 			if (index <= 0)
-				return new Characters(Characters.RemoveByRange(0));
+				return new Characters(Characters.ExtractByRange(0));
 			if (index >= Count)
 				return new Characters();
-			return new Characters(Characters.RemoveByRange(index));
+			Characters result = new Characters(Characters.ExtractByRange(index));
+			System.Console.WriteLine("Result of split at index (" + index + "): " + result.AsVisualString);
+			return result;
 		}
 
 	}

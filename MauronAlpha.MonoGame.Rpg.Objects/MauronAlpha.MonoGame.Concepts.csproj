@@ -57,10 +57,6 @@
       <Project>{b3546cdc-2ca5-45b9-ae71-1b75706a2eb0}</Project>
       <Name>MauronAlpha.MonoGame.Entities</Name>
     </ProjectReference>
-    <ProjectReference Include="..\MauronAlpha.MonoGame.Inventory\MauronAlpha.MonoGame.Inventory.csproj">
-      <Project>{b717d7b0-e992-438d-bf47-04ab5009c820}</Project>
-      <Name>MauronAlpha.MonoGame.Inventory</Name>
-    </ProjectReference>
     <ProjectReference Include="..\MauronAlpha.MonoGame.Quantifiers\MauronAlpha.MonoGame.Quantifiers\MauronAlpha.MonoGame.Quantifiers.csproj">
       <Project>{2d7e07b0-a6a9-4da2-8695-49e4502a140f}</Project>
       <Name>MauronAlpha.MonoGame.Quantifiers</Name>

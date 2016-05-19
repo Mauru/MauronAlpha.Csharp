@@ -205,10 +205,14 @@ namespace MauronAlpha.TextProcessing.DataObjects {
 				return new TextOperation(n, TextOperation.ReIndexAheadCharacter);
 			}
 
+			System.Console.WriteLine("Reindexing a normal word.");
+
 			Character nn = null;
 			if (o.TryNext(ref nn)) {
 				if (nn.IsUtility) {
+					System.Console.WriteLine("Next char is a utility char at word ("+o.Parent.AsVisualString+").");
 					Characters cc = TextOperation.SplitAtCharacterUntilWordEnd(o).Characters;
+					System.Console.WriteLine("Length of split characters is "+cc.Count+" ("+cc.AsVisualString+").");
 					Words w = ReIndexer.AssembleIntoWords(cc).Words;
 					o.Line.Insert(w, o.Parent.Index + 1);
 					return new TextOperation(nn, TextOperation.ReIndexAheadCharacter);
