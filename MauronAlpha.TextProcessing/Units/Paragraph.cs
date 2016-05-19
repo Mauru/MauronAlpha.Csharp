@@ -376,10 +376,10 @@ namespace MauronAlpha.TextProcessing.Units {
 		//Split the line at index
 		public Lines SplitAt(int index) {
 			if (index <= 0)
-				return new Lines(Lines.ExtractByRange(0));
+				return new Lines(Lines.ExtractRange(0));
 			if (index >= Count)
 				return new Lines();
-			return new Lines(Lines.ExtractByRange(index));
+			return new Lines(Lines.ExtractRange(index));
 		}
 		public Lines Lines = new Lines();
 		public Line LastChild { 

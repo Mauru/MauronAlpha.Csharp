@@ -440,11 +440,10 @@ namespace MauronAlpha.TextProcessing.Units {
 		//Split the line at index
 		public Characters SplitAt(int index) {
 			if (index <= 0)
-				return new Characters(Characters.ExtractByRange(0));
+				return new Characters(Characters.ExtractRange(0));
 			if (index >= Count)
 				return new Characters();
-			Characters result = new Characters(Characters.ExtractByRange(index));
-			System.Console.WriteLine("Result of split at index (" + index + "): " + result.AsVisualString);
+			Characters result = new Characters(Characters.ExtractRange(index));
 			return result;
 		}
 

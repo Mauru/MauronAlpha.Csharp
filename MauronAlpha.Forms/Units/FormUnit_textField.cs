@@ -208,7 +208,8 @@ namespace MauronAlpha.Forms.Units {
 			TextOperation.ReIndexAhead(w.FirstChild).Complete();
 			CaretPosition.SetContext(ww.LastElement.End);
 		}
-		public void InsertAtWord(int index, Character c) {
+		
+		public void InsertAfterWord(int index, Character c) {
 			Word w = DATA_text.WordByIndex(index);
 			w.Add(c);
 			Character cc = null;

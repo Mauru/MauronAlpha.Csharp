@@ -386,10 +386,10 @@ namespace MauronAlpha.TextProcessing.Units {
 		//Split the line at index
 		public Words SplitAt(int index) {
 			if (index <= 0)
-				return new Words(Words.ExtractByRange(0));
+				return new Words(Words.ExtractRange(0));
 			if (index >= Count)
 				return new Words();
-			return new Words(Words.ExtractByRange(index));
+			return new Words(Words.ExtractRange(index));
 		}
 
 		public Word LastChild {

@@ -8,17 +8,16 @@ using MauronAlpha.HandlingData.Sorting;
 namespace MauronAlpha.HandlingData {
 
 	//A list of numerically sorted data
-	public class MauronCode_dataList<T> : MauronCode_dataObject,
+	public class MauronCode_dataList<T> : MauronCode_dataObject, 
 	ICollection<T>,
 	IEnumerable<T>,
 	I_dataCollection<int,T>,
 	IList<T> {
 
 		//Constructors
-		public MauronCode_dataList():base(DataType_dataList.Instance) {}
+		public MauronCode_dataList() :base(DataType_dataList.Instance) {}
 		// Interpretative constructors
-		public MauronCode_dataList ( T obj)
-			: this() {
+		public MauronCode_dataList ( T obj)	:this() {
 			AddValue(obj);
 		}
 		public MauronCode_dataList( ICollection<T> data ):this() {
@@ -389,9 +388,9 @@ namespace MauronAlpha.HandlingData {
 			}
 			return result;
 		}
-		public MauronCode_dataList<T> ExtractByRange(int start) {
+		public MauronCode_dataList<T> ExtractRange(int start) {
 			int count = Count;
-			return Extract(start, count + 1);
+			return Extract(start, count);
 		}
 		public MauronCode_dataList<T> RemoveLastElement ( ) {
 			#region ReadOnly Check
