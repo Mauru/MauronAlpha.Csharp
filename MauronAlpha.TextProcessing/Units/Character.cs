@@ -161,7 +161,7 @@ namespace MauronAlpha.TextProcessing.Units {
 
 			// in word
 			if (Index > 0)
-				return Parent.TryIndex(Index - 1, ref unit);
+				return Parent.TryIndex(Index-1, ref unit);
 
 			Word w = null;
 			if (!Parent.TryBehind(ref w))

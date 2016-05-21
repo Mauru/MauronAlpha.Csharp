@@ -177,14 +177,13 @@ namespace MauronAlpha.TextProcessing.DataObjects {
 			if (o.IsLineBreak) {
 
 				TextSelector result = TextOperation.SplitAtCharacterUntilLineEnd(o);
-
-
 				if (result.IsEmpty)
 					return new TextOperation(o.Paragraph, TextOperation.MergeAheadParagraph);
 
-				Paragraph p = null;
+				Lines ll = ReIndexer.AssembleIntoLines(result).Lines;
+
 				Character n = null;
-				o.Paragraph.Insert(ReIndexer.AssembleIntoLines(result).Lines, o.Line.Index + 1);
+				o.Paragraph.Insert(ll, o.Line.Index + 1);
 				if (!o.TryAhead(ref n))
 					return new TextOperation(o, TextOperation.Nothing);
 				return new TextOperation(n, TextOperation.ReIndexAheadCharacter);
@@ -211,6 +210,15 @@ namespace MauronAlpha.TextProcessing.DataObjects {
 				if (nn.IsUtility) {
 					Characters cc = TextOperation.SplitAtCharacterUntilWordEnd(o).Characters;
 					Words w = ReIndexer.AssembleIntoWords(cc).Words;
+
+					//ParagraphBreak ahead
+					if (nn.IsParagraphBreak && !o.IsLineBreak) {
+						Word wb = Words.LineBreak;
+						w.InsertValueAt(0, wb);
+						o.Line.Insert(w, o.Parent.Index + 1);
+						return new TextOperation(wb.FirstChild, TextOperation.ReIndexAheadCharacter);
+					}
+
 					o.Line.Insert(w, o.Parent.Index + 1);
 					return new TextOperation(nn, TextOperation.ReIndexAheadCharacter);
 				}
@@ -415,4 +423,5 @@ namespace MauronAlpha.TextProcessing.DataObjects {
 			get { return TextUnitTypes.Character; }
 		}
 	}
+
 }

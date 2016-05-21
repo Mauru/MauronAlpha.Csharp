@@ -268,8 +268,9 @@ namespace MauronAlpha.TextProcessing.Units {
 
 		//Blind Modifiers
 		public Word Add(Character c) {
+			int count = Count;
 			Characters.Add(c);
-			c.SetParent(this, Count);
+			c.SetParent(this, count);
 			return this;
 		}
 		public Word Add(Characters cc) {

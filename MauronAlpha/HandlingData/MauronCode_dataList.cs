@@ -93,7 +93,11 @@ namespace MauronAlpha.HandlingData {
 		}
 		public bool IsEmpty {
 			get {
-				return Data.Count==0;
+				if (L_data == null)
+					return true;
+				if (L_data.Count > 0)
+					return false;
+				return true;
 			}
 		} 
 

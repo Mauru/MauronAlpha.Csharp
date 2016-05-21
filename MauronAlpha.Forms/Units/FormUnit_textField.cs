@@ -201,19 +201,18 @@ namespace MauronAlpha.Forms.Units {
 			TextOperation.ReIndexAhead(query.Character).Complete();
 			CaretPosition.SetContext(ll.LastElement.End);
 		}
-		public void InsertAtWord(int index, string text) {
+		public void InsertBeforeWord(int index, string text) {
 			Word w = DATA_text.WordByIndex(index);
 			Words ww = new Words(text);
 			w.Parent.Insert(ww, w.Index);
 			TextOperation.ReIndexAhead(w.FirstChild).Complete();
 			CaretPosition.SetContext(ww.LastElement.End);
 		}
-		
 		public void InsertAfterWord(int index, Character c) {
 			Word w = DATA_text.WordByIndex(index);
 			w.Add(c);
 			Character cc = null;
-			if (!c.TryBehind(ref cc))
+			if (!c.TryBehind(ref cc)) 
 				TextOperation.ReIndexAhead(c).Complete();
 			else
 				TextOperation.ReIndexAhead(cc).Complete();

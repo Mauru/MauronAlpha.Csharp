@@ -34,7 +34,6 @@ namespace MauronAlpha.TextProcessing.DataObjects {
 
 		}
 		public static TextSelector AssembleCharactersIntoWords(Characters cc) {
-
 			Words result = new Words(cc);
 			return new TextSelector(result);
 
@@ -72,17 +71,8 @@ namespace MauronAlpha.TextProcessing.DataObjects {
 
 
 		public static TextSelector AssembleIntoWords(Characters cc) {
-			//Assemble characters into words
-			Words wwc = new Words();
-
-			//Characters are words
-			if (cc.HasUtility)
-				wwc = new Words(cc);
-			//Characters is a single word
-			else
-				wwc = new Words(new Word(cc));
-
-			return new TextSelector(wwc);
+			Words ww = new Words(cc);
+			return new TextSelector(ww);
 		}
 
 		public static TextSelector AssembleIntoLines(Words ww) {
@@ -95,12 +85,13 @@ namespace MauronAlpha.TextProcessing.DataObjects {
 		public static TextSelector AssembleIntoLines(TextSelector buffer) {
 
 			Characters cc = buffer.Characters;
+			Words ww = ReIndexer.AssembleIntoWords(cc).Words;
 
 			TextSelector assembler = new TextSelector();
-			assembler.SetWords(ReIndexer.AssembleIntoWords(cc).Words);
+			assembler.SetWords(ww);
 			assembler.AddWords(buffer.Words);
-
-			assembler.InsertLines(buffer.Lines,0);
+			assembler.SetLines(new Lines(assembler.Words));
+			assembler.AddLines(buffer.Lines);
 
 			return new TextSelector(assembler.Lines);
 		}

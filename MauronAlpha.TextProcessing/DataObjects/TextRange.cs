@@ -2,6 +2,8 @@
 using MauronAlpha.TextProcessing.Collections;
 
 namespace MauronAlpha.TextProcessing.DataObjects {
+
+	//Defines 
 	public class TextRange:TextComponent  {
 
 		//constructor

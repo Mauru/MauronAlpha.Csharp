@@ -8,7 +8,6 @@ namespace MauronAlpha.TextProcessing.DataObjects {
 	
 	public class TextSelector:TextComponent {
 
-
 		public static int DefaulResolution = 5;
 
 		//constructors
@@ -277,55 +276,29 @@ namespace MauronAlpha.TextProcessing.DataObjects {
 			}
 		}
 
-		/* #TODO
-	public static TextSelector PrevUntilParagraphBreak(Character c) {
-
-		if (!c.HasParent)
-			return TextSelector.Empty;
-
-		Characters ac = c.LookLeft;
-		ac = ac.Reverse();
-		int final = 0;
-
-		foreach (Character cc in ac) {
-			if (cc.IsParagraphBreak) {
-				final = cc.Index;
-				break;
+		//Debug
+		public TextContext CountAsContext {
+			get {
+				TextContext result = new TextContext();
+				if (D_p == null)
+					result.SetParagraph(0);
+				else
+					result.SetParagraph(Paragraphs.Count);
+				if (D_l == null)
+					result.SetLine(0);
+				else
+					result.SetLine(Lines.Count);
+				if (D_w == null)
+					result.SetWord(0);
+				else
+					result.SetLine(Words.Count);
+				if (D_c == null)
+					result.SetCharacter(0);
+				else
+					result.SetCharacter(Characters.Count);
+				return result;
 			}
 		}
-		int start = final;
-		int end = c.Index-1;
-		Characters finalC = c.Parent.ChildrenByRange(start, end);
-
-		if (!finalC.IsEmpty)
-			return new TextSelector(finalC);
-
-		TextSelector aw = TextSelector.PrevUntilParagraphBreak(c.Parent);
-
-
-		
-	}
-
-	public static TextSelector PrevUntilParagraphBreak(Word w) {
-		if (!w.HasParent)
-			return TextSelector.Empty;
-
-		Words aw = w.LookLeft;
-		aw.Reverse();
-		int final = 0;
-		foreach (Word ww in aw) {
-			if (ww.IsParagraphBreak) { 
-				final = ww.Index;
-				break;
-			}
-		}
-		int start = final;
-		int end = w.Index - 1;
-		Words finalC = w.Parent.ChildrenByRange(start, end);
-
-
-
-	}*/
 
 	}
 

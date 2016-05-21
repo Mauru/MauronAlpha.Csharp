@@ -15,7 +15,9 @@ namespace MauronAlpha.TextProcessing.Collections {
 			base.AddValuesFrom(data);
 		}
 		public Words(Characters data) :this() {
-			if (data.IsEmpty) return;
+			if (data.IsEmpty)
+				return;
+
 			Word w = new Word();
 			Add(w);
 			int index = 0;
