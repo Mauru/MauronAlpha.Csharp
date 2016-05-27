@@ -46,7 +46,6 @@
     <Compile Include="Keyboard\Units\SpecialKey.cs" />
     <Compile Include="Keyboard\Collections\SpecialKeyMap.cs" />
     <Compile Include="Keyboard\Events\Event_keyUp.cs" />
-    <Compile Include="SystemInterface.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

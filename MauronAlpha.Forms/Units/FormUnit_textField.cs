@@ -28,6 +28,11 @@ namespace MauronAlpha.Forms.Units {
 		public FormUnit_textField():base( FormType_textField.Instance ) {
 			DATA_caret = new CaretPosition(DATA_text);
 		}
+		public FormUnit_textField(string text): base(FormType_textField.Instance) {
+			DATA_text = new Text(text);
+			DATA_caret = new CaretPosition(DATA_text);
+
+		}
 
 		//The actual TextObject
 		Text DATA_text = new Text();
@@ -217,6 +222,12 @@ namespace MauronAlpha.Forms.Units {
 			else
 				TextOperation.ReIndexAhead(cc).Complete();
 			CaretPosition.SetContext(c.Context);
+		}
+
+		public TextWidthData TextWidthData {
+			get {
+				return new TextWidthData(DATA_text);
+			}
 		}
 
 		//debug

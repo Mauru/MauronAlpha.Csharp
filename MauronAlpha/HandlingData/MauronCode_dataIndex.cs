@@ -108,6 +108,21 @@ namespace MauronAlpha.HandlingData {
 			return DATA_values.IsSet(key);
 		}
 
+		public bool TryKey(long key, ref T result) {
+			long n = 0;
+			foreach(long k in Keys) {
+				if (k.Equals(key))
+					return TryIndex(n, ref result);
+				n++;
+				if (n > key)
+					return false;
+			}
+			return false;
+		}
+		public bool TryIndex(long key, ref T result) {
+			return DATA_values.TryGet(key, ref result);
+		}
+
 		//Methods
 		public MauronCode_dataIndex<T> SetIsReadOnly (bool state) {
 			B_isReadOnly=state;

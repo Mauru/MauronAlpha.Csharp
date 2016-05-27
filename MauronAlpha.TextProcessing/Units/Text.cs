@@ -8,9 +8,12 @@ namespace MauronAlpha.TextProcessing.Units {
 		//Constructor
 		public Text() : base(TextUnitTypes.Text) { }
 		public Text(Paragraphs data) : this() {
-			foreach (Paragraph p in data) {
-				TryAdd(p);
-			}
+			Insert(data, 0);
+		}
+		public Text(string text):this() {
+			Lines ll = new Lines(text);
+			Paragraphs pp = new Paragraphs(ll);
+			Insert(pp, 0);
 		}
 
 		public override TextUnitType UnitType {

@@ -1,7 +1,6 @@
 ﻿using MauronAlpha.MonoGame.Entities.Collections;
 using MauronAlpha.MonoGame.Entities.Utility;
-using MauronAlpha.MonoGame.Inventory.Collections;
-using MauronAlpha.MonoGame.Quantifiers.Units;
+using MauronAlpha.MonoGame.Entities.Quantifiers;
 
 namespace MauronAlpha.MonoGame.Entities.Units {
 
@@ -27,8 +26,8 @@ namespace MauronAlpha.MonoGame.Entities.Units {
 			}
 		}
 
-		public readonly EntityValue<T_Time> SpawnTime;
-		public readonly EntityValue<T_Time> LastModified;
+		public readonly WorldTime SpawnTime;
+		public readonly WorldTime LastModified;
 
 		public Attributes Attributes = new Attributes();
 		public Conditions Conditions = new Conditions();
@@ -41,11 +40,11 @@ namespace MauronAlpha.MonoGame.Entities.Units {
 
 		Location Location;
 
-		public void LearnTrait(Trait trait, EntityValue<T_Time> time) {
+		public void LearnTrait(Trait trait, WorldTime time) {
 			Traits.Add(trait, time);
 			Memories.Add(MemoryMaker.LearnedTrait(this, trait, Location, time));
 		}
-		public void SufferCondition(Condition condition, EntityValue<T_Time> time) {
+		public void SufferCondition(Condition condition, WorldTime time) {
 			Conditions.Add(condition, time);
 			Memories.Add(MemoryMaker.SufferedCondition(this, condition, Location, time));
 		}

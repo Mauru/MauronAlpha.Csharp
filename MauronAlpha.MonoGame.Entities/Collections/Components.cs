@@ -1,5 +1,5 @@
 ﻿using MauronAlpha.HandlingData;
-using MauronAlpha.MonoGame.Inventory.Units;
+using MauronAlpha.MonoGame.Entities.Units;
 
 namespace MauronAlpha.MonoGame.Entities.Collections {
 	

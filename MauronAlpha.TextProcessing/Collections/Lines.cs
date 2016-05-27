@@ -6,6 +6,9 @@ namespace MauronAlpha.TextProcessing.Collections {
 	public class Lines:MauronCode_dataList<Line> {
 
 		public Lines(): base() {}
+		public Lines(Line l): base() {
+				Add(l);
+		}
 		public Lines(MauronCode_dataList<Line> data): this() {
 			base.AddValuesFrom(data);
 		}

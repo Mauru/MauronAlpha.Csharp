@@ -39,6 +39,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MauronAlpha.Console", "..\M
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MauronAlpha.MonoGame.WorldGenerator", "..\MauronAlpha.MonoGame.WorldGenerator\MauronAlpha.MonoGame.WorldGenerator.csproj", "{09642891-2B13-444B-80AC-260EF09158C2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MauronAlpha.MonoGame.SpaceGame", "..\MauronAlpha.MonoGame.SpaceGame\MauronAlpha.MonoGame.SpaceGame.csproj", "{1E54EF79-BE13-4B23-B0CC-890211933B80}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -148,6 +150,14 @@ Global
 		{09642891-2B13-444B-80AC-260EF09158C2}.MonoGame|Any CPU.Build.0 = Release|Any CPU
 		{09642891-2B13-444B-80AC-260EF09158C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{09642891-2B13-444B-80AC-260EF09158C2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1E54EF79-BE13-4B23-B0CC-890211933B80}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1E54EF79-BE13-4B23-B0CC-890211933B80}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1E54EF79-BE13-4B23-B0CC-890211933B80}.DontCompile|Any CPU.ActiveCfg = Debug|Any CPU
+		{1E54EF79-BE13-4B23-B0CC-890211933B80}.DontCompile|Any CPU.Build.0 = Debug|Any CPU
+		{1E54EF79-BE13-4B23-B0CC-890211933B80}.MonoGame|Any CPU.ActiveCfg = Release|Any CPU
+		{1E54EF79-BE13-4B23-B0CC-890211933B80}.MonoGame|Any CPU.Build.0 = Release|Any CPU
+		{1E54EF79-BE13-4B23-B0CC-890211933B80}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1E54EF79-BE13-4B23-B0CC-890211933B80}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -167,5 +177,6 @@ Global
 		{7C2C5007-5B96-41E4-8FA0-F709BBBB96F6} = {5DA7A547-23B9-4764-A557-716FCA3DBC76}
 		{F3EA0810-D9BA-44B8-A8E7-45F7D9970678} = {769E73D8-B120-42F0-8093-EC1B5E61A45C}
 		{09642891-2B13-444B-80AC-260EF09158C2} = {5DA7A547-23B9-4764-A557-716FCA3DBC76}
+		{1E54EF79-BE13-4B23-B0CC-890211933B80} = {5DA7A547-23B9-4764-A557-716FCA3DBC76}
 	EndGlobalSection
 EndGlobal

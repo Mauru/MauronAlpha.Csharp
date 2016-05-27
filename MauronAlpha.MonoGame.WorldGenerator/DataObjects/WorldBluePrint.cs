@@ -5,19 +5,13 @@ using MauronAlpha.MonoGame.WorldGenerator.Units;
 
 namespace MauronAlpha.MonoGame.WorldGenerator.DataObjects {
 	
-	public class WorldBluePrint:EntityComponent {
+	public abstract class WorldBluePrint:EntityComponent {
 
-		public Geography CreateGeography(Site site, World world) {
+		public abstract Geography CreateGeography(Site site, World world);
 
-			return new Geography();
+		public abstract Memories CreateBasicHistory(Site site, World world);
 
-		}
-
-		public Memories CreateBasicHistory(Site site, World world) {
-
-			return new Memories();
-
-		}
+		public abstract Population CreatePopulation(Site site, World world);
 
 	}
 }

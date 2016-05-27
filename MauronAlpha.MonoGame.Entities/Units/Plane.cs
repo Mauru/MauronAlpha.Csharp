@@ -1,5 +1,5 @@
 ﻿using MauronAlpha.MonoGame.Entities.Collections;
-using MauronAlpha.MonoGame.Entities.Utility
+using MauronAlpha.MonoGame.Entities.Utility;
 
 namespace MauronAlpha.MonoGame.Entities.Units {
 	
@@ -20,7 +20,8 @@ namespace MauronAlpha.MonoGame.Entities.Units {
 		public Site NewSite {
 			get {
 				string generatedName = NameGenerator.Create(NameFormulae.Site);;
-				LastUsedRegion.AddToBuffer(new Site(generatedName,Clock))
+				//LastUsedRegion.AddToBuffer(new Site(generatedName, Clock));
+				return new Site(generatedName, Clock);
 			}
 		}
 

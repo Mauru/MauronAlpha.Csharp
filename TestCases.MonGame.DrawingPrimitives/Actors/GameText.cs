@@ -1,20 +1,20 @@
 ﻿using MauronAlpha.MonoGame.DataObjects;
 using MauronAlpha.MonoGame.Utility;
 using MauronAlpha.MonoGame.Resources;
+using MauronAlpha.Forms.Units;
 
 using MauronAlpha.Geometry.Geometry2d.Units;
 
-using MauronAlpha.Text.Units;
+using MauronAlpha.TextProcessing.Units;
 
 namespace MauronAlpha.MonoGame.Actors {
 	
 	public class GameText:GameActor {
 		GameFont Font;
-		private TextUnit_text DATA_text;
+		FormUnit_textField Text;
 
-		public GameText(RenderLevel index, GameManager manager,string text, GameFont font) : base(index, manager) { 
-			DATA_text = new TextUnit_text(text);
-			SendEvent( GenerateEvent("spawned",this) );
+		public GameText(RenderLevel index, GameManager manager,string text, GameFont font) : base(index, manager) {
+			Text = new FormUnit_textField(text);
 			Font = font;
 			RequestRender(this);
 		}

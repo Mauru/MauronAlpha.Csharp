@@ -9,8 +9,9 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>MauronAlpha.TextProcessing</RootNamespace>
     <AssemblyName>MauronAlpha.TextProcessing</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -55,6 +56,7 @@
     <Compile Include="DataObjects\TextOperation.cs" />
     <Compile Include="DataObjects\TextRange.cs" />
     <Compile Include="DataObjects\TextSelector.cs" />
+    <Compile Include="DataObjects\TextWidthData.cs" />
     <Compile Include="TextComponent.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Units\Character.cs" />

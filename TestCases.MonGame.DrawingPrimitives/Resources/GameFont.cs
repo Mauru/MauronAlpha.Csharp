@@ -1,6 +1,6 @@
 ﻿
 using MauronAlpha.Geometry.Geometry2d.Units;
-using MauronAlpha.Text.Units;
+using MauronAlpha.TextProcessing.Units;
 
 using Microsoft.Xna.Framework.Graphics;
 
@@ -15,10 +15,6 @@ namespace MauronAlpha.MonoGame.Resources {
 			FontStyle = style;
 			STR_resourceCode = code;
 			Name = name;
-		}
-
-		public Vector2d MeasureText(TextUnit_text text, Vector2d maxSize, SpriteFont font) {
-			
 		}
 	}
 

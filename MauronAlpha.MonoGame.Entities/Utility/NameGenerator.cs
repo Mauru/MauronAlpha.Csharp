@@ -1,7 +1,7 @@
 ﻿
 namespace MauronAlpha.MonoGame.Entities.Utility {
 	
-	public static class NameGenerator:EntityComponent {
+	public class NameGenerator:EntityComponent {
 
 		public static string Create(LinguisticTool type) { 
 			return type.New;
@@ -19,7 +19,7 @@ namespace MauronAlpha.MonoGame.Entities.Utility {
 
 	}
 
-	public static class NameFormulae : EntityComponent {
+	public class NameFormulae : EntityComponent {
 
 		public static LinguisticTool Site {
 			get {

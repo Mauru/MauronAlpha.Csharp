@@ -12,13 +12,6 @@ namespace MauronAlpha.TestCases.Console {
 
 			FormUnit_textField text = new FormUnit_textField();
 
-			text.SetText("Test and stuff.");
-			text.InsertAfterWord(0, Characters.ParagraphBreak);
-			foreach (Line l in text.Lines)
-				System.Console.WriteLine(l.AsVisualString);
-			System.Console.WriteLine(text.CountAsContext.AsString + " total.");
-			System.Console.WriteLine(text.FirstLine.CountAsContext.AsString + " on first line.");
-
 			System.Console.ReadKey();
 
 

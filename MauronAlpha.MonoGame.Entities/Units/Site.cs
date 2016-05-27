@@ -31,6 +31,7 @@ namespace MauronAlpha.MonoGame.Entities.Units {
 
 		public Geography SetGeography(Geography data) {
 			Geography = data;
+			return data;
 		}
 	}
 }

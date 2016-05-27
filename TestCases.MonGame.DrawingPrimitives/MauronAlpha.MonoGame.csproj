@@ -119,13 +119,17 @@
       <Project>{425a4b94-31df-4569-b68c-edeaf82163a7}</Project>
       <Name>MauronAlpha.Events</Name>
     </ProjectReference>
+    <ProjectReference Include="..\MauronAlpha.Forms\MauronAlpha.Forms.csproj">
+      <Project>{528992a7-2184-4f0f-85bd-d8ecd1414db9}</Project>
+      <Name>MauronAlpha.Forms</Name>
+    </ProjectReference>
     <ProjectReference Include="..\MauronAlpha.Geometry\MauronAlpha.Geometry.csproj">
       <Project>{39d005f7-f334-470d-a660-a2a7da65c456}</Project>
       <Name>MauronAlpha.Geometry</Name>
     </ProjectReference>
-    <ProjectReference Include="..\MauronAlpha.Text\MauronAlpha.Text.csproj">
-      <Project>{fc8f715d-8fa5-4cb7-8866-e2d72747d4ad}</Project>
-      <Name>MauronAlpha.Text</Name>
+    <ProjectReference Include="..\MauronAlpha.TextProcessing\MauronAlpha.TextProcessing.csproj">
+      <Project>{dbdef41c-b0c4-44ca-8297-6f9c85f6231a}</Project>
+      <Name>MauronAlpha.TextProcessing</Name>
     </ProjectReference>
     <ProjectReference Include="..\MauronAlpha\MauronAlpha.csproj">
       <Project>{6a046817-9f14-4781-97c9-f89febc2097b}</Project>

@@ -10,4 +10,9 @@ namespace MauronAlpha.MonoGame.Entities.Quantifiers {
 	//How much a being WANTS something
 	public class T_Urge : EntityValueType { }
 
+
+	public class T_Duration : EntityValueType { }
+
+	public class T_FoodValue : EntityValueType { }
+
 }

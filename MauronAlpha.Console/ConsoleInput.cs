@@ -56,5 +56,6 @@ namespace MauronAlpha.Console {
 		public void UnSubscribe(I_subscriber<Event_keyUp> s) {
 			Subscriptions.Remove(s);
 		}
+	
 	}
 }

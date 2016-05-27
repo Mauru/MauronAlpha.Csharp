@@ -10,7 +10,7 @@ namespace MauronAlpha.MonoGame.Entities.Collections {
 
 		public Population(Site site) : base() {
 			Location = site;
-			TimeFounded = Site.Clock.CurrentTime;
+			TimeFounded = site.Clock.CurrentTime;
 		}
 
 

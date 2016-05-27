@@ -21,7 +21,7 @@ namespace MauronAlpha.MonoGame.Entities.Units {
 
 		Motives Motives;
 
-		public Memory(MemoryType type, EntityComponent source, EntityComponent target, Location location, EntityValue<T_Time> time)	: base() {
+		public Memory(MemoryType type, EntityComponent source, EntityComponent target, Location location, WorldTime time)	: base() {
 			Source = source;
 			Target = target;
 			Location = location;

@@ -40,6 +40,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Collections\HexLine.cs" />
+    <Compile Include="DataObjects\HexQuery.cs" />
     <Compile Include="HexGridComponent.cs" />
     <Compile Include="Collections\HexNeighbors.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

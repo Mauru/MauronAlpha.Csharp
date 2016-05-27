@@ -39,12 +39,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ConsoleApp.cs" />
     <Compile Include="ConsoleComponent.cs" />
     <Compile Include="ConsoleInput.cs" />
-    <Compile Include="ConsoleInputManager.cs" />
     <Compile Include="ConsoleKeyConverter.cs" />
-    <Compile Include="ConsoleRenderer.cs" />
-    <Compile Include="ConsoleWindow.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

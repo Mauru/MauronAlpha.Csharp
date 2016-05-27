@@ -42,6 +42,37 @@ namespace MauronAlpha.MonoGame.HexGrid.Collections {
 				return Source.Coordinates.Instance.Add(0, -1, 1);
 			}
 		}
+		public Vector3d Top {
+			get {
+				return HexNeighbors.TopOf(Source.Coordinates);
+			}
+		}
+		public Vector3d Bottom {
+			get {
+				return HexNeighbors.BottomOf(Source.Coordinates);
+			}
+		}
 
+		public static Vector3d TopRightOf(Vector3d vector) {
+			return vector.Instance.Add(1, 0, -1);
+		}
+		public static Vector3d TopLeftOf(Vector3d vector) {
+			return vector.Instance.Add(0, 1, -1);
+		}
+		public static Vector3d LeftOf(Vector3d vector) {
+			return vector.Instance.Add(-1, 1, 0);
+		}
+		public static Vector3d BottomLeftOf(Vector3d vector) {
+			return vector.Instance.Add(-1, 0, 1);
+		}
+		public static Vector3d BottomRightOf(Vector3d vector) {
+			return vector.Instance.Add(0, -1, 1);
+		}
+		public static Vector3d TopOf(Vector3d vector) {
+			return TopRightOf(TopLeftOf(vector));
+		}
+		public static Vector3d BottomOf(Vector3d vector) {
+			return BottomRightOf(BottomLeftOf(vector));
+		}
 	}
 }

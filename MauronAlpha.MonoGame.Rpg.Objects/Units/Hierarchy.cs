@@ -6,8 +6,5 @@ using System.Threading.Tasks;
 
 namespace MauronAlpha.MonoGame.Concepts.Quantifiers {
 	public class Hierarchy:GameConcept {
-
-		public Guild
-
 	}
 }

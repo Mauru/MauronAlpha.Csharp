@@ -18,8 +18,9 @@ namespace MauronAlpha.MonoGame.HexGrid.Units {
 		bool IsNotFound { get { return B_notFound; } }
 		
 
-		void SetNotFound(bool state) {
+		public Hex SetNotFound(bool state) {
 			B_notFound = state;
+			return this;
 		}
 
 		public Hex() : base() {
@@ -43,7 +44,6 @@ namespace MauronAlpha.MonoGame.HexGrid.Units {
 				return this;
 			}
 		}
-
 
 		Vector3d DATA_coordinates = new Vector3d();
 		public Vector3d Coordinates { get { return DATA_coordinates; } }

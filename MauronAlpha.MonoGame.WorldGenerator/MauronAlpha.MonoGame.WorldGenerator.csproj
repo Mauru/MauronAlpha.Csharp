@@ -60,6 +60,10 @@
       <Project>{e8727538-c254-42d6-9444-a5c0db4fd315}</Project>
       <Name>MauronAlpha.MonoGame.Concepts</Name>
     </ProjectReference>
+    <ProjectReference Include="..\MauronAlpha\MauronAlpha.csproj">
+      <Project>{6a046817-9f14-4781-97c9-f89febc2097b}</Project>
+      <Name>MauronAlpha</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Utility\" />

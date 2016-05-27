@@ -26,9 +26,8 @@ namespace MauronAlpha.MonoGame.WorldGenerator.Units {
 
 
 			BluePrint.CreateGeography(start,this);
-			BluePrint.CreateBasicHistory(start,this);
-		
-			
+			BluePrint.CreatePopulation(start, this);
+			BluePrint.CreateBasicHistory(start,this);			
 
 		}
 
