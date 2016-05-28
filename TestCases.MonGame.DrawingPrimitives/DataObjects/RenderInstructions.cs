@@ -6,12 +6,6 @@ namespace MauronAlpha.MonoGame.DataObjects {
 		public bool IsSpriteFont = false;
 		public bool IsMesh = false;
 		public bool HasChildren = false;
-
-		public static RenderInstructions_gameStage GameStage {
-			get {
-				return RenderInstructions_gameStage.Instance;
-			}
-		}
 	}
 
 }

@@ -59,7 +59,9 @@ namespace MauronAlpha.MonoGame.Utility {
 		public void Render(RenderRequest request) {
 			if (request.IsEmpty)
 				return;
-			RenderInstructions instructions = request.Instructions;
+			GameActor actor = request.Actor;
+			RenderInstructions instructions = actor.RenderInstructions;
+			RenderLevel level = actor.R
 		}
 	}
 }

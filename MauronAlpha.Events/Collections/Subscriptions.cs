@@ -8,7 +8,6 @@ namespace MauronAlpha.Events.Collections {
 		public MauronCode_dataList<I_subscriber<T>> Subscribers;
 
 		public int ReceiveEvent(T e)  {
-			System.Console.Write(Subscribers.Count);
 			int count = 0;
 			foreach (I_subscriber<T> sub in Subscribers) { 
 				sub.ReceiveEvent(e);

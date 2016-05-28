@@ -18,7 +18,7 @@ namespace MauronAlpha.MonoGame.Actors {
 		internal RenderLevel DATA_level;
 		public RenderLevel Index { get { return DATA_level; } }
 
-		public Vector2d Position { get; }
+		public abstract Vector2d Position { get; }
 		internal Vector2d DATA_position = new Vector2d(0);
 
 		internal EventHandler EventHandler;

@@ -14,6 +14,8 @@ namespace MauronAlpha.MonoGame.Actors {
 	public class GameStage:GameActor {
 		MauronCode_dataList<RenderLevel> Levels = new MauronCode_dataList<RenderLevel>();
 
+		public override Vector2d Position { get { return new Vector2d(); } }
+
 		public override RenderInstructions RenderInstructions {
 			get { return new RenderInstructions_gameStage(this); }
 		}
@@ -44,7 +46,8 @@ namespace MauronAlpha.MonoGame.Actors {
 				return newLevel;
 			}
 		}
-	
+
+
 	}
 
 	public class RenderInstructions_gameStage : RenderInstructions {

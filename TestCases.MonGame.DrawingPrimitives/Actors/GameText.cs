@@ -13,6 +13,8 @@ namespace MauronAlpha.MonoGame.Actors {
 		GameFont Font;
 		FormUnit_textField Text;
 
+		public override Vector2d Position { get { return new Vector2d(); } }
+
 		public GameText(RenderLevel index, GameManager manager,string text, GameFont font) : base(index, manager) {
 			Text = new FormUnit_textField(text);
 			Font = font;
@@ -27,9 +29,22 @@ namespace MauronAlpha.MonoGame.Actors {
 			}
 		}
 		public override MauronAlpha.Geometry.Geometry2d.Units.Polygon2dBounds Bounds {
-			get { return Font.MeasureText(DATA_text, Position, MaxSize, Resources); }
+			get {
+				if (Font == null)
+					return GameText.EmptyBounds;
+				if(Text == null)
+					return GameText.EmptyBounds;
+				ResourceManager manager = base.Resources;
+				Vector2d size = Font.MeasureText(Text, manager);
+				MauronAlpha.Geometry.Geometry2d.Shapes.Rectangle2d shape = new MauronAlpha.Geometry.Geometry2d.Shapes.Rectangle2d();
+			}
 		}
-	
+		public static Polygon2dBounds EmptyBounds {
+			get {
+				MauronAlpha.Geometry.Geometry2d.Shapes.Rectangle2d empty = new MauronAlpha.Geometry.Geometry2d.Shapes.Rectangle2d();
+				return empty.Bounds;
+			}
+		}
 	}
 
 	public class RenderInstructions_gameText : RenderInstructions {

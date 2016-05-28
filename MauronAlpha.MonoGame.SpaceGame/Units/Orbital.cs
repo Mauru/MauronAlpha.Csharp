@@ -12,7 +12,7 @@
 
 
 	public class OT_Moon : OrbitalType { }
-
+	public class OT_habitable : OrbitalType {}
 	public class OT_Asteroid : OrbitalType { }
 	public class OT_AsteroidBelt : OrbitalType { }
 	public class OT_Comet : OrbitalType { }

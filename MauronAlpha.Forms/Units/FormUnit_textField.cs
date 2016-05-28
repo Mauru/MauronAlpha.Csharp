@@ -128,7 +128,7 @@ namespace MauronAlpha.Forms.Units {
 			}
 		}
 
-		public MauronCode_dataList<Line> Lines {
+		public Lines Lines {
 			get {
 				return DATA_text.Lines;
 			}

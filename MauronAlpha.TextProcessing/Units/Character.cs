@@ -141,6 +141,15 @@ namespace MauronAlpha.TextProcessing.Units {
 				return false;
 			}
 		}
+		public bool IsVirtual {
+			get {
+				if (IsEmpty)
+					return true;
+				if (IsParagraphBreak || IsLineBreak)
+					return true;
+				return false;
+			}
+		}
 
 		//Conditional Queries with boolean saves ("Tries")
 		public bool TryNext(ref Character unit) {

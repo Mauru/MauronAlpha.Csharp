@@ -44,11 +44,17 @@
     <Compile Include="ConsoleInput.cs" />
     <Compile Include="ConsoleKeyConverter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Units\ConsoleWindow.cs" />
+    <Compile Include="Utility\ConsoleController.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MauronAlpha.Events\MauronAlpha.Events.csproj">
       <Project>{425a4b94-31df-4569-b68c-edeaf82163a7}</Project>
       <Name>MauronAlpha.Events</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MauronAlpha.FileSystem\MauronAlpha.FileSystem.csproj">
+      <Project>{87daa81e-0342-4969-b99f-fbb60914b1a5}</Project>
+      <Name>MauronAlpha.FileSystem</Name>
     </ProjectReference>
     <ProjectReference Include="..\MauronAlpha.Forms\MauronAlpha.Forms.csproj">
       <Project>{528992a7-2184-4f0f-85bd-d8ecd1414db9}</Project>

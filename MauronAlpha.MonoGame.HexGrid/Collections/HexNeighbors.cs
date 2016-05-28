@@ -74,5 +74,8 @@ namespace MauronAlpha.MonoGame.HexGrid.Collections {
 		public static Vector3d BottomOf(Vector3d vector) {
 			return BottomRightOf(BottomLeftOf(vector));
 		}
+		public static Vector3d RightOf(Vector3d vector) {
+			return vector.Instance.Add(1, 1, 0);
+		}
 	}
 }

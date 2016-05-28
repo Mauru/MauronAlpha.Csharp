@@ -1,7 +1,9 @@
 ﻿using MauronAlpha.MonoGame.SpaceGame.Units;
+using MauronAlpha.MonoGame.SpaceGame.Utility;
+using MauronAlpha.MonoGame.SpaceGame.DataObjects;
 using MauronAlpha.MonoGame.SpaceGame.Actuals;
 using MauronAlpha.MonoGame.SpaceGame.Quantifiers;
-using MauronAlpha.MonoGame.SpaceGame.Collections;
+//using MauronAlpha.MonoGame.SpaceGame.Collections;
 
 using MauronAlpha.MonoGame.HexGrid.Units;
 
@@ -12,6 +14,7 @@ namespace MauronAlpha.MonoGame.SpaceGame.Utility {
 		Map Map;
 		MapBluePrint Rules;
 		Universe Universe;
+		Planet StartingPlanet;
 
 		public void Start(MapBluePrint bluePrint) {
 			Rules = bluePrint;
@@ -32,31 +35,14 @@ namespace MauronAlpha.MonoGame.SpaceGame.Utility {
 
 		public Planet GenerateStartingPlanet(MapBluePrint rules, MapLocation location, Species species) {
 
-			Planet result = new Planet(rules.StartingPlanetName, location);
+			StartingPlanet = new Planet(rules.StartingPlanetName, location, rules.StartingPlanetSize, rules.StartingPlanetDistanceFromCentre);
+			StarSystem system = location.System;
+			system.AddHabitable(StartingPlanet);
+			return StartingPlanet;
 
 		}
 
 
-	}
-
-	public class MapBluePrint : GameComponent {
-
-		public GameName StartingSpeciesName {
-			get {
-				return new GameName("StartingSpecies");
-			}
-		}
-		public GameName StartingPlanetName {
-			get {
-				return new GameName("StartingPlanet");
-			}
-		}
-
-		public SpeciesStats StartingStatistics {
-			get {
-				return new SpeciesStats();
-			}
-		}
 	}
 
 }

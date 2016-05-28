@@ -7,7 +7,7 @@ namespace MauronAlpha.MonoGame.DataObjects {
 		RenderInstructions DATA_instructions;
 		RenderInstructions Instructions { get { return DATA_instructions; } }
 		EventUnit_timeStamp Time;
-		RenderLevel Level;
+		public readonly RenderLevel Level;
 
 		EventUnit_timeStamp TIME_lastRender;
 

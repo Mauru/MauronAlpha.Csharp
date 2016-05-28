@@ -3,18 +3,20 @@ using MauronAlpha.MonoGame.SpaceGame.Interfaces;
 using MauronAlpha.MonoGame.SpaceGame.Quantifiers;
 
 namespace MauronAlpha.MonoGame.SpaceGame.Actuals {
-	
-	public class Planet:Orbital<OT_Planet>, I_Habitable {
+
+	public class Planet : Orbital<OT_habitable>, I_Habitable  {
 		public GameName Name;
-		public Planet(GameName name, MapLocation location, GameValue<T_PlanetSize> size) : base(location) {
+		public Planet(GameName name, MapLocation location, GameValue<T_PlanetSize> size, GameValue<T_DistanceFromStarCentre> distance) : base(location) {
 			Name = name;
 			Size = size;
+			DistanceFromStarCentre = distance;
 		}
 
 		public GameValue<T_PlanetSize> Size;
+		public GameValue<T_DistanceFromStarCentre> DistanceFromStarCentre;
 	}
 
-	public class OT_Planet : OrbitalType { }
+	public class OT_Planet : OT_habitable { }
 
 	public abstract class GeoType : GameComponent {}
 

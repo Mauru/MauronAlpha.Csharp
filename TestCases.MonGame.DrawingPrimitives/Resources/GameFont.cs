@@ -1,6 +1,8 @@
 ﻿
 using MauronAlpha.Geometry.Geometry2d.Units;
 using MauronAlpha.TextProcessing.Units;
+using MauronAlpha.TextProcessing.Collections;
+using MauronAlpha.Forms.Units;
 
 using Microsoft.Xna.Framework.Graphics;
 
@@ -16,7 +18,35 @@ namespace MauronAlpha.MonoGame.Resources {
 			STR_resourceCode = code;
 			Name = name;
 		}
-	}
+		public Vector2d MeasureText(FormUnit_textField text, ResourceManager resources) {
+			Vector2d result = new Vector2d();
+			Lines ll = text.Lines;
+			foreach(Line l in ll) {
+				Vector2d size = MeasureText(l,resources);
+				result.Add(size);
+			}
+			return result;
+		}
+		public Vector2d MeasureText(Line line, ResourceManager resourceManager) {
+			Vector2d minMax = new Vector2d();
+			Characters cc = line.Characters;
+			Vector2d result = new Vector2d(0,0);
+			foreach(Character c in cc) {
+				Vector2d charSize = MeasureCharacter(c,resourceManager);
+				if(charSize.Y>result.Y)
+					result.SetY(charSize.Y);
+				result.Add(charSize.X,0);
+			}
+			return result;
+		}
+		public Vector2d MeasureCharacter(Character c, ResourceManager resourceManager) {
+			if(c.IsEmpty)
+				return new Vector2d();
+			if(c.IsVirtual)
+				return new Vector2d();
+			return new Vector2d(1,1);
+		}
+		
 
 	public class ResourceType_gameFont:ResourceType {
 		public override string Name { 

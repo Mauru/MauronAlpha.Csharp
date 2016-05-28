@@ -1,4 +1,6 @@
-﻿namespace MauronAlpha.FileSystem.Units {
+﻿using MauronAlpha.HandlingErrors;
+
+namespace MauronAlpha.FileSystem.Units {
 
 	public class FileStructure:FileSystem_component {
 
@@ -28,6 +30,24 @@
 				return false;
 			}
 		}
+		public File CreateFileAndReturn(string name, string extension) {
+			if (root == null)
+				throw new  MauronCode_error("No FileStructure present.", this, ErrorType_fileStructure.Instance);
+			else {
+				File file = new File(root, name, extension);
+				if (System.IO.File.Exists(file.Path))
+					return file;
+				try {
+					using (System.IO.FileStream fs = System.IO.File.Create(file.Path))
+						return file;
+				}
+				catch (System.Exception ex) {
+					throw new MauronCode_error("Could not create File.", file, ErrorType_fileStructure.Instance);
+				}
+			}
+
+		}
+
 		public bool CreateFile(File file) {
 			try {
 				if (System.IO.File.Exists(file.Path))
@@ -66,4 +86,15 @@
 
 	}
 
+	public class ErrorType_fileStructure : ErrorType {
+		public static ErrorType_fileStructure Instance {
+			get {
+				return new ErrorType_fileStructure();
+			}
+		}
+
+		public override string Name {
+			get { return "FileStructure"; }
+		}
+	}
 }

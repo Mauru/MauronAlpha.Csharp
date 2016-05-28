@@ -1,5 +1,5 @@
 ﻿using MauronAlpha.MonoGame.SpaceGame.Quantifiers;
-using MauronAlpha.MonoGame.SpaceGame.Collections;
+using MauronAlpha.MonoGame.SpaceGame.DataObjects;
 
 namespace MauronAlpha.MonoGame.SpaceGame.Units {
 	
