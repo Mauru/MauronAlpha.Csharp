@@ -17,6 +17,13 @@ namespace MauronAlpha.MonoGame {
 			GameLogic logic = new TestLogic();
 			MonoGameWrapper Game = new MonoGameWrapper(logic);
 			Game.Run();
+			while (Game != null && !Game.CanExit) {
+				if(!Game.IsActive)
+					Game.Run();
+				Game.CheckExitCondition();
+			}
+
+
         }
     }
 #endif

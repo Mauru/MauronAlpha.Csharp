@@ -9,7 +9,7 @@ namespace MauronAlpha.MonoGame {
 		//Initialize
 		public override void Initialize(GameManager manager) {
 			base.Initialize(manager);
-			Engine.PrepareStartUpAssetts();
+			manager.Engine.PrepareStartUpAssetts();
 		}
 	}
 }

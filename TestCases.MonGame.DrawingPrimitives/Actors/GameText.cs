@@ -37,6 +37,7 @@ namespace MauronAlpha.MonoGame.Actors {
 				ResourceManager manager = base.Resources;
 				Vector2d size = Font.MeasureText(Text, manager);
 				MauronAlpha.Geometry.Geometry2d.Shapes.Rectangle2d shape = new MauronAlpha.Geometry.Geometry2d.Shapes.Rectangle2d();
+				return shape.Bounds;
 			}
 		}
 		public static Polygon2dBounds EmptyBounds {

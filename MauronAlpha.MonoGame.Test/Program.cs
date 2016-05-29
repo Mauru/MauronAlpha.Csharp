@@ -12,9 +12,12 @@ namespace MauronAlpha.MonoGameEngine {
         /// </summary>
         [STAThread]
         static void Main()
-        {
-			using (var game = new MonoGameWrapper())
-                game.Run();
+		{
+			MonoGameWrapper game = new MonoGameWrapper();
+			game.Run();
+			while (!game.CanExit) { 
+				game.CheckExitCondition();
+			}
         }
     }
 #endif

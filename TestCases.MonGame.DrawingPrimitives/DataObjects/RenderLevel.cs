@@ -15,6 +15,11 @@ namespace MauronAlpha.MonoGame.DataObjects {
 		public RenderLevel(int index, GameManager manager):base() {
 			INT_index = index;
 			Manager = manager;
+			if (manager.Renderer == null) {
+				RenderManager renderer = new RenderManager(manager.Process.GraphicsDevice);
+				Manager.Renderer = renderer;
+				Manager.Process.SetRenderManager(renderer);
+			}
 		}
 
 		public bool IsEmpty {
@@ -31,7 +36,7 @@ namespace MauronAlpha.MonoGame.DataObjects {
 		}
 
 		public virtual void RequestRenderUpdate(RenderLevel target) {
-			Renderer.AddRequest(target);
+			Renderer.AddRequest(target,Renderer.DefaultRenderInstructions);
 		}
 	
 	}

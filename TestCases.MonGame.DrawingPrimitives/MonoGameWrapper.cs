@@ -24,6 +24,16 @@ namespace MauronAlpha.MonoGame {
 		//SpriteBatch spriteBatch;
 		//VertexBuffer vertexBuffer;
 
+		private bool B_canExit = false;
+		public bool CanExit {
+			get {
+				return B_canExit;
+			}
+		}
+
+		public void CheckExitCondition() {
+			return;
+		}
 
 		Matrix world = Matrix.CreateTranslation(0, 0, 0);
 		Matrix view = Matrix.CreateLookAt(new Vector3(0, 0, 3), new Vector3(0, 0, 0), new Vector3(0, 1, 0));
@@ -54,6 +64,9 @@ namespace MauronAlpha.MonoGame {
 
 			//Do MonoGame Initialization
 			base.Initialize();
+		}
+		public void SetRenderManager(RenderManager manager) {
+			Renderer = manager;
 		}
 
 		/// <summary>
@@ -97,10 +110,15 @@ namespace MauronAlpha.MonoGame {
 		/// </summary>
 		/// <param name="gameTime">Provides a snapshot of timing values.</param>
 		protected override void Update(GameTime gameTime) {
-			if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed 
+			if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed
 				|| Keyboard.GetState().IsKeyDown(Keys.Escape)
 			)
-				Exit();
+				try {
+					base.Exit();
+				}
+				catch (System.NullReferenceException ex) {
+					return;
+				}
 
 			// TODO: Add your update logic here
 

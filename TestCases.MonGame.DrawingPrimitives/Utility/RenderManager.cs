@@ -5,6 +5,8 @@ using Microsoft.Xna.Framework;
 
 using MauronAlpha.MonoGame.Actors;
 
+using MauronAlpha.MonoGame.Geometry;
+
 using MauronAlpha.MonoGame.DataObjects;
 using MauronAlpha.Events.Units;
 
@@ -56,12 +58,28 @@ namespace MauronAlpha.MonoGame.Utility {
 			return this;
 		}
 
+		public RenderInstructions DefaultRenderInstructions {
+			get {
+				return new RenderInstructions_polygons();
+			}
+		}
 		public void Render(RenderRequest request) {
 			if (request.IsEmpty)
 				return;
 			GameActor actor = request.Actor;
 			RenderInstructions instructions = actor.RenderInstructions;
-			RenderLevel level = actor.R
+			RenderLevel level = actor.DATA_level;
+
+			MauronAlpha.Geometry.Geometry2d.Units.Polygon2dBounds bounds = actor.Bounds;
+			ShapeBuilder builder = new ShapeBuilder(Device);
+			PolyRectangle rectangle = new PolyRectangle(bounds.TransformedPoints);
+			TriangulationData data = builder.Triangulate(rectangle);
+
+			//
 		}
+	}
+
+	public class RenderInstructions_polygons : RenderInstructions {
+		public RenderInstructions_polygons() : base() { }
 	}
 }

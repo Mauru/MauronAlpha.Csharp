@@ -26,6 +26,11 @@ namespace MauronAlpha.MonoGameEngine {
 		ShapeBuffer Buffer = new ShapeBuffer();
 		VertexBuffer RenderBuffer;
 
+		public bool CanExit = false;
+		public bool CheckExitCondition() {
+			return CanExit;
+		}
+
 		public MonoGameWrapper() {
 			graphics = new GraphicsDeviceManager(this);
 			Content.RootDirectory = "Content";
@@ -67,8 +72,11 @@ namespace MauronAlpha.MonoGameEngine {
 		}
 
 		protected override void Update(GameTime gameTime) {
-			if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
-				this.Exit();
+			if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed) {
+				base.Exit();
+				CanExit = true;
+				return;
+			}
 
 			base.Update(gameTime);
 		}

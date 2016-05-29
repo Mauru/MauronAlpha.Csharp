@@ -10,7 +10,7 @@ namespace MauronAlpha.MonoGame.Utility {
 	public class GameEngine:MonoGameComponent {
 
 		GameManager Manager = new GameManager();
-		MonoGameWrapper Process;
+		MonoGameWrapper Process { get { return Manager.Process; } }
 		ContentManager Content { get { return Process.Content; } }
 
 		GameObjectManager Objects { get { return Manager.Objects; } }
@@ -31,7 +31,13 @@ namespace MauronAlpha.MonoGame.Utility {
 		}
 
 		public void InitializeContent() {
-			Manager.Renderer = Process.Renderer;
+
+			MonoGameWrapper process = Manager.Process;
+			if (process.Renderer == null) {
+				RenderManager renderer = new RenderManager(process.GraphicsDevice);
+				Manager.Renderer = renderer;
+				process.SetRenderManager(renderer);
+			}
 			Manager.Objects = new GameObjectManager(Manager);
 			Manager.Resources = new ResourceManager(Manager);
 

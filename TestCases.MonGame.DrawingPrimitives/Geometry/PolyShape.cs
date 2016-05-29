@@ -48,6 +48,16 @@ namespace MauronAlpha.MonoGame.Geometry {
 	
 	}
 
+	public class PolyRectangle : PolyShape, I_MonoShape {
+		public PolyRectangle(float width, float height) : base() {
+			Rectangle2d rectangle = new Rectangle2d();
+			base.SetPoints(new Vector2dList(rectangle.Points));
+		}
+		public PolyRectangle(Vector2dList points): base() {
+			base.SetPoints(points);
+		}
+	}
+
 	//Shape Description
 	public class ShapeType_poly : ShapeDefinition {
 
