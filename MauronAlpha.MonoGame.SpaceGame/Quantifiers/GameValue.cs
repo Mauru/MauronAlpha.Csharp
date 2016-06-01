@@ -1,6 +1,6 @@
 ﻿namespace MauronAlpha.MonoGame.SpaceGame.Quantifiers {
 	
-	public class GameValue<T> : GameComponent where T : ValueType {
+	public class GameValue<T> : GameComponent, I_GameValue where T : ValueType {
 
 		public GameValue() : base() { }
 		public int ValueAsInt {
@@ -22,28 +22,25 @@
 		}
 	
 	}
-	
+
+	public interface I_GameValue { }
+
+	public class ValueTypes : GameList<ValueType> {
+		public ValueTypes() : base() { }
+		public ValueTypes(ValueType c) : this() {
+			Add(c);
+		}
+	}
 	public abstract class ValueType : GameComponent {
-		public abstract string Name { get; }
+		public abstract GameName Name { get; }
 	}
 	
 	public class T_Percent : ValueType {
 
-		public override string Name {
-			get { return "Percent"; }
+		public override GameName Name {
+			get { return new GameName("Percent"); }
 		}
 
-	}
-
-	public class T_PlanetSize : ValueType {
-		public override string Name { get { return "PlanetSize"; } }
-	}
-
-	public class T_DistanceFromStarCentre : ValueType {
-
-		public override string Name {
-			get { return "DistanceFromCentre"; }
-		}
 	}
 
 }

@@ -2,12 +2,18 @@
 
 namespace MauronAlpha.MonoGame.SpaceGame.Units {
 
-	public class MapLocation : GameComponent {
+	public class GameLocation:GameComponent {
+		
+	}
 
-		public MapLocation(Hex hex)	: base() {
+	public class MapLocation : GameLocation {
+
+		public MapLocation(Hex hex)
+			: base() {
 			Hex = hex;
 		}
-		public MapLocation(Hex hex, StarSystem system)	: base() {
+		public MapLocation(Hex hex, StarSystem system)
+			: base() {
 			Hex = hex;
 			System = system;
 			Galaxy = system.Galaxy;
@@ -26,5 +32,6 @@ namespace MauronAlpha.MonoGame.SpaceGame.Units {
 		}
 	}
 
+	public class LocationType : GameComponent { }
 
 }

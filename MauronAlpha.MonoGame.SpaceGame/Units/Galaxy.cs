@@ -49,8 +49,8 @@ namespace MauronAlpha.MonoGame.SpaceGame.Units {
 	}
 
 	public  class T_StarSystemLimit:ValueType {
-		public override string Name {
-			get { return "StarSystemLimit"; }
+		public override GameName Name {
+			get { return new GameName("StarSystemLimit"); }
 		}
 	}
 

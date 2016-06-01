@@ -18,9 +18,21 @@ namespace MauronAlpha.MonoGame.SpaceGame.Units {
 
 	public interface I_ResearchResource { }
 
-	public class TechPoint_Physics:ResourceType,I_ResearchResource {}
-	public class TechPoint_Engineering : ResourceType,I_ResearchResource { }
-	public class TechPoint_Biology : ResourceType, I_ResearchResource { }
+	public class TechPoint_Physics:ResourceType,I_ResearchResource {
+		public override GameName Name {
+			get { return new GameName("TechPoint_Physics"); }
+		}
+	}
+	public class TechPoint_Engineering : ResourceType,I_ResearchResource {
+		public override GameName Name {
+			get { return new GameName("TechPoint_Engineering"); }
+		}
+	}
+	public class TechPoint_Biology : ResourceType, I_ResearchResource {
+		public override GameName Name {
+			get { return new GameName("TechPoint_Biology"); }
+		}
+	}
 
 	public class TechBranch : GameComponent { }
 }

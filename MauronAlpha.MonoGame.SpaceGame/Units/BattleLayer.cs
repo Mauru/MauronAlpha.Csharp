@@ -56,10 +56,7 @@ namespace MauronAlpha.MonoGame.SpaceGame.Units {
 
 	}
 
-	public class ShieldPoints : ResourceType { }
-	public class ArmorPoints : ResourceType { }
-	public class Morale : ResourceType { }
-	public class HullPoints : ResourceType { }
+
 
 	public class BattleDamage : BattleEffect { }
 

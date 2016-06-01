@@ -5,8 +5,9 @@ using MauronAlpha.MonoGame.SpaceGame.Quantifiers;
 namespace MauronAlpha.MonoGame.SpaceGame.Actuals {
 
 	public class Planet : Orbital<OT_habitable>, I_Habitable  {
-		public GameName Name;
-		public Planet(GameName name, MapLocation location, GameValue<T_PlanetSize> size, GameValue<T_DistanceFromStarCentre> distance) : base(location) {
+		public new GameName Name;
+		public Planet(GameName name, GameLocation location, GameValue<T_PlanetSize> size, GameValue<T_DistanceFromStarCentre> distance)
+			: base(location) {
 			Name = name;
 			Size = size;
 			DistanceFromStarCentre = distance;
@@ -14,6 +15,18 @@ namespace MauronAlpha.MonoGame.SpaceGame.Actuals {
 
 		public GameValue<T_PlanetSize> Size;
 		public GameValue<T_DistanceFromStarCentre> DistanceFromStarCentre;
+
+		public DataObjects.MoveData MovementDataFor(DataObjects.I_Movable obj) {
+			throw new System.NotImplementedException();
+		}
+
+		public GameLocation Location {
+			get { throw new System.NotImplementedException(); }
+		}
+
+		public bool IsAttached {
+			get { return true; }
+		}
 	}
 
 	public class OT_Planet : OT_habitable { }

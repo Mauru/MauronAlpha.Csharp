@@ -38,6 +38,10 @@ namespace MauronAlpha.MonoGame.SpaceGame.DataObjects {
 			}
 		}
 
+		public I_SpeciesDefinition PlayerSpeciesDefinition {
+			get { return new PlayerSpeciesDefinition(); }
+		}
+
 		public override RuleSetType Type {
 			get { return new RuleSet_MapGenerator(); }
 		}
@@ -56,5 +60,6 @@ namespace MauronAlpha.MonoGame.SpaceGame.DataObjects {
 		}
 	}
 
+	public class PlayerSpeciesDefinition : GameComponent, I_SpeciesDefinition { }
 
 }

@@ -26,7 +26,7 @@ namespace MauronAlpha.MonoGame.SpaceGame.Actuals {
 
 			BuildingFormula basic = new BuildingFormula();
 			basic.AddCost(
-				new BuildingComponent(Energy.Instance, ResourceAmount.ResearchForEnergyCost)
+				new BuildingComponent(T_Energy.Instance, ResourceAmount.ResearchForEnergyCost)
 			);
 			basic.AddCost(
 				new BuildingComponent(SciencePop.Instance, ResourceAmount.ResearchForEnergyScientistAmount)
@@ -41,6 +41,13 @@ namespace MauronAlpha.MonoGame.SpaceGame.Actuals {
 	}
 
 	public class SciencePop : ResourceType, I_ResourceDefinition {
+
+
+		public override GameName Name {
+			get { return new GameName("SciencePop"); }
+		}
+
+
 		public static SciencePop Instance {
 			get {
 				return new SciencePop();
@@ -50,11 +57,19 @@ namespace MauronAlpha.MonoGame.SpaceGame.Actuals {
 		public I_ResourceDefinition InterfaceInstance() {
 			return SciencePop.Instance;
 		}
+
+		I_ResourceDefinition I_ResourceDefinition.InterfaceInstance() {
+			throw new System.NotImplementedException();
+		}
 	}
 
 	public class TechPoint<T> : ResourceType, I_ResourceDefinition where T : I_ResourceDefinition, new() {
 
 		public TechPoint() : base() { }
+
+		public override GameName Name {
+			get { return new GameName("TechPoint"); }
+		}
 
 		public I_ResourceDefinition InterfaceInstance() {
 			return new TechPoint<T>();
@@ -67,8 +82,8 @@ namespace MauronAlpha.MonoGame.SpaceGame.Actuals {
 
 			get {
 				return new GameList<BuildingComponent>() {
-					new BuildingComponent(Food.Instance,ResourceAmount.FoodPerTurn(this)),
-					new BuildingComponent(Energy.Instance,ResourceAmount.EnergyPerTurn(this)),
+					new BuildingComponent(T_Food.Instance,ResourceAmount.FoodPerTurn(this)),
+					new BuildingComponent(T_Energy.Instance,ResourceAmount.EnergyPerTurn(this)),
 				};
 			}
 

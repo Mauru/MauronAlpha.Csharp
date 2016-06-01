@@ -1,14 +1,60 @@
 ﻿namespace MauronAlpha.MonoGame.SpaceGame.Units {
-	public class Orbital<T> : GameComponent where T:OrbitalType {
+	public class Orbital<T> : GameObject where T:OrbitalType,new() {
 
-		MapLocation Location;
-		public Orbital(MapLocation location) : base() {
+		GameLocation Location;
+		public Orbital(GameLocation location): base() {
 			Location = location;
 		}
-	
+
+		public OrbitalType Type {
+			get {
+				return new T();
+			}
+		}
+
+		public override Quantifiers.GameName Name {
+			get { throw new System.NotImplementedException(); }
+		}
+
+		public override bool IsBeing {
+			get {
+				return Type.IsBeing;
+			}
+		}
+
+		public override bool IsEquipment {
+			get { return Type.IsEquipment; }
+		}
+
+		public override bool IsQuantity {
+			get { return Type.IsQuantity; }
+		}
+
+		public override bool IsResource {
+			get { return Type.IsResource; }
+		}
 	}
 
-	public class OrbitalType : GameComponent { }
+	public abstract class OrbitalType : GameComponent {
+
+		public OrbitalType() : base() { }
+
+		public virtual bool IsBeing {
+			get { return false; }
+		}
+
+		public virtual bool IsEquipment {
+			get { return false; }
+		}
+
+		public virtual bool IsQuantity {
+			get { return false; }
+		}
+
+		public virtual bool IsResource {
+			get { return false; }
+		}
+	}
 
 
 	public class OT_Moon : OrbitalType { }
