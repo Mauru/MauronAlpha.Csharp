@@ -1,4 +1,5 @@
 ﻿namespace MauronAlpha.MonoGame.SpaceGame.Quantifiers {
+	using MauronAlpha.MonoGame.SpaceGame.DataObjects;
 	public class CombatValues:GameList<GameValue<T_CombatValue>> {
 	}
 

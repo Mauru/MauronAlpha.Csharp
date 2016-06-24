@@ -105,7 +105,10 @@ namespace MauronAlpha.MonoGame.SpaceGame.DataObjects {
 		}
 
 		public override bool IsQuantity {
-			get { return false; }
+			get { return Source.IsQuantity; }
+		}
+		public override bool IsSentient {
+			get { return Source.IsSentient; }
 		}
 
 		public override bool IsResource {

@@ -11,11 +11,11 @@ namespace MauronAlpha.MonoGame.SpaceGame.Units {
 
 		public GameParty Owner;
 		public override bool IsEquipment { get { return true; } }
-		public MapLocation Location;
+		public GameLocation Location;
 
 	}
 
-	public class Item : GameObject, I_RelationTarget {
+	public abstract class Item : GameObject, I_RelationTarget {
 
 		ItemType D_type;
 		public Item(ItemType type):base() { 
@@ -26,14 +26,12 @@ namespace MauronAlpha.MonoGame.SpaceGame.Units {
 		public Materials Materials;
 		public Components Components;
 
-
-
 		public override GameName Name {
-			get { throw new System.NotImplementedException(); }
+			get { return D_type.Name; }
 		}
 
 		public override bool IsBeing {
-			get { return false; }
+			get { return D_type.IsBeing; }
 		}
 
 		public override bool IsEquipment {
@@ -41,22 +39,33 @@ namespace MauronAlpha.MonoGame.SpaceGame.Units {
 		}
 
 		public override bool IsQuantity {
-			get { throw new System.NotImplementedException(); }
+			get { return D_type.IsQuantity; }
 		}
 
 		public override bool IsResource {
-			get { throw new System.NotImplementedException(); }
+			get { return D_type.IsResource; }
+		}
+
+		public override bool IsSentient {
+			get { return D_type.IsSentient; }
 		}
 	}
 	public abstract class ItemType:GameComponent {
 		public abstract bool IsEquipable { get; }
+		public abstract GameName Name { get; }
+		public virtual bool IsSentient { get { return false; } }
+		public virtual bool IsResource { get { return false; } }
+		public virtual bool IsQuantity { get { return false; } }
+		public virtual bool IsBeing { get { return false; } }
 	}
 	public class ItemType_Resource : ItemType {
 		public override bool IsEquipable { get { return false; } }
+		public override GameName Name { get { return new GameName("Resource"); } }
 	}
 
 	public class ItemType_Equipment : ItemType {
 		public override bool IsEquipable { get { return true; } }
+		public override GameName Name { get { return new GameName("Equipment"); } }
 	}
 
 	public class Materials : GameList<Material> { }
@@ -122,7 +131,7 @@ namespace MauronAlpha.MonoGame.SpaceGame.Units {
 		public GameList<RelationTarget> Targets;
 
 		public MemoryStrength Strength;
-		public MapLocation Location;
+		public GameLocation Location;
 		public MemoryScope Scope;
 
 	}
@@ -168,6 +177,7 @@ namespace MauronAlpha.MonoGame.SpaceGame.Units {
 		GameName Name { get; }
 
 		bool IsBeing { get; }
+		bool IsSentient { get; }
 		bool CanBeBeing { get; }
 
 		bool IsEquipment { get; }
@@ -194,10 +204,12 @@ namespace MauronAlpha.MonoGame.SpaceGame.Units {
 	public abstract class GameObject : GameComponent, I_GameObject {
 
 		public abstract GameName Name { get; }
-		MapLocation Location;
+		GameLocation Location;
 
 		public abstract bool IsBeing { get; }
 		public virtual bool CanBeBeing { get { return true; } }
+
+		public abstract bool IsSentient{ get; }
 
 		public abstract bool IsEquipment { get; }
 		public virtual bool CanBeEquipment { get { return true; } }

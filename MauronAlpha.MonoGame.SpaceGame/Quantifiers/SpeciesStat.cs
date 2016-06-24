@@ -1,4 +1,5 @@
 ﻿namespace MauronAlpha.MonoGame.SpaceGame.Quantifiers {
+	using MauronAlpha.MonoGame.SpaceGame.DataObjects;
 
 	public class SpeciesStat : GameComponent, I_BeingStat, I_SpeciesProperty {
 		public GameName Name;
@@ -12,7 +13,7 @@
 	}
 
 	public interface I_BeingStat : I_GameValue { }
-	public class BeingStat<T> : GameValue<T> where T:ValueType, I_BeingStat { }
+	public class BeingStat<T> : GameValue<T> where T:ValueType, I_BeingStat,new() { }
 
 	public interface I_BaseStat : I_BeingStat { }
 
@@ -102,7 +103,7 @@
 
 	public class HitPoint : DerivedGameValue<T_HitPoints>, I_BeingStat  { }
 
-	public class DerivedGameValue<T> : GameValue<T> where T:ValueType { }
+	public class DerivedGameValue<T> : GameValue<T> where T:ValueType,new() { }
 	public interface I_DerivedGameValue : I_GameValue { }
 
 	public interface I_SpeciesProperty { }

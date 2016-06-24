@@ -2,10 +2,12 @@
 using MauronAlpha.MonoGame.SpaceGame.Quantifiers;
 
 namespace MauronAlpha.MonoGame.SpaceGame.DataObjects {
+	using MauronAlpha.MonoGame.SpaceGame.Collections;
+	using MauronAlpha.MonoGame.SpaceGame.Interfaces;
 
-	public class MapBluePrint : RuleSet, I_RuleSet<RuleSet_MapGenerator> {
+	public class MapGenerationRules : GameRules {
 
-		public MapBluePrint() : base(RuleSet_MapGenerator.Instance) { }
+		public MapGenerationRules() : base() { }
 
 		/*public override RuleSetType Type {
 			get { return new RuleSet_MapGenerator(); }
@@ -42,24 +44,23 @@ namespace MauronAlpha.MonoGame.SpaceGame.DataObjects {
 			get { return new PlayerSpeciesDefinition(); }
 		}
 
-		public override RuleSetType Type {
-			get { return new RuleSet_MapGenerator(); }
-		}
+	}
 
-		RuleSet_MapGenerator I_RuleSet<RuleSet_MapGenerator>.Type {
-			get { return new RuleSet_MapGenerator(); }
+	public class PlayerSpeciesDefinition : GameComponent, I_SpeciesDefinition {
+		BaseStats DATA_BaseStats = new BaseStats();
+		public SpeciesStats BaseStats {
+			get { return DATA_BaseStats; }
 		}
 	}
 
-	public class RuleSet_MapGenerator:RuleSetType { 
-		
-		public static RuleSet_MapGenerator Instance { 
-			get {
-				return  new RuleSet_MapGenerator();
-			}
-		}
-	}
+}
 
-	public class PlayerSpeciesDefinition : GameComponent, I_SpeciesDefinition { }
+namespace MauronAlpha.MonoGame.SpaceGame.Interfaces {
+	using MauronAlpha.MonoGame.SpaceGame.DataObjects;
+	public interface I_Habitable {
+
+		MoveData MovementDataFor(GameLocation location);
+		GameLocation Location { get; }
+	}
 
 }

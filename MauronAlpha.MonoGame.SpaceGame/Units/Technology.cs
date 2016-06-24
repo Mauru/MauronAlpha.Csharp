@@ -1,22 +1,22 @@
-﻿using MauronAlpha.MonoGame.SpaceGame.Quantifiers;
-using MauronAlpha.MonoGame.SpaceGame.Utility;
-using MauronAlpha.MonoGame.SpaceGame.DataObjects;
-using MauronAlpha.MonoGame.SpaceGame.Interfaces;
+﻿
+
 //using MauronAlpha.MonoGame.SpaceGame.Collections;
 
 namespace MauronAlpha.MonoGame.SpaceGame.Units {
-	
+	using MauronAlpha.MonoGame.SpaceGame.Interfaces;
+	using MauronAlpha.MonoGame.SpaceGame.Quantifiers;
+	using MauronAlpha.MonoGame.SpaceGame.Utility;
+	using MauronAlpha.MonoGame.SpaceGame.DataObjects;
+
 	public class Technology:GameComponent {
 
 		GameList<BuildingComponent> Cost;
 		GameList<ModuleAbility> Modules;
 		GameList<Structure> Structures;
 		GameList<MapAction> MapActions;
-		GameList<BattleAction> BattleAction;
+		GameList<BattleAction> BattleActions;
 
 	}
-
-	public interface I_ResearchResource { }
 
 	public class TechPoint_Physics:ResourceType,I_ResearchResource {
 		public override GameName Name {
@@ -35,4 +35,11 @@ namespace MauronAlpha.MonoGame.SpaceGame.Units {
 	}
 
 	public class TechBranch : GameComponent { }
+
+}
+
+namespace MauronAlpha.MonoGame.SpaceGame.Interfaces {
+
+	public interface I_ResearchResource { }
+
 }

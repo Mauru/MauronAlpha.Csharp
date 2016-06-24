@@ -56,6 +56,7 @@
     <Compile Include="HandlingData\Interfaces\I_dataCollection.cs" />
     <Compile Include="HandlingData\I_protectable.cs" />
     <Compile Include="HandlingData\MauronCode_dataComponent.cs" />
+    <Compile Include="HandlingData\MauronCode_dataRelation.cs" />
     <Compile Include="HandlingData\MauronCode_dataStack.cs" />
     <Compile Include="HandlingData\MauronCode_dataTree.cs" />
     <Compile Include="HandlingData\MauronCode_dataReference.cs" />

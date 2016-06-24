@@ -82,4 +82,13 @@ namespace MauronAlpha.MonoGame.Utility {
 	public class RenderInstructions_polygons : RenderInstructions {
 		public RenderInstructions_polygons() : base() { }
 	}
+	public class RenderInstructions_sprites : RenderInstructions {
+		public RenderInstructions_sprites() : base() { }
+	}
+	public class RenderInstructions_textures : RenderInstructions {
+		public RenderInstructions_textures() : base() { }
+	}
+
+
+
 }

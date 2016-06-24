@@ -11,38 +11,28 @@ namespace MauronAlpha.MonoGame.SpaceGame.Utility {
 
 	public class MapGenerator : GameComponent {
 
+		GameRules Rules;
+		GameState State;
+
 		Map Map;
-		MapBluePrint Rules;
 		Universe Universe;
-		Planet StartingPlanet;
 
-		public void Start(MapBluePrint bluePrint) {
-			Rules = bluePrint;
-			Map = new Map(this);
-			Universe = new Universe(Map);
-			Galaxy startGalaxy = new Galaxy(Universe);
-			StarSystem startSystem = new StarSystem(startGalaxy);
+		public void Start(GameRules rules, GameState state) {
 
-			Hex startHex = Map.Grid.Start;
-			MapLocation startLocation = new MapLocation(startHex, startSystem);
-			Map.Register(startLocation);
+			Rules = rules;
+			State = state;
 
-			//Create the starting Faction
-			Species playerSpecies = SpeciesGenerator.GenerateStartingSpecies(Rules);
-			Planet StartingPlanet = GenerateStartingPlanet(Rules, startLocation, playerSpecies);
-
-		}
-
-		public Planet GenerateStartingPlanet(MapBluePrint rules, MapLocation location, Species species) {
-
-			StartingPlanet = new Planet(rules.StartingPlanetName, location, rules.StartingPlanetSize, rules.StartingPlanetDistanceFromCentre);
-			StarSystem system = location.System;
-			system.AddHabitable(StartingPlanet);
-			return StartingPlanet;
 
 		}
 
 
 	}
 
+
 }
+
+//Minerals - 
+//Energy
+//Culture
+//Science
+//Food

@@ -1,5 +1,6 @@
 ﻿using System;
 namespace MauronAlpha.MonoGame.SpaceGame.Quantifiers {
+	using MauronAlpha.MonoGame.SpaceGame.DataObjects;
 	public abstract class ResourceType : ValueType {
 
 	}

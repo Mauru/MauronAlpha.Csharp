@@ -19,15 +19,21 @@ namespace MauronAlpha.MonoGame {
 		//Monogame related
 		GraphicsDeviceManager graphics;
 		
-		//BasicEffect basicEffect;
+		BasicEffect basicEffect;
 
-		//SpriteBatch spriteBatch;
-		//VertexBuffer vertexBuffer;
+		SpriteBatch spriteBatch;
+		VertexBuffer vertexBuffer;
 
 		private bool B_canExit = false;
 		public bool CanExit {
 			get {
 				return B_canExit;
+			}
+		}
+		private bool B_isRunning = false;
+		public bool Running {
+			get {
+				return B_isRunning;
 			}
 		}
 
@@ -49,6 +55,14 @@ namespace MauronAlpha.MonoGame {
 			Engine = new GameEngine(this,logic);
 		}
 
+		//start up game
+		public void Start() {
+			if (!B_isRunning) {
+				B_isRunning = true;
+				base.Run();
+			}
+		}
+
 		/// <summary>
 		/// Allows the game to perform any initialization it needs to before starting to run.
 		/// This is where it can query for any required services and load any non-graphic
@@ -58,7 +72,7 @@ namespace MauronAlpha.MonoGame {
 		protected override void Initialize() {
 			
 			//Set up Renderer
-			Renderer = new RenderManager(GraphicsDevice);
+			//Renderer = new RenderManager(GraphicsDevice);
 
 
 
@@ -78,22 +92,22 @@ namespace MauronAlpha.MonoGame {
 			Engine.InitializeContent();
 
 			// Create a new SpriteBatch, which can be used to draw textures.
-			//spriteBatch = new SpriteBatch(GraphicsDevice);
+			spriteBatch = new SpriteBatch(GraphicsDevice);
 
 			// TODO: use this.Content to load your game content here
 
-			//basicEffect = new BasicEffect(GraphicsDevice);
+			basicEffect = new BasicEffect(GraphicsDevice);
 
-			/*VertexPositionColor[] vertices = new VertexPositionColor[3];
+			VertexPositionColor[] vertices = new VertexPositionColor[3];
 			vertices[0] = new VertexPositionColor(new Vector3(0, 1, 0), Color.Red);
 			vertices[1] = new VertexPositionColor(new Vector3(+0.5f, 0, 0), Color.Green);
 			vertices[2] = new VertexPositionColor(new Vector3(-0.5f, 0, 0), Color.Blue);
-			vertexBuffer = new VertexBuffer(GraphicsDevice, typeof(VertexPositionColor), 3, BufferUsage.WriteOnly);*/
+			vertexBuffer = new VertexBuffer(GraphicsDevice, typeof(VertexPositionColor), 3, BufferUsage.WriteOnly);
 
-			/*
+
 			ShapeBuilder Builder = new ShapeBuilder(GraphicsDevice);
 
-			vertexBuffer = Builder.ToBuffer(GameObjects.HexShape);*/
+			//vertexBuffer = Builder.ToBuffer(GameObjects.HexShape);
 		}
 
 		/// <summary>
@@ -110,15 +124,9 @@ namespace MauronAlpha.MonoGame {
 		/// </summary>
 		/// <param name="gameTime">Provides a snapshot of timing values.</param>
 		protected override void Update(GameTime gameTime) {
-			if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed
-				|| Keyboard.GetState().IsKeyDown(Keys.Escape)
-			)
-				try {
-					base.Exit();
-				}
-				catch (System.NullReferenceException ex) {
-					return;
-				}
+			if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape)) {
+				System.Environment.Exit(0);
+			}
 
 			// TODO: Add your update logic here
 
@@ -133,32 +141,31 @@ namespace MauronAlpha.MonoGame {
 			GraphicsDevice.Clear(Color.CornflowerBlue);
 
 			// TODO: Add your drawing code here
-			/*
+
 			basicEffect.World = world;
 			basicEffect.View = view;
 			basicEffect.Projection = projection;
 			basicEffect.VertexColorEnabled = true;
-			*/
 
-			//GraphicsDevice.SetVertexBuffer(vertexBuffer);
+
+			GraphicsDevice.SetVertexBuffer(vertexBuffer);
 
 			RasterizerState rasterizerState = new RasterizerState();
 			rasterizerState.CullMode = CullMode.None;
 			GraphicsDevice.RasterizerState = rasterizerState;
 
-			/*
 			foreach (EffectPass pass in basicEffect.CurrentTechnique.Passes) {
 				pass.Apply();
-				//GraphicsDevice.DrawPrimitives(PrimitiveType.TriangleList, 0, vertexBuffer.VertexCount);
+				GraphicsDevice.DrawPrimitives(PrimitiveType.TriangleStrip, 0, vertexBuffer.VertexCount);
 
 				//Obj.DrawHex(spriteBatch, GraphicsDevice);
-					Renderer.RenderStep(gameTime);
-			}*/
+					//Renderer.RenderStep(gameTime);
+			}
 
 
 			//Obj.DrawTestObject(spriteBatch, GraphicsDevice);
 
-			Renderer.SpriteStep(gameTime);
+			//Renderer.SpriteStep(gameTime);
 
 
 

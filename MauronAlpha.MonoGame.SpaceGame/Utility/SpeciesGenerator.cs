@@ -10,9 +10,9 @@ namespace MauronAlpha.MonoGame.SpaceGame.Utility {
 	public class SpeciesGenerator:GameComponent {
 
 
-		public static Species GenerateStartingSpecies(MapBluePrint rules) {
+		public static Species GenerateStartingSpecies(GameRules rules) {
 
-			Species result = new Species(rules.StartingSpeciesName, rules.PlayerSpeciesDefinition);
+			Species result = new Species(rules.Species.StartingSpeciesName, rules.Species.PlayerSpeciesDefinition);
 
 			return result;
 

@@ -4,12 +4,18 @@ using MauronAlpha.HandlingErrors;
 
 namespace MauronAlpha.HandlingData {
 
+	//Maps Objects of one type to another
 	public class MauronCode_dataReference<TKey, TValue> : MauronCode_dataObject, IDictionary<TKey, TValue> {
 
 		public MauronCode_dataReference() : base(DataType_dataReference.Instance) { }
 
 		private Dictionary<TKey, TValue> DATA = new Dictionary<TKey, TValue>();
 
+		public bool IsEmpty {
+			get {
+				return DATA.Count < 1;
+			}
+		}
 		public bool ContainsKey(TKey key) {
 			return DATA.ContainsKey(key);
 		}
@@ -58,6 +64,29 @@ namespace MauronAlpha.HandlingData {
 		public MauronCode_dataList<TValue> Values {
 			get {
 				return new MauronCode_dataList<TValue>(DATA.Values);
+			}
+		}
+		public MauronCode_dataList<MauronCode_dataRelation<TKey,TValue>> AsRelationList {
+			get {
+				MauronCode_dataList<MauronCode_dataRelation<TKey, TValue>> result = new MauronCode_dataList<MauronCode_dataRelation<TKey, TValue>>();
+				if (IsEmpty)
+					return result; 
+				ICollection<TKey> keys = DATA.Keys;
+				
+				foreach(TKey k in keys) {
+					MauronCode_dataRelation<TKey,TValue> kvp;
+					TValue v = default(TValue);
+					if (TryFind(k, out v))
+						 kvp = new MauronCode_dataRelation<TKey, TValue>(k,v);
+
+					else {
+						kvp = new MauronCode_dataRelation<TKey, TValue>();
+						kvp.SetKey(k);
+						kvp.UnsetValue();
+					}
+					result.Add(kvp);
+				}
+				return result;
 			}
 		}
 

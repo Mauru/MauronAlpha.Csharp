@@ -12,16 +12,16 @@ namespace MauronAlpha.MonoGame {
         /// The main entry point for the application.
         /// </summary>
         [STAThread]
-        static void Main()
-        {
+        static void Main() {
 			GameLogic logic = new TestLogic();
 			MonoGameWrapper Game = new MonoGameWrapper(logic);
-			Game.Run();
-			while (Game != null && !Game.CanExit) {
-				if(!Game.IsActive)
-					Game.Run();
-				Game.CheckExitCondition();
+			try { 
+				Game.Start();
 			}
+			catch (NullReferenceException ex) {
+				//nan
+			}
+
 
 
         }
