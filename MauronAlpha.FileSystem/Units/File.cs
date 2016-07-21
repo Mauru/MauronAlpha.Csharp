@@ -13,6 +13,20 @@ namespace MauronAlpha.FileSystem.Units {
 			STR_extension = extension;
 		}
 
+		public File(Directory d, string name): this() {
+			if(name == null)
+				throw new FileSystemError("Invalid filename {" + name + "}",this);
+			int index = name.LastIndexOf('.');
+			STR_name = name.Substring(0, index);
+			STR_extension = name.Substring(index + 1);			
+		}
+
+		public string FileName {
+			get {
+				return Name + "." + Extension;
+			}
+		}
+
 		public string Path {
 			get {
 				if (Directory == null)
@@ -116,7 +130,12 @@ namespace MauronAlpha.FileSystem.Units {
 				}
 			}
 		}
-	
+
+		public bool Exists {
+			get {
+				return System.IO.File.Exists(Path);
+			}
+		}
 	}
 
 	public class FileType_generic : FileType {

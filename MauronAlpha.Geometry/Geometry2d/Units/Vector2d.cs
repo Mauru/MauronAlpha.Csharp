@@ -367,7 +367,7 @@ namespace MauronAlpha.Geometry.Geometry2d.Units {
 		}
 		#endregion
 
-
+		// Precision Conversions
 		public int IntX {
 			get {
 				return (int) X;
@@ -376,6 +376,17 @@ namespace MauronAlpha.Geometry.Geometry2d.Units {
 		public int IntY {
 			get {
 				return (int) Y;
+			}
+		}
+
+		public float FloatX {
+			get {
+			return (float) X;
+			}
+		}
+		public float FloatY {
+			get {
+				return (float) X;
 			}
 		}
 	}

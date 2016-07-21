@@ -1,23 +1,50 @@
 ﻿namespace MauronAlpha.MonoGame {
-using System;
+	using System;
 	using MauronAlpha.MonoGame.Actuals;
+	using MauronAlpha.FileSystem.Units;
 
-#if WINDOWS || LINUX
+
 public static class Program {
 
 	[STAThread]
 	static void Main() {
-		GameLogic logic = new SampleGameLogic();
-		GameManager manager = new GameManager();
-		manager.Set(logic);
-		GameEngine game = new GameEngine(manager);
+
+        var domaininfo = new AppDomainSetup();
+		FileStructure structure = new FileStructure(System.Environment.CurrentDirectory);
 		
-		game.Run();
-		while(game.CanExit) {
-			game.DoNothing();
+		GameManager manager = new GameManager();
+		GameContentManager resources = new GameContentManager(manager, structure);
+		GameEngine game = new GameEngine(manager);
+
+		GameLogic logic = new SampleGameLogic();
+
+		manager.Set(logic);
+
+
+		game.Start();
+		while(game != null) {
+			//game.DoNothing();
+
+			if(game.CanExit)
+				game.Exit();
+
 		}
+
+		System.Console.WriteLine("Application exited cleanly. - Press any key to finish -");
+		System.Console.ReadKey();
 	}
-}
-#endif
+
 }
 
+}
+
+namespace MauronAlpha.MonoGame.Actuals {
+
+	public class SampleGameLogic :GameLogic {
+
+		public SampleGameLogic(): base() {
+
+		}
+	}
+
+}

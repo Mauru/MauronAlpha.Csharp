@@ -13,7 +13,7 @@ namespace MauronAlpha.ExplainingCode {
 			Console.WriteLine("# "+obj.GetType().Name+" > "+msg);
 		}
 
-		//string : { Type+Hash }
+		//string : { Type+'.'+Hash }
 		public string Id {
 			get {
 				return GetType().ToString() +"."+GetHashCode();

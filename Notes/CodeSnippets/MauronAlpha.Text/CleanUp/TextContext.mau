@@ -1,0 +1,341 @@
+#.Info {
+	This is my attempt at cleaning up the MauronCode.Text package to make it usable...
+}
+
+#.Code.Csharp;
+
+#region Solving ContextOffsets
+		
+		//Try to Solve a TextContext with a text - 
+		public bool TrySolveWith(TextUnit_text text, ErrorResolution conflictBehavior){
+			
+			//set a backup
+			TextContext result = Instance;
+
+			//any preconditions- is the text empty? /!return
+			if(text.IsEmpty){
+				SetOffset(Start);
+				return true;
+			}
+
+			//are we talking about the end of the text?
+			if(IsEnd){
+				SetOffset(text.Context.Instance);
+				return true;
+			}
+
+
+			// 0: Starting off with the character, here it gets comlicated
+
+			//a: try and find a line
+			result.SolveLineOffset(text);
+
+			// 1: We start off with the line
+			result = SolveLineOffset(text);
+			TextUnit_line line = text.LineByIndex(result.LineOffset);
+			int lineIndex = result.LineOffset;
+
+			//word
+			result = result.SolveWordOffset(line,false);
+					
+			//did line number change?
+			if(result.LineOffset!=lineIndex){
+				line=text.LineByIndex(result.LineOffset);
+			}
+			TextUnit_word word=line.WordByIndex(result.WordOffset);
+
+			//character
+			result = result.SolveCharacterOffset(word,false).SolveWordOffset();
+
+								
+		}
+		
+		/// <summary>
+		/// Evalutes a context relative to a TextComponent, turning it to absolute numbers
+		/// </summary>
+		public static TextContext SolveContext (TextContext context, TextUnit_text text, bool validateResult) {
+			return context.SolveWith(text, validateResult);
+		}
+		
+		
+
+
+
+		//Try to get a result using a text
+		public TextContext SolveWith (TextUnit_text text, bool validateResult) {
+			//How do we solve this?
+			if( validateResult ) {
+				///<remark>we try to *solve* a textcontext link, the result *can* be suggestive, i.e. Error-Prone</remark>
+				
+				TextContextResult contextResult = new TextContextResult(this,text);
+
+
+			}
+		}
+		public TextContext SolveWith (TextUnit_word word, bool validateResult) {
+			if( validateResult ) {
+			}
+		}
+		
+		//generic solve as TextComponent_*
+		public T SolveAs<T,R>(R textComponent, TextContext offset) {
+			TextContext context=Instance.Add(offset).SolveWith(textComponent);
+
+		}
+
+		//Solve the LineOffset
+		public TextContext SolveLineOffset (TextUnit_text text) {
+
+			//text is empty
+			if( text.IsEmpty ) {
+				Exception("Text is empty!,{"+LineOffset+"},(SolveLineOffset)", this, ErrorResolution.Correct_minimum);
+				return Start;
+			}
+
+			TextContext result=Instance;
+
+			//Out of bounds positive !return
+			if( LineOffset>0 && LineOffset>=text.LineCount ) {
+				Exception("LineIndex out of bounds!,{"+LineOffset+"},(SolveLineOffset)", this, ErrorResolution.Correct_maximum);
+				return text.LastCharacter.Context.Instance;
+			}
+
+			//Out of bounds negative
+			if( LineOffset<0 ) {
+				
+				//line offset out of bounds
+				if( Math.Abs(LineOffset)>=text.LineCount ) {
+					Exception("LineIndex out of bounds!,{"+LineOffset+"},(SolveLineOffset)", this, ErrorResolution.Correct_minimum);
+					return Start;
+				}
+
+				result.SetLineOffset(text.LineCount+LineOffset);
+
+			}
+
+			return result;
+		}
+
+		//Solve the WordOffset
+		public TextContext SolveWordOffset (TextUnit_line line, bool stayOnLine) {
+
+			//line is empty !return
+			if( line.IsEmpty && WordOffset > 0 ) {
+				Exception("Line is empty!,{"+WordOffset+"},(SolveWordOffset)", this, ErrorResolution.Correct_maximum);
+				return line.LastCharacter.Context.Instance;
+			}
+
+			TextContext result=Instance;
+
+			//Out of bounds positive !return
+			if( WordOffset>0 && WordOffset >= line.WordCount ) {
+
+				//we stay on the line, return last context of line
+				if( stayOnLine ) {
+					return line.LastCharacter.Context.Instance;
+				}
+				//Line ends Text, return last context
+				if( line.Index==line.Parent.LastLine.Index ) {
+					Exception("WordIndex out of bounds!,{"+WordOffset+"},(SolveWordOffset)", this, ErrorResolution.Correct_maximum);
+					return line.LastCharacter.Context.Instance;
+				}
+
+				//Advance line count
+				result.Add(1, -line.WordCount, 0);
+				
+				//cycle with new line and context
+				return result.SolveWordOffset(line.NextLine, stayOnLine);
+
+			}
+
+			//Out of bounds negative
+			if( WordOffset < 0 ) {
+				
+				//negative offset larger than wordcount !return
+				if( Math.Abs(WordOffset)>=line.WordCount ) {
+					Exception("LineIndex out of bounds!,{"+WordOffset+"},(SolveWordOffset)", this, ErrorResolution.Correct_minimum);
+					return result.Add(-1, -line.WordCount, 0).SolveWordOffset(line.PreviousLine,stayOnLine);
+				}
+
+				//correct offset
+				result.SetWordOffset(line.WordCount+result.WordOffset);
+
+			}
+
+			return result;
+		}
+
+		// Character offset
+		public TextContext SolveCharacterOffset(TextUnit_word word, bool stayOnWord){
+			
+			//word is empty
+			if( word.IsEmpty && CharacterOffset > 0 ) {
+				Exception("Word is empty!,{"+WordOffset+"},(SolveCharacterOffset)", this, ErrorResolution.Correct_maximum);
+				return word.LastCharacter.Context.Instance;
+			}
+
+			TextContext result = Instance;
+
+			#region Out of bounds positive !return
+			if(CharacterOffset>word.CharacterCount) {
+				
+				//we stay on the word, return last context !return
+				if(stayOnWord) {
+					return word.LastCharacter.Context.Instance;
+				}
+				
+				//the word ends the line, cycle with the first word of the next line !return
+				if(word.IsLastOnLine){
+					result.Add(1,0,-word.CharacterCount);
+					return result.SolveCharacterOffset(word.Parent.NextLine.FirstWord,stayOnWord);
+				}
+
+				//simply solve with the next word !return
+				result.Add(0,1,-word.CharacterCount);
+				
+				#region ExceptionCheck next word? !return
+				//next word ends text
+				if(!word.Source.ContainsCharacterIndex(result.WordOffset)){
+					Exception("WordIndex out of Bounds!,{"+result.WordOffset+"},(SolveCharacterOffset)",this,ErrorResolution.Correct_maximum);
+					return word.Source.LastCharacter.Context.Instance;
+				}
+				#endregion
+				
+				return result.SolveCharacterOffset(word.NextWord,stayOnWord);
+
+			}
+			#endregion
+
+			//Out of bounds negative
+			if(CharacterOffset<0){
+
+				//negative offset larger than characterCount
+				if(Math.Abs(CharacterOffset)>=word.CharacterCount){
+					Exception("LineIndex out of bounds!,{"+CharacterOffset+"},(SolveCharacterOffset)", this, ErrorResolution.Correct_minimum);
+					result.Add(0, -1, -word.CharacterCount);
+
+					if(!word.Source.ContainsWordIndex(result.WordOffset)){
+						return word.Source.FirstWord.Context;
+					}
+					return result.SolveCharacterOffset(word.PreviousWord, stayOnWord);
+				}
+
+				result.Add (0, 0, word.CharacterCount - WordOffset);
+				return result;
+			}
+
+			return this;
+
+		}
+		#endregion
+		
+#region @return: BOOL; Context, with TextComponent, is Offset ("leaves" the component range)
+		public bool IsWordOffset(TextUnit_word word){
+			if(LineOffset!=word.Context.LineOffset){
+				return true;
+			}
+			if(WordOffset!=word.Index){
+				return true;
+			}
+			if(CharacterOffset<0&&Math.Abs(CharacterOffset)>word.CharacterCount) return true;
+			if(CharacterOffset>=word.CharacterCount){
+				return true;
+			}
+			return false;
+		}
+		public bool IsWordOffset(TextUnit_line line) {
+			if(LineOffset!=line.Index){ return true; }
+			if(WordOffset<0||CharacterOffset<0) {
+				return true;
+			}
+			if(WordOffset>=line.WordCount){
+				return true;
+			}
+			TextUnit_word word=line.WordByIndex(WordOffset);
+			if(CharacterOffset>=word.CharacterCount){
+				return true;
+			}
+			return false;			
+		}
+		public bool IsLineOffset(TextUnit_line line){
+			if(LineOffset!=line.Index) return true;
+			if(WordOffset<0&&Math.Abs(WordOffset)>line.WordCount) return true;
+			if(WordOffset>=line.WordCount) return true;
+			if(CharacterOffset<0&&Math.Abs(CharacterOffset)>line.CharacterCount) return true;
+			TextUnit_word word=line.WordByIndex(WordOffset);
+			if( CharacterOffset>=word.CharacterCount ) return true;
+			return false;
+		}
+		public bool IsCharacterOffset (TextUnit_character ch) {
+			if( LineOffset<0 ) {
+				return true;
+			}
+			if( LineOffset!=ch.Context.LineOffset ) {
+				return true;
+			}
+			if( WordOffset<0||CharacterOffset<0 ) {
+				return true;
+			}
+			if( ch.Context.WordOffset!=WordOffset ) {
+				return true;
+			}
+			if( ch.Context.CharacterOffset!=CharacterOffset ) {
+				return true;
+			}
+			return false;
+		}
+		public bool IsTextOffset(TextUnit_text text){
+			if(LineOffset<0){
+				return true;
+			}
+			if(LineOffset>=text.LineCount){
+				return true;
+			}
+			if(WordOffset<0||CharacterOffset<0) {
+				return true;
+			}
+			TextUnit_line line = text.LineByIndex(LineOffset);
+			if(WordOffset>=line.WordCount){
+				return true;
+			}
+			TextUnit_word word = line.WordByIndex(WordOffset);
+			if(word.CharacterCount>=CharacterOffset){
+				return true;
+			}
+			return false;
+		}
+		#endregion
+#region @return: BOOL; STATIC; Check TextComponent for offset
+		public static bool IsLineOffset(TextUnit_line line, int lineOffset,int wordOffset, int characterOffset){
+			TextContextOffset offsetResult = new TextContextOffset(0,0,0);
+			if(lineOffset<0) {
+				
+			}
+		}
+		#endregion
+
+#region Comparison and other refactorting
+/// <summary>
+/// Inverts all properties
+/// </summary>
+public TextContext Inverted {
+	get {
+		return Instance.Multiply(-1,-1,-1,-1);
+	}
+}
+
+/// <summary>
+/// Turns all negative properties into positives
+/// </summary>
+public TextContext Normalized {
+	get {
+		TextContext result=Instance;
+		if( result.Paragraph<0 ) { result.Multiply(-1, 0, 0, 0, true); }
+		if( result.Line<0 ){ result.Multiply(0, -1, 0, 0, true); }
+		if( result.Word<0 ) { result.Multiply(0, 0, -1, 0, true); }
+		if( result.Character<0 ) { result.Multiply(0, 0, 0, -1, true); }
+		return result;
+
+	}
+}
+#endregion

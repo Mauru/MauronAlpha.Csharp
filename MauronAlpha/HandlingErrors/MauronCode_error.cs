@@ -23,10 +23,10 @@ namespace MauronAlpha.HandlingErrors {
 			MauronCode.Debug(message,source);
 			ErrorSource=source;
 			SetErrorType(errorType);
-			StackTrace info = new StackTrace(true);
+			/*StackTrace info = new StackTrace(true);
 			PrintStackTrace(info);
 			System.Console.ReadKey();
-			Environment.Exit(1);
+			Environment.Exit(1);*/
 		}
 
 		private MauronCode_error PrintStackTrace(StackTrace info){

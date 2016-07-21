@@ -61,6 +61,25 @@ namespace MauronAlpha.FileSystem.Units {
 			}
 		}
 
+		public Directory CreateDirectoryAndReturn(string name) {
+			if (root == null)
+				throw new  FileSystemError("No FileStructure present.", this);
+
+			else {
+				Directory result = new Directory(Root,name);
+				if (System.IO.File.Exists(result.Path))
+					return result;
+				try {
+					System.IO.Directory.CreateDirectory(result.Path);
+					return result;
+					
+				}
+				catch (System.Exception ex) {
+					throw new FileSystemError("Could not create Directory.", result);
+				}
+			}
+		}
+
 		public bool CreateDirectory(Directory directory) {
 
 			string path = directory.Path;
@@ -76,6 +95,7 @@ namespace MauronAlpha.FileSystem.Units {
 			}
 		}
 
+
 		public string Path {
 			get {
 				return root.Path;
@@ -86,15 +106,5 @@ namespace MauronAlpha.FileSystem.Units {
 
 	}
 
-	public class ErrorType_fileStructure : ErrorType {
-		public static ErrorType_fileStructure Instance {
-			get {
-				return new ErrorType_fileStructure();
-			}
-		}
 
-		public override string Name {
-			get { return "FileStructure"; }
-		}
-	}
 }

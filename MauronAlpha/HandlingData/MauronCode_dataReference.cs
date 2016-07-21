@@ -4,7 +4,7 @@ using MauronAlpha.HandlingErrors;
 
 namespace MauronAlpha.HandlingData {
 
-	//Maps Objects of one type to another
+	/// <summary> Maps objects of GENERICTYPE1 to object of GENERICTYPE2 | BaseType Dictionary </summary>
 	public class MauronCode_dataReference<TKey, TValue> : MauronCode_dataObject, IDictionary<TKey, TValue> {
 
 		public MauronCode_dataReference() : base(DataType_dataReference.Instance) { }

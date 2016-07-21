@@ -18,6 +18,13 @@ namespace MauronAlpha.TextProcessing.Units {
 			Characters.Add(unit);
 			unit.SetParent(this, 0);
 		}
+		public Word(MauronAlpha.HandlingData.MauronCode_dataStack<Character> cc): this() {
+			while(!cc.IsEmpty) {
+				Character c = cc.Pop;
+				Add(c);
+			}
+
+		}
 		public Word(Characters data):this() {
 			data.Reverse();
 			foreach (Character unit in data)

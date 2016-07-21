@@ -10,8 +10,8 @@ namespace MauronAlpha.TextProcessing.Collections {
 			base.AddValuesFrom(data);
 		}
 		public Characters(string text) : this() {
-				foreach (char c in text)
-					Add(new Character(c));
+			foreach (char c in text)
+				Add(new Character(c));
 		}
 
 		public string AsVisualString {
@@ -19,6 +19,14 @@ namespace MauronAlpha.TextProcessing.Collections {
 				string result = "";
 				foreach (Character c in this)
 					result += c.AsVisualString;
+				return result;
+			}
+		}
+		public string AsString {
+			get {
+				string result = "";
+				foreach(Character c in this)
+					result += c.AsString;
 				return result;
 			}
 		}

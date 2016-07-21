@@ -12,6 +12,10 @@ namespace MauronAlpha.TextProcessing.Units {
 			}
 		}
 
+		public bool Equals(Character other) {
+			return Symbol.Equals(other.Symbol);
+		}
+
 		//constructors
 		public Character() : base(TextUnitTypes.Character) { }
 		public Character(char ch) : this() {

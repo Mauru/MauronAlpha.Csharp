@@ -8,11 +8,8 @@ using MauronAlpha.HandlingErrors;
 namespace MauronAlpha.HandlingData {
 
 	//A data index is a numerical index of generics - it does not reindex its element like dataList
-	public class MauronCode_dataIndex<T>:MauronCode_dataObject, 
-	ICollection<T>,
-	IEnumerable<T>,
-	IEquatable<MauronCode_dataIndex<T>>,
-	I_protectable<MauronCode_dataIndex<T>> {
+	public class MauronCode_dataIndex<T>:MauronCode_dataObject,
+	ICollection<T>,	IEnumerable<T>,	IEquatable<MauronCode_dataIndex<T>>,I_protectable<MauronCode_dataIndex<T>> {
 		
 		//constructor
 		public MauronCode_dataIndex():base(DataType_dataIndex.Instance) {}
@@ -130,11 +127,9 @@ namespace MauronAlpha.HandlingData {
 		}
 
 		//Modifiers: Add
-		/// <summary>
-		/// Sets a Value by Key
-		/// </summary>
-		/// <param name="key">the key to set</param>
-		/// <param name="value">the value to set</param>
+		/// <summary>	Sets a Value by Key	</summary>
+		/// <param name="key">	the key to set	</param>
+		/// <param name="value">	the value to set	</param>
 		/// <remarks>TODO: This operation SHOULD be volatile.</remarks>
 		/// <remarks>You should theoretically lock this object while expanding...</remarks>
 		/// <returns>returns self</returns>
@@ -173,12 +168,11 @@ namespace MauronAlpha.HandlingData {
 			DATA_values=new MauronCode_dataTree<long,T>(EmptyKeySet);
 			return this;
 		}
-		/// <summary>
-		/// Removes a value by key
-		/// </summary>
-		/// <param name="key">the key to remove</param>
-		/// <remarks>Throws an Error if the key is not set</remarks>
-		/// <returns>self</returns>
+		
+		/// <summary>	Removes a value by key	</summary>
+		/// <param name="key">	the key to remove	</param>
+		/// <remarks>	Throws an Error if the key is not set	</remarks>
+		/// <returns>	self	</returns>
 		public MauronCode_dataIndex<T> RemoveByKey(long key){
 			if( IsReadOnly ) {
 				throw Error("Is Read Only!,(RemovebyKey)", this, ErrorType_protected.Instance);

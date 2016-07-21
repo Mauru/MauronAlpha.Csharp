@@ -1,0 +1,88 @@
+
+		#region IDictionary<long,T>
+		void IDictionary<long, T>.Add (long key, T value) {
+			SetValue(key, value);
+		}
+
+		bool IDictionary<long, T>.ContainsKey (long key) {
+			return ContainsKey(key);
+		}
+
+		ICollection<long> IDictionary<long, T>.Keys {
+			get { return Keys; }
+		}
+
+		bool IDictionary<long, T>.Remove (long key) {
+			if(!ContainsKey(key)){
+				return false;
+			}
+			RemoveByKey(key);
+			return true;
+		}
+
+		bool IDictionary<long, T>.TryGetValue (long key, out T value) {
+			if(ContainsKey(key)){
+				value=Value(key);
+				return true;
+			}
+			value=default(T);
+			return false;
+		}
+
+		ICollection<T> IDictionary<long, T>.Values {
+			get { return Values; }
+		}
+
+		T IDictionary<long, T>.this[long key] {
+			get {
+				return Value(key);
+			}
+			set {
+				SetValue(key,value);
+			}
+		}
+
+		void ICollection<KeyValuePair<long, T>>.Add (KeyValuePair<long, T> item) {
+			SetValue(item.Key,item.Value);
+		}
+
+		void ICollection<KeyValuePair<long, T>>.Clear ( ) {
+			Clear();
+		}
+
+		bool ICollection<KeyValuePair<long, T>>.Contains (KeyValuePair<long, T> item) {
+			return ContainsKey(item.Key);
+		}
+
+		void ICollection<KeyValuePair<long, T>>.CopyTo (KeyValuePair<long, T>[] array, int arrayIndex) {
+			long index=arrayIndex;
+			foreach(KeyValuePair<long,T> d in Data){
+				array[index]=d;
+				index++;
+			}
+		}
+
+		int ICollection<KeyValuePair<long, T>>.Count {
+			get { return Count; }
+		}
+
+		bool ICollection<KeyValuePair<long, T>>.IsReadOnly {
+			get { return IsReadOnly; }
+		}
+
+		bool ICollection<KeyValuePair<long, T>>.Remove (KeyValuePair<long, T> item) {
+			if(!ContainsKey(item.Key)){
+				return false;
+			}
+			RemoveByKey(item.Key);
+			return true;
+		}
+
+		IEnumerator<KeyValuePair<long, T>> IEnumerable<KeyValuePair<long, T>>.GetEnumerator ( ) {
+			return Data.GetEnumerator();
+		}
+
+		System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator ( ) {
+			return Data.GetEnumerator();
+		}
+		#endregion

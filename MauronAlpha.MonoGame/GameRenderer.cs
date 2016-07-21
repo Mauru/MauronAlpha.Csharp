@@ -4,14 +4,18 @@
 	using MauronAlpha.MonoGame.Collections;
 	using MauronAlpha.MonoGame.Interfaces;
 	using MauronAlpha.MonoGame.DataObjects;
-	using MauronAlpha.MonoGame.Shapes;
+	using MauronAlpha.MonoGame.Geometry;
 
 	using MauronAlpha.Events.Units;
 	using MauronAlpha.Events.Collections;
 	using MauronAlpha.Events.Interfaces;
 
+	using MauronAlpha.Geometry.Geometry2d.Units;
+
 	/// <summary> Manages the rendering of content </summary>///
 	public class GameRenderer :MonoGameComponent, I_sender<ReadyEvent> {
+		
+		//The game manager (link to all other aspects of the game)
 		GameManager DATA_Manager;
 		public GameManager Game {
 			get { return DATA_Manager; }
@@ -22,90 +26,114 @@
 			DATA_Manager.Set(this);
 		}
 
+		//used for multithreading
+		System.Object LockStatus;
+
+		//Constructor
 		public GameRenderer(GameManager o): base() {
+			LockStatus = new System.Object();
 			Set(o);
+			B_isBusy = false;
 		}
 
-		public void Initialize() {
-			
+		//Boolean statuses
+		bool GameIsBusy {
+			get {
+				return Game.IsReady == false;
+			}
+		}
+		bool CanRender {
+			get {
+				if(B_isBusy)
+					return false;
+				if(!B_isInitialized)
+					return false;
+				return true;
+			}
 		}
 
-		RenderBuffer Buffer = new RenderBuffer();
-
-		bool B_isBusy = false;
+		bool B_isBusy = true;
 		public bool IsBusy {
 			get { return B_isBusy; }
 		}
 
-		//Draw event
-		public void Draw(long time) {
-			B_isBusy = true;
-			foreach(I_Drawable d in Buffer) {
-				if(d.NeedsRenderUpdate)
-					d.SetRenderResult(RenderToTexture(d.Shapes),time);
+		bool B_isInitialized = false;
+		public bool IsInitialized {
+			get {
+				return B_isInitialized;
 			}
 		}
 
-		public MonoGameSprite RenderToTexture(List<MonoGameShape> shapes) {
-			List<MonoGameSprite> result = new List<MonoGameSprite>();
-			foreach(MonoGameShape shape in shapes)
-				result.Add(RenderToTexture(shape));
+		//MonoGame related properties
+		RenderBuffer Buffer = new RenderBuffer();
 
-			GraphicsDevice device = Game.Engine.GraphicsDevice;
-			List<Vector2> minMax = TotalSize(shapes);
-			Vector2 max = minMax[1];
-			RenderTarget2D scene = new RenderTarget2D(device, (int) max.X, (int) max.Y);
-			
-			SpriteBatch batch = new SpriteBatch(Game.Engine.GraphicsDevice);
+		SpriteBatch DATA_engineOutput; //The class that collects all sprites
+		Color DATA_defaultSolidColor = Color.LightCoral; //Default Background color
 
-			batch.Begin();
-			foreach(MonoGameSprite t in result)
-				batch.Draw(t.MonoGame, t.Bounds.MonoGame, Color.White);
-			batch.End();
+		//Methods
+		/// <summary> Tells the renderer if he should render a "busy-animation" </summary>
+		public void SetReadyState(bool state) { }
+		
+		//Initialize the renderer
+		public void Initialize() {
+			if(B_isBusy)
+				return;
+			if(B_isInitialized)
+				return;
+			if(!DATA_Manager.EngineIsNull)
+				return;
 
-			return new MonoGameSprite(scene, new Shapes.Rectangle(minMax));
-		}
-		public MonoGameSprite RenderToTexture(MonoGameShape shape) {
-			GraphicsDevice device = Game.Engine.GraphicsDevice;
-			RenderTarget2D scene = new RenderTarget2D(device, (int) shape.Size.X, (int) shape.Size.Y);
-			device.SetRenderTarget(scene);
-			device.DepthStencilState = new DepthStencilState() { DepthBufferEnable = true };
+			//Get properties from the engine
+			GameEngine engine = DATA_Manager.Engine;
+			//create the texture drawing thing
+			DATA_engineOutput = new SpriteBatch(engine.GraphicsDevice);
 
-			Triangles tt = shape.Triangles;
-			int vcount = tt.Count*3;
-			VertexPositionColor[] vv = new VertexPositionColor[vcount];
-			int offset = 0;
-			foreach(Triangle t in tt) {
-				Points pp = t.Points;
-				foreach(Pt p in pp) {
-					vv[offset] = new VertexPositionColor(p.AsVector3, Microsoft.Xna.Framework.Color.White);
-					offset++;
-				}
-			}
+			//Create the shader for drawing meshes
+			GraphicsDevice device = engine.GraphicsDevice;
+			DATA_defaultShader = new BasicEffect(device);
 
-			VertexBuffer buffer = new VertexBuffer(device, typeof(VertexPositionColor), vv.Length+1, BufferUsage.WriteOnly);
-			buffer.SetData<VertexPositionColor>(vv);
+			//Set default texture
+			CurrentScreenTexture = new Texture2D(engine.GraphicsDevice, 1, 1);
 
-			BasicEffect fx = new BasicEffect(device);
-			fx.World = WorldMatrix();
-			fx.View = ViewMatrix();
-			fx.Projection = ProjectionMatrix();
-			fx.VertexColorEnabled = true;
+			//Set default rendertarget
+			Screen = new RenderTarget2D(device, WindowSize.IntX, WindowSize.IntY,false,SurfaceFormat.Alpha8,DepthFormat.Depth24Stencil8);
 
-			device.SetVertexBuffer(buffer);
-
-			RasterizerState rr = new RasterizerState();
-			rr.CullMode = CullMode.None;
-			device.RasterizerState = rr;
-
-			foreach (EffectPass pass in fx.CurrentTechnique.Passes){
-				pass.Apply();
-				device.DrawPrimitives(PrimitiveType.TriangleList, 0, 1);
-			}
-
-			return new MonoGameSprite(scene,shape.Bounds);			
+			B_isInitialized = true;
 		}
 
+		//Properties
+		long DATA_renderTime = 0;	
+		BasicEffect DATA_defaultShader;
+
+		Texture2D CurrentScreenTexture;
+		public Registry<RenderTarget2D> Targets;
+		public RenderTarget2D Screen;
+
+		//Property Returns
+		public Vector2d ScreenSize {
+			get {
+				if(DATA_Manager == null)
+					return new Vector2d();
+				if(Game.EngineIsNull)
+					return new Vector2d();
+				GameEngine engine = Game.Engine;
+				ScreenSize size = new ScreenSize(engine.GraphicsDevice);
+				return new Vector2d(size.Width,size.Height);
+			}
+		}
+		public Vector2d WindowSize {
+			get {
+				if(DATA_Manager == null)
+					return new Vector2d();
+				if(Game.EngineIsNull)
+					return new Vector2d();
+				GameEngine engine = Game.Engine;
+				Viewport fov = engine.GraphicsDevice.Viewport;
+				return new Vector2d(fov.Width, fov.Height);
+			}
+		}
+
+		//MonoGame specific returns
 		Matrix WorldMatrix() {
 			return Matrix.CreateTranslation(0, 0, 0);
 		}
@@ -122,24 +150,96 @@
 			);
 		}
 
-		List<Vector2> TotalSize(List<MonoGameShape> ss) {
+		//Draw event
+		public void Draw(long time) {
+			if(B_isBusy)
+				return;
+			if(!B_isInitialized)
+				return;
+		
+			//Draw the final screen texture
+			lock(LockStatus) {
 
-			Vector2 min = new Vector2();
-			Vector2 max = new Vector2();
-			foreach(MonoGameShape s in ss) {
-				MauronAlpha.MonoGame.Shapes.Rectangle b = s.Bounds;
-				Vector2 mi = b.Min;
-				Vector2 mx = b.Max;
-				if(mi.X < min.X)
-					min.X = mi.X;
-				if(mi.Y < min.Y)
-					min.Y = mi.Y;
-				if(mx.X > max.X)
-					max.X = mx.X;
-				if(mx.Y > max.Y)
-					max.Y = mx.Y;
+				B_isBusy = true;
+				DATA_renderTime = time;
+				GraphicsDevice device = Game.Engine.GraphicsDevice;
+				device.SetRenderTarget(null);
+
+				device.Clear(DATA_defaultSolidColor);
+
+				DATA_engineOutput.Begin();
+				//DATA_engineOutput.Draw(CurrentScreenTexture,ScreenSizeAsRectangle,Color.White);	
+				DATA_engineOutput.End();
+				DATA_renderTime = time;
+				B_isBusy = false;
 			}
-			return new List<Vector2>() { min, max };
+
+			return;
+		}
+
+		MonoGameSprite RenderToTexture(PolyShape drawable, GraphicsDevice device, RenderTarget2D target) {
+			MauronAlpha.Geometry.Geometry2d.Units.Polygon2dBounds bounds = drawable.Bounds;
+
+			TriangulationData data = drawable.RenderData;
+			TriangleList tt = data.Triangles;
+
+			// This step should be skippable / or placable elsewhere... maybe in the update loop?
+			VertexPositionColor[] vv = tt.AsPositionColor;
+			VertexBuffer buffer = new VertexBuffer(device, typeof(VertexPositionColor), vv.Length+1, BufferUsage.WriteOnly);
+			buffer.SetData<VertexPositionColor>(vv);
+
+			BasicEffect fx = DATA_defaultShader;
+			fx.World = WorldMatrix();
+			fx.View = ViewMatrix();
+			fx.Projection = ProjectionMatrix();
+			fx.VertexColorEnabled = true;
+
+			RasterizerState rr = new RasterizerState();
+			rr.CullMode = CullMode.None;
+			device.RasterizerState = rr;
+			// ...until here
+
+			device.SetVertexBuffer(buffer);
+			foreach (EffectPass pass in fx.CurrentTechnique.Passes){
+				pass.Apply();
+				device.DrawPrimitives(PrimitiveType.TriangleList, 0, 1);
+			}
+			
+			// Get data from the rendertarget and set it to a texture
+			Vector2d size = bounds.Size;
+			Texture2D texture = new Texture2D(device, size.IntX, size.IntY);
+			Color[] colorData = new Color[size.IntX*size.IntY];
+			target.GetData<Color>(colorData);
+			texture.SetData<Color>(colorData);
+
+			return new MonoGameSprite(Game,bounds,texture);
+		}
+
+		//Accessors
+		GameEngine Engine {
+			get {
+				return Game.Engine;
+			}
+		}
+
+		List<Vector2d> TotalSize(List<I_Drawable> ss) {
+
+			Vector2d min = new Vector2d();
+			Vector2d max = new Vector2d();
+			foreach(I_Drawable s in ss) {
+				Polygon2dBounds b = s.Bounds;
+				Vector2d mi = b.Min;
+				Vector2d mx = b.Max;
+				if(mi.X < min.X)
+					min.SetX(mi.X);
+				if(mi.Y < min.Y)
+					min.SetY(mi.Y);
+				if(mx.X > max.X)
+					max.SetX(mx.X);
+				if(mx.Y > max.Y)
+					max.SetY(mx.Y);
+			}
+			return new List<Vector2d>() { min, max };
 
 		}
 
@@ -151,252 +251,279 @@
 		public virtual void UnSubscribe(I_subscriber<ReadyEvent> s) {
 			S_Ready.Remove(s);
 		}
-	}
-
-}
-
-namespace MauronAlpha.MonoGame.DataObjects {
-	using MauronAlpha.HandlingErrors;
-	using MauronAlpha.MonoGame.Collections;
-	using MauronAlpha.MonoGame.Shapes;
-	using Microsoft.Xna.Framework.Graphics;
-
-	using MauronAlpha.MonoGame.Interfaces;
-
-	public class GameError:MauronCode_error {
-		public GameError(string code, MonoGameComponent source):base(code,source,ErrorType_fatal.Instance) { }
-	}
 	
-	public class ShapeSize :MonoGameComponent {
-
-		public int Width;
-		public int Height;
-
-	}
-
-	public class RenderTime :MonoGameComponent,System.IEquatable<RenderTime> {
-		long DATA_ticks = 0;
-		public long Ticks { get { return DATA_ticks; } }
-
-		public RenderTime(long ticks): base() {
-			DATA_ticks = ticks;
-		}
-		public bool Equals(RenderTime other) {
-			return DATA_ticks.Equals(other.Ticks);
-		}
-	}
-	public class RenderLevel :MonoGameComponent {
-		public int Z;
-		public RenderTime LastRendered;
-		public RenderTime LastSheduled;
-	}
-
-	public abstract class MonoGameShape :MonoGameComponent, I_Drawable {
-		public abstract Pt Size { get; }
-		public abstract Triangles Triangles { get; }
-		public abstract Rectangle Bounds { get; }
-		public abstract List<Pt> Points { get; }
-
-		GameManager DATA_manager;
-		public GameManager Game {
-			get {
-				return DATA_manager;
-			}
+		//Handling Requests
+		Stack<RenderRequest> Requests = new Stack<RenderRequest>();
+		public void AddRequest(Drawable target, RenderInstructions instructions, long time) {
+			RenderRequest request = new RenderRequest(target,instructions,time);
+			Requests.Add(request);
+			return;
 		}
 
-		public MonoGameShape(GameManager manager): base() {
-			DATA_manager = manager;
-		}
-
-		public List<MonoGameShape> Shapes {
-			get { return new List<MonoGameShape>(){this}; }
-		}
-		public List<MonoGameSprite> Sprites {
-			get { return new List<MonoGameSprite>(); }
-		}
-
-		MonoGameSprite DATA_rendered;
-		public MonoGameSprite Rendered {
-			get {
-				if(DATA_rendered != null)
-					return DATA_rendered;
-				throw new GameError("No renderData!",this);
-			}
-		}
-
-		public bool NeedsRenderUpdate {
-			get { throw new System.NotImplementedException(); }
-		}
-
-		RenderTime DATA_lastRendered;
-		public RenderTime LastRendered {
-			get {
-				if(DATA_lastRendered == null)
-					return new RenderTime(0);
-				return DATA_lastRendered;
-			}
-		}
-
-		public void SetRenderResult(MonoGameSprite t, long renderTime) {
-			DATA_rendered = t;
-			DATA_lastRendered = new RenderTime(renderTime);
-		}
-
-		public GameRenderer Renderer {
-			get { return Game.Renderer; }
-		}
-	}
-	public class MonoGameTexture :MonoGameComponent {
-
-		Texture2D DATA_texture;
-		public MonoGameTexture() : base() { }
-		public MonoGameTexture(Texture2D texture): base() {
-			DATA_texture = texture;
-		}
-	}
-	public class MonoGameSprite :MonoGameComponent { 
-		Texture2D DATA_texture;
-		Rectangle DATA_rectangle;
-		public MonoGameSprite() : base() { }
-		public MonoGameSprite(Texture2D texture, Rectangle bounds): base() {
-			DATA_texture = texture;
-			DATA_rectangle = bounds;
-		}
-
-		public Rectangle Bounds {
-			get { return DATA_rectangle; }
-		}
-		public Texture2D MonoGame {
-			get {
-				return DATA_texture;
-			}
-		}
+		/* some circle drawing logic...
+		 public void Circle(Texture2D tex, int cx, int cy, int r, Color col) {
+			int x, y, px, nx, py, ny, d;
+             
+			for (x = 0; x <= r; x++){
+				d = (int) Mathf.Ceil(Mathf.Sqrt(r * r - x * x));
+				for (y = 0; y <= d; y++) {
+                     px = cx + x;
+                     nx = cx - x;
+                     py = cy + y;
+                     ny = cy - y;
+     
+                     tex.SetPixel(px, py, col);
+                     tex.SetPixel(nx, py, col);
+      
+                     tex.SetPixel(px, ny, col);
+                     tex.SetPixel(nx, ny, col);
+     
+                 }
+             }    
+         }*/
 
 	}
 
 }
 
 namespace MauronAlpha.MonoGame.Interfaces {
+	using MauronAlpha.Geometry.Geometry2d.Shapes;
+	using MauronAlpha.Geometry.Geometry2d.Units;
+
 	using MauronAlpha.MonoGame.Collections;
 	using MauronAlpha.MonoGame.DataObjects;
 
 	/// <summary> Represents an item that can be rendered </summary>
 	public interface I_Drawable {
 
-		public List<MonoGameShape> Shapes { get; }
-		public List<MonoGameSprite> Sprites { get; }
-		public MonoGameSprite Rendered { get; }
+		Polygon2dBounds Bounds { get; }
 
-		public bool NeedsRenderUpdate {	get; }
+		List<Polygon2d> Shapes { get; }
+		List<MonoGameSprite> Sprites { get; }
+		MonoGameSprite Rendered { get; }
 
-		public void SetRenderResult(MonoGameSprite t, long renderTime);
+		bool NeedsRenderUpdate {	get; }
 
-		public GameRenderer Renderer { get; }
+		void SetRenderResult(MonoGameSprite t, long renderTime);
+
+		GameRenderer Renderer { get; }
+
+	}
+}
+
+
+
+namespace MauronAlpha.MonoGame.DataObjects {
+	using MauronAlpha.HandlingErrors;
+	using MauronAlpha.MonoGame.Collections;
+	using MauronAlpha.MonoGame.Interfaces;
+	
+	using MauronAlpha.Geometry.Geometry2d.Units;
+	using MauronAlpha.Geometry.Geometry2d.Shapes;
+	using MauronAlpha.Geometry.Geometry2d.Transformation;
+
+	using Microsoft.Xna.Framework.Graphics;
+	
+		
+	//constructor
+	public class Drawable :MonoGameComponent, I_Drawable {
+
+		RenderInstructions DATA_instructions;
+		public RenderInstructions Instructions { 
+			get {
+				if(DATA_instructions == null)
+					return RenderInstructions.Default;
+				return DATA_instructions; 
+			} 
+		}
+
+		public Drawable(GameManager game, Polygon2dBounds bounds, RenderInstructions instructions): base() {
+			DATA_game = game;
+			DATA_bounds = bounds;
+			DATA_instructions = instructions;
+		}
+
+		GameManager DATA_game;
+		public GameManager Game {
+			get {
+				return DATA_game;
+			}
+		}
+		public GameRenderer Renderer {
+			get { return Game.Renderer; }
+		}
+
+		long DATA_lastRendered = 0;
+		public long LastRendered {
+			get { return DATA_lastRendered; }
+		}
+
+		long DATA_frame;
+		public long AnimationFrame {
+			get {
+				return DATA_frame;
+			}
+		}
+
+		Matrix2d DATA_matrix = new Matrix2d();
+		Matrix2d Matrix { get { return DATA_matrix; } }
+
+		TriangleList DATA_triangles;
+		public TriangleList Triangles {
+			get {
+				if(DATA_triangles == null)
+					return new TriangleList(new Triangle2d[]{});
+				return DATA_triangles;
+			}
+		}
+
+		Polygon2dBounds DATA_bounds;
+		public Polygon2dBounds Bounds {
+			get { return DATA_bounds; }
+		}
+
+		List<Polygon2d> DATA_shapes = new List<Polygon2d>();
+		public List<Polygon2d> Shapes {
+			get { return DATA_shapes; }
+		}
+		List<Line2d> DATA_lines = new List<Line2d>();
+		public List<Line2d> Lines {
+			get {
+				return DATA_lines;
+			}
+		}
+		List<MonoGameSprite> DATA_sprites = new List<MonoGameSprite>();
+		public List<MonoGameSprite> Sprites {
+			get {
+				return DATA_sprites;
+			}
+		}
+
+		MonoGameSprite DATA_rendered;
+		public MonoGameSprite Rendered {
+			get {
+				if(DATA_rendered == null)
+					return new MonoGameSprite(DATA_game, DATA_bounds, ClearTexture);
+				return DATA_rendered;			
+			}
+		}
+
+		Texture2D TEX_default;
+		Texture2D ClearTexture {
+			get {
+				if(TEX_default == null)
+					TEX_default = new Texture2D(Game.Engine.GraphicsDevice, 1, 1,false,SurfaceFormat.Alpha8);
+				return TEX_default;
+			}
+		}
+
+		bool B_needsRenderUpdate = false;
+		public bool NeedsRenderUpdate {
+			get { return B_needsRenderUpdate; }
+		}
+
+		public void SetRenderResult(MonoGameSprite t, long renderTime) {
+			DATA_rendered = t;
+			DATA_lastRendered = renderTime;
+			B_needsRenderUpdate = false;
+		}
 
 	}
 
+	public class MonoGameText :Drawable {
+		public MonoGameText(GameManager game, Polygon2dBounds bounds) : base(game, bounds, RenderInstructions.Text) { }
+	}
+	public class MonoGameLines :Drawable {
+		public MonoGameLines(GameManager game, Polygon2dBounds bounds) : base(game, bounds, RenderInstructions.Lines) { }
+	}
+	public class MonoGameShape :Drawable {
+		Polygon2d DATA_polygon;
+		public MonoGameShape(GameManager game, Polygon2d poly): base(game, poly.Bounds, RenderInstructions.Shape) {
+			DATA_polygon = poly;
+		}		
+	}
+	public class MonoGameSprite :Drawable { 
+		Texture2D DATA_texture;
+		public Texture2D Texture {
+			get {
+				return DATA_texture;
+			}
+		}
+		public MonoGameSprite(GameManager game, Polygon2dBounds bounds, Texture2D texture): base(game, bounds, RenderInstructions.Sprite) {
+			DATA_texture = texture;
+		}		
+	}
+	public abstract class RenderInstruction :MonoGameComponent {
+		public abstract string Name { get; }
+	}
+
+	public class Render_Shape :RenderInstruction {
+		public override string Name {
+			get { return "Mesh"; }
+		}
+	}
+	public class Render_Lines :RenderInstruction { 
+		public override string Name {
+			get { return "Lines"; }
+		}
+	}
+	public class Render_Text :RenderInstruction { 
+		public override string Name {
+			get { return "Text"; }
+		}
+	}
+	public class Render_Sprite :RenderInstruction { 
+		public override string Name {
+			get { return "Sprite"; }
+		}
+	}
+	public class Render_Rectangle :RenderInstruction { 
+		public override string Name {
+			get { return "Rectangle"; }
+		}
+	}
 }
 
 namespace MauronAlpha.MonoGame.Collections {
+	using MauronAlpha;
 	using MauronAlpha.HandlingData;
-	using MauronAlpha.MonoGame.Interfaces;
-	using MauronAlpha.MonoGame.Shapes;
-
-	public class Points :List<Pt> {}
-	public class Triangles :List<Triangle> {}
-
-	public class List<T>:MauronCode_dataList<T> {}
-	public class RenderBuffer :List<I_Drawable> { }
-}
-
-namespace MauronAlpha.MonoGame.Shapes {
 	using MauronAlpha.MonoGame.DataObjects;
-	using MauronAlpha.MonoGame.Collections;
-	using MauronAlpha.Geometry.Geometry2d.Units;
-	using MauronAlpha.MonoGame.Interfaces;
+	using MauronAlpha.MonoGame.Geometry;
 
-	public class TriangleShape :MonoGameShape {
-
-		public TriangleShape(GameManager game, Vector2d position, float width, float height): base(game) {
-			
+	public class RenderInstructions :List<RenderInstruction> {
+		public static RenderInstructions Sprite {
+			get {
+				return new RenderInstructions() {
+					new Render_Sprite()
+				};
+			}
+		}
+		public static RenderInstructions Text {
+			get {
+				return new RenderInstructions() {
+					new Render_Text()
+				};
+			}
+		}
+		public static RenderInstructions Shape {
+			get {
+				return new RenderInstructions() {
+					new Render_Shape()
+				};
+			}
+		}
+		public static RenderInstructions Lines {
+			get { return new RenderInstructions() { new Render_Lines() }; }
+		}
+		public static RenderInstructions Default {
+			get { return new RenderInstructions() { new Render_Rectangle() }; }
 		}
 	}
-
-	public class Triangle :MonoGameComponent {
-		Points DATA_pt;
-		public Points Points {
-			get {
-				return DATA_pt;
-			}
-		}
-		public Triangle(Pt a, Pt b, Pt c) : base() {
-			DATA_pt = new Points() { a, b, c };
-		}
+	public class RenderBuffer :MonoGameComponent  {
+		Stack<MonoGameSprite> Sprites;
+		Stack<MonoGameShape> Shapes;
+		Stack<MonoGameLines> Lines;
+		Stack<MonoGameText> Text;
 	}
 
-	public class Rectangle :MonoGameComponent {
-		List<Pt> DATA_pts;
-		public Rectangle(Pt a, Pt b, Pt c, Pt d) : base() {
-			DATA_pts = new List<Pt>() { a, b, c, d };
-		}
-		public Rectangle(float x, float y, float width, float height): base() {
-			DATA_pts = new List<Pt>() {
-				new Pt(x,y),
-				new Pt(x+width,y),
-				new Pt(x+width,y+height),
-				new Pt(x,y+height)
-			};
-		}
-		public Rectangle(List<Microsoft.Xna.Framework.Vector2> pts) {
-			Pt a = new Pt(pts[0]);
-			Pt d = new Pt(pts.LastElement);
-			Pt b = new Pt(d.X, a.Y);
-			Pt c = new Pt(a.X, d.Y);
-			DATA_pts = new List<Pt>() { a, b, c, d };
-		}
-		public Rectangle(float width, float height)	: base() {
-			DATA_pts = new List<Pt>() {
-				new Pt(0,0),
-				new Pt(width,0),
-				new Pt(width,height),
-				new Pt(0,height)
-			};
-		}
-		public Microsoft.Xna.Framework.Rectangle MonoGame {
-			get {
-				return new Microsoft.Xna.Framework.Rectangle(
-					(int) DATA_pts.Value(0).X,
-					(int) DATA_pts.Value(0).Y,
-					(int) DATA_pts.Value(3).X,
-					(int) DATA_pts.Value(3).Y
-				);
-			}
-		}
-		public Microsoft.Xna.Framework.Vector2 Min {
-			get {
-				Pt min = DATA_pts[0];
-				return new Microsoft.Xna.Framework.Vector2((float)min.X,(float)min.Y);
-			}
-		}
-		public Microsoft.Xna.Framework.Vector2 Max {
-			get {
-				Pt min = DATA_pts[3];
-				return new Microsoft.Xna.Framework.Vector2((float)min.X,(float)min.Y);
-			}
-		}
-	}
-
-	public class Pt :Vector2d {
-		public Pt() : base() { }
-		public Pt(int x, int y) : base(x, y) { }
-		public Pt(float x, float y) : base(x, y) { }
-		public Pt(double x, double y) : base(x, y) { }
-		public Pt(Microsoft.Xna.Framework.Vector2 v) : base(v.X, v.Y) { }
-
-		public Microsoft.Xna.Framework.Vector3 AsVector3 {
-			get {
-				return new Microsoft.Xna.Framework.Vector3((float) X, (float) Y, 0);
-			}
-		}
-	}
 }

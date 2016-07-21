@@ -16,9 +16,12 @@ The planned feature set includes:
 
 4. A context-sensitive Text-processor
 
-* Updates *
+-
+
+#Updates 2016-06-30#
+
+./sidelined contains codesnippets and testcases for feature sets.
+The textprocessing in its basic form works now although there is no real "texteditor" to speak of. Instead you get a more or less usable suite of tools for text-crawling and data-analysis. 
+Nothing fancy but a start.
 
 
-Currently nothing works. But it once worked. Then I decided to make things better and broke something ;-) Which is good but also time-consuming.
-
-Please consult the File Info.mau for further notes on how things progress. It is relatively unreliable so it might not be quite up to date.

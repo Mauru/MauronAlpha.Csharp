@@ -9,14 +9,12 @@ namespace MauronAlpha.FileSystem.Units {
 
 		public Directory() : base() { }
 		public Directory(string path) : this() {
-			STR_path = path;
-
 			try {
-				path = System.IO.Path.GetDirectoryName(Path);
+				STR_path = System.IO.Path.GetDirectoryName(path);
 				STR_name = Directory.FormNameFromPath(path);
 			}
 			catch (System.Exception ex) {
-				return;
+				throw new FileSystemError("Invalid directory {"+path+"}.",this);
 			}
 		}
 		public Directory(Directory directory, string name) {
@@ -29,7 +27,7 @@ namespace MauronAlpha.FileSystem.Units {
 			get {
 				if (DATA_directory == null)
 					return STR_path;
-				return DATA_directory.Path + Name;
+				return DATA_directory.Path + System.IO.Path.AltDirectorySeparatorChar + Name;
 			} 
 		}
 

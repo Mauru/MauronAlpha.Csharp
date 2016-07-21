@@ -4,31 +4,25 @@ using MauronAlpha.Geometry.Geometry2d.Interfaces;
 using MauronAlpha.Geometry.Geometry2d.Shapes;
 using MauronAlpha.Geometry.Shapes;
 
-using MauronAlpha.Interfaces;
-
-using MauronAlpha.Geometry.Geometry2d.Transformation;
-
 namespace MauronAlpha.Geometry.Geometry2d.Units {
+	using MauronAlpha.Interfaces;
+	using MauronAlpha.Geometry.Geometry2d.Transformation;
 
 public class Polygon2dBounds : GeometryComponent2d, I_polygonShape2d, I_protectable<Polygon2dBounds> {
-
 	//Constructors
 	private Polygon2dBounds():base() {}
 	//Relative constructors
-	public Polygon2dBounds( I_polygonShape2d parentShape ) : this(parentShape.Points) {
-	}
+	public Polygon2dBounds( I_polygonShape2d parentShape ) : this(parentShape.Points) {	}
 
 	//Absolute constructors
-	private Polygon2dBounds( Vector2d center, Vector2d min, Vector2d max )
-		: this() {
+	private Polygon2dBounds( Vector2d center, Vector2d min, Vector2d max )	: this() {
 
 		V_min = min;
 		V_max = max;
 		V_center = min.Difference( V_max );
 
 	}
-	public Polygon2dBounds( Vector2dList points )
-		: this() {
+	public Polygon2dBounds( Vector2dList points )	: this() {
 
 		Vector2d min = null;
 		Vector2d max = null;
@@ -145,13 +139,12 @@ public class Polygon2dBounds : GeometryComponent2d, I_polygonShape2d, I_protecta
 		}
 	}
 
-
-
 	public I_polygonShape2d Cloned {
 		get {
 			return Instance;
 		}
 	}
-}
+
 }
 
+}

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SpriteFont>
+    <InputSettings fontFamily="Roboto Mono Light" fontStyle="Light" fontSize="12" characters=" !&quot;#$%&amp;'()*+,-./0123456789:;&lt;=&gt;?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~"/>
+    <GenerationSettings width="256" height="256" color="#00ffffff" padding="2" spacing="2"/>
+    <ExportSettings format="BMFont_Ascii" path="C:/Users/mauru/Desktop/Coding/mauronAlpha.cSharp/Resources/DefaultFontMap" retinaCopy="0"/>
+    <Effects>
+        <Effect effectType="Fill" effectEnabled="1" effectBlendMode="Normal" effectOpacity="1" fillType="Color" fillColor="#ff000000" fillGradient="gradientStyle: Linear; angle: 45; scale: 1; stops: (position: 0, color: #ff000000) (position: 1, color: #ffffffff)" fillInset="0"/>
+        <Effect effectType="Shadow" effectEnabled="0" effectBlendMode="Normal" effectOpacity="1" shadowColor="#ff000000" shadowType="Outer" shadowAngle="45" shadowDistance="1" shadowBlur="1" shadowSize="0"/>
+        <Effect effectType="Stroke" effectEnabled="0" effectBlendMode="Normal" effectOpacity="1" strokeWidth="1" strokeColor="#ff000000" strokePosition="Outside"/>
+    </Effects>
+</SpriteFont>

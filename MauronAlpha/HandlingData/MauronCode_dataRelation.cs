@@ -3,6 +3,9 @@
 using System.Collections.Generic;
 namespace MauronAlpha.HandlingData {
 	
+	/// <summary> Basically a custom key/value </summary>
+	/// <typeparam name="K">key</typeparam>
+	/// <typeparam name="V">value</typeparam>
 	public class MauronCode_dataRelation<K, V> : MauronCode_dataObject,IEquatable<KeyValuePair<K,V>> {
 
 		K DATA_key;
