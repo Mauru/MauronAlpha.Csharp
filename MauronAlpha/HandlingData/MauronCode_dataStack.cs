@@ -11,6 +11,13 @@ namespace MauronAlpha.HandlingData {
 			Data.Push(obj);
 			return this;
 		}
+		public MauronCode_dataStack<T> Add(MauronCode_dataStack<T> other) {
+			while(!other.IsEmpty) { 
+				T obj = other.Pop;
+				Add(obj);
+			}
+			return this;
+		}
 		public T Pop {
 			get {
 				return Data.Pop();

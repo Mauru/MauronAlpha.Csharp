@@ -40,10 +40,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataObjects\FontDefinition.cs" />
     <Compile Include="FontParser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\MauronAlpha.Events\MauronAlpha.Events.csproj">
+      <Project>{425a4b94-31df-4569-b68c-edeaf82163a7}</Project>
+      <Name>MauronAlpha.Events</Name>
+    </ProjectReference>
     <ProjectReference Include="..\MauronAlpha.FileSystem\MauronAlpha.FileSystem.csproj">
       <Project>{87daa81e-0342-4969-b99f-fbb60914b1a5}</Project>
       <Name>MauronAlpha.FileSystem</Name>
@@ -57,9 +62,7 @@
       <Name>MauronAlpha</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="DataObjects\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

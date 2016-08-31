@@ -8,7 +8,8 @@ namespace MauronAlpha.Geometry {
 	public abstract class GeometryComponent : MauronCode_component {
 		
 		//constructor
-		public GeometryComponent ( ) : base() { }
+		public GeometryComponent ( ):base() { }
+
 	}
 
 }

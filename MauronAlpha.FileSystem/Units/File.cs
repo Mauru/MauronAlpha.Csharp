@@ -16,6 +16,7 @@ namespace MauronAlpha.FileSystem.Units {
 		public File(Directory d, string name): this() {
 			if(name == null)
 				throw new FileSystemError("Invalid filename {" + name + "}",this);
+			DATA_directory = d;
 			int index = name.LastIndexOf('.');
 			STR_name = name.Substring(0, index);
 			STR_extension = name.Substring(index + 1);			
@@ -31,7 +32,7 @@ namespace MauronAlpha.FileSystem.Units {
 			get {
 				if (Directory == null)
 					return "";
-				return Directory.Path + System.IO.Path.DirectorySeparatorChar + Name + '.' + Extension;
+				return Directory.Path + System.IO.Path.AltDirectorySeparatorChar + Name + '.' + Extension;
 			}
 		}
 
@@ -55,10 +56,30 @@ namespace MauronAlpha.FileSystem.Units {
 				return DATA_directory;
 			}
 		}
+		
+		/// <summary> Sets the directory of the file, DOES NOT COPY OR MOVE THE FILE </summary>
+		public void SetDirectory(Directory d) {
+			DATA_directory = d;
+		}
 
 		private FileType DATA_fileType = FileTypes.Generic;
 		public FileType FileType {
 			get { return DATA_fileType; }
+		}
+
+		public System.IO.Stream Stream {
+			get {
+				if(DATA_directory == null)
+					throw new FileSystemError("Undefined Directory.", this);
+				return System.IO.File.OpenRead(Path);
+			}
+		}
+		public System.IO.StreamReader StreamReader {
+			get {
+				if(DATA_directory == null)
+					throw new FileSystemError("Undefined Directory.", this);
+				return new System.IO.StreamReader(Path);
+			}
 		}
 
 		public Collections.AccessRights Rights {
@@ -102,7 +123,8 @@ namespace MauronAlpha.FileSystem.Units {
 			return true;
 		}
 
-		public System.Collections.Generic.List<string> Content {
+		//WARNING: Not optimized!
+		public System.Collections.Generic.List<string> Contents {
 			get {
 				System.Collections.Generic.List<string> data = new System.Collections.Generic.List<string>();
 				try {
@@ -137,7 +159,6 @@ namespace MauronAlpha.FileSystem.Units {
 			}
 		}
 	}
-
 	public class FileType_generic : FileType {
 
 		public override string Name {

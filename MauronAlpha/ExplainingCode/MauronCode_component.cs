@@ -17,7 +17,7 @@ namespace MauronAlpha.ExplainingCode {
 	//An "Explaining class" - which serves to describe the function of a class
 	public sealed class CodeType_component : CodeType {
 		#region singleton
-		private static volatile CodeType_component instance=new CodeType_component();
+		private static volatile CodeType_component instance;
 		private static object syncRoot=new Object();
 		//constructor singleton multithread safe
 		static CodeType_component ( ) { }

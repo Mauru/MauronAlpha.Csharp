@@ -51,6 +51,11 @@ public class Polygon2dBounds : GeometryComponent2d, I_polygonShape2d, I_protecta
 		V_center = min.Difference( V_max );
 
 	}
+	public Polygon2dBounds(double width, double height)	: this() {
+		V_min = new Vector2d(0, 0);
+		V_max = new Vector2d(width, height);
+		V_center = V_min.Difference( V_max );
+	}
 
 	//properties
 	Vector2d V_center;

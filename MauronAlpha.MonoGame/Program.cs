@@ -9,25 +9,29 @@ public static class Program {
 	[STAThread]
 	static void Main() {
 
+		//Get the current directory and establish the FileStructure
         var domaininfo = new AppDomainSetup();
-		FileStructure structure = new FileStructure(System.Environment.CurrentDirectory);
-		
+		string dirOfCode = System.Environment.CurrentDirectory;
+		string dirOfExe = System.Reflection.Assembly.GetExecutingAssembly().Location;
+		FileStructure structure = new FileStructure(dirOfExe);
+
+		//0: Create the game-manager
 		GameManager manager = new GameManager();
-		GameContentManager resources = new GameContentManager(manager, structure);
-		GameEngine game = new GameEngine(manager);
+		//1: Create the asset-manager
+		AssetManager assets = new AssetManager(manager, structure);
+		//2: Create the Game-Engine (MonoGame Wrapper)
+		GameEngine engine = new GameEngine(ref manager);
+		//3: Create the Game-Logic
+		GameLogic logic = new SampleGameLogic(manager);
+		//4: Create the Game-State
+		GameStateManager gameState = new GameStateManager(manager);
+		//5: Create the Game-Renderer
+		GameRenderer renderer = new GameRenderer(manager);
 
-		GameLogic logic = new SampleGameLogic();
-
-		manager.Set(logic);
-
-
-		game.Start();
-		while(game != null) {
-			//game.DoNothing();
-
-			if(game.CanExit)
-				game.Exit();
-
+		engine.Start();
+		while(engine != null) {
+			if(engine.CanExit)
+				engine.Exit();
 		}
 
 		System.Console.WriteLine("Application exited cleanly. - Press any key to finish -");
@@ -42,9 +46,8 @@ namespace MauronAlpha.MonoGame.Actuals {
 
 	public class SampleGameLogic :GameLogic {
 
-		public SampleGameLogic(): base() {
-
-		}
+		public SampleGameLogic(GameManager manager): base(manager) {}
+		
 	}
 
 }

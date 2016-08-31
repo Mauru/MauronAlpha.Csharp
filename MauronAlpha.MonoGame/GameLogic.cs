@@ -4,8 +4,10 @@
 	using MauronAlpha.TextProcessing.Units;
 	using MauronAlpha.TextProcessing.Collections;
 
+	using MauronAlpha.MonoGame.DataObjects;
+
 	/// <summary> Logic of the Game </summary>///
-	public abstract class GameLogic :MonoGameComponent, I_sender<ReadyEvent> {
+	public abstract class GameLogic :MonoGameComponent, I_CoreGameComponent, I_sender<ReadyEvent> {
 		GameManager DATA_Manager;
 		public GameManager Game {
 			get { return DATA_Manager; }
@@ -17,7 +19,9 @@
 		}
 
 		//Constructor
-		public GameLogic() : base() { }
+		public GameLogic(GameManager manager) : base() {
+			Set(manager);
+		}
 
 		///<summary>Performs a cycle of the gamelogic</summary>
 		public virtual void Cycle(long time) { }
@@ -34,25 +38,18 @@
 			}
 		}
 
-		//Initialize
-		public virtual void Initialize() {
-			B_isBusy = true;
-			Lines result = GenerateInitializeReport(DATA_Manager);
-
-			foreach(Line l in result)
-				System.Console.WriteLine(l.AsString);
-			
-
-			B_initialized = true;
-			B_isBusy = false;
+		GameSetup DATA_setup;
+		public virtual GameSetup Setup {
+			get {
+				if(DATA_setup == null)
+					DATA_setup = new GameSetup();
+				return DATA_setup;
+			}
 		}
 
-		public static Lines GenerateInitializeReport(GameManager m) {
-
-			string spacer = " : ";
-			Lines ll = new Lines();
-			return ll;
-
+		//Initialize
+		public virtual void Initialize() {
+			B_initialized = true;
 		}
 
 		//Events
@@ -64,4 +61,6 @@
 			S_Ready.Remove(s);
 		}
 	}
+
+
 }

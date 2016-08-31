@@ -3,12 +3,42 @@
 	using MauronAlpha.Events.Interfaces;
 	using MauronAlpha.Events.Collections;
 
-
 	/// <summary> Ties all GameComponents together </summary>///
 	public class GameManager :MonoGameComponent, I_sender<ReadyEvent>, I_subscriber<ReadyEvent> {
 
-		public GameManager() { }
+		//constructor
+		public GameManager() {}
 
+		//GameState
+		GameStateManager DATA_GameState;
+		public GameStateManager GameState {
+			get {
+				return DATA_GameState;
+			}
+		}
+		public bool GameStateIsNull {
+			get {
+				return DATA_GameState == null;
+			}
+		}
+		public bool GameStateIsInitialized {
+			get {
+				if(DATA_GameState == null)
+					return false;
+				return DATA_GameState.IsInitialized;
+			}
+		}
+		public string GameStateState {
+			get {
+				if(GameStateIsNull)
+					return "NULL";
+				if(GameStateIsInitialized)
+					return "INITIALIZED";
+				if(GameState.IsBusy)
+					return "BUSY";
+				return "READY";
+			}
+		}
 
 		//GameLogic
 		GameLogic DATA_Logic;
@@ -37,28 +67,28 @@
 			}
 		}
 
-		//ContentManager
-		GameContentManager DATA_Content;
-		public GameContentManager Content { get { return DATA_Content; } }
-		public bool ContentIsNull {
+		//AssetManager
+		AssetManager DATA_Assets;
+		public AssetManager Assets { get { return DATA_Assets; } }
+		public bool AssetsIsNull {
 			get {
-				return DATA_Content == null;
+				return DATA_Assets == null;
 			}
 		}
-		public bool ContentIsInitialized {
+		public bool AssetsIsInitialized {
 			get {
-				if( DATA_Content == null)
+				if( DATA_Assets == null)
 					return false;
-				return DATA_Content.IsInitialized;
+				return DATA_Assets.IsInitialized;
 			}
 		}
-		public string ContentState {
+		public string AssetsState {
 			get {
-				if(ContentIsNull)
+				if(AssetsIsNull)
 					return "NULL";
-				if(ContentIsInitialized)
+				if(AssetsIsInitialized)
 					return "INITIALIZED";
-				if(Content.IsBusy)
+				if(DATA_Assets.IsBusy)
 					return "BUSY";
 				return "READY";
 			}
@@ -72,14 +102,12 @@
 				return DATA_Engine == null;
 			}
 		}
-		/// <summary>
-		/// Requires that the renderer is not null, the base config file needs to have loaded and 
-		/// </summary>
+		/// <summary> Requires that the renderer is not null, the base config file needs to have loaded </summary>
 		public bool EngineIsInitialized {
 			get {
 				if(DATA_Engine == null)
 					return false;
-				if(DATA_Content == null)
+				if(DATA_Assets == null)
 					return false;
 				if(DATA_Renderer == null)
 					return false;
@@ -128,26 +156,34 @@
 		//Status booleans
 		public bool IsReady {
 			get {
-			if(DATA_Logic == null)
-				return false;
-			if(DATA_Engine == null)
-				return false;
-			if(DATA_Content == null)
-				return false;
-
-			return true;
+				if(DATA_GameState == null)
+					return false;
+				if(DATA_Logic == null)
+					return false;
+				if(DATA_Assets == null)
+					return false;
+				if(DATA_Engine == null)
+					return false;
+				if(DATA_Renderer == null)
+					return false;
+				return true;
 			}
 		}
 
 		//Register core components
+		public void Set(GameStateManager o) {
+			if(DATA_GameState == null)
+				DATA_GameState = o;
+			return;
+		}
 		public void Set(GameLogic o) {
 		if(DATA_Logic == null)
 			DATA_Logic = o;
 		return;
 		}
-		public void Set(GameContentManager o) {
-		if(DATA_Content == null)
-			DATA_Content = o;
+		public void Set(AssetManager o) {
+		if(DATA_Assets == null)
+			DATA_Assets = o;
 		return;
 		}
 		public void Set(GameEngine o) {
@@ -156,21 +192,11 @@
 		return;
 		}
 		public void Set(GameRenderer o) {
-		if(DATA_Renderer == null)
-			DATA_Renderer = o;
+			if(DATA_Renderer == null)
+				DATA_Renderer = o;
 			return;
 		}
 
-		public static bool CONDITION_AllInitialized(GameManager source) {
-			return source.IsReady;
-		}
-		public static bool PROBE_IsBusy(GameManager source) {
-			bool result = source.IsReady;
-			if(source.RendererIsInitialized)
-				source.Renderer.SetReadyState(result);
-			return result;
-		}
-			
 		//Event Handler ReadyEvent
 		Subscriptions<ReadyEvent> S_Ready = new Subscriptions<ReadyEvent>();
 		public virtual void Subscribe(I_subscriber<ReadyEvent> s) {
@@ -185,33 +211,16 @@
 		public bool Equals(I_subscriber<ReadyEvent> other) {
 			return Id.Equals(other.Id);
 		}
+	
 	}
 
+	public interface I_CoreGameComponent {
 
-}
+		void Set(GameManager o);
+		GameManager Game { get; }
 
-namespace MauronAlpha.MonoGame.DataObjects {
-	using MauronAlpha.MonoGame.Interfaces;
-
-
-	public class StatusInfo :MonoGameComponent {
-
-		GameManager DATA_manager;
-		public StatusInfo(GameManager manager) {
-			DATA_manager = manager;
-		}
-
-	}
-
-}
-
-namespace MauronAlpha.MonoGame.Interfaces {
-
-	public interface I_VisualGameStatus {
-
-		void Message(string message);
-
-
+		bool IsBusy { get; }
+		bool IsInitialized { get; }
 	}
 
 }

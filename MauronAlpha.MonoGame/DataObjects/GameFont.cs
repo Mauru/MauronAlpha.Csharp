@@ -2,11 +2,14 @@
 	using MauronAlpha.Events.Interfaces;
 	using MauronAlpha.Events.Collections;
 
-	using MauronAlpha.FontParser;
+	using MauronAlpha.FontParser.DataObjects;
+	using MauronAlpha.FontParser.Events;
+
 
 	using MauronAlpha.FileSystem.Units;
 
 	using MauronAlpha.MonoGame.Collections;
+	using MauronAlpha.MonoGame.Assets;
 
 	/// <summary> A SpriteFont </summary>
 	public class GameFont :MonoGameComponent {
@@ -24,41 +27,67 @@
 			get { return STR_name == null; }
 		}
 
-		bool B_isBusy = false;
-		public bool IsBusy { get { return B_isBusy; } }
-
-		bool B_hasLoaded = false;
-		public bool HasLoaded { get { return B_hasLoaded; } }
-
-		List<MonoGameSprite> Textures = new List<MonoGameSprite>();
-
 		//constructor
-		public GameFont(GameManager game): base() {
+		public GameFont(GameManager game)	: base() {
 			DATA_game = game;
 		}
 		public GameFont(GameManager game, string name)	: base() {
 			DATA_game = game;
 			STR_name = name;
 		}
-
-		public void Load() {
-			B_isBusy = true;
-			Directory m = DATA_game.Content.BaseDirectory;
-			File def = new File(m,STR_name,"fnt");
-			FontDefinition font = new FontDefinition(def);
-			font.Parse();
-
-			foreach(File f in font.Files) {
-				if(!f.Exists)
-					throw new GameError("Could not find texture for font {"+f.Path+"}!",this);
-				MonoGameSprite res = DATA_game.Content.LoadTextureFromFile(f);
-				Textures.Add(res);
-			}
-
-			B_hasLoaded = true;
-			B_isBusy = false;
+		public GameFont(GameManager game, FontDefinition def)	: base() {
+			_font = def;
+			DATA_game = game;
 		}
-	
+
+		FontDefinition _font;
+		public void SetDefinition(FontDefinition font) {
+			_font = font;
+		}
+
+		Index<MonoGameTexture> _textures = new Index<MonoGameTexture>();
+		public void SetTexture(MonoGameTexture texture) {
+			int index = _font.IndexOfTexture(texture.Name);
+			_textures.SetValue(index, texture);			
+		}
+		public MonoGameTexture TextureByPageIndex(int index) {
+			return _textures.Value(index);
+		}
+
+		AssetManager Assets { 
+			get {
+				return DATA_game.Assets; 
+			}
+		}
+
+		public bool HasLoaded {
+			get {
+				if(_font == null)
+					return false;
+				if(!_font.IsParsed)
+					return false;
+				return (_textures.CountKeys >= _font.FontPages.Count);
+			}
+		}
+
+		public PositionData FetchCharacterData(char c) {
+			return _font.PositionData(c);
+		}
+		public double CharacterHeight {
+			get {
+				if(_font == null || !_font.IsParsed)
+					return 0;
+				return _font.FontInfo.BaseHeight;
+			}
+		}
+
+		public double LineHeight {
+			get {
+				if(_font == null || !_font.IsParsed)
+					return 0;
+				return _font.FontInfo.LineHeight;
+			}
+		}
 	}
 
 }

@@ -10,12 +10,13 @@ namespace MauronAlpha.Events.Collections {
 		public int ReceiveEvent(T e)  {
 			if(Subscribers == null)
 				return 0;
-			int count = 0;
-			foreach (I_subscriber<T> sub in Subscribers) { 
-				sub.ReceiveEvent(e);
-				count++;
+			int count = Subscribers.Count;
+			for(int n = 0; n < count; n++) {
+
+				I_subscriber<T> subscriber = Subscribers.Value(n);
+				subscriber.ReceiveEvent(e);
 			}
-			return count;
+				return count;
 		}
 
 

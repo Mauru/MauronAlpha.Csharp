@@ -434,6 +434,17 @@ namespace MauronAlpha.HandlingData {
 			return Range(start, LastIndex);
 		}
 
+		public bool TryIndex(int index, ref T result) {
+			if(index < 0)
+				return false;
+			int n = Count;
+			if(index >= n)
+				return false;
+			result = L_data[index];
+			return true;
+			
+		}
+
 		//Queries: Single
 		public T Value (int key) {
 			#region Error Check

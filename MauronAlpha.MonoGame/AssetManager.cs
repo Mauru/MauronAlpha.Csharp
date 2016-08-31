@@ -1,4 +1,6 @@
 ﻿namespace MauronAlpha.MonoGame {
+	using Microsoft.Xna.Framework.Graphics;
+
 	using MauronAlpha.Events.Interfaces;
 	using MauronAlpha.Events.Collections;
 
@@ -7,12 +9,12 @@
 
 	using MauronAlpha.MonoGame.Collections;
 
-	using Microsoft.Xna.Framework.Graphics;
-
 	using MauronAlpha.Geometry.Geometry2d.Shapes;
 
+	using MauronAlpha.MonoGame.Assets;
+
 	/// <summary> Manages external content for the game </summary>///
-	public class GameContentManager :MonoGameComponent, I_sender<ReadyEvent> {
+	public class AssetManager :MonoGameComponent, I_CoreGameComponent, I_sender<ReadyEvent> {
 
 		GameManager DATA_Manager;
 		public GameManager Game {
@@ -26,12 +28,13 @@
 
 		FileStructure DATA_Root;
 
-		public GameContentManager(GameManager o, FileStructure appDir): base() {
+		//constructor
+		public AssetManager(GameManager o, FileStructure appDir): base() {
 			DATA_Root = appDir;
 			Set(o);
-			B_isInitialized = true;
 		}
 
+		//Boolean states
 		bool B_isBusy = false;
 		public bool IsBusy { get { return B_isBusy; } }
 
@@ -40,6 +43,10 @@
 			get {
 				return B_isInitialized;
 			}
+		}
+
+		public void Initialize() {
+			B_isInitialized = true;
 		}
 
 		//paths
@@ -51,45 +58,42 @@
 				return DIR_saveGames;
 			}
 		}
-		public Directory BaseDirectory {
+		public Directory ContentDirectory {
 			get {
 				return DATA_Root.CreateDirectoryAndReturn("Content");
 			}
 		}
-
-		GameFont DATA_defaultFont;
-		public GameFont DefaultFont {
+		public Directory FontDirectory {
 			get {
-				return DATA_defaultFont;
+				return ContentDirectory;
 			}
 		}
-		public void SetDefaultFont(GameFont font) {
-			DATA_defaultFont = font;
+		public Directory TextureDirectory {
+			get {
+				return ContentDirectory;
+			}
 		}
 
-		//Specific resources
-		public Registry<MonoGameSprite> DATA_textures = new Registry<MonoGameSprite>();
-		public Registry<GameFont> DATA_fonts = new Registry<GameFont>();
-
-		public GameFont LoadGameFont(string str) {
-			GameFont result = null;
-			if(DATA_fonts.TryGet(str, ref result))
-				return result;
-
-			result = new GameFont(DATA_Manager, str);
-			DATA_fonts.SetValue(str, result);
-			result.Load();
-			return result;
+		Registry<AssetGroup> DATA_AssetGroups = new Registry<AssetGroup>();
+		AssetGroup FetchAssetGroup(string str) {
+			AssetGroup g = null;
+			if(DATA_AssetGroups.TryGet(str, ref g))
+				return g;
+			g = new AssetGroup(DATA_Manager, str);
+			DATA_AssetGroups.SetValue(str, g);
+			return g;
 		}
-		public MonoGameSprite LoadTextureFromFile(File  f) {
-			MonoGameSprite result = null;
-			if(DATA_textures.TryGet(f.Name, ref result))
-				return result;
-			Texture2D t = Game.Engine.Content.Load<Texture2D>(f.Name);
-			Rectangle2d bounds = new Rectangle2d(0,0,t.Width, t.Height);
-			result = new MonoGameSprite(DATA_Manager, bounds.Bounds, t);
-			DATA_textures.SetValue(f.Name, result);
-			return result;			
+		public AssetGroup InitializeAssetGroup(string name, Stack<LoadRequest> requests) {
+			AssetGroup g = FetchAssetGroup(name);
+			g.Add(requests);
+			return g;
+		}
+
+		public GameFont DefaultFont {
+			get {
+				AssetGroup g = FetchAssetGroup("Default");
+				return g.Font("Default");
+			}
 		}
 
 		//Events

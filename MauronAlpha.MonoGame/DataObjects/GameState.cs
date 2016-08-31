@@ -1,30 +1,30 @@
-﻿
-namespace MauronAlpha.MonoGame {
-	using MauronAlpha.FileSystem.Units;
-	
+﻿namespace MauronAlpha.MonoGame.DataObjects {
+		using MauronAlpha.FileSystem.Units;
+
 	public abstract class GameState:MonoGameComponent {
 
-		bool B_isBusy = false;
-		public bool IsBusy {
-			get { return B_isBusy; }
-		}
+			bool B_isBusy = false;
+			public bool IsBusy {
+				get { return B_isBusy; }
+			}
 
-		public GameState(GameManager game): base() {
-			DATA_game = game;
-		}
+			public GameState(GameManager game): base() {
+				DATA_game = game;
+			}
 
-		GameManager DATA_game;
-		public GameManager Game { get { return DATA_game; } }
+			GameManager DATA_game;
+			public GameManager Game { get { return DATA_game; } }
 
-		public Directory GetDataDirectory(GameStateSubSet subSet) {
-			return DATA_game.Content.SaveDirectory;
-		}
-		public string SaveGameExtension(GameStateSubSet s) {
-			return "msv";
-		}
+			public Directory GetDataDirectory(GameStateSubSet subSet) {
+				return DATA_game.Assets.SaveDirectory;
+			}
+			public string SaveGameExtension(GameStateSubSet s) {
+				return "msv";
+			}
+	
 	}
 
-	public class GameStateSubSet:MonoGameComponent {
+	public class GameStateSubSet :MonoGameComponent {
 
 		string STR_name;
 		public string Name { get { return STR_name; } }
@@ -53,7 +53,7 @@ namespace MauronAlpha.MonoGame {
 			}
 		}
 	}
-	public class DataRequest :MonoGameComponent {
+	public class GameDataRequest :MonoGameComponent {
 
 		string resultAsString;
 		long resultAsLong = 0;		

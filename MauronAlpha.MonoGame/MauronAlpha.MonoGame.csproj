@@ -41,30 +41,65 @@
     <OutputPath>bin\x86\MonoGame Engine Testing\</OutputPath>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Assets\AssetGroup.cs" />
+    <Compile Include="Assets\FontLoader.cs" />
+    <Compile Include="Assets\AssetType.cs" />
+    <Compile Include="Assets\AssetTypes.cs" />
+    <Compile Include="Assets\AssetLoadEvent.cs" />
+    <Compile Include="Assets\LoadRequest.cs" />
+    <Compile Include="Assets\TextureLoader.cs" />
+    <Compile Include="Collections\BlendModes.cs" />
     <Compile Include="Collections\Common.cs" />
+    <Compile Include="Collections\RenderBuffer.cs" />
+    <Compile Include="Collections\RenderInstructions.cs" />
+    <Compile Include="Collections\RenderOrders.cs" />
     <Compile Include="Collections\ShapeBuffer.cs" />
     <Compile Include="Collections\TriangleList.cs" />
+    <Compile Include="DataObjects\BlendMode.cs" />
+    <Compile Include="DataObjects\Drawable.cs" />
+    <Compile Include="DataObjects\DrawOrder.cs" />
     <Compile Include="DataObjects\GameError.cs" />
     <Compile Include="DataObjects\GameFont.cs" />
     <Compile Include="DataObjects\GameResource.cs" />
+    <Compile Include="DataObjects\GameSetup.cs" />
+    <Compile Include="DataObjects\GameState.cs" />
+    <Compile Include="DataObjects\GameText.cs" />
+    <Compile Include="DataObjects\MonoGameRectangle.cs" />
+    <Compile Include="DataObjects\MonoGameLines.cs" />
+    <Compile Include="DataObjects\MonoGameShape.cs" />
+    <Compile Include="DataObjects\MonoGameTexture.cs" />
+    <Compile Include="DataObjects\MonoGameText.cs" />
+    <Compile Include="DataObjects\MonoGameWindow.cs" />
+    <Compile Include="DataObjects\RenderData.cs" />
+    <Compile Include="DataObjects\RenderInstruction.cs" />
+    <Compile Include="DataObjects\RenderOrder.cs" />
     <Compile Include="DataObjects\RenderRequest.cs" />
     <Compile Include="DataObjects\ScreenSize.cs" />
+    <Compile Include="DataObjects\StatusInfo.cs" />
     <Compile Include="DataObjects\TriangulationData.cs" />
-    <Compile Include="GameContentManager.cs" />
+    <Compile Include="AssetManager.cs" />
     <Compile Include="GameEngine.cs" />
     <Compile Include="GameLogic.cs" />
     <Compile Include="GameManager.cs" />
     <Compile Include="GameRenderer.cs" />
-    <Compile Include="GameState.cs" />
+    <Compile Include="GameStateManager.cs" />
     <Compile Include="Geometry\CircleShape.cs" />
     <Compile Include="Geometry\CurveCubic.cs" />
     <Compile Include="Geometry\CurveQuadratic.cs" />
     <Compile Include="Geometry\HexShape.cs" />
     <Compile Include="Geometry\PolyShape.cs" />
     <Compile Include="Geometry\ShapeDefinition.cs" />
+    <Compile Include="Interfaces\I_Drawable.cs" />
+    <Compile Include="Interfaces\I_GameScene.cs" />
+    <Compile Include="Interfaces\I_InputController.cs" />
     <Compile Include="Interfaces\I_MonoShape.cs" />
+    <Compile Include="Interfaces\I_Renderable.cs" />
+    <Compile Include="Interfaces\I_RenderResult.cs" />
     <Compile Include="Interfaces\I_saveData.cs" />
     <Compile Include="Interfaces\I_shapeDesign.cs" />
+    <Compile Include="Interfaces\I_TextInterpreter.cs" />
+    <Compile Include="Interfaces\I_VisualGameStatus.cs" />
+    <Compile Include="Interfaces\I_LayoutController.cs" />
     <Compile Include="MonoGameComponent.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -75,8 +110,18 @@
     <Compile Include="Resources\GameTexture.cs" />
     <Compile Include="Resources\ResourceManager.cs" />
     <Compile Include="Resources\ResourceType.cs" />
+    <Compile Include="UI\Collections\BlendModes.cs" />
+    <Compile Include="UI\Collections\HierarchyChildren.cs" />
+    <Compile Include="UI\DataObjects\GameScene.cs" />
+    <Compile Include="UI\DataObjects\GameWindow.cs" />
+    <Compile Include="UI\DataObjects\TextDisplay.cs" />
+    <Compile Include="UI\DataObjects\UIElement.cs" />
+    <Compile Include="UI\Interfaces\I_HierarchyObject.cs" />
+    <Compile Include="UI\SceneManager.cs" />
+    <Compile Include="UI\UIComponent.cs" />
     <Compile Include="Utility\LineBuilder.cs" />
     <Compile Include="Utility\ShapeBuilder.cs" />
+    <Compile Include="Utility\TextRenderer.cs" />
     <Compile Include="Utility\TextureBuilder.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -139,7 +184,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Content\robotoLight.unaliased.16.fnt">
+    <None Include="Content\Default.fnt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>

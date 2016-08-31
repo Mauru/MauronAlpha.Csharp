@@ -10,7 +10,7 @@ namespace MauronAlpha.MonoGame.DataObjects {
 
 		long Time;
 		long Finished = 0;
-		MonoGameSprite Result;
+		MonoGameTexture Result;
 
 		public readonly Drawable Target;
 
