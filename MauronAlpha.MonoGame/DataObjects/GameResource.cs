@@ -3,7 +3,9 @@
 	public class GameResource:MonoGameComponent {
 
 		
-		public GameResource(string name) : base() { }
+		public GameResource(string name) : base() {
+			STR_name = name;
+		}
 		public GameResource(string name, SpriteFont f): this(name) {
 			font = f;
 			B_isEmpty = false;

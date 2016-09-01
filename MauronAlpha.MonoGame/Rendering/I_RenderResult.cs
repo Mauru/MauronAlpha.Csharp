@@ -10,6 +10,8 @@
 
 		void SetResult(Texture2D result, long time);
 
+		long Time { get; }
+
 	}
 
 }

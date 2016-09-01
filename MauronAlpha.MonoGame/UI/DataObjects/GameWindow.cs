@@ -5,6 +5,7 @@
 	using MauronAlpha.MonoGame.Collections;
 	using MauronAlpha.MonoGame.DataObjects;
 	using MauronAlpha.MonoGame;
+	using MauronAlpha.MonoGame.Rendering;
 
 	using MauronAlpha.Geometry.Geometry2d.Units;
 	using MauronAlpha.Geometry.Geometry2d.Shapes;
@@ -25,24 +26,33 @@
 		public override Polygon2dBounds Bounds {
 			get { return Game.Engine.GameWindow.Bounds; }
 		}
-
-		public override List<Polygon2d> Shapes {
-			get { 
-				return new List<Polygon2d>();
-			}
+	
+		public override GameRenderer.RenderMethod RenderMethod
+		{
+			get { return Render; }
 		}
 
-		public override List<MonoGameTexture> Sprites {
-			get { return new List<MonoGameTexture>(); }
+		I_RenderResult Render(RenderStage stage, I_Renderable target, long time) {
+
+			if(target.LastRendered == time)
+				return target.RenderResult;
+
+			TextureBatch batch = stage.Caller;
+			batch.Begin();
+			foreach(I_Renderable r in Children)
+				batch.Draw(r.RenderResult,r);
+
+
+			batch.End();
+
+			RenderResult result = new RenderResult(time, this, stage.AsTexture2D);
+			return result;
+
 		}
 
-		MonoGameTexture _rendered;
-		public override MonoGameTexture Rendered {
-			get {
-				if(_rendered == null)
-					return Game.Renderer.UnrenderedTexture;
-				return _rendered;
-			}
+		public override System.Type RenderPresetType
+		{
+			get { return typeof(GameWindow); }
 		}
 	}
 

@@ -184,6 +184,10 @@
 			AssetGroup group = e.Target;
 			group.UnSubscribe(this);
 			StateColor = Color.Green;
+
+			List<string> fonts = Assets.GetListOfFontNames();
+
+			//Logic.SetStartUpScene();
 			return true;
 		}
 

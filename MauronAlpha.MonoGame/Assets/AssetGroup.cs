@@ -18,6 +18,11 @@
 		public bool IsBusy {
 			get { return _busy; }
 		}
+		public bool HasFonts {
+			get {
+				return !_fonts.IsEmpty;
+			}
+		}
 		
 		GameManager _game;
 		string _name;

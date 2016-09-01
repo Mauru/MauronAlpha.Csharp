@@ -1,7 +1,7 @@
 ﻿namespace MauronAlpha.MonoGame.DataObjects {
 	
 
-	public class BlendMode:MonoGameComponent {
+	public abstract class BlendMode:MonoGameComponent {
 
 		public abstract string Name { get; }
 

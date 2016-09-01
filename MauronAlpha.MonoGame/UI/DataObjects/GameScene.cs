@@ -11,33 +11,18 @@
 	}
 
 	/// <summary> Gives a renderer Information on what to render </summary>
-	public abstract class GameScene :Drawable {
+	public abstract class GameScene :MonoGameComponent {
 
-		public GameScene(GameManager game) : base(game,game.Engine.GameWindow.Bounds,RenderInstructions.Composite) { 
+		GameManager _game;
+		public GameManager Game {
+			get { return _game; }
 		}
 
-	}
-
-
-
-}
-
-namespace MauronAlpha.MonoGame.UI.Presets {
-	using MauronAlpha.MonoGame.UI.DataObjects;
-
-
-	public class StatusScreen :GameScene {
-
-		public StatusScreen(GameManager game) : base(game) {
-			
+		public GameScene(GameManager game) : base() {
+			_game = game;
 		}
-		TextDisplay _text;
-		
-		public void PreRender(GameRenderer renderer) {
 
-			
-
-		}
+		public abstract void RequestRender();
 
 	}
 

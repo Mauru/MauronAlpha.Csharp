@@ -6,7 +6,7 @@ using MauronAlpha.HandlingErrors;
 namespace MauronAlpha.HandlingData {
 
 	//A data array that maps a string to a generic
-	public class MauronCode_dataMap<TValue> : MauronCode_dataObject {
+	public class MauronCode_dataMap<TValue> : MauronCode_dataObject,IEnumerable<TValue> {
 
 		//constructor
 		public MauronCode_dataMap():base(DataType_dataDictionary.Instance){
@@ -33,6 +33,14 @@ namespace MauronAlpha.HandlingData {
         public bool IsReadOnly {
             get { return B_isReadOnly;  }
         }
+
+		public bool IsEmpty {
+			get {
+				foreach(string s in DATA_keys)
+					return true;
+				return false;
+			}
+		}
 
         #region Working with Keys
         public bool ContainsKey(string key) {
@@ -150,33 +158,54 @@ namespace MauronAlpha.HandlingData {
 		//Data
 		private string[] DATA_keys;
 		private MauronCode_dataTree<long,TValue> DATA_values;
+
+		public IEnumerator<TValue> GetEnumerator() {
+			return new DataMap_enumerator<TValue>(DATA_values.ValuesAsList);
+		}
+
+		System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() {
+			return GetEnumerator();
+		}
 	}
 	
 	public class DataMap_enumerator<TValue>:IEnumerator<TValue> {
 
+		MauronCode_dataList<TValue> _values;
+		int _current = -1;
+
 		//constructor
-		public DataMap_enumerator(TValue[] values){
-		
+		public DataMap_enumerator(MauronCode_dataList<TValue> map){
+			_values = map;
 		}
 
 		public TValue Current {
-			get { throw new NotImplementedException(); }
+			get { 
+				try {
+					return _values[_current];
+				}
+				catch (MauronCode_error){
+					throw new MauronCode_error("Enumeration error: Invalid index {"+_current+"} in dataMap!",this,ErrorType_index.Instance);
+				}
+			}
 		}
 
 		public void Dispose ( ) {
-			throw new NotImplementedException();
+			_values = null;
 		}
 
 		object System.Collections.IEnumerator.Current {
-			get { throw new NotImplementedException(); }
+			get {
+				return Current;
+			}
 		}
 
 		public bool MoveNext ( ) {
-			throw new NotImplementedException();
+			_current++;
+			return _current < _values.Count;
 		}
 
 		public void Reset ( ) {
-			throw new NotImplementedException();
+			_current = -1;
 		}
 	}	
 }

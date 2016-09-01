@@ -7,17 +7,10 @@
 
 		GameManager Game { get; }
 
-	}
-
-	public interface I_RenderProcess {
-
-		bool IsBusy { get; }
-		bool IsComplete { get; }
-
-		RenderInstructions Instructions { get; }
-		void Start( RenderInstructions instructions, RenderData data );
-		MonoGameTexture Result { get; }
+		void RequestRender();
 
 	}
+
+
 
 }

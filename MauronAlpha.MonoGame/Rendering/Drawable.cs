@@ -41,12 +41,7 @@
 			get { return Game.Renderer; }
 		}
 
-		long DATA_lastRendered = 0;
-		public long LastRendered {
-			get { return DATA_lastRendered; }
-		}
-
-		long DATA_frame;
+		long DATA_frame = 0;
 		public long AnimationFrame {
 			get {
 				return DATA_frame;
@@ -94,15 +89,6 @@
 			}
 		}
 
-		MonoGameTexture DATA_rendered;
-		public MonoGameTexture Rendered {
-			get {
-				if(DATA_rendered == null)
-					return new MonoGameTexture(DATA_game, ClearTexture);
-				return DATA_rendered;			
-			}
-		}
-
 		Texture2D TEX_default;
 		Texture2D ClearTexture {
 			get {
@@ -117,25 +103,13 @@
 			get { return B_needsRenderUpdate; }
 		}
 
-		public void SetRenderResult(MonoGameTexture t, long renderTime) {
-			DATA_rendered = t;
-			DATA_lastRendered = renderTime;
-			B_needsRenderUpdate = false;
+		public Vector2d Position {
+			get {
+				return Matrix.Translation;
+			}
 		}
-
-
 
 		// I_Renderable stuff
-		Bounds _bounds;
-		Bounds I_Renderable.Bounds {
-			get { return _bounds; }
-		}
-
-		Vector _vector = new Vector();
-		public Vector Position {
-			get { return _vector; }
-		}
-
 		I_RenderResult _outline;
 		public I_RenderResult Outline {
 			get {
@@ -149,8 +123,14 @@
 			get { return RenderOrders.Empty; }
 		}
 
-		public void SetRenderResult(I_RenderResult result) {
-		throw new System.NotImplementedException();
+		I_RenderResult _result;
+		public virtual void SetRenderResult(I_RenderResult result) {
+			_result = result;
+		}
+
+
+		public virtual T TargetAs<T>() where T :I_Renderable {
+			return default(T);
 		}
 	}
 

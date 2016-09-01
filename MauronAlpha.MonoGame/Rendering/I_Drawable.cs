@@ -5,6 +5,8 @@
 	using MauronAlpha.MonoGame.Collections;
 	using MauronAlpha.MonoGame.DataObjects;
 
+	using MauronAlpha.MonoGame.Rendering;
+
 	/// <summary> Represents an item that can be rendered </summary>
 	public interface I_Drawable {
 
@@ -16,8 +18,7 @@
 
 		bool NeedsRenderUpdate {	get; }
 
-		void SetRenderResult(MonoGameTexture t, long renderTime);
-
+		I_RenderResult Result { get; }
 		GameRenderer Renderer { get; }
 
 	}

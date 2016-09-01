@@ -389,6 +389,23 @@ namespace MauronAlpha.Geometry.Geometry2d.Units {
 				return (float) X;
 			}
 		}
+
+		public double Max {
+			get {
+				if(INT_x > INT_y)
+					return INT_x;
+				return INT_y;
+			}
+		}
+		
+		public double Min {
+			get {
+				if(INT_x < INT_y)
+					return INT_x;
+				return INT_y;
+			}
+		}
+	
 	}
 
 }

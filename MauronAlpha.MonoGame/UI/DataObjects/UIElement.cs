@@ -5,13 +5,17 @@
 	using MauronAlpha.MonoGame.Collections;
 	using MauronAlpha.MonoGame.DataObjects;
 	using MauronAlpha.MonoGame;
+	using MauronAlpha.MonoGame.Rendering;
 
 	using MauronAlpha.Geometry.Geometry2d.Units;
 	using MauronAlpha.Geometry.Geometry2d.Shapes;
+	using MauronAlpha.Geometry.Geometry2d.Transformation;
 
 	using MauronAlpha.TextProcessing.Units;
 
-	public abstract class UIElement :UIComponent, I_Drawable, I_UIHierarchyObject {
+	using MauronAlpha.Events.Interfaces;
+
+	public abstract class UIElement :UIComponent, I_Renderable, I_UIHierarchyObject, I_subscriber<RenderEvent> {
 
 		//constructor
 		public UIElement(GameManager game) : base() {
@@ -37,39 +41,62 @@
 
 		int _tabOrder = 0;
 
-		public abstract Polygon2dBounds Bounds {
-			get;
-		}
-
-		public virtual List<Polygon2d> Shapes {
-			get { return new List<Polygon2d>(); }
-		}
-		public virtual List<MonoGameTexture> Sprites {
+		Polygon2dBounds _bounds;
+		public virtual Polygon2dBounds Bounds {
 			get {
-				return new List<MonoGameTexture>();
+				if(_bounds == null)
+					_bounds = new Polygon2dBounds(0, 0);
+				return _bounds;
 			}
 		}
 
-		MonoGameTexture _rendered;
-		public virtual MonoGameTexture Rendered {
+		bool _needUpdate = true;
+		public virtual bool NeedsRenderUpdate {
+			get { return _needUpdate; }
+		}
+
+		public void NeedRenderUpdate(long time) {
+			RenderRequest request = new RenderRequest(this, time);
+			request.Subscribe(this);
+			Renderer.AddRequest(request);
+		}
+
+		I_RenderResult _rendered;
+		public I_RenderResult RenderResult {
 			get {
 				return _rendered;
 			}
 		}
-
-		public virtual bool NeedsRenderUpdate {
-			get { return true; }
+		public bool HasResult {
+			get {
+			return _rendered != null;
+			}
 		}
 
-		long _lastRendered = 0;
-		MonoGameTexture _renderResult;
-		public void SetRenderResult(MonoGameTexture t, long renderTime) {
-			_renderResult = t;
-			_lastRendered = renderTime;
+		public long LastRendered {
+			get {
+				if(_rendered == null)
+					return 0;
+				return _rendered.Time;
+			}
 		}
 
 		public GameRenderer Renderer {
 			get { return _game.Renderer; }
+		}
+
+		Matrix2d _matrix;
+		Matrix2d Matrix {
+			get {
+				if(_matrix == null)
+					_matrix = new Matrix2d();
+				return _matrix;
+			}
+		}
+		public Vector2d Position {
+			get {
+				return _matrix.Translation;
+			}
 		}
 
 		I_UIHierarchyObject I_UIHierarchyObject.Parent {
@@ -78,6 +105,42 @@
 
 		HierarchyChildren I_UIHierarchyObject.Children {
 			get { return Children; }
+		}
+
+		public bool ReceiveEvent(RenderEvent e) {
+			_rendered = e.Result;
+			_needUpdate = false;
+			return true;
+		}
+
+		public bool Equals(I_subscriber<RenderEvent> other) {
+			return Id.Equals(other.Id);
+		}
+
+
+		public Vector2d RenderTargetSize {
+			get { throw new System.NotImplementedException(); }
+		}
+
+		public virtual I_RenderResult Outline {
+			get { return new RenderResult(); }
+		}
+
+		public virtual RenderOrders Orders {
+			get { return new RenderOrders(); }
+		}
+
+		public void SetRenderResult(I_RenderResult result) {
+			_rendered = result;
+		}
+
+
+		public abstract GameRenderer.RenderMethod RenderMethod {
+			get;
+		}
+
+		public abstract System.Type RenderPresetType {
+			get;
 		}
 	}
 

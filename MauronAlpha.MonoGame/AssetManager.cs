@@ -45,6 +45,25 @@
 			}
 		}
 
+		public bool HasDefaultFont {
+			get {
+				if(!IsInitialized)
+					return false;
+				AssetGroup g = FetchAssetGroup("Default");
+				if(g.IsBusy)
+					return false;
+				if(!g.HasFonts)
+					return false;
+				return true;
+			}
+		}
+		public List<string> GetListOfFontNames() {
+			List<string> result = new List<string>();
+			foreach(AssetGroup g in DATA_AssetGroups)
+				result.Add(g.GetListOfFontNames());
+
+		}
+
 		public void Initialize() {
 			B_isInitialized = true;
 		}

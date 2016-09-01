@@ -12,6 +12,8 @@
 
 	using MauronAlpha.Geometry.Geometry2d.Units;
 
+	using MauronAlpha.MonoGame.Rendering;
+
 	/// <summary> Manages the rendering of content </summary>///
 	public class GameRenderer :MonoGameComponent, I_CoreGameComponent, I_sender<ReadyEvent> {
 		
@@ -71,9 +73,6 @@
 			}
 		}
 
-		//MonoGame related properties
-		RenderBuffer Buffer = new RenderBuffer();
-
 		SpriteBatch DATA_engineOutput; //The class that collects all sprites
 		Color DATA_defaultSolidColor = Color.LightCoral; //Default Background color
 
@@ -111,7 +110,7 @@
 		}
 
 		//Properties
-		long DATA_renderTime = 0;	
+
 		BasicEffect DATA_defaultShader;
 
 		/// <summary> Gets rendered in initialize </summary>
@@ -184,6 +183,8 @@
 			if(!B_isInitialized)
 				return;
 
+			SolveRenderRequests(time);
+
 			//Draw the final screen texture
 			lock(LockStatus) {
 
@@ -205,12 +206,47 @@
 			return;
 		}
 
-		void PreRenderStage(long time) {
-			
-			B_isBusy = true;
+		public void SolveRenderRequests(long time) {
 
-			
 
+			if(B_isPreRendering)
+				return;
+
+			CycleRenderRequests(time);			
+			
+		}
+
+		Assign<Vector2d, RenderStage> _renderStages = new Assign<Vector2d, RenderStage>();
+
+		public delegate I_RenderResult RenderMethod(RenderStage stage, I_Renderable target, long time);
+
+		void CreateRenderTargets() {
+			_renderStages.SetValue(ScreenSize, new RenderStage(Engine.GraphicsDevice, ScreenSize));
+			_renderStages.SetValue(new Vector2d(1024,1024),new RenderStage(Engine.GraphicsDevice, 1024, 1024));
+			_renderStages.SetValue(new Vector2d(512,512),new RenderStage(Engine.GraphicsDevice, 512, 512));
+			_renderStages.SetValue(new Vector2d(256,256),new RenderStage(Engine.GraphicsDevice, 256, 256));
+			_renderStages.SetValue(new Vector2d(128,128),new RenderStage(Engine.GraphicsDevice, 128, 128));
+			_renderStages.SetValue(new Vector2d(64,64),new RenderStage(Engine.GraphicsDevice, 64, 64));
+			_renderStages.SetValue(new Vector2d(32,32),new RenderStage(Engine.GraphicsDevice, 32, 32));
+			_renderStages.SetValue(new Vector2d(16,16),new RenderStage(Engine.GraphicsDevice, 16, 16));
+		}
+		void CycleRenderRequests(long time) {
+			if(Requests.IsEmpty)
+				B_isPreRendering = false;
+			B_isPreRendering = true;
+			RenderRequest next = Requests.Pop;
+
+			Vector2d size = next.Target.Bounds.Size;
+
+			RenderStage stage = _renderStages.Value(next.RenderTargetSize);
+			RenderMethod method = next.Target.RenderMethod;
+
+			I_RenderResult result = method(stage, next.Target, time);
+			next.SetResult(result);
+
+			B_isPreRendering = false;
+
+			CycleRenderRequests(time);
 		}
 
 		MonoGameTexture RenderToTexture(PolyShape drawable, GraphicsDevice device, RenderTarget2D target) {
@@ -279,6 +315,13 @@
 
 		}
 
+		long DATA_renderTime = 0;	
+		public long Time {
+			get {
+				return DATA_renderTime;
+			}
+		}
+
 		//Events
 		Subscriptions<ReadyEvent> S_Ready = new Subscriptions<ReadyEvent>();
 		public virtual void Subscribe(I_subscriber<ReadyEvent> s) {
@@ -290,8 +333,12 @@
 	
 		//Handling Requests
 		Stack<RenderRequest> Requests = new Stack<RenderRequest>();
-		public void AddRequest(Drawable target, RenderInstructions instructions, long time) {
-			RenderRequest request = new RenderRequest(target,instructions,time);
+		public void AddRequest(I_Renderable target, long time) {
+			RenderRequest request = new RenderRequest(target,time);
+			Requests.Add(request);
+			return;
+		}
+		public void AddRequest(RenderRequest request) {
 			Requests.Add(request);
 			return;
 		}

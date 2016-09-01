@@ -47,10 +47,20 @@
 			}
 		}
 
+		GameSceneManager _scenes;
+		public GameSceneManager SceneManager {
+			get {
+				return _scenes;
+			}
+		}
+
 		//Initialize
 		public virtual void Initialize() {
+			_scenes = new GameSceneManager(Game);
 			B_initialized = true;
 		}
+
+		public abstract void SetStartUpScene();
 
 		//Events
 		Subscriptions<ReadyEvent> S_Ready = new Subscriptions<ReadyEvent>();
