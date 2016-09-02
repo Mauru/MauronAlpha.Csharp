@@ -150,6 +150,16 @@ namespace MauronAlpha.HandlingData {
 		}
 		#endregion
 
+		public void Add(string data, TValue val) {
+			SetValue(data, val);
+		}
+		public void Add(KeyValuePair<string, TValue> val) {
+			SetValue(val.Key, val.Value);
+		}
+		public void Add(MauronCode_dataRelation<string, TValue> val) {
+			SetValue(val.Key, val.Value);
+		}
+
         public MauronCode_dataMap<TValue> SetIsReadOnly(bool state) {
             B_isReadOnly = state;
             return this;
