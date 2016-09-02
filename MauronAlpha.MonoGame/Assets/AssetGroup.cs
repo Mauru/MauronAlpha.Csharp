@@ -35,6 +35,14 @@
 		Registry<MonoGameTexture> _textures = new Registry<MonoGameTexture>();
 		Registry<GameFont> _fonts = new Registry<GameFont>();
 
+		public bool TryFont(string name, ref GameFont font) {
+
+			_game.LogFile.LogOnce(this,_fonts.Keys.AsArray);
+
+			return _fonts.TryGet(name, ref font);
+
+		}
+
 		public void Load() {
 
 			if(_busy)
@@ -80,6 +88,24 @@
 
 		}
 
+		/// <summary> Returns all fonts in format ASSETGROUPNAME:FONTNAME</summary>
+		public List<string> GetListOfFontNames() {
+			List<string> result = new List<string>();
+			foreach(GameFont f in _fonts)
+				result.Add(f.Name);
+			return result;
+		}
+		public List<string> GetListOfFontNames(bool addGroupName) {
+			List<string> result = new List<string>();
+			foreach(GameFont f in _fonts) {
+				if(addGroupName)
+					result.Add(Name + "." + f.Name);
+				else
+					result.Add((f.Name));
+			}
+			return result;
+		}
+
 
 		public void Add(LoadRequest request) {
 			_queue.Add(request);
@@ -107,7 +133,14 @@
 		}
 
 		public GameFont Font(string font) {
+			throw new MauronAlpha.MonoGame.Debug.DebugException(this,"Loading font "+font+"#"+_fonts.KeyCount);
 			return _fonts.Value(font);
+		}
+
+		public long FontCount {
+			get {
+				return _fonts.KeyCount;
+			}
 		}
 
 		public bool ReceiveEvent(FontLoaderEvent e) {

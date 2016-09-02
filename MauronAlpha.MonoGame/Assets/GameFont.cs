@@ -28,21 +28,24 @@
 		}
 
 		//constructor
-		public GameFont(GameManager game)	: base() {
-			DATA_game = game;
-		}
 		public GameFont(GameManager game, string name)	: base() {
 			DATA_game = game;
 			STR_name = name;
 		}
-		public GameFont(GameManager game, FontDefinition def)	: base() {
+		public GameFont(GameManager game,string name, FontDefinition def)	: base() {
 			_font = def;
 			DATA_game = game;
+			STR_name = name;
 		}
 
 		FontDefinition _font;
 		public void SetDefinition(FontDefinition font) {
 			_font = font;
+		}
+		public bool HasDefinition {
+			get {
+				return _font != null;
+			}
 		}
 
 		Index<MonoGameTexture> _textures = new Index<MonoGameTexture>();

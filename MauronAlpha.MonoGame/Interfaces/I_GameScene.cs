@@ -9,6 +9,10 @@
 
 		void RequestRender();
 
+		void Initialize();
+
+		bool IsInitialized { get; }
+
 	}
 
 

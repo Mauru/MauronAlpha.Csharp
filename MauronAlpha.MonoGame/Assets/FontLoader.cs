@@ -20,12 +20,14 @@
 		}
 		FontDefinition _font;
 		GameManager _game;
+		string _name;
 
 		bool B_isBusy = false;
 		public bool IsBusy { get { return B_isBusy; } }
 
 		public FontLoader(GameManager game, string name)	: base() {
 			_game = game;
+			_name = name;
 			File file = new File(game.Assets.ContentDirectory, name,"fnt");
 			_font = new FontDefinition(file);
 		}
@@ -45,7 +47,7 @@
 
 			FontDefinition def = e.Font;
 			def.UnSubscribe(this);
-			_result = new GameFont(_game, def);
+			_result = new GameFont(_game, _name, def);
 			TextureLoader loader;
 			foreach(FontPage p in def.FontPages) {
 

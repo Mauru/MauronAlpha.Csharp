@@ -94,6 +94,23 @@
 			}
 		}
 
+		//Logging
+		LogFile _log;
+		public LogFile LogFile {
+			get {
+				if(_log == null)
+					_log = new LogFile(this,Assets.LogDirectory,"LogFile");
+				return _log;
+			}
+		}
+
+		public long TimeStamp {
+			get {
+				return Engine.TimeStamp;
+			}
+		}
+
+
 		//GameEngine
 		GameEngine DATA_Engine;
 		public GameEngine Engine { get { return DATA_Engine; } }

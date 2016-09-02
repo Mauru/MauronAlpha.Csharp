@@ -14,12 +14,17 @@
 	/// <summary>	GameEngineWrapper for MonoGame	</summary>
 	public class GameEngine : Game, I_CoreGameComponent, I_sender<ReadyEvent>, I_subscriber<AssetLoadEvent> {
 
-
 		//Constructor
 		public GameEngine(ref GameManager o):base() {
 			GraphicsDeviceManager = new GraphicsDeviceManager(this);
 			Content.RootDirectory = "Content";
 			Set(o);
+		}
+
+		public long TimeStamp {
+			get {
+				return base.TargetElapsedTime.Ticks;
+			}
 		}
 
 		//XNA related components
@@ -116,7 +121,7 @@
 		protected override void LoadContent() {
 			StateColor = Color.White;
 			Stack<LoadRequest> startUpAssets = Logic.Setup.PrepareRequiredAssets(Assets);
-			AssetGroup loadThis = Assets.InitializeAssetGroup("Core",startUpAssets);
+			AssetGroup loadThis = Assets.InitializeAssetGroup("Default",startUpAssets);
 			loadThis.Subscribe(this);
 			loadThis.Load();
 			base.LoadContent();
@@ -185,9 +190,10 @@
 			group.UnSubscribe(this);
 			StateColor = Color.Green;
 
-			List<string> fonts = Assets.GetListOfFontNames();
+			if(!Game.Assets.HasDefaultFont)
+				throw new GameError("No default font loaded! ("+group.FontCount+").", group);
 
-			//Logic.SetStartUpScene();
+			Logic.SetStartUpScene();
 			return true;
 		}
 
@@ -195,5 +201,46 @@
 			return Id.Equals(other.Id);
 		}
 	}
+
+}
+
+namespace MauronAlpha.MonoGame.Debug {
+
+public class DebugException :System.Exception {
+
+	public DebugException(object source, string data):base(
+		DebugException.IdentifyType(source)+":"+data+"#DEBUG.END#"
+	) {}
+
+	public DebugException(object source, long data):base(
+		DebugException.IdentifyType(source)+":"+data+"#DEBUG.END#"
+	) {}
+
+	public DebugException(object source, System.Collections.Generic.ICollection<string> data):base(
+		DebugException.IdentifyType(source)+":"+DebugException.SerializeMessages(data)
+	) {}
+
+	public static string IdentifyType(object source) {
+
+		return source.GetType().ToString();
+
+	}
+
+	public static string SerializeMessages(System.Collections.Generic.ICollection<string> data) {
+
+		string result = "";
+
+		foreach(string s in data) {
+
+			result += "#" + s + ",";
+
+		}
+
+		result += "#DEBUG.END#";
+		return result;
+
+	}
+
+}
 
 }

@@ -11,7 +11,7 @@
 	}
 
 	/// <summary> Gives a renderer Information on what to render </summary>
-	public abstract class GameScene :MonoGameComponent {
+	public abstract class GameScene :MonoGameComponent, I_GameScene {
 
 		GameManager _game;
 		public GameManager Game {
@@ -20,6 +20,15 @@
 
 		public GameScene(GameManager game) : base() {
 			_game = game;
+		}
+
+		bool _initialized = false;
+		public bool IsInitialized {
+			get { return _initialized; }
+		}
+
+		public virtual void Initialize() {
+			_initialized = true;
 		}
 
 		public abstract void RequestRender();

@@ -49,6 +49,7 @@
     <Compile Include="Assets\LoadRequest.cs" />
     <Compile Include="Assets\MonoGameAsset.cs" />
     <Compile Include="Assets\TextureLoader.cs" />
+    <Compile Include="DataObjects\LogFile.cs" />
     <Compile Include="GameSceneManager.cs" />
     <Compile Include="Rendering\BlendModes.cs" />
     <Compile Include="Collections\Common.cs" />

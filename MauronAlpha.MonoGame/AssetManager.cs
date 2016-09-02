@@ -50,18 +50,24 @@
 				if(!IsInitialized)
 					return false;
 				AssetGroup g = FetchAssetGroup("Default");
-				if(g.IsBusy)
-					return false;
-				if(!g.HasFonts)
-					return false;
-				return true;
+				GameFont result = null;
+
+				return g.TryFont("Default", ref result);
 			}
+		}
+		public List<string> GetListOfFontNames(bool getGroupName) {
+			List<string> result = new List<string>();
+			foreach(AssetGroup g in DATA_AssetGroups)
+				result.AddValuesFrom(g.GetListOfFontNames(true));
+
+			return result;
 		}
 		public List<string> GetListOfFontNames() {
 			List<string> result = new List<string>();
 			foreach(AssetGroup g in DATA_AssetGroups)
-				result.Add(g.GetListOfFontNames());
+				result.AddValuesFrom(g.GetListOfFontNames());
 
+			return result;
 		}
 
 		public void Initialize() {
@@ -88,6 +94,11 @@
 			}
 		}
 		public Directory TextureDirectory {
+			get {
+				return ContentDirectory;
+			}
+		}
+		public Directory LogDirectory {
 			get {
 				return ContentDirectory;
 			}
