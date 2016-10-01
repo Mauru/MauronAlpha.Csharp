@@ -142,13 +142,13 @@ namespace MauronAlpha.FileSystem.Units {
 			}
 		}
 
-		public System.Byte[] Bytes {
+		public System.Byte[] ContentAsByteArray {
 			get {
 				try { 
 					return System.IO.File.ReadAllBytes(Path);
 				}
 				catch (System.Exception ex) {
-					return new System.Byte[0];
+					throw new FileSystemError("Could not load file.", this);
 				}
 			}
 		}
@@ -172,5 +172,4 @@ namespace MauronAlpha.FileSystem.Units {
 		public static FileType_generic Instance { get { return new FileType_generic(); } }
 	
 	}
-
 }
