@@ -183,8 +183,8 @@ namespace MauronAlpha.HandlingData {
 		System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() {
 			return DATA.GetEnumerator();
 		}
-	}
 
+	}
 	//A Description of the DataType
 	public sealed class DataType_dataReference : DataType {
 		#region singleton
