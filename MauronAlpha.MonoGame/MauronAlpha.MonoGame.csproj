@@ -48,19 +48,29 @@
     <Compile Include="Assets\AssetLoadEvent.cs" />
     <Compile Include="Assets\LoadRequest.cs" />
     <Compile Include="Assets\MonoGameAsset.cs" />
+    <Compile Include="Assets\ShaderLoader.cs" />
     <Compile Include="Assets\TextureLoader.cs" />
     <Compile Include="DataObjects\LogFile.cs" />
+    <Compile Include="Debug\DebugException.cs" />
     <Compile Include="GameSceneManager.cs" />
-    <Compile Include="Rendering\BlendModes.cs" />
+    <Compile Include="Geometry\PolyRectangle.cs" />
+    <Compile Include="Geometry\PolyTriangle.cs" />
+    <Compile Include="Rendering\Camera.cs" />
+    <Compile Include="Rendering\DataObjects\BackBuffer.cs" />
+    <Compile Include="Rendering\Collections\BlendModes.cs" />
     <Compile Include="Collections\Common.cs" />
-    <Compile Include="Rendering\I_RenderProcess.cs" />
-    <Compile Include="Rendering\RenderEvent.cs" />
-    <Compile Include="Rendering\RenderOrders.cs" />
-    <Compile Include="Rendering\RenderResult.cs" />
+    <Compile Include="Rendering\DataObjects\CustomShader.cs" />
+    <Compile Include="Rendering\Utility\MatrixHelper.cs" />
+    <Compile Include="Rendering\Interfaces\I_Renderer.cs" />
+    <Compile Include="Rendering\Interfaces\I_RenderProcess.cs" />
+    <Compile Include="Rendering\Events\RenderEvent.cs" />
+    <Compile Include="Rendering\Collections\RenderOrders.cs" />
+    <Compile Include="Rendering\DataObjects\RenderResult.cs" />
+    <Compile Include="Rendering\Interfaces\I_Shader.cs" />
     <Compile Include="Rendering\RenderStage.cs" />
-    <Compile Include="Rendering\ShapeBuffer.cs" />
-    <Compile Include="Rendering\TriangleList.cs" />
-    <Compile Include="Rendering\BlendMode.cs" />
+    <Compile Include="Rendering\Collections\ShapeBuffer.cs" />
+    <Compile Include="Rendering\Collections\TriangleList.cs" />
+    <Compile Include="Rendering\DataObjects\BlendMode.cs" />
     <Compile Include="DataObjects\GameError.cs" />
     <Compile Include="Assets\GameFont.cs" />
     <Compile Include="DataObjects\GameResource.cs" />
@@ -71,11 +81,11 @@
     <Compile Include="Rendering\MonoGameShape.cs" />
     <Compile Include="Assets\MonoGameTexture.cs" />
     <Compile Include="Rendering\MonoGameWindow.cs" />
-    <Compile Include="Rendering\RenderOrder.cs" />
-    <Compile Include="Rendering\RenderRequest.cs" />
+    <Compile Include="Rendering\DataObjects\RenderOrder.cs" />
+    <Compile Include="Rendering\DataObjects\RenderRequest.cs" />
     <Compile Include="DataObjects\ScreenSize.cs" />
     <Compile Include="DataObjects\StatusInfo.cs" />
-    <Compile Include="Rendering\TriangulationData.cs" />
+    <Compile Include="Geometry\TriangulationData.cs" />
     <Compile Include="AssetManager.cs" />
     <Compile Include="GameEngine.cs" />
     <Compile Include="GameLogic.cs" />
@@ -88,14 +98,14 @@
     <Compile Include="Geometry\HexShape.cs" />
     <Compile Include="Geometry\PolyShape.cs" />
     <Compile Include="Geometry\ShapeDefinition.cs" />
-    <Compile Include="Rendering\I_Drawable.cs" />
+    <Compile Include="Rendering\Interfaces\I_Drawable.cs" />
     <Compile Include="Interfaces\I_GameScene.cs" />
     <Compile Include="Interfaces\I_InputController.cs" />
-    <Compile Include="Rendering\I_MonoShape.cs" />
-    <Compile Include="Rendering\I_Renderable.cs" />
-    <Compile Include="Rendering\I_RenderResult.cs" />
+    <Compile Include="Rendering\Interfaces\I_MonoShape.cs" />
+    <Compile Include="Rendering\Interfaces\I_Renderable.cs" />
+    <Compile Include="Rendering\Interfaces\I_RenderResult.cs" />
     <Compile Include="Interfaces\I_saveData.cs" />
-    <Compile Include="Rendering\I_shapeDesign.cs" />
+    <Compile Include="Rendering\Interfaces\I_shapeDesign.cs" />
     <Compile Include="Interfaces\I_TextInterpreter.cs" />
     <Compile Include="Interfaces\I_VisualGameStatus.cs" />
     <Compile Include="Interfaces\I_LayoutController.cs" />
@@ -103,23 +113,19 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReadyEvent.cs" />
-    <Compile Include="Resources\GameFont.cs" />
-    <Compile Include="Resources\GameFontStyle.cs" />
-    <Compile Include="Resources\GameResource.cs" />
-    <Compile Include="Resources\GameTexture.cs" />
-    <Compile Include="Resources\ResourceManager.cs" />
-    <Compile Include="Resources\ResourceType.cs" />
+    <Compile Include="Assets\DataObjects\GameFontStyle.cs" />
     <Compile Include="UI\Collections\BlendModes.cs" />
     <Compile Include="UI\Collections\HierarchyChildren.cs" />
     <Compile Include="UI\DataObjects\GameScene.cs" />
     <Compile Include="UI\DataObjects\GameWindow.cs" />
+    <Compile Include="UI\DataObjects\StatusObject.cs" />
     <Compile Include="UI\DataObjects\TextDisplay.cs" />
     <Compile Include="UI\DataObjects\UIElement.cs" />
     <Compile Include="UI\Interfaces\I_HierarchyObject.cs" />
     <Compile Include="UI\UIComponent.cs" />
     <Compile Include="Utility\LineBuilder.cs" />
-    <Compile Include="Utility\ShapeBuilder.cs" />
-    <Compile Include="Utility\TextRenderer.cs" />
+    <Compile Include="Rendering\Utility\ShapeRenderer.cs" />
+    <Compile Include="Rendering\Utility\TextRenderer.cs" />
     <Compile Include="Utility\TextureBuilder.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -134,6 +140,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\PixelShader.fx" />
     <Content Include="Content\robotoLight.unaliased.16_0.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -185,7 +192,11 @@
     <None Include="Content\Default.fnt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="Content\PixelShader.mgfxo">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
+  <ItemGroup />
   <!-- Specify the search path explicitly so the ResolveAssemblyReferences task picks the right ones -->
   <Target Name="BeforeResolveReferences">
     <CreateProperty Value="$(MSBuildProgramFiles32)\MonoGame\v3.0\Assemblies\Windows;$(AssemblySearchPaths)">

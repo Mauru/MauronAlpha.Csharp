@@ -16,7 +16,8 @@
 
 			_isBusy = true;
 			Texture2D result = method(renderer, target, this);
-			RenderResult rendered = new RenderResult(time,target,result);
+			RenderResult rendered = new RenderResult(time, target, result);
+			target.SetRenderResult(rendered);
 			_isBusy = false;
 			return rendered;
 

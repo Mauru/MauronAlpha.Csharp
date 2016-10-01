@@ -1,12 +1,11 @@
-﻿using MauronAlpha.Events.Units;
-using MauronAlpha.MonoGame.Resources;
-
-namespace MauronAlpha.MonoGame.DataObjects {
+﻿namespace MauronAlpha.MonoGame.DataObjects {
 	using MauronAlpha.MonoGame.Collections;
 	using MauronAlpha.MonoGame.Rendering;
 	using MauronAlpha.Events.Interfaces;
 	using MauronAlpha.Events.Collections;
 	using MauronAlpha.Geometry.Geometry2d.Units;
+
+	using MauronAlpha.Events.Units;
 
 	public class RenderRequest:MonoGameComponent, I_sender<RenderEvent> {
 

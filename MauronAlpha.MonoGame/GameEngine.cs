@@ -21,12 +21,6 @@
 			Set(o);
 		}
 
-		public long TimeStamp {
-			get {
-				return base.TargetElapsedTime.Ticks;
-			}
-		}
-
 		//XNA related components
 		GraphicsDeviceManager GraphicsDeviceManager;
 		SpriteBatch SB_default;
@@ -41,6 +35,8 @@
 		public GameManager Game {
 			get { return DATA_Manager; }
 		}
+		
+		//Accessors
 		public GameLogic Logic {
 			get {
 				return DATA_Manager.Logic;
@@ -59,7 +55,31 @@
 		public GameStateManager GameState {
 			get { return DATA_Manager.GameState; }
 		}
-		
+		public long TimeStamp {
+			get {
+				return base.TargetElapsedTime.Ticks;
+			}
+		}
+		public Color StateColor = Color.Blue;
+
+
+		/// <summary> Register as core component </summary>
+		public void Set(GameManager o) {
+			if(DATA_Manager == null)
+				DATA_Manager = o;
+			DATA_Manager.Set(this);
+		}
+
+		//Some abstract accessors (these should really be elsewhere)
+		MonoGameWindow _window;
+		public MonoGameWindow GameWindow {
+			get {
+				if(_window == null)
+					_window = new MonoGameWindow(Window);
+				return _window;
+			}
+		}
+
 		//Start the game
 		public void Start()  {
 			base.Run(GameRunBehavior.Synchronous);
@@ -83,12 +103,6 @@
 		}
 		public bool CanExit {
 			get { return false; }
-		}
-
-		public void Set(GameManager o) {
-			if(DATA_Manager == null)
-				DATA_Manager = o;
-			DATA_Manager.Set(this);
 		}
 
 		//0 - Initialize
@@ -139,23 +153,6 @@
 			base.Update(gameTime);
 		}
 
-		Vector2 DATA_centerOfScreen;
-		Vector2 CentreOfScreen {
-			get {
-				if(DATA_centerOfScreen == null)
-					DATA_centerOfScreen = new Vector2(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height / 2);
-				return DATA_centerOfScreen;
-			}
-		}
-
-		public MonoGameWindow GameWindow {
-			get {
-				return new MonoGameWindow(Window);
-			}
-		}
-
-		public Color StateColor = Color.Blue;
-
 		//4 - Draw calls
 		protected override void Draw(GameTime gameTime) {
 			if(B_isInitialized) {
@@ -194,53 +191,14 @@
 				throw new GameError("No default font loaded! ("+group.FontCount+").", group);
 
 			Logic.SetStartUpScene();
+			//Renderer.CurrentScene.RequestRender();
+			Renderer.SetRenderMode("TestObject");
 			return true;
 		}
-
 		public bool Equals(I_subscriber<AssetLoadEvent> other) {
 			return Id.Equals(other.Id);
 		}
-	}
-
-}
-
-namespace MauronAlpha.MonoGame.Debug {
-
-public class DebugException :System.Exception {
-
-	public DebugException(object source, string data):base(
-		DebugException.IdentifyType(source)+":"+data+"#DEBUG.END#"
-	) {}
-
-	public DebugException(object source, long data):base(
-		DebugException.IdentifyType(source)+":"+data+"#DEBUG.END#"
-	) {}
-
-	public DebugException(object source, System.Collections.Generic.ICollection<string> data):base(
-		DebugException.IdentifyType(source)+":"+DebugException.SerializeMessages(data)
-	) {}
-
-	public static string IdentifyType(object source) {
-
-		return source.GetType().ToString();
 
 	}
-
-	public static string SerializeMessages(System.Collections.Generic.ICollection<string> data) {
-
-		string result = "";
-
-		foreach(string s in data) {
-
-			result += "#" + s + ",";
-
-		}
-
-		result += "#DEBUG.END#";
-		return result;
-
-	}
-
-}
 
 }

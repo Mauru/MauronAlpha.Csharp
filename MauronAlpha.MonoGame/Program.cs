@@ -74,12 +74,19 @@ namespace MauronAlpha.MonoGame.Actuals {
 		public StatusScreen(GameManager game) : base(game) {}
 		TextDisplay _text;
 
+		StatusObject _obj;
+
 		public override void Initialize() {
 
-			if(Game.Assets.HasDefaultFont)
+			if(!Game.Assets.HasDefaultFont)
 				throw new GameError("No fonts loaded yet! ("+Game.Assets.GetListOfFontNames().Count+" fonts loaded)", this);
+			
 			_text = new TextDisplay(Game, Game.Assets.DefaultFont);
 			_text.SetText("This is a test.");
+
+			_obj = new StatusObject(Game);
+			base.AddChild(_text);
+			Game.Renderer.SetCurrentScene(this);
 
 			base.Initialize();
 
@@ -87,7 +94,8 @@ namespace MauronAlpha.MonoGame.Actuals {
 
 		public override void RequestRender() {
 
-			_text.NeedRenderUpdate(Game.Renderer.Time);
+			//_text.NeedRenderUpdate(Game.Renderer.Time);
+			_obj.NeedRenderUpdate(Game.Renderer.Time);
 		
 		}
 

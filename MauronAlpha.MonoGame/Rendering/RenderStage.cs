@@ -52,6 +52,10 @@
 			}
 		}
 
+		public void SetAsRenderTarget() {
+			GraphicsDevice.SetRenderTarget(this);
+		}
+
 	}
 
 	public class TextureBatch :SpriteBatch {

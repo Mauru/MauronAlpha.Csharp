@@ -12,6 +12,8 @@
 			
 			LoadRequest request = new LoadRequest("Default",AssetTypes.Font);
 			result.Add(request);
+			LoadRequest r = new LoadRequest("PixelShader", AssetTypes.Shader);
+			result.Add(request);
 			return result;		
 		}
 

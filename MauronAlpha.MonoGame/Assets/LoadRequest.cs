@@ -22,6 +22,10 @@
 		public bool IsTexture {
 			get {  return _type.Equals(AssetTypes.Texture);}
 		}
-
+		public bool IsShader {
+			get {
+				return _type.Equals(AssetTypes.Shader);
+			}
+		}
 	}
 }

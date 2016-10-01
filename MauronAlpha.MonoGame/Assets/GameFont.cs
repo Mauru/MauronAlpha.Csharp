@@ -11,6 +11,11 @@
 	using MauronAlpha.MonoGame.Collections;
 	using MauronAlpha.MonoGame.Assets;
 
+	using MauronAlpha.Geometry.Geometry2d.Units;
+
+	using MauronAlpha.TextProcessing.Units;
+	using MauronAlpha.TextProcessing.Collections;
+
 	/// <summary> A SpriteFont </summary>
 	public class GameFont :MonoGameComponent {
 
@@ -90,6 +95,36 @@
 					return 0;
 				return _font.FontInfo.LineHeight;
 			}
+		}
+
+		public Vector2d MeasureText(Text text) {
+			Vector2d result = new Vector2d();
+			Lines ll = text.Lines;
+			foreach (Line l in ll) {
+				Vector2d size = MeasureLine(l);
+				result.Add(size);
+			}
+			return result;
+		}
+		public Vector2d MeasureLine(Line line) {
+			Vector2d minMax = new Vector2d();
+			Characters cc = line.Characters;
+			Vector2d result = new Vector2d(0, LineHeight);
+			foreach (Character c in cc) {
+				Vector2d charSize = MeasureCharacter(c);
+				if (charSize.Y > result.Y)
+					result.SetY(charSize.Y);
+				result.Add(charSize.X, 0);
+			}
+			return result;
+		}
+		public Vector2d MeasureCharacter(Character c) {
+			if (c.IsEmpty)
+				return Vector2d.Zero;
+			if (c.IsVirtual)
+				return Vector2d.Zero;
+			PositionData p = this.FetchCharacterData(c.Symbol);
+			return new Vector2d(LineHeight + p.Width);
 		}
 	}
 

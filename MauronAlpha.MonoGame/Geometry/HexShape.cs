@@ -8,13 +8,13 @@ namespace MauronAlpha.MonoGame.Geometry {
 	//A hexagon
 	public class HexShape:PolyShape {
 
-		public HexShape(Vector2d center, double radius):base() {
+		public HexShape(GameManager game, Vector2d center, double radius):base(game) {
 			Ngon2d shape = new Ngon2d(6, radius);
 			Initialize(shape.Points);
 			Matrix.SetTranslation(center);
 		}
 
-		public override TriangleList Vertices {
+		public TriangleList Vertices {
 			get {
 				Vector2d centroid = Center;
 				Vector2dList pts = TransformedPoints;

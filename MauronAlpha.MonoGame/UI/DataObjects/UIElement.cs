@@ -15,6 +15,8 @@
 
 	using MauronAlpha.Events.Interfaces;
 
+	using Microsoft.Xna.Framework;
+
 	public abstract class UIElement :UIComponent, I_Renderable, I_UIHierarchyObject, I_subscriber<RenderEvent> {
 
 		//constructor
@@ -67,7 +69,7 @@
 				return _rendered;
 			}
 		}
-		public bool HasResult {
+		public bool HasRenderResult {
 			get {
 			return _rendered != null;
 			}
@@ -95,7 +97,15 @@
 		}
 		public Vector2d Position {
 			get {
-				return _matrix.Translation;
+				return Matrix.Translation;
+			}
+		}
+		Vector2 _position;
+		public virtual Vector2 PositionAsVector2 {
+			get {
+				if(_position == null)
+					_position = new Vector2(Position.FloatX, Position.FloatY);
+				return _position;
 			}
 		}
 
@@ -117,9 +127,10 @@
 			return Id.Equals(other.Id);
 		}
 
+		public abstract Vector2d SizeAsVector2d { get; }
 
-		public Vector2d RenderTargetSize {
-			get { throw new System.NotImplementedException(); }
+		public virtual Vector2d RenderTargetSize {
+			get { return Game.Renderer.ScreenSize; }
 		}
 
 		public virtual I_RenderResult Outline {
@@ -141,6 +152,10 @@
 
 		public abstract System.Type RenderPresetType {
 			get;
+		}
+
+		public virtual I_MonoShape AsMonoShape() {
+			throw new GameError("UIElement is not castable as Shape!", this);
 		}
 	}
 

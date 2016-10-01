@@ -103,6 +103,11 @@
 				return ContentDirectory;
 			}
 		}
+		public Directory ShaderDirectory {
+			get {
+				return ContentDirectory;
+			}
+		}
 
 		Registry<AssetGroup> DATA_AssetGroups = new Registry<AssetGroup>();
 		AssetGroup FetchAssetGroup(string str) {

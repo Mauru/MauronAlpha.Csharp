@@ -11,8 +11,36 @@
 				return AssetType_Texture.Instance;
 			}
 		}
+		public static AssetType_Shader Shader {
+			get {
+				return AssetType_Shader.Instance;
+			}
+		}
 	}
 
+	public sealed class AssetType_Shader :AssetType {
+		public override string Name { get { return "Shader"; } }
+		public override string FileExtension {
+			get { return "mgfxo"; }
+		}
+		
+		static object _sync= new System.Object();
+		static volatile AssetType_Shader _instance;
+
+		AssetType_Shader() : base() { }
+
+		public static AssetType_Shader Instance {
+			get {
+				if(_instance == null) {
+					lock(_sync) {
+						_instance = new AssetType_Shader();
+					}
+				}
+
+				return _instance;
+			}
+		}
+	}
 	public sealed class AssetType_Texture :AssetType {
 		public override string Name { get { return "Texture"; } }
 		public override string FileExtension {

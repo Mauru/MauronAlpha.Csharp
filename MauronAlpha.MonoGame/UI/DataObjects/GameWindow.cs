@@ -18,15 +18,20 @@
 
 		public GameWindow(GameManager game) : base(game) {}
 
-		public Vector2d WindowSize {
+		Vector2d _measuredSize;
+		public override Vector2d SizeAsVector2d {
 			get {
-				return Game.Engine.GameWindow.SizeAsVector2d;
+				if(_measuredSize == null)
+					_measuredSize = new Vector2d(Game.Engine.Window.ClientBounds.Width, Game.Engine.Window.ClientBounds.Height);
+				return _measuredSize;
 			}
 		}
 		public override Polygon2dBounds Bounds {
 			get { return Game.Engine.GameWindow.Bounds; }
 		}
 	
+
+
 		public override GameRenderer.RenderMethod RenderMethod
 		{
 			get { return Render; }

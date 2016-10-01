@@ -17,7 +17,7 @@ namespace MauronAlpha.MonoGame.Geometry {
 		private int Sides;
 
 		//Constructor
-		public CircleShape(Vector2d center, double radius, int sides) : base() {
+		public CircleShape(GameManager game, Vector2d center, double radius, int sides) : base(game) {
 			Radius = radius;
 			Sides = sides;
 			Initialize(CreatePoints(radius, sides));

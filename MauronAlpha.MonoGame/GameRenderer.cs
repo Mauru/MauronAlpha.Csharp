@@ -97,30 +97,63 @@
 
 			//Create the shader for drawing meshes
 			GraphicsDevice device = engine.GraphicsDevice;
-			DATA_defaultShader = new BasicEffect(device);
+			DefaultShader defaultShader = new DefaultShader(Game);
+			_defaultShader = defaultShader;
+			_shaders.SetValue("Default", defaultShader);
 
-			//Set default texture
-			_currentScreen = new Texture2D(engine.GraphicsDevice, 1, 1);
-
-			//Set default rendertarget
-			Screen = new RenderTarget2D(device, WindowSize.IntX, WindowSize.IntY,false, SurfaceFormat.Alpha8, DepthFormat.Depth24Stencil8);
+			SetUpBackBuffer();
+			SetUpCamera();
+			CreateRenderTargets();
 
 			B_isInitialized = true;
 			B_isBusy = false;
 		}
 
+		//Used for drawing
+		BackBuffer _buffer;
+		
+		//Setup Methods
+		void SetUpBackBuffer() {
+			_buffer = new BackBuffer(Game);
+		}
+		void SetUpCamera() {
+			Camera def = new Camera(Game, "Default");
+			_defaultCamera = def;
+			_cameras.SetValue("Default", def);
+		}
+		void CreateRenderTargets() {
+			GraphicsDevice device = Engine.GraphicsDevice;
+			_renderStages.SetValue(ScreenSize, new RenderStage(device, ScreenSize));
+			_renderStages.SetValue(new Vector2d(1024,1024),new RenderStage(device, 1024, 1024));
+			_renderStages.SetValue(new Vector2d(512,512),new RenderStage(device, 512, 512));
+			_renderStages.SetValue(new Vector2d(256,256),new RenderStage(device, 256, 256));
+			_renderStages.SetValue(new Vector2d(128,128),new RenderStage(device, 128, 128));
+			_renderStages.SetValue(new Vector2d(64,64),new RenderStage(device, 64, 64));
+			_renderStages.SetValue(new Vector2d(32,32),new RenderStage(device, 32, 32));
+			_renderStages.SetValue(new Vector2d(16,16),new RenderStage(device, 16, 16));
+
+			 PresentationParameters pp = device.PresentationParameters;
+			 screen = new RenderTarget2D(device, pp.BackBufferWidth, pp.BackBufferHeight, true, device.DisplayMode.Format, DepthFormat.Depth24);
+		}
+
+		I_GameScene _currentScene;
+		public void SetCurrentScene(I_GameScene scene) {
+			_currentScene = scene;
+		}
+		public I_GameScene CurrentScene { get { return _currentScene; } }
+
 		//Properties
-
-		BasicEffect DATA_defaultShader;
-
-		/// <summary> Gets rendered in initialize </summary>
-		Texture2D _currentScreen;
-		public Registry<RenderTarget2D> Targets;
-		public RenderTarget2D Screen;
-
-		public Texture2D LastRenderedScene {
+		Registry<I_Shader> _shaders = new Registry<I_Shader>();
+		public I_Shader GetShader(string name) {
+			I_Shader result = null;
+			if(!_shaders.TryGet(name, ref result))
+				throw new GameError("Unknown shader {" + name + "}!", this);
+			return result;
+		}
+		DefaultShader _defaultShader;
+		public DefaultShader DefaultShader {
 			get {
-				return _currentScreen;
+				return _defaultShader;
 			}
 		}
 
@@ -159,6 +192,21 @@
 			}
 		}
 
+		//Camera
+		Registry<Camera> _cameras = new Registry<Camera>();
+		public Camera GetCamera(string name) {
+			Camera result = null;
+			if(!_cameras.TryGet(name, ref result))
+				throw new GameError("Unknown Camera {" + name + "}!", this);
+			return result;
+		}
+		Camera _defaultCamera;
+		public Camera DefaultCamera {
+			get {
+				return GetCamera("Default");
+			}
+		}
+
 		//MonoGame specific returns
 		Matrix WorldMatrix() {
 			return Matrix.CreateTranslation(0, 0, 0);
@@ -176,39 +224,104 @@
 			);
 		}
 
-		//Draw event
-		public void Draw(long time) {
-			if(B_isBusy)
-				return;
-			if(!B_isInitialized)
-				return;
-
-			SolveRenderRequests(time);
-
-			//Draw the final screen texture
-			lock(LockStatus) {
-
-				B_isBusy = true;
-				DATA_renderTime = time;
-				GraphicsDevice device = Game.Engine.GraphicsDevice;
-				device.SetRenderTarget(null);
-
-				device.Clear(Game.Engine.StateColor);
-
-				DATA_engineOutput.Begin();
-				DATA_engineOutput.Draw(_currentScreen,ScreenSizeAsRectangle,Color.White);	
-				DATA_engineOutput.End();
-				DATA_renderTime = time;
-				B_isBusy = false;
-
+		RenderTarget2D screen = null;
+		public RenderTarget2D Screen {
+			get {
+				return screen;
 			}
-
-			return;
 		}
 
+		DrawMethod _currentDrawMethod = GameRenderer.ShowEngineStateAsSolidColor;
+		delegate void DrawMethod(GameRenderer renderer, GraphicsDevice device, long time);
+
+		static void ShowEngineStateAsSolidColor(GameRenderer renderer, GraphicsDevice device, long time) {
+			device.Clear(renderer.Engine.StateColor);
+		}
+		static void PreRenderGameScene(GameRenderer renderer, GraphicsDevice device, long time) {
+			
+		}
+		static void RenderObjectsInCurrentScene(GameRenderer renderer, GraphicsDevice device, long time) { }
+		static void RenderTestObject(GameRenderer renderer, GraphicsDevice device, long time) {
+
+			device.Clear(Color.CornflowerBlue);
+
+			Matrix world = Matrix.CreateTranslation(0, 0, 0);
+			Matrix view = Matrix.CreateLookAt(new Vector3(0, 0, 3), new Vector3(0, 0, 0), new Vector3(0, 1, 0));
+			Matrix projection = Matrix.CreatePerspectiveFieldOfView(MathHelper.ToRadians(45), 800f / 480f, 0.01f, 100f);
+
+			PolyTriangle triangle = new PolyTriangle(renderer.Game, new Vector2d(10, 10));
+			Camera camera = renderer.DefaultCamera;
+
+			DefaultShader shader = renderer.DefaultShader;
+			shader.World = world;
+			shader.View = view;
+			shader.Projection = projection;
+			shader.VertexColorEnabled = true;
+
+	        VertexPositionColor[] vertices = new VertexPositionColor[3];
+            vertices[0] = new VertexPositionColor(new Vector3(0, 1, 0), Color.Red);
+            vertices[1] = new VertexPositionColor(new Vector3(+0.5f, 0, 0), Color.Green);
+            vertices[2] = new VertexPositionColor(new Vector3(-0.5f, 0, 0), Color.Blue);
+ 
+			VertexBuffer vertexBuffer = new VertexBuffer(device, typeof(VertexPositionColor), 3, BufferUsage.WriteOnly);
+            vertexBuffer.SetData<VertexPositionColor>(vertices);
+
+			TriangulationData data = triangle.TriangulationData;
+			VertexBuffer buffer = data.GetVertexBuffer(device);
+
+			RasterizerState rr = new RasterizerState();
+			//device.Clear(Color.Red);
+			rr.CullMode = CullMode.None;
+			device.RasterizerState = rr;
+			device.SetVertexBuffer(vertexBuffer);
+			device.SetRenderTarget(renderer.Screen);
+
+			foreach (EffectPass pass in shader.CurrentTechnique.Passes)	{
+				pass.Apply();
+				device.DrawPrimitives(PrimitiveType.TriangleList, 0, 1);
+			}
+			
+		}
+
+		public void SetRenderMode(string mode) {
+			_currentDrawMethod = RenderTestObject;
+		}
+
+		//Drawing
+		public void Draw(long time) {
+
+			DrawMethod method = _currentDrawMethod;
+			method(this, Game.Engine.GraphicsDevice, time);
+
+		}
+		void CycleRenderRequests(long time) {
+			if(B_isPreRendering) {
+				return;		
+			}
+			if(_requestCount<1) { 
+				return;
+			}
+			B_isPreRendering = true;
+			RenderRequest next = Requests.Pop;
+			I_Renderable target = next.Target;
+
+
+			RenderStage stage = GetRenderStage(next.RenderTargetSize);
+			RenderMethod method = next.Target.RenderMethod;
+			
+			I_RenderResult result = method(stage, target, time);
+			target.SetRenderResult(result);
+			_requestCount--;
+			if(_requestCount>0 && !B_isPreRendering)
+				CycleRenderRequests(time);
+			else if (_requestCount <= 0){
+				B_isPreRendering = false;
+				return;
+			}
+		}
 		public void SolveRenderRequests(long time) {
-
-
+			if(_requestCount <1)
+				return;
 			if(B_isPreRendering)
 				return;
 
@@ -216,81 +329,30 @@
 			
 		}
 
-		Assign<Vector2d, RenderStage> _renderStages = new Assign<Vector2d, RenderStage>();
-
 		public delegate I_RenderResult RenderMethod(RenderStage stage, I_Renderable target, long time);
 
-		void CreateRenderTargets() {
-			_renderStages.SetValue(ScreenSize, new RenderStage(Engine.GraphicsDevice, ScreenSize));
-			_renderStages.SetValue(new Vector2d(1024,1024),new RenderStage(Engine.GraphicsDevice, 1024, 1024));
-			_renderStages.SetValue(new Vector2d(512,512),new RenderStage(Engine.GraphicsDevice, 512, 512));
-			_renderStages.SetValue(new Vector2d(256,256),new RenderStage(Engine.GraphicsDevice, 256, 256));
-			_renderStages.SetValue(new Vector2d(128,128),new RenderStage(Engine.GraphicsDevice, 128, 128));
-			_renderStages.SetValue(new Vector2d(64,64),new RenderStage(Engine.GraphicsDevice, 64, 64));
-			_renderStages.SetValue(new Vector2d(32,32),new RenderStage(Engine.GraphicsDevice, 32, 32));
-			_renderStages.SetValue(new Vector2d(16,16),new RenderStage(Engine.GraphicsDevice, 16, 16));
-		}
-		void CycleRenderRequests(long time) {
-			if(Requests.IsEmpty)
-				B_isPreRendering = false;
-			B_isPreRendering = true;
-			RenderRequest next = Requests.Pop;
-
-			Vector2d size = next.Target.Bounds.Size;
-
-			RenderStage stage = _renderStages.Value(next.RenderTargetSize);
-			RenderMethod method = next.Target.RenderMethod;
-
-			I_RenderResult result = method(stage, next.Target, time);
-			next.SetResult(result);
-
-			B_isPreRendering = false;
-
-			CycleRenderRequests(time);
-		}
-
-		MonoGameTexture RenderToTexture(PolyShape drawable, GraphicsDevice device, RenderTarget2D target) {
-			MauronAlpha.Geometry.Geometry2d.Units.Polygon2dBounds bounds = drawable.Bounds;
-
-			TriangulationData data = drawable.RenderData;
-			TriangleList tt = data.Triangles;
-
-			// This step should be skippable / or placable elsewhere... maybe in the update loop?
-			VertexPositionColor[] vv = tt.AsPositionColor;
-			VertexBuffer buffer = new VertexBuffer(device, typeof(VertexPositionColor), vv.Length+1, BufferUsage.WriteOnly);
-			buffer.SetData<VertexPositionColor>(vv);
-
-			BasicEffect fx = DATA_defaultShader;
-			fx.World = WorldMatrix();
-			fx.View = ViewMatrix();
-			fx.Projection = ProjectionMatrix();
-			fx.VertexColorEnabled = true;
-
-			RasterizerState rr = new RasterizerState();
-			rr.CullMode = CullMode.None;
-			device.RasterizerState = rr;
-			// ...until here
-
-			device.SetVertexBuffer(buffer);
-			foreach (EffectPass pass in fx.CurrentTechnique.Passes){
-				pass.Apply();
-				device.DrawPrimitives(PrimitiveType.TriangleList, 0, 1);
-			}
-			
-			// Get data from the rendertarget and set it to a texture
-			Vector2d size = bounds.Size;
-			Texture2D texture = new Texture2D(device, size.IntX, size.IntY);
-			Color[] colorData = new Color[size.IntX*size.IntY];
-			target.GetData<Color>(colorData);
-			texture.SetData<Color>(colorData);
-
-			return new MonoGameTexture(Game,texture);
+		Assign<Vector2d, RenderStage> _renderStages = new Assign<Vector2d, RenderStage>();
+		public RenderStage GetRenderStage(Vector2d size) {
+			foreach(RenderStage stage in _renderStages.Values)
+				if(stage.Size.CompareTo(size) >= 0)
+					return stage;
+			throw new GameError("No valid RenderStage found for object (too large!)!", this);
 		}
 
 		//Accessors
-		GameEngine Engine {
+		public GameEngine Engine {
 			get {
 				return Game.Engine;
+			}
+		}
+		public GameLogic Logic {
+			get {
+				return Game.Logic;
+			}
+		}
+		public AssetManager Assets {
+			get {
+				return Game.Assets;
 			}
 		}
 
@@ -330,16 +392,20 @@
 		public virtual void UnSubscribe(I_subscriber<ReadyEvent> s) {
 			S_Ready.Remove(s);
 		}
-	
+
+		int _requestCount = 0;
+
 		//Handling Requests
 		Stack<RenderRequest> Requests = new Stack<RenderRequest>();
 		public void AddRequest(I_Renderable target, long time) {
 			RenderRequest request = new RenderRequest(target,time);
 			Requests.Add(request);
+			_requestCount++;
 			return;
 		}
 		public void AddRequest(RenderRequest request) {
 			Requests.Add(request);
+					_requestCount++;
 			return;
 		}
 

@@ -6,6 +6,8 @@
 	using MauronAlpha.Geometry.Geometry2d.Units;
 	using MauronAlpha.Geometry.Geometry2d.Shapes;
 
+	using MauronAlpha.MonoGame.Rendering;
+
 	public class UIInfo :Polygon2dBounds {
 		public UIInfo() : base(0,0) { }
 	}
@@ -16,6 +18,12 @@
 		GameManager _game;
 		public GameManager Game {
 			get { return _game; }
+		}
+
+		List<I_Renderable> _children = new List<I_Renderable>();
+		public List<I_Renderable> Children { get { return _children; } }
+		public void AddChild(I_Renderable r) {
+			_children.Add(r);
 		}
 
 		public GameScene(GameManager game) : base() {
