@@ -75,7 +75,7 @@ namespace MauronAlpha.Geometry.Geometry2d.Units {
 		//Distance(magnitude) between a and b
 		public double Distance_AB {
 			get {
-				return (double) Math.Sqrt(Math.Pow((A.X-B.X), 2)+Math.Pow((B.X-A.X), 2));
+				return Segment2d.CalculateLength(A,B);
 			}
 		}
 		#endregion
@@ -126,6 +126,11 @@ namespace MauronAlpha.Geometry.Geometry2d.Units {
 			if((a1*b2)-(a2*b1)==0) return false;
 
 			return true;
+		}
+
+		//static helper functions
+		public static double CalculateLength(Vector2d a, Vector2d b) {
+			return Math.Sqrt(Math.Pow((a.X-b.X), 2)+Math.Pow((b.X-a.X), 2));
 		}
 
 		#region I_mathComponent

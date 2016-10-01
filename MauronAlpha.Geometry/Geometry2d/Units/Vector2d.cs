@@ -111,7 +111,12 @@ namespace MauronAlpha.Geometry.Geometry2d.Units {
 		public Vector2d Inverted {
 			get { return (Vector2d) Instance.Multiply(-1); }
 		}
-	
+
+		public Vector2d Swapped {
+			get {
+				return new Vector2d(INT_y,INT_x);
+			}
+		}
 		#endregion
 
 		//string
@@ -405,7 +410,8 @@ namespace MauronAlpha.Geometry.Geometry2d.Units {
 				return INT_y;
 			}
 		}
-	
+
+		public static Vector2d Zero { get { return new Vector2d(0, 0); } }
 	}
 
 }

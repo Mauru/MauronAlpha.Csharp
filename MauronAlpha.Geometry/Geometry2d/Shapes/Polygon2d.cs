@@ -1,6 +1,4 @@
 ﻿using MauronAlpha.HandlingErrors;
-
-
 using MauronAlpha.Geometry.Shapes;
 using MauronAlpha.Geometry.Geometry2d.Units;
 using MauronAlpha.Geometry.Geometry2d.Transformation;
@@ -158,6 +156,7 @@ namespace MauronAlpha.Geometry.Geometry2d.Shapes {
 			B_isReadOnly=state;
 			return this;
 		}
+
 		public Polygon2d SetPoints (Vector2dList points) {
 			if( IsReadOnly )
 				throw Error("Is Protected!, (SetPoints)", this, ErrorType_protected.Instance);
