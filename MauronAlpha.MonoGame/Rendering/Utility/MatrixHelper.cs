@@ -3,9 +3,15 @@
 	using Microsoft.Xna.Framework;
 	using MauronAlpha.Geometry.Geometry2d.Units;
 	using MauronAlpha.Geometry.Geometry3d.Units;
+
+	using MauronAlpha.MonoGame.Rendering.Interfaces;
 	
 
 	public class MatrixHelper:MonoGameComponent {
+
+		public static Matrix MonoGameMatrix {
+			get { return Matrix.Identity; }
+		}
 
 		//Helper functions
 		public static Matrix PositionOfRenderableInA2dGameWindow(I_Renderable target) {

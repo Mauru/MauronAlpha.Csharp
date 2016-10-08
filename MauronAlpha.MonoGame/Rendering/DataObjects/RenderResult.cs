@@ -3,6 +3,8 @@
 	using MauronAlpha.Geometry.Geometry2d.Units;
 	using Microsoft.Xna.Framework.Graphics;
 
+	using MauronAlpha.MonoGame.Rendering.Interfaces;
+
 	public class RenderResult :MonoGameComponent, I_RenderResult {
 
 		public RenderResult(): base() {}

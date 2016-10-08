@@ -1,10 +1,13 @@
 ﻿namespace MauronAlpha.MonoGame.DataObjects {
+
 	using MauronAlpha.MonoGame.Rendering;
+	using MauronAlpha.MonoGame.Rendering.Interfaces;
+
 	using MauronAlpha.MonoGame.Interfaces;
 
 	using Microsoft.Xna.Framework.Graphics;
 
-	public class RenderOrder {
+	public class RenderOrder:MonoGameComponent {
 
 		BlendMode _mode;
 		I_Renderable _target;

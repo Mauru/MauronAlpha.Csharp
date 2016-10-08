@@ -6,6 +6,8 @@
 	using MauronAlpha.Events.Interfaces;
 	using MauronAlpha.Events.Collections;
 
+	using MauronAlpha.Geometry.Geometry3d.Units;
+
 	using MauronAlpha.MonoGame.DataObjects;
 
 	using MauronAlpha.MonoGame.Collections;
@@ -21,9 +23,13 @@
 			Set(o);
 		}
 
+		//temporary cmponents
+		BasicEffect _effect;
+		VertexBuffer _buffer;
+		VertexPositionColor[] _vertexData;
+
 		//XNA related components
 		GraphicsDeviceManager GraphicsDeviceManager;
-		SpriteBatch SB_default;
 
 		/// <summary>	To make this mauronCode compatible	</summary>
 		MonoGameComponent IdObj = new MonoGameComponent();
@@ -108,10 +114,6 @@
 		//0 - Initialize
 		/// <summary> Dependencies </summary>
 		protected override void Initialize() {
-			
-			SpriteBatch batch = new SpriteBatch(GraphicsDeviceManager.GraphicsDevice);
-			SB_default = new SpriteBatch(GraphicsDevice);
-
 			//Verify components and initialize them
 			if(DATA_Manager.RendererIsNull)
 				throw new GameError("Initialization chain is incorrect, {Renderer}.",DATA_Manager);
@@ -155,6 +157,11 @@
 
 		//4 - Draw calls
 		protected override void Draw(GameTime gameTime) {
+			/* Basic test call 
+			GraphicsDevice.Clear(Color.Magenta);
+			_effect.CurrentTechnique.Passes[0].Apply();
+			GraphicsDevice.DrawUserPrimitives<VertexPositionColor>(PrimitiveType.TriangleList, _vertexData, 0, 1);*/
+
 			if(B_isInitialized) {
 				if(Renderer.IsInitialized)
 					Renderer.Draw(gameTime.ElapsedGameTime.Ticks);
@@ -191,8 +198,6 @@
 				throw new GameError("No default font loaded! ("+group.FontCount+").", group);
 
 			Logic.SetStartUpScene();
-			//Renderer.CurrentScene.RequestRender();
-			Renderer.SetRenderMode("TestObject");
 			return true;
 		}
 		public bool Equals(I_subscriber<AssetLoadEvent> other) {

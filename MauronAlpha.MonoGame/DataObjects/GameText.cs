@@ -5,6 +5,8 @@
 
 	using MauronAlpha.FontParser.DataObjects;
 
+	using MauronAlpha.MonoGame.Assets.DataObjects;
+
 	/// <summary> Represents a text-object. </summary>
 	public class GameText:MonoGameComponent {
 

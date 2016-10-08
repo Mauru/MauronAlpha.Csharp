@@ -5,7 +5,10 @@
 	using MauronAlpha.MonoGame.Collections;
 	using MauronAlpha.MonoGame.DataObjects;
 	using MauronAlpha.MonoGame;
+
 	using MauronAlpha.MonoGame.Rendering;
+	using MauronAlpha.MonoGame.Rendering.Interfaces;
+	using MauronAlpha.MonoGame.Rendering.Collections;
 
 	using MauronAlpha.Geometry.Geometry2d.Units;
 	using MauronAlpha.Geometry.Geometry2d.Shapes;
@@ -29,7 +32,9 @@
 		public override Polygon2dBounds Bounds {
 			get { return Game.Engine.GameWindow.Bounds; }
 		}
-	
+
+		public override bool IsPolygon { get { return false; } }
+		public override ShapeBuffer ShapeBuffer { get { return ShapeBuffer.Empty; } }
 
 
 		public override GameRenderer.RenderMethod RenderMethod

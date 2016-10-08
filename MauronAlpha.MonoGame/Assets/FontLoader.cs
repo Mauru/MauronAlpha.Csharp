@@ -11,6 +11,8 @@
 	using MauronAlpha.Events.Collections;
 	using MauronAlpha.Events.Units;
 
+	using MauronAlpha.MonoGame.Assets.DataObjects;
+
 	public class FontLoader :MonoGameComponent, I_subscriber<FontLoadEvent>, I_sender<FontLoaderEvent>, I_subscriber<TextureLoaderEvent> {
 		GameFont _result;
 		public GameFont Result {

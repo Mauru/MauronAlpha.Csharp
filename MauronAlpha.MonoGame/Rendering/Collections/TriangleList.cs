@@ -7,13 +7,14 @@ using MauronAlpha.Geometry.Geometry2d.Shapes;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 
-namespace MauronAlpha.MonoGame.Collections {
+namespace MauronAlpha.MonoGame.Rendering.Collections {
 
 
 	public class TriangleList:MonoGameComponent {
 
 		//Properties
 		private MauronCode_dataList<Polygon2d> DATA_triangles = new MauronCode_dataList<Polygon2d>();
+		public MauronCode_dataList<Polygon2d> Shapes { get { return DATA_triangles; } }
 
 		//Constructors
 		public TriangleList(MauronCode_dataList<Polygon2d> list):base() {
@@ -30,7 +31,7 @@ namespace MauronAlpha.MonoGame.Collections {
 		//Proxy Properties
 		public int Count { get { return DATA_triangles.Count; } }
 
-		//Methods
+		/*
 		public VertexPositionColor[] AsPositionColor {
 			get {
 				int count = DATA_triangles.Count * 3;
@@ -53,11 +54,7 @@ namespace MauronAlpha.MonoGame.Collections {
 				return vertices;
 
 			}
-		}
-
-		public Vector3 ConvertVector(Vector2d v) {
-			return new Vector3((float)v.X, (float)v.Y, 0F);
-		}
+		}*/
 
 	}
 

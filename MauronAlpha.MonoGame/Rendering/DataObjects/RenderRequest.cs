@@ -1,6 +1,9 @@
 ﻿namespace MauronAlpha.MonoGame.DataObjects {
 	using MauronAlpha.MonoGame.Collections;
+
 	using MauronAlpha.MonoGame.Rendering;
+	using MauronAlpha.MonoGame.Rendering.Interfaces;
+
 	using MauronAlpha.Events.Interfaces;
 	using MauronAlpha.Events.Collections;
 	using MauronAlpha.Geometry.Geometry2d.Units;

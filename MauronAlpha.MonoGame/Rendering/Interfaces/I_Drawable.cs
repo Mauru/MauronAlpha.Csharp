@@ -7,6 +7,8 @@
 
 	using MauronAlpha.MonoGame.Rendering;
 
+	using MauronAlpha.MonoGame.Assets.DataObjects;
+
 	/// <summary> Represents an item that can be rendered </summary>
 	public interface I_Drawable {
 

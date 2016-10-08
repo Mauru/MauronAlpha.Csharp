@@ -52,51 +52,9 @@ namespace MauronAlpha.MonoGame.Actuals {
 		public override void SetStartUpScene() {
 			if(!Game.Assets.HasDefaultFont)
 				throw new GameError("No default font loaded!", this);
-			StatusScreen current = new StatusScreen(Game);
-			current.Initialize();
-			SceneManager.SetCurrent(current);
-			current.RequestRender();
-		}
 
-	}
-
-}
-
-
-namespace MauronAlpha.MonoGame.Actuals {
-	using MauronAlpha.MonoGame.UI.DataObjects;
-	using MauronAlpha.MonoGame.Interfaces;
-	using MauronAlpha.MonoGame.DataObjects;
-
-
-	public class StatusScreen :GameScene {
-
-		public StatusScreen(GameManager game) : base(game) {}
-		TextDisplay _text;
-
-		StatusObject _obj;
-
-		public override void Initialize() {
-
-			if(!Game.Assets.HasDefaultFont)
-				throw new GameError("No fonts loaded yet! ("+Game.Assets.GetListOfFontNames().Count+" fonts loaded)", this);
-			
-			_text = new TextDisplay(Game, Game.Assets.DefaultFont);
-			_text.SetText("This is a test.");
-
-			_obj = new StatusObject(Game);
-			base.AddChild(_text);
-			Game.Renderer.SetCurrentScene(this);
-
-			base.Initialize();
-
-		}
-
-		public override void RequestRender() {
-
-			//_text.NeedRenderUpdate(Game.Renderer.Time);
-			_obj.NeedRenderUpdate(Game.Renderer.Time);
-		
+			Scene_BasicRectangle scene = new Scene_BasicRectangle(Game);
+			scene.Initialize();
 		}
 
 	}

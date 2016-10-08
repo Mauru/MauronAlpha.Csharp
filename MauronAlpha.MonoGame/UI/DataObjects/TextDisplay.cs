@@ -3,10 +3,17 @@
 	using MauronAlpha.TextProcessing.Collections;
 
 	using MauronAlpha.MonoGame.DataObjects;
+
 	using MauronAlpha.MonoGame.Rendering;
+	using MauronAlpha.MonoGame.Rendering.Utility;
+	using MauronAlpha.MonoGame.Rendering.Collections;
+	using MauronAlpha.MonoGame.Rendering.Interfaces;
 
 	using MauronAlpha.MonoGame.Utility;
+
 	using MauronAlpha.Geometry.Geometry2d.Units;
+
+	using MauronAlpha.MonoGame.Assets.DataObjects;
 
 	public class TextDisplay :UIElement,I_Renderable {
 
@@ -68,7 +75,14 @@
 
 		}
 
-
+		public override bool IsPolygon {
+			get { return false; }
+		}
+		public override ShapeBuffer ShapeBuffer {
+			get {
+				return ShapeBuffer.Empty;
+			}
+		}
 
 		public double LineHeight {
 			get {

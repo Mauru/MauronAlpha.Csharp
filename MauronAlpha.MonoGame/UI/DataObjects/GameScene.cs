@@ -7,6 +7,8 @@
 	using MauronAlpha.Geometry.Geometry2d.Shapes;
 
 	using MauronAlpha.MonoGame.Rendering;
+	using MauronAlpha.MonoGame.Rendering.Collections;
+	using MauronAlpha.MonoGame.Rendering.Interfaces;
 
 	public class UIInfo :Polygon2dBounds {
 		public UIInfo() : base(0,0) { }
@@ -18,6 +20,17 @@
 		GameManager _game;
 		public GameManager Game {
 			get { return _game; }
+		}
+
+		ShapeBuffer _shapes;
+		public virtual ShapeBuffer ShapeBuffer {
+			get {
+				if (_shapes != null)
+					return _shapes;
+
+				_shapes = new ShapeBuffer();
+				return _shapes;
+			}
 		}
 
 		List<I_Renderable> _children = new List<I_Renderable>();
@@ -40,6 +53,10 @@
 		}
 
 		public abstract void RequestRender();
+
+		public abstract Camera Camera { get; }
+
+		public abstract GameRenderer.DrawMethod DrawMethod { get; }
 
 	}
 

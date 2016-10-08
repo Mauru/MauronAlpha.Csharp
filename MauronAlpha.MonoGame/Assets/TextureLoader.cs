@@ -9,6 +9,8 @@
 
 	using Microsoft.Xna.Framework.Graphics;
 
+	using MauronAlpha.MonoGame.Assets.DataObjects;
+
 	public class TextureLoader :MonoGameComponent, I_sender<TextureLoaderEvent> {
 
 		MonoGameTexture _result;

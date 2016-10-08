@@ -3,6 +3,8 @@
 	using Microsoft.Xna.Framework;
 	using MauronAlpha.Geometry.Geometry2d.Units;
 
+	using MauronAlpha.MonoGame.Rendering.Interfaces;
+
 	/// <summary> Wrapper for RenderTarget2d </summary>
 	public class RenderStage:RenderTarget2D {
 

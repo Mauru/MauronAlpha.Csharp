@@ -5,6 +5,8 @@
 	
 	using Microsoft.Xna.Framework;
 
+	using MauronAlpha.MonoGame.Rendering.Interfaces;
+
 	public class Camera:MonoGameComponent {
 
 		GameManager _game;
@@ -17,6 +19,13 @@
 			_game = game;
 			_name = name;
 			SetUpCamera();
+		}
+		public Camera(GameManager game, string name, Matrix view, Matrix projection, Matrix world): base() {
+			_game = game;
+			_name = name;
+			_view = view;
+			_projection = projection;
+			_world = world;
 		}
 
 		void SetUpCamera() {
@@ -40,24 +49,13 @@
 		}
 
 		Matrix _view;
-		public Matrix TopDownView {
-			get {
-				if(_view == null)
-					_view = MatrixHelper.CameraTo2dViewMatrix(this);
-				return _view;
-			}
-		}
+		public Matrix ViewMatrix { get { return _projection; } }
+		
 		Matrix _projection;
-		public Matrix TopDownProjection {
-			get {
-				if(_projection == null)
-					_projection = MatrixHelper.CameraTo2dProjectionMatrix(this);
-					return _view;
-			}
-		}
-		public Matrix WorldMatrixOfRenderable(I_Renderable obj) {
-			return MatrixHelper.PositionOfRenderableInA2dGameWindow(obj);
-		}
+		public Matrix ProjectionMatrix { get { return _projection; } }
+
+		Matrix _world;
+		public Matrix WorldMatrix { get { return _world; } }
 	
 	}
 }

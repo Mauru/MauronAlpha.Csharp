@@ -1,11 +1,15 @@
 ﻿namespace MauronAlpha.MonoGame.UI.DataObjects { 
 	using MauronAlpha.MonoGame.UI.Interfaces;
 	using MauronAlpha.MonoGame.UI.Collections;
+
 	using MauronAlpha.MonoGame.Interfaces;
 	using MauronAlpha.MonoGame.Collections;
 	using MauronAlpha.MonoGame.DataObjects;
 	using MauronAlpha.MonoGame;
+
 	using MauronAlpha.MonoGame.Rendering;
+	using MauronAlpha.MonoGame.Rendering.Interfaces;
+	using MauronAlpha.MonoGame.Rendering.Collections;
 
 	using MauronAlpha.Geometry.Geometry2d.Units;
 	using MauronAlpha.Geometry.Geometry2d.Shapes;
@@ -157,6 +161,10 @@
 		public virtual I_MonoShape AsMonoShape() {
 			throw new GameError("UIElement is not castable as Shape!", this);
 		}
+
+		public abstract ShapeBuffer ShapeBuffer { get; }
+		public abstract bool IsPolygon { get; }
+	
 	}
 
 }

@@ -12,6 +12,7 @@
 	using MauronAlpha.Geometry.Geometry2d.Shapes;
 
 	using MauronAlpha.MonoGame.Assets;
+	using MauronAlpha.MonoGame.Assets.DataObjects;
 
 	/// <summary> Manages external content for the game </summary>///
 	public class AssetManager :MonoGameComponent, I_CoreGameComponent, I_sender<ReadyEvent> {

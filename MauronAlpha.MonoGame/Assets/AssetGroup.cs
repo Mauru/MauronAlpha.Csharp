@@ -6,6 +6,8 @@
 	using MauronAlpha.Events.Interfaces;
 	using MauronAlpha.Events.Collections;
 
+	using MauronAlpha.MonoGame.Assets.DataObjects;
+
 	/// <summary> A collection of assets </summary>
 	public class AssetGroup :MonoGameComponent, I_sender<AssetLoadEvent>, I_subscriber<FontLoaderEvent>, I_subscriber<TextureLoaderEvent>, I_subscriber<ShaderLoadEvent> {
 

@@ -1,4 +1,4 @@
-﻿namespace MauronAlpha.MonoGame.Utility {
+﻿namespace MauronAlpha.MonoGame.Rendering.Utility {
 	using Microsoft.Xna.Framework.Graphics;
 	using Microsoft.Xna.Framework;
 
@@ -14,6 +14,9 @@
 	using MauronAlpha.MonoGame.UI.DataObjects;
 	using MauronAlpha.MonoGame.Interfaces;
 	using MauronAlpha.MonoGame.Rendering;
+	using MauronAlpha.MonoGame.Rendering.Interfaces;
+
+	using MauronAlpha.MonoGame.Assets.DataObjects;
 
 	public class TextRenderer:MonoGameComponent, I_Renderer {
 
@@ -69,6 +72,11 @@
 		GameRenderer.RenderMethod I_Renderer.RenderMethod {
 			get { return RenderMethod; }
 		}
-	
+
+		public static void DrawMethod(GameRenderer renderer, long time) { 
+			
+			
+
+		}
 	}
 }

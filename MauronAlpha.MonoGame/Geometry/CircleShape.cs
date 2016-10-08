@@ -1,13 +1,16 @@
-﻿using MauronAlpha.MonoGame.Utility;
-using MauronAlpha.MonoGame.Interfaces;
+﻿namespace MauronAlpha.MonoGame.Geometry {
+	using MauronAlpha.MonoGame.Utility;
+	using MauronAlpha.MonoGame.Interfaces;
 
-using MauronAlpha.Geometry.Geometry2d.Units;
-using MauronAlpha.Geometry.Geometry2d.Collections;
-using MauronAlpha.HandlingData;
+	using MauronAlpha.Geometry.Geometry2d.Units;
+	using MauronAlpha.Geometry.Geometry2d.Collections;
+	using MauronAlpha.HandlingData;
 
-using System;
+	using MauronAlpha.MonoGame.Rendering.Collections;
+	using MauronAlpha.MonoGame.Rendering.Interfaces;
 
-namespace MauronAlpha.MonoGame.Geometry {
+	using System;
+
 
 	//A circle like shape
 	public class CircleShape:PolyShape, I_MonoShape {

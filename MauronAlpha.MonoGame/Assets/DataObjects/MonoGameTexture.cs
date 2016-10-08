@@ -1,11 +1,14 @@
-﻿namespace MauronAlpha.MonoGame.DataObjects {
+﻿namespace MauronAlpha.MonoGame.Assets.DataObjects {
 	using Microsoft.Xna.Framework.Graphics;
 	using MauronAlpha.Geometry.Geometry2d.Units;
 
 	using MauronAlpha.MonoGame.Assets;
+	using MauronAlpha.MonoGame.Assets.Interfaces;
 	using MauronAlpha.MonoGame.Collections;
 
-	public class MonoGameTexture :MonoGameAsset { 
+
+
+	public class MonoGameTexture :MonoGameAsset, I_MonoGameTexture { 
 		Texture2D _texture;
 		public Texture2D Texture {
 			get {

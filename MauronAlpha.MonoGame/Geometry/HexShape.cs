@@ -3,6 +3,8 @@ using MauronAlpha.Geometry.Geometry2d.Shapes;
 using MauronAlpha.Geometry.Geometry2d.Units;
 using MauronAlpha.Geometry.Geometry2d.Collections;
 
+using MauronAlpha.MonoGame.Rendering.Collections;
+
 namespace MauronAlpha.MonoGame.Geometry {
 
 	//A hexagon

@@ -9,7 +9,11 @@
 	using MauronAlpha.MonoGame.Interfaces;
 	using MauronAlpha.MonoGame.DataObjects;
 	using MauronAlpha.MonoGame.Collections;
+	
 	using MauronAlpha.MonoGame.Rendering;
+	using MauronAlpha.MonoGame.Rendering.Collections;
+	using MauronAlpha.MonoGame.Rendering.Interfaces;
+
 	using MauronAlpha.MonoGame.Utility;
 
 	using Microsoft.Xna.Framework.Graphics;
@@ -38,6 +42,23 @@
 			get { return new ShapeType_poly(); }
 		}
 
+		public bool IsPolygon { get { return true; } }
+		ShapeBuffer _shapeBuffer;
+		public ShapeBuffer ShapeBuffer {
+			get {
+				if (_shapeBuffer != null)
+					return _shapeBuffer;
+				_shapeBuffer = ShapeBuffer.Empty;
+				_shapeBuffer.Add(this);
+				return _shapeBuffer;
+			}
+		}
+
+		public Polygon2dBounds Bounds { get { return base.Bounds; } }
+		public void SetBounds(Polygon2dBounds bounds) {
+			base.SetBounds(bounds);
+		}
+
 
 		public new Vector2dList Points {
 			get {
@@ -45,20 +66,17 @@
 			}
 		}
 
+		TriangulationData DATA_calculate;
 		public virtual TriangulationData TriangulationData {
 			get {
 				if (DATA_calculate == null)
-					DATA_calculate = Triangulate();
+					DATA_calculate = PolyShape.Triangulate(Game.Renderer, this);
 				return DATA_calculate;
 			}
 		}
-		TriangulationData DATA_calculate;
-		private TriangulationData Triangulate() {
-			TriangulationData data = new TriangulationData();
-			data.Polygon = this;
-			data.Triangles = new TriangleList(this);
-			data.Vertices = data.Triangles.AsPositionColor;
-			return data;
+
+		public static TriangulationData Triangulate(GameRenderer renderer,PolyShape shape) {
+			return TriangulationData.CreateFromShape(renderer, shape, TriangulationData.WhiteVertexColors);
 		}
 
 		public Vector2d RenderTargetSize {
@@ -93,10 +111,6 @@
 			get {
 				return _outline;
 			}
-		}
-
-		public virtual GameRenderer.RenderMethod RenderMethod {
-			get { return ShapeRenderer.RenderShapeInWorldSpace; }
 		}
 
 		VertexBuffer _buffer;

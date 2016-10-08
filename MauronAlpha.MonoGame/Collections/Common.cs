@@ -3,7 +3,22 @@
 namespace MauronAlpha.MonoGame.Collections {
 
 	public class List<T> :MauronCode_dataList<T> { } //ordered collection >> object
-	public class Registry<T> :MauronCode_dataMap<T> { } //text >> object
+	public class Registry<T> :MauronCode_dataMap<T> {
+		public bool TryIndex(long index, ref T result) {
+			if (base.Values.Count < 1)
+				return false;
+			long count = -1;
+			foreach(T candidate in base.Values) {
+				count++;
+				if(count == index) {
+					result = candidate;
+					return true;
+				}
+			}
+			return false;
+		}
+	
+	} //text >> object
 	public class Index<T> :MauronCode_dataIndex<T> { } //unordered collection >> object
 	
 	/// <summary>	KeyValue Pair - key : object	</summary>

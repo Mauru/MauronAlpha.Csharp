@@ -1,4 +1,4 @@
-﻿namespace MauronAlpha.MonoGame.Interfaces {
+﻿namespace MauronAlpha.MonoGame.Rendering.Interfaces {
 
 	using Microsoft.Xna.Framework.Graphics;
 
@@ -9,6 +9,7 @@
 	using MauronAlpha.Geometry.Geometry2d.Collections;
 
 	using MauronAlpha.MonoGame.Rendering;
+	using MauronAlpha.MonoGame.Rendering.Collections;
 	using MauronAlpha.MonoGame.Geometry;
 	
 	public interface I_MonoShape:I_Renderable {

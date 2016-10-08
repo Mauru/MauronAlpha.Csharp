@@ -4,6 +4,8 @@
 	using MauronAlpha.TextProcessing.Units;
 	using MauronAlpha.TextProcessing.Collections;
 
+	using MauronAlpha.MonoGame.Interfaces;
+
 	using MauronAlpha.MonoGame.DataObjects;
 
 	/// <summary> Logic of the Game </summary>///
@@ -52,6 +54,15 @@
 			get {
 				return _scenes;
 			}
+		}
+		public I_GameScene _currentScene;
+		public I_GameScene CurrentScene {
+			get {
+				return _currentScene;
+			}
+		}
+		public void SetCurrentScene(I_GameScene scene) {
+			_currentScene = scene;
 		}
 
 		//Initialize

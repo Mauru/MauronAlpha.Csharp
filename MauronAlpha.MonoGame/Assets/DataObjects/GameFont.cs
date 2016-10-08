@@ -1,4 +1,4 @@
-﻿namespace MauronAlpha.MonoGame.DataObjects {
+﻿namespace MauronAlpha.MonoGame.Assets.DataObjects {
 	using MauronAlpha.Events.Interfaces;
 	using MauronAlpha.Events.Collections;
 

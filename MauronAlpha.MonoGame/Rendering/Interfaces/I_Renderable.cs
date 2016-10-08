@@ -1,9 +1,11 @@
-﻿namespace MauronAlpha.MonoGame.Rendering {
+﻿namespace MauronAlpha.MonoGame.Rendering.Interfaces {
 	using MauronAlpha.MonoGame.Collections;
 
 	using MauronAlpha.Geometry.Geometry2d.Units;
 
 	using MauronAlpha.MonoGame.Interfaces;
+	using MauronAlpha.MonoGame.Rendering.Interfaces;
+	using MauronAlpha.MonoGame.Rendering.Collections;
 
 	using Microsoft.Xna.Framework;
 	
@@ -25,9 +27,11 @@
 		RenderOrders Orders { get; }
 		void SetRenderResult(I_RenderResult result);
 
+		ShapeBuffer ShapeBuffer { get; }
+		bool IsPolygon { get; }
+
 		GameManager Game { get; }
 
-		GameRenderer.RenderMethod RenderMethod { get; }
 
 		I_MonoShape AsMonoShape();
 

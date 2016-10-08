@@ -53,13 +53,18 @@
     <Compile Include="DataObjects\LogFile.cs" />
     <Compile Include="Debug\DebugException.cs" />
     <Compile Include="GameSceneManager.cs" />
+    <Compile Include="Geometry\Collections\ShapeDefinitions.cs" />
+    <Compile Include="Geometry\MonoShape2d.cs" />
     <Compile Include="Geometry\PolyRectangle.cs" />
     <Compile Include="Geometry\PolyTriangle.cs" />
     <Compile Include="Rendering\Camera.cs" />
+    <Compile Include="Rendering\Collections\Shadertypes.cs" />
+    <Compile Include="Rendering\DataObjects\SpriteData.cs" />
     <Compile Include="Rendering\DataObjects\BackBuffer.cs" />
     <Compile Include="Rendering\Collections\BlendModes.cs" />
     <Compile Include="Collections\Common.cs" />
     <Compile Include="Rendering\DataObjects\CustomShader.cs" />
+    <Compile Include="Assets\Interfaces\I_MonoGameTexture.cs" />
     <Compile Include="Rendering\Utility\MatrixHelper.cs" />
     <Compile Include="Rendering\Interfaces\I_Renderer.cs" />
     <Compile Include="Rendering\Interfaces\I_RenderProcess.cs" />
@@ -72,14 +77,14 @@
     <Compile Include="Rendering\Collections\TriangleList.cs" />
     <Compile Include="Rendering\DataObjects\BlendMode.cs" />
     <Compile Include="DataObjects\GameError.cs" />
-    <Compile Include="Assets\GameFont.cs" />
+    <Compile Include="Assets\DataObjects\GameFont.cs" />
     <Compile Include="DataObjects\GameResource.cs" />
     <Compile Include="DataObjects\GameSetup.cs" />
     <Compile Include="DataObjects\GameState.cs" />
     <Compile Include="DataObjects\GameText.cs" />
     <Compile Include="Rendering\MonoGameLines.cs" />
     <Compile Include="Rendering\MonoGameShape.cs" />
-    <Compile Include="Assets\MonoGameTexture.cs" />
+    <Compile Include="Assets\DataObjects\MonoGameTexture.cs" />
     <Compile Include="Rendering\MonoGameWindow.cs" />
     <Compile Include="Rendering\DataObjects\RenderOrder.cs" />
     <Compile Include="Rendering\DataObjects\RenderRequest.cs" />
@@ -114,11 +119,12 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReadyEvent.cs" />
     <Compile Include="Assets\DataObjects\GameFontStyle.cs" />
+    <Compile Include="Scene_BasicRectangle.cs" />
+    <Compile Include="Scene_BasicText.cs" />
     <Compile Include="UI\Collections\BlendModes.cs" />
     <Compile Include="UI\Collections\HierarchyChildren.cs" />
     <Compile Include="UI\DataObjects\GameScene.cs" />
     <Compile Include="UI\DataObjects\GameWindow.cs" />
-    <Compile Include="UI\DataObjects\StatusObject.cs" />
     <Compile Include="UI\DataObjects\TextDisplay.cs" />
     <Compile Include="UI\DataObjects\UIElement.cs" />
     <Compile Include="UI\Interfaces\I_HierarchyObject.cs" />
@@ -196,7 +202,10 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Geometry\Utility\" />
+    <Folder Include="Rendering\Shaders\" />
+  </ItemGroup>
   <!-- Specify the search path explicitly so the ResolveAssemblyReferences task picks the right ones -->
   <Target Name="BeforeResolveReferences">
     <CreateProperty Value="$(MSBuildProgramFiles32)\MonoGame\v3.0\Assemblies\Windows;$(AssemblySearchPaths)">
