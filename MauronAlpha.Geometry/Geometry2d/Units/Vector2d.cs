@@ -386,12 +386,12 @@ namespace MauronAlpha.Geometry.Geometry2d.Units {
 
 		public float FloatX {
 			get {
-			return (float) X;
+				return (float) INT_x;
 			}
 		}
 		public float FloatY {
 			get {
-				return (float) X;
+				return (float) INT_y;
 			}
 		}
 

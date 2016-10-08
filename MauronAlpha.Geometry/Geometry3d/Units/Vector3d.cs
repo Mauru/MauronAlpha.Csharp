@@ -4,6 +4,13 @@
 	using MauronAlpha.Geometry.Geometry3d.Transformation;
 
 	public class Vector3d : GeometryComponent3d,IEquatable<Vector3d>,IComparable<Vector3d> {
+
+		public string AsString {
+			get {
+				return "{X:" + _x + ",Y:" + _y + ",Z:" + _z + "}";
+			}
+		}
+
 		double _x=0;
 		public double X {
 			get { return _x; }

@@ -85,7 +85,7 @@
     <Compile Include="Geometry2d\Units\Vector2d.cs" />
     <Compile Include="Geometry3d\Units\Vector3d.cs" />
     <Compile Include="Shapes\ShapeType.cs" />
-    <Compile Include="Utility\Triangulator2d.cs" />
+    <Compile Include="Geometry2d\Utility\Triangulator2d.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MauronAlpha\MauronAlpha.csproj">

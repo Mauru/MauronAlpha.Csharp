@@ -20,8 +20,7 @@ namespace MauronAlpha.Geometry.Geometry2d.Shapes {
 		
 		}
 
-		public Polygon2d( Polygon2d s )
-			: base( ShapeType_polygon.Instance ) {
+		public Polygon2d( Polygon2d s )	: base( ShapeType_polygon.Instance ) {
 			FromShape( s );
 		}
 		
@@ -104,6 +103,9 @@ namespace MauronAlpha.Geometry.Geometry2d.Shapes {
 				//need to apply matrix here
 				return SHAPE_bounds.SetIsReadOnly(true);
 			}
+		}
+		public void SetBounds(Polygon2dBounds bounds) {
+			SHAPE_bounds = bounds;
 		}
 
 		//Matrix

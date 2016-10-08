@@ -56,11 +56,18 @@ public class Polygon2dBounds : GeometryComponent2d, I_polygonShape2d, I_protecta
 		V_max = new Vector2d(width, height);
 		V_center = V_min.Difference( V_max );
 	}
+	public Polygon2dBounds(Vector2d size) : this(size.X, size.Y) { }
 
 	//properties
 	Vector2d V_center;
 	Vector2d V_min;
 	Vector2d V_max;
+
+	public Vector2d Position {
+		get {
+			return V_min;
+		}
+	}
 
 	private bool B_isReadOnly = false;
 	public bool IsReadOnly { get { return B_isReadOnly; } }
