@@ -6,7 +6,7 @@ namespace MauronAlpha {
 
 	// a class that implements the utility codetype
 	public class MauronCode_subtype : MauronCode {
-		public MauronCode_subtype ( ) : base(CodeType_subtype.Instance) { }
+		public MauronCode_subtype ( ) : base() { }
 	}
 
 	//An "Explaining class" - which serves to describe the function of a class

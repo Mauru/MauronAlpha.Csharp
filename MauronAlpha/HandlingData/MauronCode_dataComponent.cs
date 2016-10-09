@@ -8,7 +8,7 @@ namespace MauronAlpha.HandlingData {
 	public class MauronCode_dataComponent:MauronCode {
 
 		//constructor
-		public MauronCode_dataComponent():base(CodeType_dataComponent.Instance) {}
+		public MauronCode_dataComponent():base() {}
 	}
 
 	public sealed class CodeType_dataComponent:CodeType {

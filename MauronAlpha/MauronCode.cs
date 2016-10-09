@@ -8,11 +8,8 @@ namespace MauronAlpha {
 
 	//Base Class of 
     public class MauronCode:MauronAlphaCode, I_MauronCode {
-
-		public CodeType CodeType;
-		public MauronCode() : this(CodeType_component.Instance) { }
-		public MauronCode(CodeType codetype):base() {
-			CodeType=codetype;
+		public MauronCode():base() {
+			
 		}
 
 		public static MauronCode_error Error (string msg, object o,ErrorType errorType) {

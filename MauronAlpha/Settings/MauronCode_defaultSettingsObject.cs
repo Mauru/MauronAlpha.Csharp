@@ -10,7 +10,7 @@ namespace MauronAlpha.Settings {
 	//A dataset that potentially holds defaultSettings
 	public abstract class MauronCode_defaultSettingsObject:MauronCode,I_Singleton, I_dataObject {
 		
-		public MauronCode_defaultSettingsObject():base(CodeType_defaultSettingsObject.Instance){}
+		public MauronCode_defaultSettingsObject():base(){}
 		
 		//has this object been initialized?
 		private bool B_initialized=false;

@@ -5,7 +5,7 @@ namespace MauronAlpha.ExplainingCode {
 	//A Code-Package Defining class
 	public class MauronCode_component:MauronCode {	
 		//constructor
-		public MauronCode_component():base(CodeType_component.Instance) {}
+		public MauronCode_component():base() {}
 
 		public static CodeType StaticCodeType {
 			get {

@@ -63,7 +63,7 @@ namespace MauronAlpha.HandlingData.Hashing {
 	public class MauronCode_hash : MauronCode {
 		
 		//constructor
-		public MauronCode_hash():base(CodeType_utility.Instance) {}
+		public MauronCode_hash():base() {}
 
 		public static UInt32  Unique {
 			get { return MurmurHash2.UniqueHash; }

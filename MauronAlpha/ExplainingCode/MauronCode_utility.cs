@@ -6,7 +6,7 @@ namespace MauronAlpha {
 
 	// a class that implements the utility codetype
 	public class MauronCode_utility : MauronCode {
-		public MauronCode_utility ( ) : base(CodeType_utility.Instance) { }
+		public MauronCode_utility ( ) : base() { }
 	}
 
 	//A class that offers exclusively static functions

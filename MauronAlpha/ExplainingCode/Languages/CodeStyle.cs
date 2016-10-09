@@ -5,7 +5,7 @@
     public abstract class CodeStyle:MauronCode {
 		
 		//Constructor
-		public CodeStyle():base(CodeType_subtype.Instance){}
+		public CodeStyle():base(){}
 
 		//Name
 		public abstract string Name { get; }

@@ -6,7 +6,7 @@ namespace MauronAlpha {
 
 	// a class that implements the utility codetype
 	public class MauronCode_singleton : MauronCode {
-		public MauronCode_singleton ( ) : base(CodeType_singleton.Instance) { }
+		public MauronCode_singleton ( ) : base() { }
 	}
 
 	//A Class using the singleton multithread pattern

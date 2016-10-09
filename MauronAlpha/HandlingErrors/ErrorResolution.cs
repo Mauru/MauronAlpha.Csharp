@@ -7,7 +7,7 @@ namespace MauronAlpha.HandlingErrors {
 	public class ErrorResolution:MauronCode {
 		
 		//constructor
-		private ErrorResolution(string name, string description):base(CodeType_errorResolution.Instance) {
+		private ErrorResolution(string name, string description):base() {
 			STR_name = name;
 			STR_description=description;
 		}

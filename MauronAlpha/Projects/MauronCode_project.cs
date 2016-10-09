@@ -10,7 +10,7 @@ namespace MauronAlpha.Projects {
 		I_project {
 
 		//The constructor
-		public MauronCode_project(ProjectType projecttype, string name):base(CodeType_project.Instance) {
+		public MauronCode_project(ProjectType projecttype, string name):base() {
 			SetProjectType(projecttype);
 		}
 
