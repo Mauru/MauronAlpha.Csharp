@@ -35,6 +35,10 @@
 			Set(o);
 		}
 
+		public void Initialize() {
+			B_isInitialized = true;
+		}
+
 		//Boolean states
 		bool B_isBusy = false;
 		public bool IsBusy { get { return B_isBusy; } }
@@ -46,74 +50,11 @@
 			}
 		}
 
-		public bool HasDefaultFont {
-			get {
-				if(!IsInitialized)
-					return false;
-				AssetGroup g = FetchAssetGroup("Default");
-				GameFont result = null;
-
-				return g.TryFont("Default", ref result);
-			}
-		}
-		public List<string> GetListOfFontNames(bool getGroupName) {
-			List<string> result = new List<string>();
-			foreach(AssetGroup g in DATA_AssetGroups)
-				result.AddValuesFrom(g.GetListOfFontNames(true));
-
-			return result;
-		}
-		public List<string> GetListOfFontNames() {
-			List<string> result = new List<string>();
-			foreach(AssetGroup g in DATA_AssetGroups)
-				result.AddValuesFrom(g.GetListOfFontNames());
-
-			return result;
-		}
-
-		public void Initialize() {
-			B_isInitialized = true;
-		}
-
-		//paths
-		Directory DIR_saveGames;
-		public Directory SaveDirectory {
-			get {
-				if(DIR_saveGames == null)
-					DIR_saveGames = DATA_Root.CreateDirectoryAndReturn("GameState");
-				return DIR_saveGames;
-			}
-		}
-		public Directory ContentDirectory {
-			get {
-				return DATA_Root.CreateDirectoryAndReturn("Content");
-			}
-		}
-		public Directory FontDirectory {
-			get {
-				return ContentDirectory;
-			}
-		}
-		public Directory TextureDirectory {
-			get {
-				return ContentDirectory;
-			}
-		}
-		public Directory LogDirectory {
-			get {
-				return ContentDirectory;
-			}
-		}
-		public Directory ShaderDirectory {
-			get {
-				return ContentDirectory;
-			}
-		}
-
+		//Handling AssetGroups
 		Registry<AssetGroup> DATA_AssetGroups = new Registry<AssetGroup>();
 		AssetGroup FetchAssetGroup(string str) {
 			AssetGroup g = null;
-			if(DATA_AssetGroups.TryGet(str, ref g))
+			if (DATA_AssetGroups.TryGet(str, ref g))
 				return g;
 			g = new AssetGroup(DATA_Manager, str);
 			DATA_AssetGroups.SetValue(str, g);
@@ -125,14 +66,7 @@
 			return g;
 		}
 
-		public GameFont DefaultFont {
-			get {
-				AssetGroup g = FetchAssetGroup("Default");
-				return g.Font("Default");
-			}
-		}
-
-		//Events
+		//AssetGroup-Events
 		Subscriptions<ReadyEvent> S_Ready = new Subscriptions<ReadyEvent>();
 		public virtual void Subscribe(I_subscriber<ReadyEvent> s) {
 			S_Ready.Add(s);
@@ -140,6 +74,89 @@
 		public virtual void UnSubscribe(I_subscriber<ReadyEvent> s) {
 			S_Ready.Remove(s);
 		}
+
+
+		//Generic paths
+		Directory DIR_saveGames;
+		public Directory SaveDirectory {
+			get {
+				if (DIR_saveGames == null)
+					DIR_saveGames = DATA_Root.CreateDirectoryAndReturn("GameState");
+				return DIR_saveGames;
+			}
+		}
+		public Directory ContentDirectory {
+			get {
+				return DATA_Root.CreateDirectoryAndReturn("Content");
+			}
+		}
+		public Directory LogDirectory {
+			get {
+				return ContentDirectory;
+			}
+		}
+
+
+		//Fonts
+		public bool HasDefaultFont {
+			get {
+				if(!IsInitialized)
+					return false;
+				AssetGroup g = FetchAssetGroup("Default");
+				GameFont result = null;
+
+				return g.TryFont("Default", ref result);
+			}
+		}
+		public List<string> ListOfFontNames(bool includeGroupName) {
+			List<string> result = new List<string>();
+			foreach(AssetGroup g in DATA_AssetGroups)
+				result.AddValuesFrom(g.ListOfFontNames(includeGroupName));
+
+			return result;
+		}
+		public GameFont DefaultFont {
+			get {
+				AssetGroup g = FetchAssetGroup("Default");
+				return g.Font("Default");
+			}
+		}
+		public Directory FontDirectory {
+			get {
+				return ContentDirectory;
+			}
+		}
+
+
+		//Textures
+		public List<string> ListOfTextureNames(bool includeGroupName) {
+			List<string> result = new List<string>();
+			foreach (AssetGroup g in DATA_AssetGroups)
+				result.AddValuesFrom(g.ListOfTextureNames(includeGroupName));
+
+			return result;
+		}
+		public Directory TextureDirectory {
+			get {
+				return ContentDirectory;
+			}
+		}
+
+
+		//Shaders
+		public List<string> ListOfShaderNames(bool includeGroupName) {
+			List<string> result = new List<string>();
+			foreach (AssetGroup g in DATA_AssetGroups)
+				result.AddValuesFrom(g.ListOfShaderNames(includeGroupName));
+
+			return result;
+		}
+		public Directory ShaderDirectory {
+			get {
+				return ContentDirectory;
+			}
+		}
+
 	
 	}
 

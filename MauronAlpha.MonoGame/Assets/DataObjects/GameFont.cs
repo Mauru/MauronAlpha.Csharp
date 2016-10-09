@@ -5,16 +5,21 @@
 	using MauronAlpha.FontParser.DataObjects;
 	using MauronAlpha.FontParser.Events;
 
-
 	using MauronAlpha.FileSystem.Units;
 
 	using MauronAlpha.MonoGame.Collections;
+	using MauronAlpha.MonoGame.DataObjects;
 	using MauronAlpha.MonoGame.Assets;
 
 	using MauronAlpha.Geometry.Geometry2d.Units;
+	using MauronAlpha.Geometry.Geometry2d.Shapes;
 
 	using MauronAlpha.TextProcessing.Units;
 	using MauronAlpha.TextProcessing.Collections;
+
+	using MauronAlpha.MonoGame.Rendering.DataObjects;
+
+	using Microsoft.Xna.Framework;
 
 	/// <summary> A SpriteFont </summary>
 	public class GameFont :MonoGameComponent {
@@ -54,12 +59,19 @@
 		}
 
 		Index<MonoGameTexture> _textures = new Index<MonoGameTexture>();
-		public void SetTexture(MonoGameTexture texture) {
-			int index = _font.IndexOfTexture(texture.Name);
+		public void SetTexture(MonoGameTexture texture, string name) {
+			if (texture == null)
+				throw new GameError("Texture can not be null!", this);
+			int index = _font.IndexOfTexture(name);
+			if (index < 0)
+				throw new GameError("Could not index font-texture {" + texture.Name + "}!", this);
 			_textures.SetValue(index, texture);			
 		}
 		public MonoGameTexture TextureByPageIndex(int index) {
 			return _textures.Value(index);
+		}
+		public bool TryTextureByPageIndex(int index, ref MonoGameTexture result) {
+			return _textures.TryIndex(index, ref result);
 		}
 
 		AssetManager Assets { 
@@ -125,6 +137,29 @@
 				return Vector2d.Zero;
 			PositionData p = this.FetchCharacterData(c.Symbol);
 			return new Vector2d(LineHeight + p.Width);
+		}
+
+		public SpriteData SpriteDataOfCharacter(Character c) {
+			PositionData data = FetchCharacterData(c.Symbol);
+			MonoGameTexture result = null;
+
+			if (!TryTextureByPageIndex(data.FontPage, ref result))
+				throw new GameError("Unknown texture for fontPage {" + data.FontPage + "} at Font {" + Name + "}.",this);
+
+			return new SpriteData(
+				result,
+				new Rectangle((int)data.X,(int)data.Y,(int)data.Width,(int)data.Height)
+			);
+		}
+
+		//Debug
+		public string DebugFontPages() {
+			string result = "";
+			foreach (MonoGameTexture texture in _textures) {
+				result += "[" + _font.IndexOfTexture(texture.Name) +":" + texture.Name + "]";
+			}
+			return result;
+
 		}
 	}
 

@@ -17,17 +17,7 @@
 
 		public Scene_BasicRectangle(GameManager game) : base(game) { }
 
-		Camera _camera;
-		public override Camera Camera {
-			get {
-				return _camera;
-			}
-		}
-
-		public VertexPositionColor[] _test;
-
 		DefaultShader _shader;
-
 
 		GraphicsDevice GraphicsDevice {
 			get { return Game.Renderer.GraphicsDevice; }
@@ -58,13 +48,6 @@
 			Game.Renderer.SetDrawMethod(ShapeRenderer.RenderDirectlyToScreen);
 
 			base.Initialize();
-		}
-
-		/// <summary> #TODO:# Will currently throw an implementation error </summary>
-		public override void RequestRender() {
-
-			throw new GameError("This GameScene can not currently request a RenderCall! Use the ShapeBuffer instead!", this);
-
 		}
 
 		public override GameRenderer.DrawMethod DrawMethod {

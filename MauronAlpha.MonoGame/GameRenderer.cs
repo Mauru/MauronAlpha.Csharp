@@ -37,8 +37,7 @@
 		System.Object LockStatus;
 
 		//Constructor
-		public GameRenderer(GameManager o)
-			: base() {
+		public GameRenderer(GameManager o): base() {
 			LockStatus = new System.Object();
 			Set(o);
 			B_isBusy = false;
@@ -92,13 +91,11 @@
 			else
 				B_isBusy = true;
 
-			//Get properties from the engine
 			GameEngine engine = DATA_Manager.Engine;
-
-
-
-			//Create the shader for drawing meshes
+			
 			GraphicsDevice device = engine.GraphicsDevice;
+			
+			_spriteBatch = new SpriteBatch(device);
 
 			CreateRenderTargets();
 
@@ -156,6 +153,9 @@
 				return _blank;
 			}
 		}
+
+		SpriteBatch _spriteBatch;
+		public SpriteBatch DefaultSpriteBatch { get { return _spriteBatch; } }
 
 		//Property Returns
 		public Vector2d ScreenSize {

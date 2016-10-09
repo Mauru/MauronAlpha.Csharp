@@ -13,8 +13,11 @@
 
 	using MauronAlpha.MonoGame.UI.DataObjects;
 	using MauronAlpha.MonoGame.Interfaces;
+
 	using MauronAlpha.MonoGame.Rendering;
+	using MauronAlpha.MonoGame.Rendering.DataObjects;
 	using MauronAlpha.MonoGame.Rendering.Interfaces;
+	using MauronAlpha.MonoGame.Rendering.Collections;
 
 	using MauronAlpha.MonoGame.Assets.DataObjects;
 
@@ -55,7 +58,7 @@
 					pos.Y = v.FloatY;
 					lineSize.Add(p.Width);
 				
-					batch.Draw(t.Texture, pos, o, m);
+					batch.Draw(t.AsTexture2d, pos, o, m);
 				}
 				if(lineSize.X>finalSize.X)
 					finalSize.SetX(lineSize.X);
@@ -73,10 +76,19 @@
 			get { return RenderMethod; }
 		}
 
-		public static void DrawMethod(GameRenderer renderer, long time) { 
-			
-			
+		public static void DrawMethod(GameRenderer renderer, long time) {
+			I_GameScene scene = renderer.CurrentScene;
 
+			GraphicsDevice device = renderer.GraphicsDevice;
+			SpriteBatch batch = renderer.DefaultSpriteBatch;
+
+			SpriteBuffer buffer = scene.SpriteBuffer;
+
+			device.Clear(Color.Linen);
+			batch.Begin();
+			foreach (SpriteData data in buffer)
+				batch.Draw(data.Texture.AsTexture2d, data.Texture.SizeAsRectangle, data.Mask, data.Color);
+			batch.End();
 		}
 	}
 }

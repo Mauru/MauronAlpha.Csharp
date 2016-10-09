@@ -59,6 +59,7 @@
     <Compile Include="Geometry\PolyTriangle.cs" />
     <Compile Include="Rendering\Camera.cs" />
     <Compile Include="Rendering\Collections\Shadertypes.cs" />
+    <Compile Include="Rendering\Collections\SpriteBuffer.cs" />
     <Compile Include="Rendering\DataObjects\SpriteData.cs" />
     <Compile Include="Rendering\DataObjects\BackBuffer.cs" />
     <Compile Include="Rendering\Collections\BlendModes.cs" />
@@ -81,7 +82,7 @@
     <Compile Include="DataObjects\GameResource.cs" />
     <Compile Include="DataObjects\GameSetup.cs" />
     <Compile Include="DataObjects\GameState.cs" />
-    <Compile Include="DataObjects\GameText.cs" />
+    <Compile Include="UI\DataObjects\GameText.cs" />
     <Compile Include="Rendering\MonoGameLines.cs" />
     <Compile Include="Rendering\MonoGameShape.cs" />
     <Compile Include="Assets\DataObjects\MonoGameTexture.cs" />

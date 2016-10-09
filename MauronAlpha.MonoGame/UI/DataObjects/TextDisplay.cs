@@ -5,6 +5,7 @@
 	using MauronAlpha.MonoGame.DataObjects;
 
 	using MauronAlpha.MonoGame.Rendering;
+	using MauronAlpha.MonoGame.Rendering.DataObjects;
 	using MauronAlpha.MonoGame.Rendering.Utility;
 	using MauronAlpha.MonoGame.Rendering.Collections;
 	using MauronAlpha.MonoGame.Rendering.Interfaces;
@@ -14,6 +15,8 @@
 	using MauronAlpha.Geometry.Geometry2d.Units;
 
 	using MauronAlpha.MonoGame.Assets.DataObjects;
+
+	using MauronAlpha.MonoGame.Collections;
 
 	public class TextDisplay :UIElement,I_Renderable {
 
@@ -106,6 +109,40 @@
 		public override System.Type RenderPresetType {
 			get {	return typeof(TextDisplay); }
 		}
+
+		SpriteBuffer _buffer;
+		public SpriteBuffer SpriteBuffer {
+			get {
+				if (_buffer != null)
+					return _buffer;
+				SpriteBuffer result = new SpriteBuffer();
+				Vector2d yOffset = Vector2d.Zero;
+				foreach (Line l in _text.Lines) {
+					SpriteBuffer buffer = SpriteBufferOfLine(l);
+					buffer.OffsetPosition(yOffset);
+					yOffset.Add(0,LineHeight);
+					result.AddValuesFrom(buffer);
+				}
+				_buffer = result;
+
+				return result;
+			}
+		}
+
+		public SpriteBuffer SpriteBufferOfLine(Line l) {
+
+			SpriteBuffer result = new SpriteBuffer();
+			Vector2d pos = Vector2d.Zero;
+			foreach (Character c in l.Characters) {
+				SpriteData d = _text.Font.SpriteDataOfCharacter(c);
+				d.SetPosition(pos);
+				result.Add(d);
+				pos.Add(d.Mask.Width);
+			}
+
+			return result;
+
+		}
 	}
 }
 
@@ -127,7 +164,6 @@ namespace MauronAlpha.MonoGame.UI.DataObjects {
 			return Padding.Equals(other.Padding) && Margin.Equals(other.Margin);
 		}
 	}
-
 
 }
 

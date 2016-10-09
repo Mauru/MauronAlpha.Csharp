@@ -26,9 +26,14 @@
 		bool B_isBusy = false;
 		public bool IsBusy { get { return B_isBusy; } }
 
+
+		string _name;
+		public string Name { get { return _name; } }
+
 		public TextureLoader(GameManager game, string name)	: base() {
 			_game = game;
 			_file = new File(game.Assets.TextureDirectory, name);
+			_name = name;
 		}
 
 		public void Start() {
@@ -48,6 +53,7 @@
 			}
 
 			_result = new MonoGameTexture(_game, result);
+			_result.SetName(_name);
 			B_isBusy = false;
 
 			if(_subscriptions != null)

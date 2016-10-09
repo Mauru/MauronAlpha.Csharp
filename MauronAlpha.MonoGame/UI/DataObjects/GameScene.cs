@@ -32,11 +32,21 @@
 				return _shapes;
 			}
 		}
+		public virtual void SetShapeBuffer(ShapeBuffer buffer) {
+			_shapes = buffer;
+		}
 
-		List<I_Renderable> _children = new List<I_Renderable>();
-		public List<I_Renderable> Children { get { return _children; } }
-		public void AddChild(I_Renderable r) {
-			_children.Add(r);
+		SpriteBuffer _sprites;
+		public virtual SpriteBuffer SpriteBuffer {
+			get {
+				if (_sprites != null)
+					return _sprites;
+				_sprites = new SpriteBuffer();
+				return _sprites;
+			}
+		}
+		public virtual void SetSpriteBuffer(SpriteBuffer buffer) {
+			_sprites = buffer;
 		}
 
 		public GameScene(GameManager game) : base() {
@@ -51,10 +61,6 @@
 		public virtual void Initialize() {
 			_initialized = true;
 		}
-
-		public abstract void RequestRender();
-
-		public abstract Camera Camera { get; }
 
 		public abstract GameRenderer.DrawMethod DrawMethod { get; }
 

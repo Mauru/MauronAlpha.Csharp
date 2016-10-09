@@ -1,4 +1,4 @@
-﻿namespace MauronAlpha.MonoGame.DataObjects {
+﻿namespace MauronAlpha.MonoGame.UI.DataObjects {
 	using MauronAlpha.TextProcessing.Units;
 	using MauronAlpha.TextProcessing.Collections;
 	using MauronAlpha.Geometry.Geometry2d.Units;
@@ -6,6 +6,9 @@
 	using MauronAlpha.FontParser.DataObjects;
 
 	using MauronAlpha.MonoGame.Assets.DataObjects;
+	using MauronAlpha.MonoGame.Rendering.DataObjects;
+
+	using MauronAlpha.MonoGame.Collections;
 
 	/// <summary> Represents a text-object. </summary>
 	public class GameText:MonoGameComponent {
@@ -97,7 +100,7 @@
 
 			return d.Width;
 		}
-		
+
 	}
 
 }

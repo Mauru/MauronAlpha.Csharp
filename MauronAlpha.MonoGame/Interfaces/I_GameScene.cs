@@ -11,17 +11,15 @@
 
 		GameManager Game { get; }
 
-		void RequestRender();
 
 		void Initialize();
 
 		bool IsInitialized { get; }
 
-		List<I_Renderable> Children { get; }
+
 
 		ShapeBuffer ShapeBuffer { get; }
-
-		Camera Camera { get; }
+		SpriteBuffer SpriteBuffer { get; }
 
 		GameRenderer.DrawMethod DrawMethod { get; }
 	}

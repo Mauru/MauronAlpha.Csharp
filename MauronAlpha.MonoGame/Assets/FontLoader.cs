@@ -98,7 +98,7 @@
 		public bool ReceiveEvent(TextureLoaderEvent e) {
 			TextureLoader loader = e.Target;
 			loader.UnSubscribe(this);
-			_result.SetTexture(loader.Result);
+			_result.SetTexture(loader.Result, loader.Name);
 			CycleTextures();
 			return true;
 		}
