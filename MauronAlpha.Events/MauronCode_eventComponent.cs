@@ -8,7 +8,7 @@ namespace MauronAlpha.Events {
 	public class MauronCode_eventComponent:MauronCode {
 
 		//constructor
-		public MauronCode_eventComponent():base(CodeType_eventComponent.Instance){}
+		public MauronCode_eventComponent():base(){}
 
 	}
 
