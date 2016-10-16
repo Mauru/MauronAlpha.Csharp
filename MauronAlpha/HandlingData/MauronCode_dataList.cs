@@ -464,16 +464,23 @@ namespace MauronAlpha.HandlingData {
 				return Data[FirstIndex];
 			}
 		}
+		public bool TryFirstElement(ref T result) {
+			return TryIndex(0, ref result);
+		}
 		public T LastElement {
 			get {
 				#region Error Check
-				if( Data.Count<1 ) {
+				if( Data.Count<1 )
 					MauronCode.Error("Data is empty!,(LastElement)", this, ErrorType_index.Instance);
-				}
+
 				#endregion
 				return Data[LastIndex];
 			}
 		}
+		public bool TryLastElement(ref T result) {
+			return TryIndex(Count-1, ref result);
+		}
+		
 		public T this[int key] {
 			get { return Value(key);}
 		}
