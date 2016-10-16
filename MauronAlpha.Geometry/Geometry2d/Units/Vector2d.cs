@@ -34,6 +34,11 @@ namespace MauronAlpha.Geometry.Geometry2d.Units {
 				return new Vector2d( this );
 			}
 		}
+		public Vector2d Copy {
+			get {
+				return new Vector2d(INT_x, INT_y);
+			}
+		}
 		Object ICloneable.Clone() {
 			return new Vector2d( this );
 		}
@@ -283,6 +288,11 @@ namespace MauronAlpha.Geometry.Geometry2d.Units {
 			SetY(Y*v.Y);
 			return this;
 		}
+		public Vector2d Multiply(double x, double y) {
+			INT_x = INT_x * x;
+			INT_y = INT_y * y;
+			return this;
+		}
 		//divide
 		public Vector2d Divide (double n) {
 			#region ReadOnly Check
@@ -306,6 +316,11 @@ namespace MauronAlpha.Geometry.Geometry2d.Units {
 				SetX(X/v.X);
 			if( v.Y!=0 )
 				SetY(Y/v.Y);
+			return this;
+		}
+		public Vector2d Divide(double x, double y) {
+			INT_x = INT_x / x;
+			INT_y = INT_y / y;
 			return this;
 		}
 		#endregion
