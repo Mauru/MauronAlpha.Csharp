@@ -3,6 +3,7 @@
 	
 	using MauronAlpha.Geometry.Geometry2d.Units;
 	using MauronAlpha.Geometry.Geometry2d.Shapes;
+	using MauronAlpha.FontParser.DataObjects;
 
 	using Microsoft.Xna.Framework;
 
@@ -24,17 +25,66 @@
 			get { return _texture; }
 		}
 
-		Vector2d _position = Vector2d.Zero;
+		public double Width {
+			get {
+				if (_texture == null)
+					return 0;
+				if (_mask != null)
+					return _mask.Value.Width;
+
+				return _texture.Width;
+			}
+		}
+		public double Height {
+			get {
+				if (_texture == null)
+					return 0;
+				if (_mask != null)
+					return _mask.Value.Height;
+
+				return _texture.Height;
+			}
+		}
+
+		Vector2d _position = new Vector2d();
 		public Vector2d Position { get { return _position; } }
 		public SpriteData SetPosition(Vector2d v) {
 			_position = v;
 			return this;
 		}
+		public SpriteData SetPosition(double x, double y) {
+			_position = new Vector2d(x, y);
+			return this;
+		}
+		
+		System.Nullable<Rectangle> _posAsRect = null;
+		public Rectangle PositionAsRectangle {
+			get {
+				if (_posAsRect == null) {
+					Rectangle result = GeneratePositionRectangle(this);
+					_posAsRect = result;
+				}
+				return _posAsRect.Value;
+			}
+		}
+		public Rectangle GeneratePositionRectangle(SpriteData data) {
+			Rectangle result = new Rectangle(data.Position.IntX, data.Position.IntY, (int)data.Width, (int)data.Height);
+			return result;
+		}
 
-		Rectangle _mask;
+		System.Nullable<Rectangle> _mask;
 		public Rectangle Mask {
 			get {
-				return _mask;
+				return _mask.Value;
+			}
+		}
+
+		Color _color;
+		public Color Color {
+			get {
+				if (_color == null)
+					return Color.White;
+				return _color;
 			}
 		}
 
@@ -47,12 +97,6 @@
 			);
 		}
 
-		Color _color;
-		public Color Color { get {
-			if (_color == null)
-				return Color.White;
-			return _color;		
-		} }
 	}
 
 }

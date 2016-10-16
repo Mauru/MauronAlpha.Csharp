@@ -20,8 +20,10 @@
 			renderer.GraphicsDevice.Clear(Color.Purple);
 
 			batch.Begin();
-			foreach (SpriteData data in buffer)
-				batch.Draw(data.Texture.AsTexture2d, data.Texture.SizeAsRectangle, data.Mask, data.Color);
+			foreach (SpriteData data in buffer) {
+				Texture2D d = data.Texture.AsTexture2d;
+				batch.Draw(d,d.Bounds,Color.Red);
+			}
 			batch.End();
 		}
 	}

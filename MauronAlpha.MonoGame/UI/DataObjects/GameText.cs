@@ -22,6 +22,12 @@
 			_font = font;
 		}
 
+		public bool IsEmpty {
+			get {
+				return _text == null || _text.IsEmpty;
+			}
+		}
+
 		GameFont _font;
 		public GameFont Font { get { return _font; } }
 		public void SetFont(GameFont font) {
@@ -81,22 +87,22 @@
 					v.Add(MeasureCharacterWidth(c), 0);
 			}
 
-			v.SetY(lcount * (CharacterHeight+_lineSpacing));
+			v.SetY(lcount * (LineHeight+_lineSpacing));
 			return v;
 		}
 
 		int _lineSpacing = 1;
-		double CharacterHeight {
+		double LineHeight {
 			get {
 				if(_font == null)
 					return 0;
-				return _font.CharacterHeight;
+				return _font.LineHeight;
 			}
 		}
 		double MeasureCharacterWidth(Character c) {
 			if(c.IsLineBreak || c.IsParagraphBreak)
 				return 0;
-			PositionData d = _font.FetchCharacterData(c.Symbol);
+			PositionData d = _font.PositionData(c.Symbol);
 
 			return d.Width;
 		}

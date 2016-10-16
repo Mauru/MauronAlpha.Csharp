@@ -52,14 +52,11 @@
 			_result = new GameFont(_game, _name, def);
 			TextureLoader loader;
 			foreach(FontPage p in def.FontPages) {
-
 				loader = new TextureLoader(_game, p.FileName);
 				_textures.Add(loader);
-
 			}
 			CycleTextures();
-			return true;
-			
+			return true;			
 		}
 
 		void LoadCycleComplete() {

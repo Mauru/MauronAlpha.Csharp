@@ -16,10 +16,12 @@
 
 		bool IsInitialized { get; }
 
-
+		void RunLogicCycle(long time);
 
 		ShapeBuffer ShapeBuffer { get; }
 		SpriteBuffer SpriteBuffer { get; }
+
+		void SetSpriteBuffer(SpriteBuffer buffer);
 
 		GameRenderer.DrawMethod DrawMethod { get; }
 	}

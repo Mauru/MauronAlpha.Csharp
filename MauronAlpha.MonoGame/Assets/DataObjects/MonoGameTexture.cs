@@ -16,19 +16,6 @@
 				return _texture;
 			}
 		}
-		public MonoGameTexture(GameManager game, Texture2D texture): base() {
-			_texture = texture;
-		}
-
-		public static Polygon2dBounds BoundsOfTexture(Texture2D t) {
-			return new Polygon2dBounds(t.Width, t.Height);
-		}
-
-		public Rectangle SizeAsRectangle { get {
-			if (_texture == null)
-				return new Rectangle();
-			return _texture.Bounds;
-		} }
 
 		string _name;
 		public string Name {
@@ -39,6 +26,42 @@
 		public void SetName(string name) {
 			_name = name;
 		}
+
+		//constructor
+		public MonoGameTexture(GameManager game, Texture2D texture): base() {
+			_texture = texture;
+		}
+
+		public static Polygon2dBounds BoundsOfTexture(Texture2D t) {
+			return new Polygon2dBounds(t.Width, t.Height);
+		}
+
+		public double Width {
+			get {
+				if (_texture == null)
+					return 0;
+				return _texture.Width;
+			}
+		}
+		public double Height {
+			get {
+				if (_texture == null)
+					return 0;
+				return _texture.Height;
+			}
+		}
+
+		public Vector2d SizeAsVector2d {
+			get {
+				return new Vector2d(Width, Height);
+			}
+		}
+		public Rectangle SizeAsRectangle { get {
+			if (_texture == null)
+				return new Rectangle();
+			return _texture.Bounds;
+		} }
+
 	}
 
 }

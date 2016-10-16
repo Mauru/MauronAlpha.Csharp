@@ -62,6 +62,8 @@
 			_initialized = true;
 		}
 
+		public virtual void RunLogicCycle(long time) { }
+
 		public abstract GameRenderer.DrawMethod DrawMethod { get; }
 
 	}

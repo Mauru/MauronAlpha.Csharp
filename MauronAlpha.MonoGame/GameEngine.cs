@@ -23,11 +23,6 @@
 			Set(o);
 		}
 
-		//temporary cmponents
-		BasicEffect _effect;
-		VertexBuffer _buffer;
-		VertexPositionColor[] _vertexData;
-
 		//XNA related components
 		GraphicsDeviceManager GraphicsDeviceManager;
 
@@ -157,11 +152,6 @@
 
 		//4 - Draw calls
 		protected override void Draw(GameTime gameTime) {
-			/* Basic test call 
-			GraphicsDevice.Clear(Color.Magenta);
-			_effect.CurrentTechnique.Passes[0].Apply();
-			GraphicsDevice.DrawUserPrimitives<VertexPositionColor>(PrimitiveType.TriangleList, _vertexData, 0, 1);*/
-
 			if(B_isInitialized) {
 				if(Renderer.IsInitialized)
 					Renderer.Draw(gameTime.ElapsedGameTime.Ticks);

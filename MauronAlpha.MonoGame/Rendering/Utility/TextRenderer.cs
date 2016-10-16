@@ -23,12 +23,15 @@
 
 	public class TextRenderer:MonoGameComponent, I_Renderer {
 
+		GameRenderer.RenderMethod I_Renderer.RenderMethod {
+			get { return RenderMethod; }
+		}
+
 		public static GameRenderer.RenderMethod RenderMethod {
 			get {
 				return RenderTextToTexture;
 			}
 		}
-
 		public static I_RenderResult RenderTextToTexture(RenderStage stage, I_Renderable target, long time) {
 			stage.SetAsRenderTarget();
 			TextDisplay text = (TextDisplay) target;
@@ -49,7 +52,7 @@
 				Characters cc = l.Characters;
 				foreach(Character c in cc) {
 					
-					PositionData p = font.FetchCharacterData(c.Symbol);
+					PositionData p = font.PositionData(c.Symbol);
 					MonoGameTexture t = font.TextureByPageIndex(p.FontPage);
 					o = new Rectangle(p.X,p.Y,p.Width,p.Height);
 					Color m = Color.Red;
@@ -72,9 +75,6 @@
 
 		}
 
-		GameRenderer.RenderMethod I_Renderer.RenderMethod {
-			get { return RenderMethod; }
-		}
 
 		public static void DrawMethod(GameRenderer renderer, long time) {
 			I_GameScene scene = renderer.CurrentScene;
@@ -84,11 +84,23 @@
 
 			SpriteBuffer buffer = scene.SpriteBuffer;
 
-			device.Clear(Color.Linen);
+			int index = 0;
+			device.Clear(Color.Purple);
 			batch.Begin();
-			foreach (SpriteData data in buffer)
-				batch.Draw(data.Texture.AsTexture2d, data.Texture.SizeAsRectangle, data.Mask, data.Color);
+			foreach (SpriteData data in buffer) {
+				Rectangle position = data.PositionAsRectangle;
+				Rectangle mask = data.Mask;
+				batch.Draw(data.Texture.AsTexture2d, position, mask, Color.White);
+				index++;
+
+			}
 			batch.End();
 		}
+
+		///<summary> Generates SpriteData.Mask using GameFont.PositionData</summary>
+		public static Rectangle GenerateMaskFromPositionData(PositionData data) {
+			return new Rectangle(data.X, data.Y, data.Width, data.Height);
+		}
+	
 	}
 }

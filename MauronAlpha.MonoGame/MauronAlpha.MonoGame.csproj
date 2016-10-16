@@ -42,10 +42,12 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Assets\AssetGroup.cs" />
+    <Compile Include="Assets\DataObjects\TextFormat.cs" />
     <Compile Include="Assets\FontLoader.cs" />
     <Compile Include="Assets\AssetType.cs" />
     <Compile Include="Assets\AssetTypes.cs" />
     <Compile Include="Assets\AssetLoadEvent.cs" />
+    <Compile Include="Assets\Interfaces\I_GameFont.cs" />
     <Compile Include="Assets\LoadRequest.cs" />
     <Compile Include="Assets\MonoGameAsset.cs" />
     <Compile Include="Assets\ShaderLoader.cs" />
@@ -82,6 +84,11 @@
     <Compile Include="DataObjects\GameResource.cs" />
     <Compile Include="DataObjects\GameSetup.cs" />
     <Compile Include="DataObjects\GameState.cs" />
+    <Compile Include="Rendering\Utility\MixedRenderer.cs" />
+    <Compile Include="Rendering\Utility\TextureRenderer.cs" />
+    <Compile Include="Scene_BasicText.cs" />
+    <Compile Include="Scene_BasicTexture.cs" />
+    <Compile Include="Scene_Mixed.cs" />
     <Compile Include="UI\DataObjects\GameText.cs" />
     <Compile Include="Rendering\MonoGameLines.cs" />
     <Compile Include="Rendering\MonoGameShape.cs" />
@@ -121,7 +128,6 @@
     <Compile Include="ReadyEvent.cs" />
     <Compile Include="Assets\DataObjects\GameFontStyle.cs" />
     <Compile Include="Scene_BasicRectangle.cs" />
-    <Compile Include="Scene_BasicText.cs" />
     <Compile Include="UI\Collections\BlendModes.cs" />
     <Compile Include="UI\Collections\HierarchyChildren.cs" />
     <Compile Include="UI\DataObjects\GameScene.cs" />

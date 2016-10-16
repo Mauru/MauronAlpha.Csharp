@@ -9,7 +9,9 @@
 
 	using MauronAlpha.MonoGame.Collections;
 	using MauronAlpha.MonoGame.DataObjects;
+
 	using MauronAlpha.MonoGame.Assets;
+	using MauronAlpha.MonoGame.Assets.Interfaces;
 
 	using MauronAlpha.Geometry.Geometry2d.Units;
 	using MauronAlpha.Geometry.Geometry2d.Shapes;
@@ -22,8 +24,7 @@
 	using Microsoft.Xna.Framework;
 
 	/// <summary> A SpriteFont </summary>
-	public class GameFont :MonoGameComponent {
-
+	public class GameFont :MonoGameComponent, I_GameFont {
 		string STR_name;
 		public string Name {
 			get {
@@ -35,6 +36,15 @@
 
 		public bool IsNull {
 			get { return STR_name == null; }
+		}
+		public bool HasLoaded {
+			get {
+				if (_font == null)
+					return false;
+				if (!_font.IsParsed)
+					return false;
+				return (_textures.CountKeys >= _font.FontPages.Count);
+			}
 		}
 
 		//constructor
@@ -48,6 +58,7 @@
 			STR_name = name;
 		}
 
+		//FontDefinition
 		FontDefinition _font;
 		public void SetDefinition(FontDefinition font) {
 			_font = font;
@@ -58,6 +69,7 @@
 			}
 		}
 
+		//Texture Atlas
 		Index<MonoGameTexture> _textures = new Index<MonoGameTexture>();
 		public void SetTexture(MonoGameTexture texture, string name) {
 			if (texture == null)
@@ -73,6 +85,13 @@
 		public bool TryTextureByPageIndex(int index, ref MonoGameTexture result) {
 			return _textures.TryIndex(index, ref result);
 		}
+		public List<string> TextureNames() {
+			List<string> result = new List<string>();
+			foreach (MonoGameTexture t in _textures)
+				result.Add(t.Name);
+
+			return result;
+		}
 
 		AssetManager Assets { 
 			get {
@@ -80,27 +99,26 @@
 			}
 		}
 
-		public bool HasLoaded {
-			get {
-				if(_font == null)
-					return false;
-				if(!_font.IsParsed)
-					return false;
-				return (_textures.CountKeys >= _font.FontPages.Count);
-			}
-		}
-
-		public PositionData FetchCharacterData(char c) {
+		public PositionData PositionData(char c) {
 			return _font.PositionData(c);
 		}
-		public double CharacterHeight {
+		public PositionData PositionData(Character c) {
+			return _font.PositionData(c.Symbol);
+		}
+		public bool TryPositionData(Character c, ref PositionData result) {
+			return _font.TryPositionData(c.Symbol, ref result);
+		}
+		public bool TryPositionData(char c, ref PositionData result) {
+			return _font.TryPositionData(c, ref result);
+		}
+
+		public double BaseHeight {
 			get {
 				if(_font == null || !_font.IsParsed)
 					return 0;
 				return _font.FontInfo.BaseHeight;
 			}
 		}
-
 		public double LineHeight {
 			get {
 				if(_font == null || !_font.IsParsed)
@@ -109,47 +127,24 @@
 			}
 		}
 
-		public Vector2d MeasureText(Text text) {
-			Vector2d result = new Vector2d();
-			Lines ll = text.Lines;
-			foreach (Line l in ll) {
-				Vector2d size = MeasureLine(l);
-				result.Add(size);
+		//Some basic defaults
+		public static Character UnknownCharacter {
+			get {
+				return new Character('\uFFFD');
 			}
-			return result;
 		}
-		public Vector2d MeasureLine(Line line) {
-			Vector2d minMax = new Vector2d();
-			Characters cc = line.Characters;
-			Vector2d result = new Vector2d(0, LineHeight);
-			foreach (Character c in cc) {
-				Vector2d charSize = MeasureCharacter(c);
-				if (charSize.Y > result.Y)
-					result.SetY(charSize.Y);
-				result.Add(charSize.X, 0);
+
+		TextFormat _textFormat;
+		public TextFormat TextFormat {
+			get {
+				if (_textFormat == null)
+					_textFormat = DefaultTextFormat;
+				return _textFormat;
 			}
-			return result;
-		}
-		public Vector2d MeasureCharacter(Character c) {
-			if (c.IsEmpty)
-				return Vector2d.Zero;
-			if (c.IsVirtual)
-				return Vector2d.Zero;
-			PositionData p = this.FetchCharacterData(c.Symbol);
-			return new Vector2d(LineHeight + p.Width);
 		}
 
-		public SpriteData SpriteDataOfCharacter(Character c) {
-			PositionData data = FetchCharacterData(c.Symbol);
-			MonoGameTexture result = null;
-
-			if (!TryTextureByPageIndex(data.FontPage, ref result))
-				throw new GameError("Unknown texture for fontPage {" + data.FontPage + "} at Font {" + Name + "}.",this);
-
-			return new SpriteData(
-				result,
-				new Rectangle((int)data.X,(int)data.Y,(int)data.Width,(int)data.Height)
-			);
+		public static TextFormat DefaultTextFormat {
+			get { return TextFormat.Default; }
 		}
 
 		//Debug
