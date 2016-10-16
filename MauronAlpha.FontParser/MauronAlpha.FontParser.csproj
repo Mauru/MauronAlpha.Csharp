@@ -40,8 +40,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataObjects\DataSet.cs" />
+    <Compile Include="DataObjects\Distance.cs" />
     <Compile Include="DataObjects\FontDefinition.cs" />
-    <Compile Include="FontParser.cs" />
+    <Compile Include="DataObjects\FontInfo.cs" />
+    <Compile Include="DataObjects\FontPage.cs" />
+    <Compile Include="DataObjects\ParseResult.cs" />
+    <Compile Include="DataObjects\PositionData.cs" />
+    <Compile Include="Events\FontLoadEvent.cs" />
+    <Compile Include="FontHelper.cs" />
+    <Compile Include="FontParserComponent.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
