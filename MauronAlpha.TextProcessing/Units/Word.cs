@@ -131,6 +131,16 @@ namespace MauronAlpha.TextProcessing.Units {
 				return Characters.IsEmpty;
 			}
 		}
+		/// <summary> If a word is empty, a line or paragraph break </summary>
+		public bool IsVirtual {
+			get {
+				Character test = null;
+				if (!TryIndex(0, ref test))
+					return false;
+				return test.IsVirtual;				
+			}
+		}
+		/// <summary> If a character is a whitespace, tab, line or paragraph break </summary>
 		public bool IsUtility {
 			get {
 				Character test = null;

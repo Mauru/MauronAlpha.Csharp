@@ -156,7 +156,15 @@ namespace MauronAlpha.TextProcessing.Units {
 				return Words.HasLineOrParagraphBreak;
 			}
 		}
-		
+		public bool IsVirtual {
+			get {
+				Word w = null;
+				if(!TryIndex(0,ref w))
+					return true;
+				return w.IsVirtual;
+			}
+		}
+
 		//Boolean Queries
 		public bool Allows(Word word) {
 			if (IsEmpty)

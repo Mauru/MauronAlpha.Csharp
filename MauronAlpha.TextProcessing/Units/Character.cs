@@ -138,6 +138,7 @@ namespace MauronAlpha.TextProcessing.Units {
 		public bool IsLineBreak = false;
 		public bool IsParagraphBreak = false;
 		public bool IsEmpty = false;
+		/// <summary>If a character is tab, whitespace, line or paragaphbreak </summary>
 		public bool IsUtility {
 			get {
 				if(IsWhiteSpace || IsTab || IsLineBreak || IsParagraphBreak)
@@ -145,6 +146,7 @@ namespace MauronAlpha.TextProcessing.Units {
 				return false;
 			}
 		}
+		/// <summary> if a character is empty, a line or paragraph break (i.e. does not have any visual size)</summary>
 		public bool IsVirtual {
 			get {
 				if (IsEmpty)
