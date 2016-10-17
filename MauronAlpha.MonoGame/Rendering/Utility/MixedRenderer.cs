@@ -2,7 +2,7 @@
 	using MauronAlpha.MonoGame.Interfaces;
 	using MauronAlpha.MonoGame.Rendering.Collections;
 	using MauronAlpha.MonoGame.Rendering.DataObjects;
-
+	using MauronAlpha.MonoGame.Geometry.DataObjects;
 	using Microsoft.Xna.Framework.Graphics;
 	using Microsoft.Xna.Framework;
 	public class MixedRenderer : MonoGameComponent {
@@ -17,6 +17,7 @@
 			I_GameScene scene = renderer.CurrentScene;
 			SpriteBuffer sprites = scene.SpriteBuffer;
 			ShapeBuffer shapes = scene.ShapeBuffer;
+			LineBuffer lines = scene.LineBuffer;
 
 			I_Shader shader = renderer.CurrentShader;
 			shader.Apply();
@@ -25,6 +26,8 @@
 
 			SpriteBatch batch = renderer.DefaultSpriteBatch;
 			batch.Begin();
+			foreach(MonoGameLine line in lines)
+				batch.Draw(renderer.PixelTexture, line.Rectangle, null, Color.White, line.AngleAsRadFloat, Vector2.Zero, SpriteEffects.None, 1f);
 			foreach (SpriteData data in sprites) {
 				Rectangle position = data.PositionAsRectangle;
 				Rectangle mask = data.Mask;

@@ -15,6 +15,7 @@
 
 	using MauronAlpha.Geometry.Geometry2d.Shapes;
 	using MauronAlpha.Geometry.Geometry2d.Units;
+	using MauronAlpha.Geometry.Geometry2d.Collections;
 
 	using Microsoft.Xna.Framework;
 	using Microsoft.Xna.Framework.Graphics;
@@ -32,15 +33,19 @@
 		public override void Initialize() {
 
 			//Sample shape
-			Ngon2d hex = new Ngon2d(6, 100);
+			Polygon2d hex = new Rectangle2d(0, 0, 100, 100);
+
+			//Segment2dList segments = hex.Segments;
+			LineBuffer lines = new LineBuffer(hex.Segments);
+			SetLineBuffer(lines);
 
 			ShapeBuffer.Add(hex);
 			ShapeBuffer.Triangulate(Game.Renderer, Color.Red);
 
 			//shader
 			Vector2d size = new Vector2d(
-				2 / (double)GraphicsDevice.Viewport.Width,
-				2 / (double)GraphicsDevice.Viewport.Height
+				2 / (double) GraphicsDevice.Viewport.Width,
+				2 / (double) GraphicsDevice.Viewport.Height
 			);
 
 			DefaultShader shader = new DefaultShader(Game);

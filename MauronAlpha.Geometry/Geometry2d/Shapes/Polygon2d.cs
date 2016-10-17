@@ -43,7 +43,7 @@ namespace MauronAlpha.Geometry.Geometry2d.Shapes {
 		public virtual Segment2dList Segments {
 			get {
 				if(DATA_segments==null)
-					DATA_segments = BuildSegments(TransformedPoints);
+					DATA_segments = BuildSegments(DATA_points);
 				return DATA_segments;
 			}
 		}
@@ -57,11 +57,11 @@ namespace MauronAlpha.Geometry.Geometry2d.Shapes {
 			if( count == 1 )
 				return result.AddValue( new Segment2d( points.Value( 0 ), points.Value( 0 ) ) );
 
-			for( int i=0; i<count; i++ ) {
+			for( int i=0; i < count; i++ ) {
 				Vector2d v_current=points.Value( i );
-				if( i%2==0&&points.ContainsKey( i+1 ) ) {
+				if( i%2 == 0 && points.ContainsKey( i+1 ) ) {
 					Vector2d v_next = points.Value( i + 1 );
-					Segment2d s=new Segment2d( v_current, v_next );
+					Segment2d s = new Segment2d( v_current, v_next );
 					result.AddValue( s );
 				}
 			}

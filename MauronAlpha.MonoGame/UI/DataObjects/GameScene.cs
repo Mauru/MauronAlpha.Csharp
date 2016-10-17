@@ -49,6 +49,19 @@
 			_sprites = buffer;
 		}
 
+		LineBuffer _lines;
+		public virtual LineBuffer LineBuffer {
+			get {
+				if (_lines != null)
+					return _lines;
+				_lines = new LineBuffer();
+				return _lines;
+			}
+		}
+		public virtual void SetLineBuffer(LineBuffer buffer) {
+			_lines = buffer;
+		}
+
 		public GameScene(GameManager game) : base() {
 			_game = game;
 		}

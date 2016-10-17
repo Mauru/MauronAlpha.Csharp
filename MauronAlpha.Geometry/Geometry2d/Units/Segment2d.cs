@@ -9,12 +9,12 @@ namespace MauronAlpha.Geometry.Geometry2d.Units {
 
 		//constructors
 		public Segment2d (Vector2d a, Vector2d b) {
-			this.A=a.Instance;
-			this.B=b.Instance;
+			p_1 = a;
+			p_2 = b;
 		}
 		public Segment2d (Segment2d s) {
-			this.A=s.A.Instance;
-			this.B=s.B.Instance;
+			p_1 = s.A;
+			p_2 = s.B;
 		}
 		
 		#region  Points, A, B, Angle_AB, Distance_AB
@@ -24,19 +24,19 @@ namespace MauronAlpha.Geometry.Geometry2d.Units {
 				return new Vector2d[2] { A, B };
 			}
 			set {
-				A=value[0].Instance;
-				B=value[1].Instance;
+				A = value[0];
+				B = value[1];
 			}
 		}
 		
 		//First point of a segment
-		private Vector2d p_1=new Vector2d();
+		private Vector2d p_1 = new Vector2d();
 		public Vector2d A {
 			get {
 				return p_1;
 			}
 			set {
-				p_2=value.Instance;
+				p_1 = value;
 			}
 		}
 
@@ -44,10 +44,10 @@ namespace MauronAlpha.Geometry.Geometry2d.Units {
 		private Vector2d p_2=new Vector2d();
 		public Vector2d B {
 			get {
-				return p_1;
+				return p_2;
 			}
 			set {
-				p_2=value.Instance;
+				p_2 = value;
 			}
 		}
 		
@@ -65,7 +65,7 @@ namespace MauronAlpha.Geometry.Geometry2d.Units {
 					return 0;
 				}
 				//angle calculation by direction
-				if( B.Y<A.Y ) {
+				if( B.Y < A.Y ) {
 					return 90+(double) Math.Atan((B.X-A.X)/(B.Y-nqz))*GeometryHelper2d.Rad2Deg(1);
 				}
 				return 270+(double) Math.Atan((B.X-A.X)/(B.Y-nqz))*GeometryHelper2d.Rad2Deg(1);
@@ -85,7 +85,7 @@ namespace MauronAlpha.Geometry.Geometry2d.Units {
 				return new Segment2d(A.Instance, B.Instance);
 			}
 		}
-		public new string ToString {
+		public string AsString {
 			get {
 				return "{[1:"+A.AsString+"][2:"+B.AsString+"]}";
 			}

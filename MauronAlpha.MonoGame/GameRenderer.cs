@@ -96,6 +96,10 @@
 			GraphicsDevice device = engine.GraphicsDevice;
 			
 			_spriteBatch = new SpriteBatch(device);
+			Texture2D pixel = new Texture2D(engine.GraphicsDevice, 1, 1, false, SurfaceFormat.Color);
+			System.Int32[] pixelData = { 0xFFFFFF };
+			pixel.SetData<System.Int32>(pixelData, 0, 1);
+			_pixelTexture = pixel;
 
 			CreateRenderTargets();
 
@@ -108,7 +112,6 @@
 				return Game.Engine.GraphicsDevice;
 			}
 		}
-
 
 		void CreateRenderTargets() {
 			GraphicsDevice device = Engine.GraphicsDevice;
@@ -156,6 +159,14 @@
 
 		SpriteBatch _spriteBatch;
 		public SpriteBatch DefaultSpriteBatch { get { return _spriteBatch; } }
+
+		Texture2D _pixelTexture;
+		public Texture2D PixelTexture {
+			get {
+				return _pixelTexture;
+			}
+		}
+
 
 		//Property Returns
 		public Vector2d ScreenSize {

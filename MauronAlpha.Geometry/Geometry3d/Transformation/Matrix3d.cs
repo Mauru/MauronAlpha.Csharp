@@ -1,5 +1,6 @@
 ﻿namespace MauronAlpha.Geometry.Geometry3d.Transformation {
 	using MauronAlpha.Geometry.Geometry3d.Units;
+	using MauronAlpha.Geometry.Geometry2d.Units;
 
 	using MauronAlpha.HandlingErrors;
 
@@ -19,9 +20,21 @@
 			m41 = d41; m42 = d42; m43 = d43; m44 = d44;
 		}
 
+		public Vector2d TranslationAsVector2d {
+			get {
+				return new Vector2d(Value(1, 4), Value(2, 4));
+			}
+		}
 		public Vector3d Translation { get { return new Vector3d(m14,m24,m34); } }
+
 		public Matrix3d SetTranslation(Vector3d v) {
 			m14 = v.X; m24 = v.Y; m34 = v.Z;
+			return this;
+		}
+		public Matrix3d SetTranslation(Vector2d v) {
+			m14 = v.X;
+			m24 = v.Y;
+			m34 = 0;
 			return this;
 		}
 		public Matrix3d Add(Vector3d v) {
@@ -30,7 +43,8 @@
 			m34+=v.Z;
 			return this;
 		}
-		
+	
+
 		/// <summary> Generate id matrix with translation from vector </summary>
 		public static Matrix3d FromVector3d(Vector3d v) {
 			return new Matrix3d(
@@ -41,15 +55,7 @@
 			);
 		}
 
-		Vector3d _rotation;
-		Vector3d Rotation {
-			get {
-				return _rotation;
-			}
-		}
 
-		Vector3d _scale;
-		Vector3d Scale { get { return _scale; } }
 
 		//Values
 		double m11; double m12; double m13; double m14;	
@@ -144,6 +150,7 @@
 			return this;
 		}
 
+
 		public Matrix3d Add(Matrix3d o) {
 			AddTo(0, o.Value(0)); AddTo(1, o.Value(1));	AddTo(2, o.Value(2)); AddTo(3, o.Value(3));
 			AddTo(4, o.Value(4)); AddTo(5, o.Value(5));	AddTo(6, o.Value(6)); AddTo(7, o.Value(7));
@@ -220,6 +227,21 @@
 				v.X*m13+v.Y*m23+v.Z*m33+m43
 			);
 		}
+		public Vector2d Multiply(Vector2d v) {
+			return new Vector2d(
+				v.X * m11 + v.Y * m21 + m41,
+				v.X * m12 + v.Y * m23 + m42
+			);
+		}
+
+		public static Matrix3d Scale(double x, double y, double z) {
+			return new Matrix3d(
+				x,0,0,0,
+				0,y,0,0,
+				0,0,z,0,
+				0,0,0,1
+			);
+        }
 
 		public static Matrix3d RotationZ(double n) {
 			return new Matrix3d(
@@ -243,6 +265,36 @@
 				0,1,0,0,
 				Math.Asin(n),0,Math.Cos(n),0,
 				0,0,0,1
+			);
+		}
+		public static Matrix3d FromVector2d(Vector2d v) {
+			return new Matrix3d(
+				1,0,0,v.X,
+				0,1,0,v.Y,
+				0,0,1,0,
+				0,0,0,1
+			);
+		}
+		public static Matrix3d FromSegment(Segment2d segment) {
+
+			Matrix3d stretch = Matrix3d.Scale(segment.Distance_AB,1,1);
+			Matrix3d rotation = Matrix3d.RotationZ(segment.Angle_AB);
+			Matrix3d translation = Matrix3d.FromVector2d(segment.A);
+
+			return stretch.Combine(rotation).Combine(translation);
+
+		}
+		/// <summary>Retuns a new combined matrix3d of this & target </summary>
+		public Matrix3d Combine(Matrix3d target) {
+
+			return Matrix3d.Identity.Multiply(this).Multiply(target);
+
+		}
+
+		public Vector2d ApplyTo(double x, double y) {
+			return new Vector2d(
+				x * m11 + y * m21 + m41,
+				y * m12 + y * m23 + m42
 			);
 		}
 

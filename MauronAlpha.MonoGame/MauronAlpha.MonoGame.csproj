@@ -56,10 +56,13 @@
     <Compile Include="Debug\DebugException.cs" />
     <Compile Include="GameSceneManager.cs" />
     <Compile Include="Geometry\Collections\ShapeDefinitions.cs" />
-    <Compile Include="Geometry\MonoShape2d.cs" />
-    <Compile Include="Geometry\PolyRectangle.cs" />
-    <Compile Include="Geometry\PolyTriangle.cs" />
+    <Compile Include="Geometry\DataObjects\MonoGameLine.cs" />
+    <Compile Include="Geometry\DataObjects\MonoShape2d.cs" />
+    <Compile Include="Geometry\DataObjects\PolyRectangle.cs" />
+    <Compile Include="Geometry\DataObjects\PolyTriangle.cs" />
+    <Compile Include="Geometry\GeometryHelper.cs" />
     <Compile Include="Rendering\Camera.cs" />
+    <Compile Include="Rendering\Collections\LineBuffer.cs" />
     <Compile Include="Rendering\Collections\Shadertypes.cs" />
     <Compile Include="Rendering\Collections\SpriteBuffer.cs" />
     <Compile Include="Rendering\DataObjects\SpriteData.cs" />
@@ -68,6 +71,7 @@
     <Compile Include="Collections\Common.cs" />
     <Compile Include="Rendering\DataObjects\CustomShader.cs" />
     <Compile Include="Assets\Interfaces\I_MonoGameTexture.cs" />
+    <Compile Include="Rendering\Utility\LineRenderer.cs" />
     <Compile Include="Rendering\Utility\MatrixHelper.cs" />
     <Compile Include="Rendering\Interfaces\I_Renderer.cs" />
     <Compile Include="Rendering\Interfaces\I_RenderProcess.cs" />
@@ -86,6 +90,7 @@
     <Compile Include="DataObjects\GameState.cs" />
     <Compile Include="Rendering\Utility\MixedRenderer.cs" />
     <Compile Include="Rendering\Utility\TextureRenderer.cs" />
+    <Compile Include="Scene_BasicLine.cs" />
     <Compile Include="Scene_BasicText.cs" />
     <Compile Include="Scene_BasicTexture.cs" />
     <Compile Include="Scene_Mixed.cs" />
@@ -98,19 +103,19 @@
     <Compile Include="Rendering\DataObjects\RenderRequest.cs" />
     <Compile Include="DataObjects\ScreenSize.cs" />
     <Compile Include="DataObjects\StatusInfo.cs" />
-    <Compile Include="Geometry\TriangulationData.cs" />
+    <Compile Include="Geometry\DataObjects\TriangulationData.cs" />
     <Compile Include="AssetManager.cs" />
     <Compile Include="GameEngine.cs" />
     <Compile Include="GameLogic.cs" />
     <Compile Include="GameManager.cs" />
     <Compile Include="GameRenderer.cs" />
     <Compile Include="GameStateManager.cs" />
-    <Compile Include="Geometry\CircleShape.cs" />
-    <Compile Include="Geometry\CurveCubic.cs" />
-    <Compile Include="Geometry\CurveQuadratic.cs" />
-    <Compile Include="Geometry\HexShape.cs" />
-    <Compile Include="Geometry\PolyShape.cs" />
-    <Compile Include="Geometry\ShapeDefinition.cs" />
+    <Compile Include="Geometry\DataObjects\CircleShape.cs" />
+    <Compile Include="Geometry\DataObjects\CurveCubic.cs" />
+    <Compile Include="Geometry\DataObjects\CurveQuadratic.cs" />
+    <Compile Include="Geometry\DataObjects\HexShape.cs" />
+    <Compile Include="Geometry\DataObjects\PolyShape.cs" />
+    <Compile Include="Geometry\DataObjects\ShapeDefinition.cs" />
     <Compile Include="Rendering\Interfaces\I_Drawable.cs" />
     <Compile Include="Interfaces\I_GameScene.cs" />
     <Compile Include="Interfaces\I_InputController.cs" />
@@ -210,7 +215,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Geometry\Utility\" />
     <Folder Include="Rendering\Shaders\" />
   </ItemGroup>
   <!-- Specify the search path explicitly so the ResolveAssemblyReferences task picks the right ones -->

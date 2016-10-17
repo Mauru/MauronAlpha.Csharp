@@ -20,6 +20,7 @@
 
 		ShapeBuffer ShapeBuffer { get; }
 		SpriteBuffer SpriteBuffer { get; }
+		LineBuffer LineBuffer { get; }
 
 		void SetSpriteBuffer(SpriteBuffer buffer);
 
