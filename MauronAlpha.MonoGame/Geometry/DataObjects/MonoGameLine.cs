@@ -3,6 +3,12 @@
 	using MauronAlpha.Geometry.Geometry3d.Transformation;
 
 	using Microsoft.Xna.Framework;
+	using Microsoft.Xna.Framework.Graphics;
+
+	using MauronAlpha.MonoGame.Rendering.DataObjects;
+	using MauronAlpha.MonoGame.Rendering.Utility;
+
+	using MauronAlpha.MonoGame.Collections;
 
 	public class MonoGameLine : MonoGameComponent {
 
@@ -22,6 +28,26 @@
 		public MonoGameLine(double x1, double y1, double x2, double y2, double thickness) : this(x1,y1,x2,y2) {
 			_thickness = thickness;
 		}
+		public MonoGameLine(double x, double y, double degree, double magnitude, double thickness, bool isMagnitude):base() {
+
+			Vector2d start = new Vector2d(x, y);
+
+			Vector2d end = start.Project(degree, magnitude);
+
+			_segment = new Segment2d(start, end);
+
+			_thickness = thickness;
+
+		}
+		public MonoGameLine(Vector2d start, double degree, double magnitude, double thickness): base() {
+
+			Vector2d end = start.Project(degree, magnitude);
+
+			_segment = new Segment2d(start, end);
+
+			_thickness = thickness;
+		}
+
 		public MonoGameLine(Segment2d s) {
 			_segment = s;
 		}
@@ -37,11 +63,21 @@
 			}
 		}
 
-		System.Nullable<float> _angle;
-		public float AngleAsRadFloat {
+		System.Nullable<double> _angle;
+		public double AngleAsRad {
 			get {
-				if (_angle == null)
-					_angle = (float)_segment.Angle_AB;
+				if (_angle == null) {
+
+					Vector2d start = _segment.A;
+					Vector2d end = _segment.B.Copy;
+					Vector2d newend = end.Copy.Subtract(start);
+
+					Vector2d c = new Vector2d(newend.X, 0);
+
+					//_angle = System.Math.Atan(newend.Y/c.X);
+					_angle = _segment.Angle_ABRad;
+					System.Diagnostics.Debug.Print(start.AsString+":"+end.AsString+" | "+newend.AsString + " @ "+_angle+"#" + _segment.Angle_AB+":"+_segment.Angle_ABRad);
+				}
 				return _angle.Value;
 			}
 		}
@@ -54,27 +90,7 @@
 				return _segment.Distance_AB;
 			}
 		}
-		/*public Vector2 Start2Mono {
-			get {
-				return Vector2dAsVector2(_segment.A);
-			}
-		}
-		public Vector2 End2Mono {
-			get {
-				return Vector2dAsVector2(_segment.B);
-			}
-		}
-		public Vector2 ScaleVector {
-			get {
-				Vector2d d = _segment.A.Difference(_segment.B).Normalized;
-				return new Vector2(d.FloatX, d.FloatY);
-			}
-		}
-		public float AngleAsFloat {
-			get {
-				return (float)_segment.Angle_AB;
-			}
-		} */
+
 		System.Nullable<Color> _color;
 		public Color Color {
 			get {
@@ -84,34 +100,6 @@
 			}
 		}
 
-		/* not needed
-		// calculates the endpoint
-		Matrix3d _matrix;
-		public Matrix3d Matrix {
-			get {
-				if (_matrix == null)
-					_matrix = Matrix3d.FromSegment(_segment);
-				return _matrix;
-			}
-		}
-
-		Matrix _mono;
-		public Matrix MonoMatrix {
-			get {
-				if (_mono == null)
-					_mono = MonoGameLine.ToMonoMatrix(Matrix);
-				return _mono;
-			}
-		}
-		public Matrix RegenerateMonoMatrix() {
-			_mono = MonoGameLine.ToMonoMatrix(_matrix);
-			return _mono;
-		}
-		 
-		 public static Vector2d EndPoint(Matrix3d matrix) {
-			return matrix.ApplyTo(1, 0);
-		}
-		 */
 		public static Matrix ToMonoMatrix(Matrix3d matrix) {
 			return new Matrix(
 				(float)matrix.Value(1, 1), (float)matrix.Value(1, 2), (float)matrix.Value(1, 3), (float) matrix.Value(1, 4),
@@ -120,10 +108,12 @@
 				(float)matrix.Value(4, 1), (float)matrix.Value(4, 2), (float)matrix.Value(4, 3), (float)matrix.Value(4, 4)
 			);
 		}
-		public static Vector2 Vector2dAsVector2(Vector2d v) {
+		public static Vector2 AsVector2(Vector2d v) {
 			return new Vector2(v.FloatX, v.FloatY);
 		}
-
+		public static Vector2 AsVector2(double x, double y) {
+			return new Vector2((float)x, (float)y);
+		}
 
 	}
 

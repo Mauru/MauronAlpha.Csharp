@@ -137,8 +137,10 @@
     <Compile Include="UI\Collections\HierarchyChildren.cs" />
     <Compile Include="UI\DataObjects\GameScene.cs" />
     <Compile Include="UI\DataObjects\GameWindow.cs" />
-    <Compile Include="UI\DataObjects\TextDisplay.cs" />
+    <Compile Include="UI\DataObjects\Spacing.cs" />
+    <Compile Include="UI\DataObjects\TextFragment.cs" />
     <Compile Include="UI\DataObjects\UIElement.cs" />
+    <Compile Include="UI\DataObjects\VisualStyle.cs" />
     <Compile Include="UI\Interfaces\I_HierarchyObject.cs" />
     <Compile Include="UI\UIComponent.cs" />
     <Compile Include="Utility\LineBuilder.cs" />

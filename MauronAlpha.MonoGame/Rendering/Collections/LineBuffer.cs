@@ -10,8 +10,9 @@
 
 		public LineBuffer() : base() { }
 		public LineBuffer(Segment2dList segments): base() {
+			System.Diagnostics.Debug.Print("" + segments.Count);
 			foreach (Segment2d s in segments) { 
-				System.Diagnostics.Debug.Print(s.AsString);
+
 				Add(new MonoGameLine(s));
 			}
 

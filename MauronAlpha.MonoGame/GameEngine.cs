@@ -63,7 +63,6 @@
 		}
 		public Color StateColor = Color.Blue;
 
-
 		/// <summary> Register as core component </summary>
 		public void Set(GameManager o) {
 			if(DATA_Manager == null)

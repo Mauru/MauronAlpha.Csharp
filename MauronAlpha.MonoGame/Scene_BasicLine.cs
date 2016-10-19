@@ -15,9 +15,9 @@ namespace MauronAlpha.MonoGame {
 
 		public override void Initialize() {
 
-
 			LineBuffer lines = new LineBuffer() {
-				new MonoGameLine(1,1,300,300,5)
+				new MonoGameLine(1,1, 45, 200, 1, true )
+				//new MonoGameLine(1,1,301,-299,1)
 			};
 			base.SetLineBuffer(lines);
 

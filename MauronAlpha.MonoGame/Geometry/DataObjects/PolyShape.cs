@@ -54,15 +54,18 @@
 			}
 		}
 
-		public Polygon2dBounds Bounds { get { return base.Bounds; } }
-		public void SetBounds(Polygon2dBounds bounds) {
-			base.SetBounds(bounds);
+		Matrix2d _matrix;
+		public Matrix2d Matrix {
+			get {
+				if (_matrix == null)
+					return _matrix = Matrix2d.Identity;
+				return _matrix;
+			}
 		}
 
-
-		public new Vector2dList Points {
+		public Vector2d Position {
 			get {
-				return base.TransformedPoints;
+				return Bounds.Min;
 			}
 		}
 

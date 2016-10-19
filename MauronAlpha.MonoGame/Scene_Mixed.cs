@@ -13,6 +13,8 @@
 	using MauronAlpha.TextProcessing.Collections;
 	using MauronAlpha.TextProcessing.DataObjects;
 
+	using MauronAlpha.MonoGame.Geometry.DataObjects;
+
 	using MauronAlpha.Geometry.Geometry2d.Shapes;
 	using MauronAlpha.Geometry.Geometry2d.Units;
 	using MauronAlpha.Geometry.Geometry2d.Collections;
@@ -33,27 +35,28 @@
 		public override void Initialize() {
 
 			//Sample shape
-			Polygon2d hex = new Rectangle2d(0, 0, 100, 100);
+//			Polygon2d hex = new Rectangle2d(50, Game.Engine.GraphicsDevice.Viewport.Height*2-50, 200, -200);
+			Polygon2d hex = new Rectangle2d(0, 0, 200, -200);
+			Segment2dList segments = hex.Segments;
+			SetLineBuffer(new LineBuffer() { new MonoGameLine(1, 1, 301, -299, 1) });
 
 			//Segment2dList segments = hex.Segments;
-			LineBuffer lines = new LineBuffer(hex.Segments);
-			SetLineBuffer(lines);
-
 			ShapeBuffer.Add(hex);
 			ShapeBuffer.Triangulate(Game.Renderer, Color.Red);
 
+
+
 			//shader
 			Vector2d size = new Vector2d(
-				2 / (double) GraphicsDevice.Viewport.Width,
-				2 / (double) GraphicsDevice.Viewport.Height
+				1 / (double) GraphicsDevice.Viewport.Width,
+				1 / (double) GraphicsDevice.Viewport.Height
 			);
 
 			DefaultShader shader = new DefaultShader(Game);
 			shader.World = Matrix.CreateScale(size.FloatX, size.FloatY, 1);
-			shader.View = Matrix.CreateTranslation(new Vector3(-1, 1, 0)); ;
+			shader.View = Matrix.CreateTranslation(new Vector3(-1,1, 0)); ;
 			shader.Projection = Matrix.Identity;
 			shader.VertexColorEnabled = true;
-
 			Game.Renderer.SetCurrentShader(shader);
 
 
@@ -62,7 +65,7 @@
 			GameFont font = assets.DefaultFont;
 			Text txt = new Text("Some Sample-Text");
 
-			TextDisplay text = new TextDisplay(Game, txt, font);
+			TextFragment text = new TextFragment(Game, txt, font);
 
 			SpriteBuffer sprites = text.SpriteBuffer;
 			base.SetSpriteBuffer(sprites);

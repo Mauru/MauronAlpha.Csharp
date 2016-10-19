@@ -37,9 +37,7 @@ public static class Program {
 		System.Console.WriteLine("Application exited cleanly. - Press any key to finish -");
 		System.Console.ReadKey();
 	}
-
 }
-
 }
 
 namespace MauronAlpha.MonoGame.Actuals {
@@ -53,7 +51,7 @@ namespace MauronAlpha.MonoGame.Actuals {
 			if(!Game.Assets.HasDefaultFont)
 				throw new GameError("No default font loaded!", this);
 
-			Scene_Mixed scene = new Scene_Mixed(Game);
+			Scene_BasicLine scene = new Scene_BasicLine(Game);
 			scene.Initialize();
 		}
 

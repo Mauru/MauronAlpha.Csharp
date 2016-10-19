@@ -69,10 +69,8 @@
 				return;
 			_subscriptions.Remove(s);
 		}
+	
 	}
-
-
-
 }
 
 namespace MauronAlpha.MonoGame.DataObjects {

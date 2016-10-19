@@ -16,7 +16,7 @@
 	public class Scene_BasicText:GameScene {
 		public Scene_BasicText(GameManager game) : base(game) { }
 
-		TextDisplay _text;
+		TextFragment _text;
 
 		public override void Initialize() {
 
@@ -24,7 +24,7 @@
 			GameFont font = assets.DefaultFont;
 			Text txt = new Text("GameCycle : 0");
 			
-			TextDisplay text = new TextDisplay(Game,txt,font);
+			TextFragment text = new TextFragment(Game,txt,font);
 
 			SpriteBuffer _sprites = text.SpriteBuffer;
 			base.SetSpriteBuffer(_sprites);

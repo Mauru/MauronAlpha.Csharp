@@ -23,7 +23,6 @@
 		public CircleShape(GameManager game, Vector2d center, double radius, int sides) : base(game) {
 			Radius = radius;
 			Sides = sides;
-			Initialize(CreatePoints(radius, sides));
 			Matrix.SetTranslation(center);
 		}
 

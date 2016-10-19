@@ -34,7 +34,7 @@
 		}
 		public static I_RenderResult RenderTextToTexture(RenderStage stage, I_Renderable target, long time) {
 			stage.SetAsRenderTarget();
-			TextDisplay text = (TextDisplay) target;
+			TextFragment text = (TextFragment) target;
 			SpriteBatch batch = stage.Caller;
 			GameFont font = text.Font;
 

@@ -18,15 +18,15 @@
 
 	using MauronAlpha.MonoGame.Assets.DataObjects;
 
-	public class TextDisplay :UIElement,I_Renderable {
+	public class TextFragment :UIElement,I_Renderable {
 
-		public TextDisplay(GameManager game, GameFont font) : base(game) {
+		public TextFragment(GameManager game, GameFont font) : base(game) {
 			_text = new GameText(font);
 		}
-		public TextDisplay(GameManager game, string text, GameFont font) : base(game) {
+		public TextFragment(GameManager game, string text, GameFont font) : base(game) {
 			_text = new GameText(font, new Text(text));
 		}
-		public TextDisplay(GameManager game, Text text, GameFont font) : base(game) {
+		public TextFragment(GameManager game, Text text, GameFont font) : base(game) {
 			_text = new GameText(font, text);
 		}
 
@@ -50,8 +50,6 @@
 				return _text.HasFont;
 			}
 		}
-
-
 
 		GameText _text;
 		public GameText Text { get { return _text; } }
@@ -117,7 +115,7 @@
 			get { return TextRenderer.RenderMethod; }
 		}
 		public override System.Type RenderPresetType {
-			get {	return typeof(TextDisplay); }
+			get {	return typeof(TextFragment); }
 		}
 
 		SpriteBuffer _buffer;
@@ -131,7 +129,7 @@
 		}
 
 		/// <summary> Measures the size of a Text in a Textdisplay using Font, GameText and TextFormat.</summary>
-		public static Vector2d MeasureText(TextDisplay display) {
+		public static Vector2d MeasureText(TextFragment display) {
 			Text text = display.Text.Text;
 			GameFont font = display.Text.Font;
 			Lines ll = text.Lines;
@@ -159,7 +157,7 @@
 			return result;
 		}
 		/// <summary> Returns size of a line using GameFont, GameText and TextFormat (whitespace does not use TextFormat.WordSpacing).</summary>
-		public static Vector2d MeasureLine(Line l, TextDisplay text) {
+		public static Vector2d MeasureLine(Line l, TextFragment text) {
 			Vector2d result = Vector2d.Zero;
 			Words ww = l.Words;
 
@@ -182,7 +180,7 @@
 			return result;
 		}
 		/// <summary> Returns size of a word using GameFont, GameText and TextFormat.</summary>
-		public static Vector2d MeasureWord(Word w, TextDisplay d) {
+		public static Vector2d MeasureWord(Word w, TextFragment d) {
 			Vector2d result = Vector2d.Zero;
 			Vector2d size;
 			int index = 0;
@@ -199,7 +197,7 @@
 			return result;
 		}
 		/// <summary>Returns size of a character using GameFont, GameText and TextFormat (unknown returns size of GameFont.UnknownCharacter).</summary>
-		public static Vector2d MeasureCharacter(Character c, TextDisplay d) {
+		public static Vector2d MeasureCharacter(Character c, TextFragment d) {
 			PositionData data = null;
 			if (c.IsWhiteSpace) {
 				data = d.Font.PositionData(c);
@@ -221,7 +219,7 @@
 		}
 
 		/// <summary> Generates a Default TextFormat </summary>
-		public static TextFormat GenerateDefaultTextFormat(TextDisplay text) {
+		public static TextFormat GenerateDefaultTextFormat(TextFragment text) {
 			if (text.IsEmpty)
 				return GameFont.DefaultTextFormat;
 			if (text.HasFont && text.Font.HasLoaded)
@@ -235,7 +233,7 @@
 		}
 
 		/// <summary> Generates a SpriteBuffer </summary>
-		public static SpriteBuffer GenerateSpriteBuffer(TextDisplay text) {
+		public static SpriteBuffer GenerateSpriteBuffer(TextFragment text) {
 
 			SpriteBuffer result = new SpriteBuffer();
 
@@ -263,7 +261,7 @@
 			return result;
 
 		}
-		public static SpriteBuffer GenerateSpriteBufferOfLine(Line l, TextDisplay text) {
+		public static SpriteBuffer GenerateSpriteBufferOfLine(Line l, TextFragment text) {
 			SpriteBuffer result = new SpriteBuffer();
 			Words ww = l.Words;
 
@@ -295,7 +293,7 @@
 
 			return result;
 		}
-		public static SpriteBuffer GenerateSpriteBufferOfWord(Word w, TextDisplay text) {
+		public static SpriteBuffer GenerateSpriteBufferOfWord(Word w, TextFragment text) {
 			if (w.IsVirtual)
 				return SpriteBuffer.Empty;
 
@@ -339,7 +337,7 @@
 			return result;
 		}
 
-		public static double WidthOfWhiteSpace(TextDisplay text) {
+		public static double WidthOfWhiteSpace(TextFragment text) {
 			if (!text.HasFont || !text.Font.HasLoaded)
 				return 0;
 			GameFont font = text.Font;
@@ -351,59 +349,6 @@
 			double result = data.Width;
 			return result;
 		}
-	}
-
-}
-
-namespace MauronAlpha.MonoGame.UI.DataObjects {
-
-	/// <summary> Generic Visual formating for any UI Component </summary>
-	public class VisualStyle :UIComponent {
-
-		Spacing _padding = new Spacing();
-		public Spacing Padding {
-			get { return _padding; }
-		}
-
-		Spacing _margin = new Spacing();
-		public Spacing Margin {
-			get { return _margin; }
-		}
-
-		public bool Equals(VisualStyle other) {
-			return Padding.Equals(other.Padding) && Margin.Equals(other.Margin);
-		}
-	}
-
-}
-
-namespace MauronAlpha.MonoGame.UI.DataObjects {
-	using MauronAlpha.Geometry.Geometry2d.Units;
-
-	public class Spacing :UIComponent {
-
-		Vector2d _topLeft = new Vector2d();
-		public Vector2d TopLeft {
-			get {
-				return _topLeft;
-			}
-		}
-		Vector2d _bottomRight = new Vector2d();
-		public Vector2d BottomRight {
-			get {
-				return _bottomRight;
-			}
-		}
-
-		float Top { get { return _topLeft.FloatY; } }
-		float Bottom { get { return _bottomRight.FloatY; } }
-		float Left { get { return _topLeft.FloatX; } }
-		float Right { get { return _bottomRight.FloatX; } }
-
-		public bool Equals(Spacing other) {
-			return BottomRight.Equals(other.BottomRight) && TopLeft.Equals(other.TopLeft);
-		}
-
 	}
 
 }
