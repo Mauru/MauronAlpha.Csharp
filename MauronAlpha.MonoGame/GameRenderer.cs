@@ -379,5 +379,16 @@
 			renderer.ClearScreen(renderer.Engine.StateColor);
 		}
 
+
+		//Useful proxies
+		public MonoGameWindow GameWindow {
+			get { return Game.Engine.GameWindow; }
+		}
+		public Vector2d CenterOfScreen {
+			get {
+				return GameWindow.Center;
+			}
+		}
+
 	}
 }

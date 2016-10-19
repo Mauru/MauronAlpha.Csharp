@@ -32,7 +32,7 @@
 
 			foreach (MonoGameLine line in buffer) {
 				Rectangle r = line.Rectangle;
-				batch.Draw(pixel, line.Rectangle, null,	line.Color, (float) line.AngleAsRad, Vector2.Zero, SpriteEffects.None, 1f);
+				batch.Draw(pixel, line.Rectangle, null, line.Color, (float)line.AngleAsRad, Vector2.Zero, SpriteEffects.None, 1f);
 			}
 			batch.End();
 

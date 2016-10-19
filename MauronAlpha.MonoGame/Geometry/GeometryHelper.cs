@@ -5,10 +5,10 @@
 	public class GeometryHelper:MonoGameComponent {
 
 
-		public static double DegToRad(double degree) {
+		public static double Deg2Rad(double degree) {
 			return GeometryHelper3d.DegreeToRadians(degree);
 		}
-		public static double RadToDeg(double rad) {
+		public static double Rad2Deg(double rad) {
 			return GeometryHelper3d.DegreeToRadians(rad);
 		}
 

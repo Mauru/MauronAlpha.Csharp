@@ -8,8 +8,14 @@
 
 	public class MonoGameWindow :MonoGameComponent, I_sender<WindowSizeChangedEvent> {
 
+		GameManager _game;
+		public GameManager Game {
+			get { return _game; }
+		}
+
 		GameWindow _window;
-		public MonoGameWindow(GameWindow window): base() {
+		public MonoGameWindow(GameManager game, GameWindow window): base() {
+			_game = game;
 			_window = window;
 			Rectangle bounds = _window.ClientBounds;
 			_size = new Vector2d(bounds.X,bounds.Y);
@@ -41,7 +47,13 @@
 
 		public Vector2d Center {
 			get {
-				return SizeAsVector2d.Divide(2);
+				Rectangle r = _window.ClientBounds;
+
+			Vector2d size = new Vector2d(
+				2 / (double)Game.Engine.GraphicsDevice.Viewport.Width,
+				2 / (double)Game.Engine.GraphicsDevice.Viewport.Height
+			);
+				return new Vector2d(r.Width / 2, r.Height / 2);
 			}
 		}
 

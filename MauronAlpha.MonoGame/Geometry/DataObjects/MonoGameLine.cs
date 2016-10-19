@@ -40,11 +40,15 @@
 
 		}
 		public MonoGameLine(Vector2d start, double degree, double magnitude, double thickness): base() {
-
-			Vector2d end = start.Project(degree, magnitude);
-
+			Matrix3d scale = Matrix3d.Scale(magnitude, magnitude, magnitude);
+			Vector2d scaledUnitVector = scale.ApplyTo(0, 1);
+			_magnitude = magnitude;
+			double rad = GeometryHelper.Deg2Rad(degree);
+			Matrix3d rotation = Matrix3d.RotationZDegree(degree);
+			_angle = rad;
+			Vector2d transformedUnitVector = rotation.ApplyTo(scaledUnitVector);
+			Vector2d end = transformedUnitVector.Add(start);
 			_segment = new Segment2d(start, end);
-
 			_thickness = thickness;
 		}
 
@@ -57,7 +61,7 @@
 			get {
 				if (_rect == null) {
 					Vector2d start = _segment.A;
-					_rect = new Rectangle(start.IntX, start.IntY, (int)_segment.Distance_AB, (int)_thickness);
+					_rect = new Rectangle(start.IntX, start.IntY, (int)Magnitude, (int)Thickness);
 				}
 				return _rect.Value;
 			}
@@ -66,18 +70,8 @@
 		System.Nullable<double> _angle;
 		public double AngleAsRad {
 			get {
-				if (_angle == null) {
-
-					Vector2d start = _segment.A;
-					Vector2d end = _segment.B.Copy;
-					Vector2d newend = end.Copy.Subtract(start);
-
-					Vector2d c = new Vector2d(newend.X, 0);
-
-					//_angle = System.Math.Atan(newend.Y/c.X);
+				if (_angle == null)
 					_angle = _segment.Angle_ABRad;
-					System.Diagnostics.Debug.Print(start.AsString+":"+end.AsString+" | "+newend.AsString + " @ "+_angle+"#" + _segment.Angle_AB+":"+_segment.Angle_ABRad);
-				}
 				return _angle.Value;
 			}
 		}
@@ -85,9 +79,12 @@
 		double _thickness = 1;
 		public double Thickness { get { return _thickness; } }
 
+		System.Nullable<double> _magnitude;
 		public double Magnitude {
 			get {
-				return _segment.Distance_AB;
+				if (_magnitude == null)
+					_magnitude = _segment.Magnitude;
+				return _magnitude.Value;
 			}
 		}
 

@@ -75,7 +75,7 @@
 		public MonoGameWindow GameWindow {
 			get {
 				if(_window == null)
-					_window = new MonoGameWindow(Window);
+					_window = new MonoGameWindow(DATA_Manager, Window);
 				return _window;
 			}
 		}

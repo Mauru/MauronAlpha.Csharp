@@ -14,9 +14,17 @@ namespace MauronAlpha.MonoGame {
 		public Scene_BasicLine(GameManager game) : base(game) { }
 
 		public override void Initialize() {
-
+			Vector2d start = Game.Renderer.CenterOfScreen;
 			LineBuffer lines = new LineBuffer() {
-				new MonoGameLine(1,1, 45, 200, 1, true )
+
+				new MonoGameLine(start, 0, 100,1),
+				new MonoGameLine(start, 45, 100,1),
+				new MonoGameLine(start, 90, 100,1),
+				new MonoGameLine(start, 135, 100,1),
+				new MonoGameLine(start, 180, 100,1),
+				new MonoGameLine(start, 225, 100,1),
+				new MonoGameLine(start, 270, 100,1),
+				new MonoGameLine(start, 315, 100,1)
 				//new MonoGameLine(1,1,301,-299,1)
 			};
 			base.SetLineBuffer(lines);
