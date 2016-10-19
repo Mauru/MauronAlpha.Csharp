@@ -1,8 +1,7 @@
-﻿using System;
-using MauronAlpha.Mathematics;
-using MauronAlpha.HandlingErrors;
-
-namespace MauronAlpha.Geometry.Geometry2d.Units {
+﻿namespace MauronAlpha.Geometry.Geometry2d.Units {
+	using MauronAlpha.Mathematics;
+	using MauronAlpha.HandlingErrors;
+	using MauronAlpha.Geometry.Geometry2d.Utility;
 
 	//coordinates
 	public class Vector2d : GeometryComponent2d_unit, I_mathComponent {
@@ -39,7 +38,7 @@ namespace MauronAlpha.Geometry.Geometry2d.Units {
 				return new Vector2d(INT_x, INT_y);
 			}
 		}
-		Object ICloneable.Clone() {
+		System.Object System.ICloneable.Clone() {
 			return new Vector2d( this );
 		}
 		#endregion
@@ -108,7 +107,7 @@ namespace MauronAlpha.Geometry.Geometry2d.Units {
 		//get the Absolute x and y (negative to positive)
 		public Vector2d Normalized {
 			get {
-				return new Vector2d(Math.Abs(X), Math.Abs(Y));
+				return new Vector2d(GeometryHelper2d.Abs(X), GeometryHelper2d.Abs(Y));
 			}
 		}
 
@@ -133,12 +132,12 @@ namespace MauronAlpha.Geometry.Geometry2d.Units {
 
 		//Calculations
 		public double Angle(Vector2d other) {
-			return Math.Atan2(other.Y - Y, other.X - X);
+			return GeometryHelper2d.Atan2(other.Y - Y, other.X - X);
 		}
 		public double Distance(Vector2d other) {
 			double x = other.X-X;
 			double y = other.Y-Y;
-			return Math.Sqrt(
+			return GeometryHelper2d.Sqrt(
 				x*x+y*y
 			);
 		}
@@ -188,8 +187,8 @@ namespace MauronAlpha.Geometry.Geometry2d.Units {
 				throw Error("Is protected!,(Rotate)", this, ErrorType_protected.Instance);
 			}
 			#endregion
-			double s=Math.Sin(angle);
-			double c=Math.Cos(angle);
+			double s = GeometryHelper2d.Sin(angle);
+			double c = GeometryHelper2d.Cos(angle);
 
 			Subtract(v);
 
@@ -327,8 +326,13 @@ namespace MauronAlpha.Geometry.Geometry2d.Units {
 		
 		//Spawning
 		public Vector2d Project(double angle, double distance) {
-			double rad = Math.PI * angle / 180;
-			return new Vector2d(distance * Math.Cos(rad), distance * Math.Sin(rad)).Add(this);
+			double rad = GeometryHelper2d.Deg2Rad(angle);
+			return new Vector2d(distance * GeometryHelper2d.Cos(angle), distance * GeometryHelper2d.Sin(angle)).Add(this);
+		}
+		public Vector2d ProjectDegree(double degree, double distance) {
+
+			return GeometryHelper2d.ProjectionMatrixDegree(degree, distance);
+
 		}
 
 		#region Comparison

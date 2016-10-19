@@ -1,9 +1,10 @@
-﻿using System;
+﻿
 
 using MauronAlpha.Mathematics;
 
 namespace MauronAlpha.Geometry.Geometry2d.Units {
-	
+
+	using MauronAlpha.Geometry.Geometry2d.Utility;
 	//A line segment
 	public class Segment2d : GeometryComponent2d_unit, I_mathComponent {
 
@@ -16,6 +17,7 @@ namespace MauronAlpha.Geometry.Geometry2d.Units {
 			p_1 = s.A;
 			p_2 = s.B;
 		}
+		public Segment2d(double x1, double y1, double x2, double y2):this(new Vector2d(x1,y1), new Vector2d(x2,y2)) {}
 		
 		#region  Points, A, B, Angle_AB, Distance_AB
 		//Points
@@ -28,7 +30,7 @@ namespace MauronAlpha.Geometry.Geometry2d.Units {
 				B = value[1];
 			}
 		}
-		
+
 		//First point of a segment
 		private Vector2d p_1 = new Vector2d();
 		public Vector2d A {
@@ -38,6 +40,13 @@ namespace MauronAlpha.Geometry.Geometry2d.Units {
 			set {
 				p_1 = value;
 			}
+		}
+		public Vector2d Start {
+			get { return p_1; }
+		}
+		public Segment2d SetA(Vector2d v) {
+			p_1 = v;
+			return this;
 		}
 
 		//Second point of a segment
@@ -50,29 +59,74 @@ namespace MauronAlpha.Geometry.Geometry2d.Units {
 				p_2 = value;
 			}
 		}
-		
+		public Vector2d End {
+			get {
+				return p_2;
+			}
+		}
+		public Segment2d SetB(Vector2d v) {
+			p_2 = v;
+			return this;
+		}
+
 		//Angle of a line segment
 		public double Angle_AB {
 			get {
 				//prevent divide by 0
 				double nqz=A.Y;
-				if( A.Y==B.Y ) {
-					nqz=A.Y-GeometryHelper2d.NotQuiteZero;
+				if( A.Y == B.Y ) {
+					nqz = A.Y - GeometryHelper2d.NotQuiteZero;
 				}
 
 				//points are congruent
-				if( A.X==B.X&&A.Y==B.Y ) {
+				if( A.X==B.X && A.Y==B.Y ) {
 					return 0;
 				}
 				//angle calculation by direction
 				if( B.Y < A.Y ) {
-					return 90+(double) Math.Atan((B.X-A.X)/(B.Y-nqz))*GeometryHelper2d.Rad2Deg(1);
+					return 90 + GeometryHelper2d.Rad2Deg(
+						GeometryHelper2d.Atan( (B.X - A.X) / (B.Y - nqz) )
+					);
 				}
-				return 270+(double) Math.Atan((B.X-A.X)/(B.Y-nqz))*GeometryHelper2d.Rad2Deg(1);
+				return 270 + GeometryHelper2d.Rad2Deg(
+					GeometryHelper2d.Atan((B.X - A.X) / (B.Y - nqz))
+				);
 			}
 		}
-		
+		public double Angle_ABRad {
+			get {
+				//prevent divide by 0
+				double nqz = A.Y;
+				if (A.Y == B.Y) {
+					nqz = A.Y - GeometryHelper2d.NotQuiteZero;
+				}
+
+				//points are congruent
+				if (A.X == B.X && A.Y == B.Y) {
+					return 0;
+				}
+				//angle calculation by direction
+				if (B.Y < A.Y) {
+					 return GeometryHelper2d.Atan((B.X - A.X) / (B.Y - nqz))+GeometryHelper2d.Deg2Rad(90);
+				}
+				return GeometryHelper2d.Atan((B.X - A.X) / (B.Y - nqz)) + GeometryHelper2d.Deg2Rad(270);
+			}
+		}
+		public double AngleDegree {
+			get {
+				return Angle_AB;
+			}
+		}
+		public double AngleRad {
+			get {
+				return Angle_ABRad;
+			}
+		}
+
 		//Distance(magnitude) between a and b
+		public double Magnitude {
+			get { return Distance_AB; }
+		}
 		public double Distance_AB {
 			get {
 				return Segment2d.CalculateLength(A,B);
@@ -80,9 +134,15 @@ namespace MauronAlpha.Geometry.Geometry2d.Units {
 		}
 		#endregion
 		
+		///<summary>Returns new Segment2d(a,b) </summary>
+		public Segment2d Copy {
+			get {
+				return new Segment2d(p_1, p_2);
+			}
+		}
 		public Segment2d Instance {
 			get {
-				return new Segment2d(A.Instance, B.Instance);
+				return Copy;
 			}
 		}
 		public string AsString {
@@ -130,7 +190,7 @@ namespace MauronAlpha.Geometry.Geometry2d.Units {
 
 		//static helper functions
 		public static double CalculateLength(Vector2d a, Vector2d b) {
-			return Math.Sqrt(Math.Pow((a.X-b.X), 2)+Math.Pow((b.X-a.X), 2));
+			return GeometryHelper2d.Sqrt(GeometryHelper2d.Pow((a.X - b.X), 2) + GeometryHelper2d.Pow((b.X - a.X), 2));
 		}
 
 		#region I_mathComponent

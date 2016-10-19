@@ -15,27 +15,22 @@ public interface I_polygonShape2d {
 
 	string Id { get; }
 
-    //Get the current state of the Shape
-    Matrix2d Matrix { get; }
-
 	//Get the current Points a Shape has
-	Vector2dList TransformedPoints { get; }
 	Vector2dList Points { get; }
-
-	//Get information on the shapetype of the polygon
-	ShapeType ShapeType { get; }
 
 	//Get a Representation of a Shape as simple shape
 	Polygon2dBounds Bounds { get; }
+	void SetBounds(Polygon2dBounds bounds);
+
+	Vector2d Center { get; }
+	Segment2dList Segments { get; }
 
 	//Equality checker
 	bool Equals( I_polygonShape2d other );
 
-	//Readonly checker
-	bool IsReadOnly { get; }
 
 	//Instancing
-	I_polygonShape2d Cloned { get; }
+	I_polygonShape2d Copy { get; }
 
 }
 

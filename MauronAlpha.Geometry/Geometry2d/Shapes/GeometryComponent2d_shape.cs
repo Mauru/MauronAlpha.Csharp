@@ -10,27 +10,8 @@ namespace MauronAlpha.Geometry.Geometry2d.Shapes {
 	public abstract class GeometryComponent2d_shape : GeometryComponent2d {
 
 		//constructor
-		public GeometryComponent2d_shape(ShapeType shapeType){
-
-			SetShapeType(shapeType);
+		public GeometryComponent2d_shape(){}
 		
-		}
-		
-		//The Type of the shape
-		protected ShapeType ST_shapeType;
-		public ShapeType ShapeType { get { return ST_shapeType; } }
-		public GeometryComponent2d_shape SetShapeType(ShapeType shapeType) {
-			ST_shapeType=shapeType;
-			return this;
-		}
-		
-		
-		//public abstract Shape2d SetAsIdentity();
-		public abstract Polygon2dBounds Bounds { get; }
-
-		public abstract Vector2d Position { get; }
-		public abstract Matrix2d Matrix { get; }
-
 	}
 
 

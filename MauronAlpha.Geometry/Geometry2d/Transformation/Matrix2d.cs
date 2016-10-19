@@ -12,6 +12,12 @@ namespace MauronAlpha.Geometry.Geometry2d.Transformation {
 		//Constructor
 		public Matrix2d():base() {}
 
+		public static Matrix2d Identity {
+			get {
+				return new Matrix2d();
+			}
+		}
+
 		//CP Instance
 		public Matrix2d Instance {
 			get {

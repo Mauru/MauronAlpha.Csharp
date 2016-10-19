@@ -30,12 +30,12 @@ namespace MauronAlpha.Geometry.Geometry2d.Shapes {
         ){}
 
 		public Rectangle2d(double x, double y, double width, double height):base(){
-            Vector2dList points = new Vector2dList().AddValues( new Vector2d[4] {
+			Vector2dList points = new Vector2dList() {
                new Vector2d(x, y),
                new Vector2d(x + width, y),
                new Vector2d(x + width, y + height),
                new Vector2d(x, y + height)
-            }, false);
+			};
 			SetPoints(points);
 		}
 
@@ -44,18 +44,9 @@ namespace MauronAlpha.Geometry.Geometry2d.Shapes {
 			return result;
 		}
 
-		public new Rectangle2d SetIsReadOnly (bool state) {
-			base.SetIsReadOnly(state);
-			return this;
+		public I_polygonShape2d Copy {
+			get { return new Rectangle2d(Points); }
 		}
-        public new Rectangle2d Instance { get {
-            int length = Points.Count;
-            if (length == 0)
-                return new Rectangle2d(0,0,0,0);
-            if(length!=4)
-                throw Error("Invalid Rectangle!,{"+length+"},(Instance)",this,ErrorType_bounds.Instance);
-            return new Rectangle2d(Points.Value(0), Points.Value(2));
-        } }
 
 	}
 

@@ -15,13 +15,13 @@
 
 			Transformations3d steps = new Transformations3d();
 			steps.Add(Matrix3d.FromVector3d(offset.Inverted));
-			steps.Add(Matrix3d.RotationX(a.X));
-			steps.Add(Matrix3d.RotationY(a.Y));
-			steps.Add(Matrix3d.RotationZ(a.Z));
-			steps.Add(Matrix3d.RotationY(degrees)); // this is the actual rotation
-			steps.Add(Matrix3d.RotationZ(a.Z * -1));
-			steps.Add(Matrix3d.RotationY(a.Y * -1));
-			steps.Add(Matrix3d.RotationX(a.X * -1));
+			steps.Add(Matrix3d.RotationXDegree(a.X));
+			steps.Add(Matrix3d.RotationYDegree(a.Y));
+			steps.Add(Matrix3d.RotationZDegree(a.Z));
+			steps.Add(Matrix3d.RotationYDegree(degrees)); // this is the actual rotation
+			steps.Add(Matrix3d.RotationZDegree(a.Z * -1));
+			steps.Add(Matrix3d.RotationYDegree(a.Y * -1));
+			steps.Add(Matrix3d.RotationXDegree(a.X * -1));
 			steps.Add(Matrix3d.FromVector3d(offset));
 
 			return steps;

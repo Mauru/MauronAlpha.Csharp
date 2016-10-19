@@ -46,7 +46,7 @@
 
 			double rad = GeometryHelper3d.DegreeToRadians(degree);
 
-			Matrix3d m = Matrix3d.RotationX(rad);
+			Matrix3d m = Matrix3d.RotationXRad(rad);
 			base.Matrix.Multiply(m);
 			return this;
 
@@ -55,7 +55,7 @@
 
 			double rad = GeometryHelper3d.DegreeToRadians(degree);
 
-			Matrix3d m = Matrix3d.RotationY(rad);
+			Matrix3d m = Matrix3d.RotationYRad(rad);
 			base.Matrix.Multiply(m);
 			return this;
 
@@ -64,7 +64,7 @@
 
 			double rad = GeometryHelper3d.DegreeToRadians(degree);
 
-			Matrix3d m = Matrix3d.RotationZ(rad);
+			Matrix3d m = Matrix3d.RotationZRad(rad);
 			base.Matrix.Multiply(m);
 			return this;
 

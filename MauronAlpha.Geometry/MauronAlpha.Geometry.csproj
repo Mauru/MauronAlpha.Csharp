@@ -78,7 +78,7 @@
     <Compile Include="Geometry3d\Shapes\Triangle3d.cs" />
     <Compile Include="Geometry3d\Transformation\Matrix3d.cs" />
     <Compile Include="GeometryComponent.cs" />
-    <Compile Include="Geometry2d\GeometryHelper2d.cs" />
+    <Compile Include="Geometry2d\Utility\GeometryHelper2d.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Geometry2d\Shapes\Rectangle2d.cs" />
     <Compile Include="Geometry2d\Units\Segment2d.cs" />

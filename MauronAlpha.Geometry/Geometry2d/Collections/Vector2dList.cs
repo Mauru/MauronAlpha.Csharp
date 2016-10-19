@@ -143,6 +143,24 @@ namespace MauronAlpha.Geometry.Geometry2d.Collections {
 			}
 		}
 
+		public Vector2dList MinMax {
+			get {
+				Vector2d min = Vector2d.Zero;
+				Vector2d max = Vector2d.Zero;
+				foreach (Vector2d v in this) {
+					if(v.X < min.X)
+						min.SetX(v.X);
+					if(v.X > max.X)
+						max.SetX(v.X);
+					if(v.Y < min.Y)
+						min.SetY(v.Y);
+					if(v.Y > max.Y)
+						max.SetY(v.Y);
+				}
+				return new Vector2dList() { min, max };
+			}
+		}
+
 		//Modify Points so first point is at 0,0 return the offset as Matrix object
 		public Matrix2d Bulk_OffsetToVector_matrix( Vector2d v ) {
 			if(IsReadOnly)

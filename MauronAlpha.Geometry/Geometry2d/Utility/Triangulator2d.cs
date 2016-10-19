@@ -70,7 +70,7 @@ namespace MauronAlpha.Geometry.Geometry2d.Utility {
 			return collector;
 		}
 		public Vector2d FindPoint(Polygon2d source, int point) {
-			int pointCount = source.CountPoints;
+			int pointCount = source.Count;
 			return source.Points.Value(point);
 		}
 		public Polygon2d RemovePoint(Polygon2d poly, int index) {

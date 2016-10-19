@@ -1,10 +1,8 @@
 ﻿namespace MauronAlpha.Geometry.Geometry3d.Transformation {
 	using MauronAlpha.Geometry.Geometry3d.Units;
 	using MauronAlpha.Geometry.Geometry2d.Units;
-
+	using MauronAlpha.Geometry.Geometry2d.Utility;
 	using MauronAlpha.HandlingErrors;
-
-	using System;
 
 	public class Matrix3d:GeometryComponent3d {
 
@@ -37,6 +35,12 @@
 			m34 = 0;
 			return this;
 		}
+		public Matrix3d SetTranslation(double x, double y) {
+			m14 = x;
+			m24 = y;
+			return this;
+		}
+		
 		public Matrix3d Add(Vector3d v) {
 			m14+=v.X;
 			m24+=v.Y;
@@ -54,8 +58,6 @@
 				0,0,0,1
 			);
 		}
-
-
 
 		//Values
 		double m11; double m12; double m13; double m14;	
@@ -175,6 +177,7 @@
 
 			// row 1
 			r11 = m11 * d11 + m12 * d21 + m13 * d31 + m14 * d41;
+
 			r12 = m11 * d12 + m12 * d22 + m13 * d32 + m14 * d42;
 			r13 = m11 * d13 + m12 * d23 + m13 * d33 + m14 * d43;
 			r14 = m11 * d14 + m12 * d24 + m13 * d34 + m14 * d44;
@@ -207,10 +210,10 @@
 		}
 		public Matrix3d Multiply(Matrix3d o) {
 			return Multiply(
-				o.Value(0,0), o.Value(0,1), o.Value(0,2), o.Value(0,3),
-				o.Value(1,0), o.Value(1,1), o.Value(1,2), o.Value(1,3),
-				o.Value(2,0), o.Value(2,1), o.Value(2,2), o.Value(2,3),
-				o.Value(3,0), o.Value(3,1), o.Value(3,2), o.Value(3,3)
+				o[0,0], o[0,1], o[0,2], o[0,3],
+				o[1,0], o[1,1], o[1,2], o[1,3],
+				o[2,0], o[2,1], o[2,2], o[2,3],
+				o[3,0], o[3,1], o[3,2], o[3,3]
 			);
 		}
 		public Matrix3d Multiply(double factor) {
@@ -221,16 +224,19 @@
 			return this;
 		}
 		public Vector3d Multiply(Vector3d v) {
+
+			double x = v.X;
+			double y = v.Y;
+			double z = v.Z;
+
+			double newx = x * m11 + y * m12 + z * m13 + m14;
+			double newy = x * m21 + y * m22 + z * m23 + m24;
+			double newz = x * m31 + y * m32 + z * m33 + m34;
+
 			return new Vector3d(
-				v.X*m11+v.Y*m21+v.Z*m31+m41,
-				v.X*m12+v.Y*m22+v.Z*m32+m42,
-				v.X*m13+v.Y*m23+v.Z*m33+m43
-			);
-		}
-		public Vector2d Multiply(Vector2d v) {
-			return new Vector2d(
-				v.X * m11 + v.Y * m21 + m41,
-				v.X * m12 + v.Y * m23 + m42
+				newx,
+				newy,
+				newz
 			);
 		}
 
@@ -243,30 +249,58 @@
 			);
         }
 
-		public static Matrix3d RotationZ(double n) {
-			return new Matrix3d(
-				Math.Cos(n),Math.Asin(n),0,0,
-				Math.Sin(n),Math.Cos(n),0,0,
-				0,0,1,0,
-				0,0,0,1
-			);
+		public static Matrix3d RotationXDegree(double n) {
+			n = GeometryHelper2d.Deg2Rad(n);
+			return RotationXRad(n);
 		}
-		public static Matrix3d RotationX(double n) {
+
+		public static Matrix3d RotationYDegree(double n) {
+			n = GeometryHelper2d.Deg2Rad(n);
+			return RotationYRad(n);
+		}
+		public static Matrix3d RotationZDegree(double n) {
+			n = GeometryHelper2d.Deg2Rad(n);
+			return RotationZRad(n);
+		}
+		
+		//rotation in radians
+		public static Matrix3d RotationXRad(double n) {
+
+			double c = GeometryHelper2d.Cos(n);
+			double s = GeometryHelper2d.Sin(n);
+
 			return new Matrix3d(
 				1, 0, 0, 0,
-				0, Math.Cos(n), Math.Asin(n), 0,
-				0, Math.Sin(n), Math.Cos(n), 0,
+				0, c, s, 0,
+				0, -s, c, 0,
 				0, 0, 0, 1
 			);
 		}
-		public static Matrix3d RotationY(double n) {
+		public static Matrix3d RotationYRad(double n) {
+
+			double c = GeometryHelper2d.Cos(n);
+			double s = GeometryHelper2d.Sin(n);
+
 			return new Matrix3d(
-				Math.Cos(n),0,Math.Sin(n),0,
-				0,1,0,0,
-				Math.Asin(n),0,Math.Cos(n),0,
-				0,0,0,1
+				c, 0, -s, 0,
+				0, 1, 0, 0,
+				s, 0, c, 0,
+				0, 0, 0, 1
 			);
 		}
+		public static Matrix3d RotationZRad(double n) {
+
+			double c = GeometryHelper2d.Cos(n);
+			double s = GeometryHelper2d.Sin(n);
+
+			return new Matrix3d(
+				c, -s, 0, 0,
+				s, c, 0, 0,
+				0, 0, 1, 0,
+				0, 0, 0, 1
+			);
+		}
+
 		public static Matrix3d FromVector2d(Vector2d v) {
 			return new Matrix3d(
 				1,0,0,v.X,
@@ -278,7 +312,7 @@
 		public static Matrix3d FromSegment(Segment2d segment) {
 
 			Matrix3d stretch = Matrix3d.Scale(segment.Distance_AB,1,1);
-			Matrix3d rotation = Matrix3d.RotationZ(segment.Angle_AB);
+			Matrix3d rotation = Matrix3d.RotationZDegree(segment.AngleDegree);
 			Matrix3d translation = Matrix3d.FromVector2d(segment.A);
 
 			return stretch.Combine(rotation).Combine(translation);
@@ -291,18 +325,36 @@
 
 		}
 
+		public Vector2d Multiply(Vector2d v) {
+			return ApplyTo(v);
+		}
+		public Vector3d ApplyTo(double x, double y, double z) {
+			double newx = x * m11 + y * m12 + z * m13 + m14;
+			double newy = x * m21 + y * m22 + z * m23 + m24;
+			double newz = x * m31 + y * m32 + z * m33 + m34;
+
+			return new Vector3d(newx, newy, newz);
+		}
 		public Vector2d ApplyTo(double x, double y) {
+
+			double newx = x * m11 + y * m12 + m14;
+			double newy = x * m21 + y * m22 + m24;
+
 			return new Vector2d(
-				x * m11 + y * m21 + m41,
-				y * m12 + y * m23 + m42
+				newx,
+				newy
 			);
+			
+		}
+		public Vector2d ApplyTo(Vector2d v) {
+			return ApplyTo(v.X, v.Y);
 		}
 
 		public static Matrix3d FromPosition(double x, double y, double z) {
 			return new Matrix3d(
 				1, 0, 0, x,
 				0, 1, 0, y,
-				0, 0, 1, y,
+				0, 0, 1, z,
 				0, 0, 0, 1
 			);
 		}
