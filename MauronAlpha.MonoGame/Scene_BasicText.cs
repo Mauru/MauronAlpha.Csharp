@@ -27,7 +27,8 @@
 			TextFragment text = new TextFragment(Game,txt,font);
 
 			SpriteBuffer _sprites = text.SpriteBuffer;
-			base.SetSpriteBuffer(_sprites);
+			_sprites = SpriteBuffer.OffsetPosition(ref _sprites, Game.Renderer.CenterOfScreen);
+			SetSpriteBuffer(_sprites);
 			_text = text;
 			Game.Renderer.SetCurrentScene(this);
 			Game.Renderer.SetDrawMethod(TextRenderer.DrawMethod);
@@ -61,6 +62,7 @@
 			Word w = new Word(new Characters(""+current/10).Reverse());
 			l.Add(w);
 			SpriteBuffer buffer = _text.RegenerateSpriteBuffer(_time);
+			buffer = SpriteBuffer.OffsetPosition(ref buffer, Game.Renderer.CenterOfScreen);
 			Game.Renderer.CurrentScene.SetSpriteBuffer(buffer);
 			_lastCycle = current;
 			_time++;

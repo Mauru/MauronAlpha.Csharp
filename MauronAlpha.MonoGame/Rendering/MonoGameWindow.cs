@@ -1,10 +1,13 @@
 ﻿namespace MauronAlpha.MonoGame.DataObjects {
-	using Microsoft.Xna.Framework;
+
 	using MauronAlpha.Geometry.Geometry2d.Units;
 	using MauronAlpha.Geometry.Geometry2d.Shapes;
 
 	using MauronAlpha.Events.Interfaces;
 	using MauronAlpha.Events.Collections;
+
+	using Microsoft.Xna.Framework;
+	using Microsoft.Xna.Framework.Graphics;
 
 	public class MonoGameWindow :MonoGameComponent, I_sender<WindowSizeChangedEvent> {
 
@@ -47,13 +50,14 @@
 
 		public Vector2d Center {
 			get {
-				Rectangle r = _window.ClientBounds;
+				GraphicsDevice d = Game.Engine.GraphicsDevice;
+				Rectangle bounds = d.Viewport.Bounds;
 
-			Vector2d size = new Vector2d(
-				2 / (double)Game.Engine.GraphicsDevice.Viewport.Width,
-				2 / (double)Game.Engine.GraphicsDevice.Viewport.Height
-			);
-				return new Vector2d(r.Width / 2, r.Height / 2);
+				Vector2d result = new Vector2d(
+					bounds.Width / 2,
+					bounds.Height / 2
+				);
+				return result;
 			}
 		}
 

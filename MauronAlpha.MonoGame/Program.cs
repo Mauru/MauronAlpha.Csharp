@@ -51,7 +51,7 @@ namespace MauronAlpha.MonoGame.Actuals {
 			if(!Game.Assets.HasDefaultFont)
 				throw new GameError("No default font loaded!", this);
 
-			Scene_BasicLine scene = new Scene_BasicLine(Game);
+			Scene_BasicShape scene = new Scene_BasicShape(Game);
 			scene.Initialize();
 		}
 

@@ -3,6 +3,7 @@
 	using MauronAlpha.MonoGame.Collections;
 	using MauronAlpha.MonoGame.Geometry;
 
+	using MauronAlpha.Geometry.Geometry2d.Collections;
 	using MauronAlpha.Geometry.Geometry2d.Shapes;
 	using MauronAlpha.Geometry.Geometry2d.Units;
 	using MauronAlpha.Geometry.Geometry2d.Interfaces;
@@ -16,8 +17,7 @@
 	/// <summary> Holds the result of a polygon-triangulation </summary>
 	public class TriangulationData:MonoGameComponent {
 
-		public TriangulationData(VertexBuffer buffer, VertexPositionColor[] vertices, I_polygonShape2d polygon, int vertexCount): base() {
-			_vertexBuffer = buffer;
+		public TriangulationData(VertexPositionColor[] vertices, I_polygonShape2d polygon, int vertexCount): base() {
 			_vertices = vertices;
 			_polygon = polygon;
 			_triangleCount = vertexCount / 3;
@@ -35,10 +35,6 @@
 
 		I_polygonShape2d _polygon;
 		public I_polygonShape2d Polygon { get { return _polygon; } }
-		
-		//Automatically generated on demand
-		VertexBuffer _vertexBuffer;
-		public VertexBuffer VertexBuffer { get { return _vertexBuffer; } }
 	
 		//Utility methods
 		public static VertexBuffer CreateVertexBuffer(GraphicsDevice device, VertexPositionColor[] data, int count) {
@@ -72,15 +68,16 @@
 			get { return new Color[3] { Color.White, Color.White, Color.White }; }
 		}
 
-		public static TriangulationData CreateFromShape(GameRenderer renderer, I_polygonShape2d shape, Color[] colors) {
+		public static TriangulationData CreateFromShape(GameRenderer renderer, I_polygonShape2d shape, Color[] colors, Vector2d offset) {
 			Triangulator2d tool = new Triangulator2d();
+			//TODO: still have to make triangle thing static
 			MauronCode_dataList<Polygon2d> triangles = tool.Triangulate(shape.Points);
 			int triangleCount = triangles.Count;
 			int vertexCount = triangleCount * 3;
 			VertexPositionColor[] vtp = TriangulationData.CreateVertexPositionColor(vertexCount, triangles, colors);
 
-			VertexBuffer buffer = TriangulationData.CreateVertexBuffer(renderer.GraphicsDevice, vtp, vertexCount);
-			TriangulationData data = new TriangulationData(buffer, vtp, shape, vertexCount);
+
+			TriangulationData data = new TriangulationData(vtp, shape, vertexCount);
 			return data;
 		}
 

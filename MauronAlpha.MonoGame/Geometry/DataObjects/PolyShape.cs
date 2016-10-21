@@ -79,7 +79,7 @@
 		}
 
 		public static TriangulationData Triangulate(GameRenderer renderer,PolyShape shape) {
-			return TriangulationData.CreateFromShape(renderer, shape, TriangulationData.WhiteVertexColors);
+			return TriangulationData.CreateFromShape(renderer, shape, TriangulationData.WhiteVertexColors, Vector2d.Zero);
 		}
 
 		public Vector2d RenderTargetSize {

@@ -2,6 +2,7 @@
 	using MauronAlpha.HandlingData;
 
 	using MauronAlpha.Geometry.Geometry2d.Shapes;
+	using MauronAlpha.Geometry.Geometry2d.Units;
 	using MauronAlpha.Geometry.Geometry2d.Collections;
 	using MauronAlpha.Geometry.Geometry2d.Interfaces;
 	using MauronAlpha.Geometry.Geometry2d.Utility;
@@ -32,7 +33,7 @@
 		}
 
 		/// <summary> Triangulation Process - Call this during the Initialization Phase since there is currently no "update" call if new elements are added afterwards.</summary>
-		public int Triangulate(GameRenderer renderer, Color[] colors) {
+		public int Triangulate(GameRenderer renderer, Color[] colors, Vector2d offset) {
 
 			if (_triangulationData == null)
 				_triangulationData = new List<TriangulationData>();
@@ -41,7 +42,7 @@
 
 			//Triangulation Process
 			foreach (I_polygonShape2d shape in this) {
-				TriangulationData data = TriangulationData.CreateFromShape(renderer,shape,colors);
+				TriangulationData data = TriangulationData.CreateFromShape(renderer,shape,colors,offset);
 				_triangulationData.Add(data);
 				count++;
 			}
@@ -50,7 +51,7 @@
 		}
 		public int Triangulate(GameRenderer renderer, Color color) {
 			Color[] colors = new Color[3] { color, color, color };
-			return Triangulate(renderer, colors);
+			return Triangulate(renderer, colors, Vector2d.Zero);
 		}
 
 		public static ShapeBuffer Empty { get { return new ShapeBuffer(); } }
