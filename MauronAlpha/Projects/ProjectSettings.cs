@@ -7,7 +7,7 @@ namespace MauronAlpha.Projects {
 	public class ProjectSettings:MauronCode_dataObject {
 		
 		//constructor
-		public ProjectSettings():base(DataType_object.Instance) {}
+		public ProjectSettings():base() {}
 
 	}
 

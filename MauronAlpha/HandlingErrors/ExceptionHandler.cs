@@ -32,7 +32,7 @@ namespace MauronAlpha.HandlingErrors {
 		}
 
 		//constructor
-		public ExceptionHandler(Type t, bool b_delayed):base(DataType_exceptionHandler.Instance) {
+		public ExceptionHandler(Type t, bool b_delayed):base() {
 			SetIsDelayed(b_delayed);
 			SetBaseType(t);
 		}
