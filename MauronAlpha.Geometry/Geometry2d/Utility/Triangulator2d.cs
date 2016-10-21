@@ -1,16 +1,152 @@
-﻿using MauronAlpha.Geometry.Geometry2d.Shapes;
-using MauronAlpha.Geometry.Geometry2d.Units;
-using MauronAlpha.Geometry.Geometry2d.Collections;
+﻿namespace MauronAlpha.Geometry.Geometry2d.Utility {
+	using MauronAlpha.Geometry.Geometry2d.Interfaces;
+	using MauronAlpha.Geometry.Geometry2d.Shapes;
+	using MauronAlpha.Geometry.Geometry2d.Units;
+	using MauronAlpha.Geometry.Geometry2d.Collections;
 
-using MauronAlpha.HandlingData;
-
-using System;
-
-namespace MauronAlpha.Geometry.Geometry2d.Utility {
+	using MauronAlpha.HandlingData;
 
 	//Triangulation of a Polygon
 	public class Triangulator2d:GeometryComponent2d {
+		/* ATTEMPT AT MAKING THIS CLASS STATIC - last checkmark : FindNextEar
+		public static TriangleList2d Triangulate(I_polygonShape2d shape, Vector2d offset) {
 
+			Vector2dList points = shape.Points.Copy;
+			points.Offset(offset);
+
+			points = OrientPointsClockWise(points);
+
+			TriangleList2d result = new TriangleList2d();
+			
+			int remaining = points.Count;
+			int index = 0;
+			while (remaining > 3) {
+
+				bool isEar = FindNextEar( points, ref index, ref result )
+
+			}
+
+
+		}
+		public static bool IsOrientedClockWise(Vector2dList points) {
+			return CalculateSignedPolygonArea(points) < 0;
+		}
+		public static Vector2dList OrientPointsClockWise(Vector2dList points) {
+			if (IsOrientedClockWise(points))
+				return points;
+			points.Reverse();
+			return points;
+		}
+		public static double CalculateSignedPolygonArea(Vector2dList points) {
+			int count = points.Count;
+
+			if(count == 0)
+				return 0;
+
+			Vector2d next = null;
+
+			int index = 0;
+
+			double result = 0;
+			foreach(Vector2d current in points) {
+				index++;
+				if(!points.TryIndex(index, ref next))
+					next = points.LastElement;				
+				result += ( next.X - current.X ) * ( next.Y + current.Y ) / 2;
+			}
+
+			return result;
+		}
+		
+		//TODO:
+		public static bool FindNextEar(Vector2dList points, ref int index, ref TriangleList2d result) {
+
+			int count = points.Count;
+
+			// Not enough points for an ear
+			if (count < 3)
+				return false;
+
+			int a = index, b = index + 1, c = index + 2;
+
+			if (b >= count)
+				b = b % count;
+
+			if (c >= count)
+				c = c % count;
+
+			//we now have 3 points a b c which could be an ear
+			Triangle2d ear = null;
+
+			bool isEar = CheckIfEar(points, a, b, c, ref ear);
+
+			if (isEar)
+				result.Add(ear);
+
+			
+		}
+		*/
+
+		/// <summary>abc are three indexes in points, see if they are an ear and set result</summary>
+		public static bool CheckIfEar(Vector2dList points, int a, int b, int c, ref Triangle2d result) {
+			Vector2d va = null, vb = null, vc = null;
+			if (!points.TryIndex(a, ref va))
+				return false;
+			if (!points.TryIndex(b, ref vb))
+				return false;
+			if (!points.TryIndex(c, ref vc))
+				return false;
+
+			double totalAngle = CalculateTotalAngle(va, vb, vc);
+			
+			//concave polygons are novalid ears
+			if (totalAngle > 0)
+				return false;
+
+			int count = points.Count;
+
+			result = new Triangle2d(va, vb, vc);
+
+			//If the point lies in the triangle it is not an ear
+			for (int i = 0; i < count; i++) {
+				//ommit points which are the tringle
+				if (i != a && i != b && i != c)
+					if (HitTestPolygon(result.Points, points[i])) return false;
+			}
+
+			return true;		
+		}
+		public static bool HitTestPolygon(Vector2dList points, Vector2d vector) {
+
+			int count = points.Count;
+
+			if (count < 1)
+				return false;
+
+			Vector2d a = points.LastElement;
+			Vector2d b = vector;
+			Vector2d c = points.FirstElement;
+
+			double angle = CalculateTotalAngle(points.LastElement, vector, points.FirstElement);
+
+			for (int i = 0; i < count - 1; i++)
+				angle += CalculateTotalAngle(points[i], vector, points[i + 1]);
+
+			return (GeometryHelper2d.Abs(angle) > 0.000001);
+		}
+
+		public static bool IsConcave(Vector2d a, Vector2d b, Vector2d c) {
+			return CalculateTotalAngle(a, b, c) > 0;
+		}
+		public static double CalculateTotalAngle(Vector2d a, Vector2d b, Vector2d c) {
+			double dot = GeometryHelper2d.DotProduct(a, b, c);
+			double cross = GeometryHelper2d.CrossProduct(a, b, c);
+			double result = GeometryHelper2d.Atan2(cross, dot);
+
+			return result;
+		}
+
+		//constructors
 		public MauronCode_dataList<Polygon2d> Triangulate(Polygon2d poly) {
 			//Create a scrap copy
 			Vector2dList points = poly.Points.Copy;
@@ -41,10 +177,11 @@ namespace MauronAlpha.Geometry.Geometry2d.Utility {
 			return triangles.Add(tool);
 		}
 
-		public void FindEar(ref Polygon2d poly, ref int a, ref int b, ref int c) {
 
+		public void FindEar(ref Polygon2d poly, ref int a, ref int b, ref int c) {
 			Vector2dList pts = poly.Points;
 			int count = pts.Count;
+
 			for(a=0; a < count; a++) {
 				b = (a+1) % count;
 				c = (b+1) % count;
@@ -141,7 +278,7 @@ namespace MauronAlpha.Geometry.Geometry2d.Utility {
 			for (int i = 0; i < count - 1; i++)
 				angle += AngleABC(points[i], vector, points[i+1]);
 
-			return (Math.Abs(angle) > 0.000001);
+			return (GeometryHelper2d.Abs(angle) > 0.000001);
 		}
 
 		public Polygon2d OrientClockWise(Polygon2d poly) {
@@ -152,26 +289,15 @@ namespace MauronAlpha.Geometry.Geometry2d.Utility {
 			}
 			return poly;
 		}
-		
-		public double DotProduct(Vector2d a, Vector2d b, Vector2d c) {
-			Vector2d BA = new Vector2d(a.X - b.X, a.Y - b.Y);
-			Vector2d BC = new Vector2d(c.X - b.X, c.Y - b.Y);
-			return (BA.X * BC.X + BA.Y * BC.Y);
-		}
-		public double CrossProduct(Vector2d a, Vector2d b, Vector2d c) {
-			Vector2d BA = new Vector2d(a.X - b.X, a.Y-b.Y);
-			Vector2d BC = new Vector2d(c.X - b.X, c.Y - b.Y);
-			return (BA.X * BC.Y - BA.Y * BC.X);
 
-		}
 		public double AngleABC(Vector2d a, Vector2d b, Vector2d c) {
-			double dot = DotProduct(a, b, c);
-			double cross = CrossProduct(a,b,c);
-			double result = Math.Atan2(cross, dot);
+			double dot = GeometryHelper2d.DotProduct(a, b, c);
+			double cross = GeometryHelper2d.CrossProduct(a, b, c);
+			double result = GeometryHelper2d.Atan2(cross, dot);
 			return result;
 		}
 		public double PolygonArea(Polygon2d poly) {
-			return Math.Abs(SignedPolygonArea(poly));
+			return GeometryHelper2d.Abs(SignedPolygonArea(poly));
 		}
 		public double SignedPolygonArea(Polygon2d poly) {
 			int count = poly.Points.Count;
@@ -187,7 +313,6 @@ namespace MauronAlpha.Geometry.Geometry2d.Utility {
 			return area;
 		}
 
-		/// <summary> Pseudo-Singleton </summary>
-		public static Triangulator2d Instance { get { return new Triangulator2d(); } }
 	}
 }
+

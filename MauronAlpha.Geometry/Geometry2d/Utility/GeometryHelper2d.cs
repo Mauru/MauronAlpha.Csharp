@@ -8,6 +8,17 @@
 	//Base class for generic mathematical operations
 	public class GeometryHelper2d:MauronCode_utility {
 
+		public static double DotProduct(Vector2d a, Vector2d b, Vector2d c) {
+			Vector2d ba = new Vector2d(a.X - b.X, a.Y - b.Y);
+			Vector2d bc = new Vector2d(c.X - b.X, c.Y - b.Y);
+			return (ba.X * bc.X + ba.Y * bc.Y);
+		}
+		public static double CrossProduct(Vector2d a, Vector2d b, Vector2d c) {
+			Vector2d ba = new Vector2d(a.X - b.X, a.Y - b.Y);
+			Vector2d bc = new Vector2d(c.X - b.X, c.Y - b.Y);
+			return (ba.X * bc.Y - ba.Y * bc.X);
+		}
+
 		public static double Abs(double n) {
 			return System.Math.Abs(n);
 		}

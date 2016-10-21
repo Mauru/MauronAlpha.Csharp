@@ -12,8 +12,7 @@ namespace MauronAlpha.Geometry.Geometry2d.Collections {
 	public class Vector2dList:MauronCode_dataList<Vector2d> {
 
         //Constructor
-		public Vector2dList( bool isOrdered )
-			: base() {
+		public Vector2dList( bool isOrdered ): base() {
 				B_isOrdered = isOrdered;
 		}
 
@@ -26,8 +25,7 @@ namespace MauronAlpha.Geometry.Geometry2d.Collections {
             }
 			B_isOrdered = false;
         }
-		public Vector2dList( ICollection<Vector2d> points, bool b_isOrdered )
-			: this() {
+		public Vector2dList( ICollection<Vector2d> points, bool b_isOrdered ): this() {
 			foreach( Vector2d v in points ) {
 				AddValue( v.Instance, false );
 			}
@@ -68,14 +66,18 @@ namespace MauronAlpha.Geometry.Geometry2d.Collections {
 		}
 
 		//Modify Content
-		public Vector2dList Bulk_Add( Vector2d v ) {
-			if( IsReadOnly )
-				throw Error( "Protected!,(Add)", this, ErrorType_protected.Instance );
+		public Vector2dList Offset(Vector2d v) {
+			foreach (Vector2d vector in this)
+				vector.Add(v);
+			return this;
+		}
+
+		public Vector2dList AddAll( Vector2d v ) {
 			foreach( Vector2d p in this )
 				p.Add( v );
 			return this;
 		}
-		public Vector2dList Bulk_Subtract( Vector2d v ) {
+		public Vector2dList SubtractAll( Vector2d v ) {
 			if( IsReadOnly ) {
 				throw Error( "Protected!,(Subtract)", this, ErrorType_protected.Instance );
 			}
@@ -85,7 +87,7 @@ namespace MauronAlpha.Geometry.Geometry2d.Collections {
 			}
 			return this;
 		}
-		public Vector2dList Bulk_Multiply( Vector2d v ) {
+		public Vector2dList MultiplyAll( Vector2d v ) {
 			if( IsReadOnly ) {
 				throw Error( "Protected!,(Multiply)", this, ErrorType_protected.Instance );
 			}
@@ -95,7 +97,7 @@ namespace MauronAlpha.Geometry.Geometry2d.Collections {
 			}
 			return this;
 		}
-		public Vector2dList Bulk_Divide( Vector2d v ) {
+		public Vector2dList DivideAll( Vector2d v ) {
 			if( IsReadOnly ) {
 				throw Error( "Protected!,(Divide)", this, ErrorType_protected.Instance );
 			}
@@ -160,6 +162,19 @@ namespace MauronAlpha.Geometry.Geometry2d.Collections {
 				return new Vector2dList() { min, max };
 			}
 		}
+
+
+		/// <summary>Same as TryFind[index%count]</summary>
+		public bool ByModulo(int index, ref Vector2d result) {
+			int count = Count;
+			if (count < 1)
+				return false;
+
+			int offset = index % count;
+
+			return TryIndex(offset, ref result);
+		}
+
 
 		//Modify Points so first point is at 0,0 return the offset as Matrix object
 		public Matrix2d Bulk_OffsetToVector_matrix( Vector2d v ) {
