@@ -5,7 +5,7 @@ namespace MauronAlpha.HandlingData {
 
 	public class MauronCode_dataStack<T> : MauronCode_dataObject, I_dataObject {
 		Stack<T> Data = new Stack<T>();
-		public MauronCode_dataStack() : base(DataType_dataStack.Instance) { }
+		public MauronCode_dataStack() : base() { }
 
 		public MauronCode_dataStack<T> Add(T obj) {
 			Data.Push(obj);

@@ -8,7 +8,7 @@ namespace MauronAlpha.HandlingData {
 	public class DataObject_plain:MauronCode_dataObject,I_data {
 
 		//A data object that contains a single value and possibly a name
-		public DataObject_plain ( string name, CodeStyle codeStyle ) : base(DataType_plain.Instance) { }
+		public DataObject_plain ( string name, CodeStyle codeStyle ) : base() { }
 
 		#region I_data
 		private string STR_name;

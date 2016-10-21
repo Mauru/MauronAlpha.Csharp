@@ -42,21 +42,19 @@ namespace MauronAlpha.HandlingData {
 				return (B_keyIsNull && B_valueIsNull);
 			}
 		}
-		public MauronCode_dataRelation(K key)	: base(DataType_dataRelation.Instance) {
+		public MauronCode_dataRelation(K key)	: base() {
 			DATA_key = key;
 			B_valueIsNull = true;
 		}
-		public MauronCode_dataRelation(): base(DataType_dataRelation.Instance) {
+		public MauronCode_dataRelation(): base() {
 			B_keyIsNull = true;
 			B_valueIsNull = true;
 		}
-		public MauronCode_dataRelation(K key, V value)	: base(DataType_dataRelation.Instance) {
-
+		public MauronCode_dataRelation(K key, V value)	: base() {
 			DATA_key = key;
 			DATA_value = value;
-				
 		}
-		public MauronCode_dataRelation(KeyValuePair<K, V> data): base(DataType_dataRelation.Instance) {
+		public MauronCode_dataRelation(KeyValuePair<K, V> data): base() {
 			if (data.Key.Equals(default(K)))
 				B_keyIsNull = true;
 			else

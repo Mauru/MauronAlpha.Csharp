@@ -15,15 +15,15 @@ namespace MauronAlpha.HandlingData {
 	IList<T> {
 
 		//Constructors
-		public MauronCode_dataList() :base(DataType_dataList.Instance) {}
+		public MauronCode_dataList() :base() {}
+
 		// Interpretative constructors
 		public MauronCode_dataList ( T obj)	:this() {
 			AddValue(obj);
 		}
 		public MauronCode_dataList( ICollection<T> data ):this() {
-			foreach( T o in data ) {
+			foreach( T o in data )
 				AddValue( o );
-			}
 		}
 
 		//The Data

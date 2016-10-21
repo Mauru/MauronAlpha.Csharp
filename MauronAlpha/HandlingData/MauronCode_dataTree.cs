@@ -13,7 +13,7 @@ namespace MauronAlpha.HandlingData {
 	I_instantiable {
 
 		//Constructors
-		public MauronCode_dataTree() : base(DataType_dataTree.Instance) {
+		public MauronCode_dataTree() : base() {
 			DATA_keys=new TKey[]{};
 			DATA_values=new TValue[]{};
 			DATA_wasSet=new bool[]{};

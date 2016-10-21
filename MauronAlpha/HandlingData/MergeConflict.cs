@@ -6,7 +6,7 @@ namespace MauronAlpha.HandlingData {
 	//It keeps references to whatever data was overwritten when two objects get merged
 	public class MergeConflict:MauronCode_dataObject {
 
-		public MergeConflict(object source, object target, object key, object value):base(DataType_mergeConflict.Instance) {
+		public MergeConflict(object source, object target, object key, object value):base() {
 			SetSource(source);
 			SetSourceType(source.GetType());
 			

@@ -7,7 +7,7 @@ namespace MauronAlpha.HandlingData {
 	/// <summary> Maps objects of GENERICTYPE1 to object of GENERICTYPE2 | BaseType Dictionary </summary>
 	public class MauronCode_dataReference<TKey, TValue> : MauronCode_dataObject, IDictionary<TKey, TValue> {
 
-		public MauronCode_dataReference() : base(DataType_dataReference.Instance) { }
+		public MauronCode_dataReference() : base() { }
 
 		private Dictionary<TKey, TValue> DATA = new Dictionary<TKey, TValue>();
 

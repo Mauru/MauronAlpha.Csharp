@@ -9,7 +9,7 @@ namespace MauronAlpha.HandlingData {
 	public class MauronCode_dataMap<TValue> : MauronCode_dataObject,IEnumerable<TValue> {
 
 		//constructor
-		public MauronCode_dataMap():base(DataType_dataDictionary.Instance){
+		public MauronCode_dataMap():base(){
 			DATA_keys = new string[]{};
 			DATA_values = new MauronCode_dataTree<long,TValue>();
 		}

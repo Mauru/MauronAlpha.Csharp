@@ -11,8 +11,7 @@ namespace MauronAlpha.HandlingData {
 	public class MauronCode_dataDictionary : MauronCode_dataObject, I_dataDictionary,I_dataObject {
 
 		//constructor
-		public MauronCode_dataDictionary (string name)
-			: base(DataType_dataDictionary.Instance) { 
+		public MauronCode_dataDictionary (string name): base() { 
 			SetName(name);
 		}
 		

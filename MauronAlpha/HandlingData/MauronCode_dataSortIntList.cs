@@ -7,8 +7,7 @@ namespace MauronAlpha.HandlingData {
 	public class MauronCode_dataSortIntList<T_value>:MauronCode_dataObject, IEnumerable<MauronCode_dataList<T_value>> {
 
 		//constructor
-		public MauronCode_dataSortIntList( ) : base( DataType_dataRegistry.Instance ) {
-		}
+		public MauronCode_dataSortIntList( ) : base() {}
 
 		private MauronCode_dataIndex<MauronCode_dataList<T_value>> DATA_index = new MauronCode_dataIndex<MauronCode_dataList<T_value>>();
 
@@ -88,11 +87,10 @@ namespace MauronAlpha.HandlingData {
 	public class ENUMERATE_MauronCode_dataSortIntList<T_value>:MauronCode_dataObject,IEnumerator<MauronCode_dataList<T_value>> {
 
 		//constructor
-		public ENUMERATE_MauronCode_dataSortIntList( MauronCode_dataSortIntList<T_value> map )
-			: base( DataType_enumerator.Instance ) {
-				baseObject = map;
-				baseValidKeys = new MauronCode_dataList<long>(map.ValidKeys);
-				baseCount = map.CountValidKeys;
+		public ENUMERATE_MauronCode_dataSortIntList( MauronCode_dataSortIntList<T_value> map ): base() {
+			baseObject = map;
+			baseValidKeys = new MauronCode_dataList<long>(map.ValidKeys);
+			baseCount = map.CountValidKeys;
 		}
 
 		//properties

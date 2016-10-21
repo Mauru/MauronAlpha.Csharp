@@ -12,7 +12,7 @@ namespace MauronAlpha.HandlingData {
 	ICollection<T>,	IEnumerable<T>,	IEquatable<MauronCode_dataIndex<T>>,I_protectable<MauronCode_dataIndex<T>> {
 		
 		//constructor
-		public MauronCode_dataIndex():base(DataType_dataIndex.Instance) {}
+		public MauronCode_dataIndex():base() {}
 
 		private static long[] EmptyKeySet = new long[0]{};
 
