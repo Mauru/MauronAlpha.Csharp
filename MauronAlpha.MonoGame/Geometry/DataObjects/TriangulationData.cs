@@ -17,9 +17,8 @@
 	/// <summary> Holds the result of a polygon-triangulation </summary>
 	public class TriangulationData:MonoGameComponent {
 
-		public TriangulationData(VertexPositionColor[] vertices, I_polygonShape2d polygon, int vertexCount): base() {
+		public TriangulationData(VertexPositionColor[] vertices, int vertexCount): base() {
 			_vertices = vertices;
-			_polygon = polygon;
 			_triangleCount = vertexCount / 3;
 			_vertexCount = vertexCount;
 		}
@@ -33,9 +32,7 @@
 		int _vertexCount;
 		public int VertexCount { get { return _vertexCount; } }
 
-		I_polygonShape2d _polygon;
-		public I_polygonShape2d Polygon { get { return _polygon; } }
-	
+
 		//Utility methods
 		public static VertexBuffer CreateVertexBuffer(GraphicsDevice device, VertexPositionColor[] data, int count) {
 			VertexBuffer buffer = new VertexBuffer(device, typeof(VertexPositionColor), count, BufferUsage.WriteOnly);
@@ -75,9 +72,7 @@
 			int triangleCount = triangles.Count;
 			int vertexCount = triangleCount * 3;
 			VertexPositionColor[] vtp = TriangulationData.CreateVertexPositionColor(vertexCount, triangles, colors);
-
-
-			TriangulationData data = new TriangulationData(vtp, shape, vertexCount);
+			TriangulationData data = new TriangulationData(vtp,vertexCount);
 			return data;
 		}
 

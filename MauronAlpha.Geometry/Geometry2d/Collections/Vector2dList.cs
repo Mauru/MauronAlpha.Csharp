@@ -10,27 +10,14 @@ namespace MauronAlpha.Geometry.Geometry2d.Collections {
 
     //A collection of vectors
 	public class Vector2dList:MauronCode_dataList<Vector2d> {
-
-        //Constructor
-		public Vector2dList( bool isOrdered ): base() {
-				B_isOrdered = isOrdered;
-		}
-
-        public Vector2dList() : this(false) { }
+		//constructor
+        public Vector2dList() : base() { }
 
 		//Relative Constructor
         public Vector2dList(ICollection<Vector2d> points):this() {
-            foreach (Vector2d v in points) {
-                AddValue(v.Instance, false);
-            }
-			B_isOrdered = false;
+            foreach (Vector2d v in points)
+                AddValue(v);
         }
-		public Vector2dList( ICollection<Vector2d> points, bool b_isOrdered ): this() {
-			foreach( Vector2d v in points ) {
-				AddValue( v.Instance, false );
-			}
-			B_isOrdered = b_isOrdered;
-		}
 
 		public new string AsString {
 			get {
@@ -49,19 +36,13 @@ namespace MauronAlpha.Geometry.Geometry2d.Collections {
 			}
 		}
 
-		public Vector2dList AddValue( Vector2d v, bool reorderIndex ) {
+		public Vector2dList AddValue( Vector2d v ) {
 			base.AddValue( v );
-			if( reorderIndex )
-				B_isOrdered = false;
 			return this;
 		}
-		public Vector2dList AddValues( ICollection<Vector2d> values, bool reorderIndex ) {
-			foreach( Vector2d vector in values ) {
-				AddValue( vector, false );
-			}
-			if( reorderIndex )
-				B_isOrdered = false;
-
+		public Vector2dList AddValues( ICollection<Vector2d> values) {
+			foreach( Vector2d vector in values )
+				Add(vector);
 			return this;
 		}
 
@@ -114,34 +95,20 @@ namespace MauronAlpha.Geometry.Geometry2d.Collections {
 			return this;
 		}
 		
-        //Clone the vectors in the list
-		public Vector2dList Cloned {
-			get {
-				Vector2dList r = new Vector2dList( B_isOrdered );
-				foreach(Vector2d v in this){
-					r.AddValue( v.Instance, B_isOrdered == false );
-				}
-				return r;			
-			}
-		}
         public new Vector2dList Instance {
             get {
                 Vector2dList result = new Vector2dList();
-                foreach (Vector2d v in this) {
-                    result.AddValue(v);
-                }
+                foreach (Vector2d v in this)
+                    result.Add(v);
                 return result;
             }
         }
 		public Vector2dList Copy {
-			get { return Instance; }
-		}
-
-		//has the list been ordered?
-		private bool B_isOrdered = false;
-		public bool IsOrdered {
-			get {
-				return B_isOrdered;
+			get { 
+				Vector2dList result = new Vector2dList();
+				foreach (Vector2d v in this)
+					result.Add(v);
+				return result;
 			}
 		}
 
@@ -173,28 +140,6 @@ namespace MauronAlpha.Geometry.Geometry2d.Collections {
 			int offset = index % count;
 
 			return TryIndex(offset, ref result);
-		}
-
-
-		//Modify Points so first point is at 0,0 return the offset as Matrix object
-		public Matrix2d Bulk_OffsetToVector_matrix( Vector2d v ) {
-			if(IsReadOnly)
-				throw Error("Protected!,(Bulk_OffsetToVector_matrix",this,ErrorType_protected.Instance);
-			if(IsEmpty) 
-				throw NullError("VectorList is empty!,(Bulk_OffsetToVector_matrix)",this,typeof(Vector2d));
-			
-			Vector2d offset = v.Difference( base.Value( 0 ) );
-
-			if( offset.IsZero )
-				return new Matrix2d();
-
-			ICollection<KeyValuePair<int,Vector2d>> data_asPair = KeyValuePairs;
-
-			foreach( KeyValuePair<int,Vector2d> member in data_asPair ) {
-				SetValue(member.Key, Value(member.Key).Subtract(offset));
-			}
-
-			return new Matrix2d().SetOffset( offset );
 		}
 
 	}

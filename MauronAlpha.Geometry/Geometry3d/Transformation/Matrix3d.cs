@@ -125,12 +125,12 @@
 				case 3: m14 = value; return this;
 
 				case 4: m21 = value; return this;
-				case 5:	m22 = value;	return this;
+				case 5:	m22 = value; return this;
 				case 6: m23 = value; return this;
-				case 7:	m24 = value;	return this;
+				case 7:	m24 = value; return this;
 
 				case 8: m31 = value; return this;
-				case 9:	m32 = value;	return this;
+				case 9:	m32 = value; return this;
 				case 10: m33 = value; return this;
 				case 11: m34 = value; return this;
 
@@ -177,7 +177,6 @@
 
 			// row 1
 			r11 = m11 * d11 + m12 * d21 + m13 * d31 + m14 * d41;
-
 			r12 = m11 * d12 + m12 * d22 + m13 * d32 + m14 * d42;
 			r13 = m11 * d13 + m12 * d23 + m13 * d33 + m14 * d43;
 			r14 = m11 * d14 + m12 * d24 + m13 * d34 + m14 * d44;

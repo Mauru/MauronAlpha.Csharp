@@ -1,297 +1,171 @@
-﻿using MauronAlpha.Geometry.Geometry2d.Units;
-using MauronAlpha.Geometry.Geometry2d.Shapes;
-using MauronAlpha.Geometry.Geometry2d.Collections;
-
-using MauronAlpha.HandlingErrors;
-
-namespace MauronAlpha.Geometry.Geometry2d.Transformation {
+﻿namespace MauronAlpha.Geometry.Geometry2d.Transformation {
+	using MauronAlpha.Geometry.Geometry2d.Units;
+	using MauronAlpha.HandlingErrors;
 
 	//Keeps track of all applied transforms to a series of geometrical data
 	public class Matrix2d : GeometryComponent2d {
+		double	m11, m12, m13,
+				m21, m22, m23,
+				m31, m32, m33;
 
-		//Constructor
-		public Matrix2d():base() {}
+		//constructor
+		public Matrix2d(
+			double d11, double d12, double d13, 
+			double d21, double d22, double d23,
+			double d31, double d32, double d33
+		):base() {
+			m11 = d11; m12 = d12; m13 = d13;
+			m21 = d21; m22 = d22; m23 = d23;
+			m31 = d31; m32 = d32; m33 = d33;
+		}
+
+		public Matrix2d Multiply(
+			double d11, double d12, double d13,
+			double d21, double d22, double d23,
+			double d31, double d32, double d33
+		) {
+
+			double	r11,r12,r13,
+					r21,r22,r23,
+					r31,r32,r33;
+
+			//rows 1-3
+			r11 = m11 * d11 + m12 * d21 + m13 * d31;
+			r12 = m11 * d12 + m12 * d22 + m13 * d32;
+			r13 = m11 * d13 + m12 * d23 + m13 * d33;
+
+			r21 = m21 * d11 + m22 * d21 + m23 * d31;
+			r22 = m21 * d12 + m22 * d22 + m23 * d32;
+			r23 = m21 * d13 + m22 * d23 + m23 * d33;
+
+			r31 = m31 * d11 + m32 * d21 + m33 * d31;
+			r32 = m31 * d12 + m32 * d22 + m33 * d32;
+			r33 = m31 * d13 + m32 * d23 + m33 * d33;
+
+			//commit to matrix
+			m11 = r11; m12 = r12; m13 = r13;
+			m21 = r21; m22 = r22; m23 = r23;
+			m31 = r31; m32 = r32; m33 = r33;
+
+			return this;
+
+		}
+
+		public Vector2d ApplyTo(double x, double y) {
+
+			double newx = x * m11 + y * m12+m13;
+			double newy = x * m21 + y * m22 + m23;
+
+			return new Vector2d(
+				newx,
+				newy
+			);
+
+		}
+
+
+		public Matrix2d SetValue(int index, double value) {
+			switch (index) {
+				case 0: m11 = value; return this;
+				case 1: m12 = value; return this;
+				case 2: m13 = value; return this;
+
+				case 3: m21 = value; return this;
+				case 4: m22 = value; return this;
+				case 5: m23 = value; return this;
+
+				case 6: m31 = value; return this;
+				case 7: m32 = value; return this;
+				case 8: m33 = value; return this;
+
+				default: throw new MauronCode_error("Invalid index!", this, ErrorType_index.Instance);
+			}
+		}
+		public Matrix2d SetValue(int row, int column, double value) {
+			return SetValue((row * 3) + column, value);
+		}
 
 		public static Matrix2d Identity {
 			get {
-				return new Matrix2d();
+				return new Matrix2d(
+					1,0,0,
+					0,1,0,
+					0,0,1
+				);
+			}
+		}
+		public Matrix2d Copy {
+			get {
+				return new Matrix2d(m11, m12, m13, m21, m22, m23, m31, m32, m33);
 			}
 		}
 
-		//CP Instance
-		public Matrix2d Instance {
+		public double this[int index] {
 			get {
-				Matrix2d instance = new Matrix2d();
-				instance.SetOffset( Offset );
-				instance.SetRotation( Rotation );
-				instance.SetScale( Scale );
-				instance.SetShear( Shear );
-				instance.SetTranslation( Translation );
-				return instance;
+				return Value(index);
 			}
+			set {
+				SetValue(index, value);
+			}
+		}
+		public double this[int row, int column] {
+			get {
+				return Value((row * 3) + column);
+			}
+			set {
+				SetValue((row * 3) + column, value);
+			}
+		}
+		public double Value(int index) {
+			switch (index) {
+				case 0: return m11;
+				case 1: return m12;
+				case 2: return m13;
+
+				case 3: return m21;
+				case 4: return m22;
+				case 5: return m23;
+
+				case 6: return m31;
+				case 7: return m32;
+				case 8: return m33;
+
+				default: throw new MauronCode_error("Invalid index!", this, ErrorType_index.Instance);
+			}
+		}
+		public double Value(int row, int column) {
+			return this[row, column];
 		}
 
 		//BOOL Equals
-		public bool Equals( Matrix2d other ) {
-			
-
-			if( !V_offset.Equals( other.Offset ) )
-				return false;
-
-			if( INT_rotation != other.Rotation )
-				return false;
-
-			if( !V_scale.Equals( other.Scale ) )
-				return false;
-
-			if( !V_shear.Equals( other.Shear ) )
-				return false;
-
-			if( !V_translation.Equals( other.V_translation ) )
-				return false;
+		public bool Equals( Matrix2d o ) {
+			return
+				m11 == o[0, 0] && m12 == o[0, 1] && m13 == o[0, 2]
+				&& m21 == o[1, 0] && m22 == o[1, 1] && m23 == o[1, 2]
+				&& m31 == o[2, 0] && m32 == o[2, 1] && m33 == o[2, 2];
 
 			return true;
-
 		}
-		
-		//RET Reset
-		public Matrix2d Reset() {
-			V_offset = new Vector2d();
-			V_scale = new Vector2d();
-			V_shear = new Vector2d();
-			V_translation = new Vector2d();
-			INT_rotation = 0;
 
+		public Matrix2d AddToTranslation(double x, double y) {
+			m13 += x;
+			m23 += y;
 			return this;
 		}
-
-
-//Properties
-
-		#region BOOL Readonly  GET, SET<RET>
-		private bool B_isReadOnly = false;
-		public bool IsReadOnly {
+		public Vector2d Translation {
 			get {
-				return B_isReadOnly;
+				return new Vector2d(m13, m23);
 			}
 		}
-		public Matrix2d SetIsReadOnly (bool state) {
-			B_isReadOnly=state;
-			return this;
-		}
-		#endregion
-
-		#region double Rotation GET, SET<RET,E>
-		protected double INT_rotation=0;
-		public double Rotation {
-			get {	
-				return INT_rotation;
-			}
-		}
-		public Matrix2d SetRotation(double rotation){
-			if( IsReadOnly ) {
-				throw Error("Is Protected!,(SetRotation)", this, ErrorType_protected.Instance);
-			}
-			INT_rotation=rotation;
-			return this;
-		}
-		#endregion
-		
-		#region VECTOR Scale GET, SET<RET,E>
-		protected Vector2d V_scale=new Vector2d(1);
-		public Vector2d Scale { get { return V_scale; } }
-		public Matrix2d SetScale (Vector2d v) {
-			if( IsReadOnly ) {
-				throw Error("Is Protected!,(SetScale)", this, ErrorType_protected.Instance);
-			}
-			V_scale=v;
-			return this;
-		}
-		#endregion
-		
-		#region VECTOR Shear GET, SET<RET,E>
-		protected Vector2d V_shear=new Vector2d(0);
-		public Vector2d Shear { 
-			get { return V_shear; }
-		}
-		public Matrix2d SetShear(Vector2d v){
-			if( IsReadOnly ) {
-				throw Error("Is Protected!,(SetShear)", this, ErrorType_protected.Instance);
-			}
-			V_shear=v;
-			return this;
-		}
-		#endregion
-
-		#region VECTOR Translation GET, SET<RET, E>
-		protected Vector2d V_translation=new Vector2d(0);
-		public Vector2d Translation { get { return V_translation; } } 
 		public Matrix2d SetTranslation(Vector2d v) {
-			if( IsReadOnly ) {
-				throw Error("Is Protected!,(SetTranslation)", this, ErrorType_protected.Instance);
-			}
-			V_translation=v;
+			return SetTranslation(v.X, v.Y);
+		}
+		public Matrix2d SetTranslation(double x, double y) {
+			m13 = x;
+			m23 = y;
 			return this;
 		}
-		#endregion
-       
-        #region VECTOR Offset GET, SET<RET, E> - might call this the origin
-        private Vector2d V_offset;
-        public Vector2d Offset {
-            get {
-                if (V_offset == null) {
-                    V_offset = new Vector2d();
-                }
-                return V_offset;
-            }
-        }
-        public Matrix2d SetOffset(Vector2d v) {
-            if (IsReadOnly) {
-                throw Error("Protected!,(SetOffset)", this, ErrorType_protected.Instance);
-            }
-            V_offset = v;
-            return this;
-        }
-        #endregion
 
-//Modifiers
-
-
-		//reset any modifications
-		public Polygon2d RemoveFrom (Polygon2d p) {
-			Vector2d center = p.Center;
-
-			Vector2d scale_modifier = new Vector2d( 1 ).Divide( Scale );
-
-			foreach( Vector2d v in p.Points ) {
-
-				//Reset Rotation
-				v.Rotate( center, Rotation*-1 );
-
-				//Scale
-				v.Transform( center, scale_modifier );
-
-				//Offset
-				v.Subtract( Translation );
-			}
-
-			return p;
-		}
-		public Vector2dList RemoveFrom( Vector2dList pp ) {
-
-			Polygon2d p = new Polygon2d( pp );
-
-			Vector2d center = p.Center;
-
-			Vector2d scale_modifier = new Vector2d(1).Divide( Scale );
-
-			foreach( Vector2d v in pp ) {
-
-				//Reset Rotation
-				v.Rotate(center, Rotation*-1);
-
-				//Scale
-				v.Transform( center, scale_modifier );
-
-				//Offset
-				v.Subtract(Translation);
-
-			}
-
-			return pp;
-		}
-
-		//apply modifications
-		public Polygon2d ApplyTo (Polygon2d p) {
-
-			Vector2d center= p.Center;
-
-			foreach( Vector2d v in p.Points ) {
-
-				//Reset Rotation
-				v.Rotate(center, Rotation);
-
-				//Scale
-				v.Transform(center, Scale);
-
-				//Offset
-				v.Add(Translation);
-
-			}
-
-			return p;
-		}
-		public Vector2dList ApplyTo( Vector2dList pp ) {
-
-			Polygon2d p = new Polygon2d( pp );
-
-			Vector2d center = p.Center;
-
-			foreach( Vector2d v in pp ) {
-
-				//Reset Rotation
-				v.Rotate(center, Rotation);
-
-				//Scale
-				v.Transform(center, Scale);
-
-				//Offset
-				v.Add(Translation);
-
-			}
-
-			return pp;
-		}
-
-		//Modify a matrix
-		public Matrix2d Add( Matrix2d matrix ) {
-			if( IsReadOnly )
-				throw Error( "Protected!,(Add)", this, ErrorType_protected.Instance );
-			SetRotation( Rotation+matrix.Rotation );
-			SetScale( Scale.Add( matrix.Scale ) );
-			SetTranslation( Translation.Add( matrix.Translation ) );
-			SetShear( Shear.Add( matrix.Shear ) );
-			return this;
-		}
-		public Matrix2d Subtract( Matrix2d matrix ) {
-			if( IsReadOnly )
-				throw Error( "Protected!,(Subtract)", this, ErrorType_protected.Instance );
-			SetRotation( Rotation-matrix.Rotation );
-			SetScale( Scale.Subtract( matrix.Scale ) );
-			SetTranslation( Translation.Subtract( matrix.Translation ) );
-			SetShear( Shear.Subtract( matrix.Shear ) );
-			return this;
-		}
-		public Matrix2d Multiply( Matrix2d matrix ) {
-			if( IsReadOnly )
-				throw Error( "Protected!,(Multiply)", this, ErrorType_protected.Instance );
-			SetRotation( Rotation*matrix.Rotation );
-			SetScale( Scale.Multiply( matrix.Scale ) );
-			SetTranslation( Translation.Multiply( matrix.Translation ) );
-			SetShear( Shear.Multiply( matrix.Shear ) );
-			return this;
-		}
-		public Matrix2d Divide( Matrix2d matrix ) {
-			if( IsReadOnly )
-				throw Error( "Protected!,(Divide)", this, ErrorType_protected.Instance );
-			if(matrix.Rotation!=0)
-				SetRotation( Rotation/matrix.Rotation );
-			if(!matrix.Scale.IsZero)
-				SetScale( Scale.Divide( matrix.Scale ) );
-			if( !matrix.Translation.IsZero )
-				SetTranslation( Translation.Divide( matrix.Translation ) );
-			if( !matrix.Shear.IsZero )
-				SetShear( Shear.Divide( matrix.Shear ) );
-			return this;
-		}
-		public Matrix2d Difference( Matrix2d matrix ) {
-			Matrix2d result=new Matrix2d();
-			result.SetRotation( Rotation-matrix.Rotation );
-			result.SetScale( Scale.Difference( matrix.Scale ) );
-			result.SetTranslation( Translation.Difference( matrix.Translation ) );
-			result.SetShear( Shear.Difference( matrix.Shear ) );
-			return result;
-		}
 	}
 
 }

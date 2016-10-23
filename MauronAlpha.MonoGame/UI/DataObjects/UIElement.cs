@@ -95,7 +95,7 @@
 		Matrix2d Matrix {
 			get {
 				if(_matrix == null)
-					_matrix = new Matrix2d();
+					_matrix = Matrix2d.Identity;
 				return _matrix;
 			}
 		}
