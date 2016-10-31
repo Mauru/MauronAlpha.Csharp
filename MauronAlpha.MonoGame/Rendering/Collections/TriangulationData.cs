@@ -65,7 +65,7 @@
 			get { return new Color[3] { Color.White, Color.White, Color.White }; }
 		}
 
-		public static TriangulationData CreateFromShape(GameRenderer renderer, I_polygonShape2d shape, Color[] colors, Vector2d offset) {
+		public static TriangulationData CreateFromShape(I_polygonShape2d shape, Color[] colors) {
 			Triangulator2d tool = new Triangulator2d();
 			//TODO: still have to make triangle thing static
 			MauronCode_dataList<Polygon2d> triangles = tool.Triangulate(shape.Points);

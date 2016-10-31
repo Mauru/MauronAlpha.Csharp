@@ -1,7 +1,7 @@
 ﻿namespace MauronAlpha.MonoGame {
 	using MauronAlpha.MonoGame.DataObjects;
 
-	using MauronAlpha.MonoGame.Rendering;
+	using MauronAlpha.MonoGame.Rendering.DataObjects;
 	using MauronAlpha.MonoGame.Rendering.Collections;
 	using MauronAlpha.MonoGame.Rendering.Utility;
 
@@ -26,8 +26,7 @@
 			if (base.IsInitialized)
 				return;
 			Ngon2d shape = new Ngon2d(6,200);
-			ShapeBuffer.Add(shape);
-			ShapeBuffer.Triangulate(Game.Renderer, Color.White);
+			ShapeBuffer.Add(TriangulationData.CreateFromShape(shape,TriangulationData.WhiteVertexColors));
 
 			Vector2d scale = new Vector2d(
 				2 / (double)GraphicsDevice.Viewport.Width,

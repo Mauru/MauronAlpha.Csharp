@@ -19,6 +19,10 @@
 			_mask = mask;
 			_texture = texture;
 		}
+		public SpriteData(I_MonoGameTexture texture):base() {
+			_texture = texture;
+			_mask = texture.SizeAsRectangle;
+		}
 
 		I_MonoGameTexture _texture;
 		public I_MonoGameTexture Texture {

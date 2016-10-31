@@ -30,5 +30,10 @@
 			return member.Width;
 		}
 		public static SpriteBuffer Empty { get { return new SpriteBuffer(); } }
+
+		public Polygon2dBounds GenerateBounds() {
+			if (IsEmpty)
+				return Polygon2dBounds.Empty;
+		}
 	}
 }

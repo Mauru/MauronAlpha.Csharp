@@ -1,23 +1,24 @@
-﻿namespace MauronAlpha.MonoGame.Collections {
-	using MauronAlpha.MonoGame.DataObjects;
+﻿namespace MauronAlpha.MonoGame.Rendering.Collections {
+	using MauronAlpha.MonoGame.Rendering.DataObjects;
+	using MauronAlpha.MonoGame.Collections;
 
 	public class BlendModes:List<BlendMode> {
 
 		public static BlendMode_Alpha Alpha {
 			get {
-			return BlendMode_Alpha.Instance;
+				return BlendMode_Alpha.Instance;
 			}
 		}
 
 		public static BlendMode_Solid Solid {
 			get {
-			return BlendMode_Solid.Instance;
+				return BlendMode_Solid.Instance;
 			}
 		}
 
 		public static BlendMode_Mask Mask {
 			get {
-			return BlendMode_Mask.Instance;
+				return BlendMode_Mask.Instance;
 			}
 		}
 

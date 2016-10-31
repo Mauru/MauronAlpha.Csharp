@@ -21,7 +21,7 @@
 
 	using Microsoft.Xna.Framework;
 
-	public abstract class UIElement :UIComponent, I_Renderable, I_UIHierarchyObject, I_subscriber<RenderEvent> {
+	public abstract class UIElement :UIComponent, I_UIHierarchyObject, I_subscriber<RenderEvent> {
 
 		//constructor
 		public UIElement(GameManager game) : base() {
@@ -56,16 +56,7 @@
 			}
 		}
 
-		bool _needUpdate = true;
-		public virtual bool NeedsRenderUpdate {
-			get { return _needUpdate; }
-		}
 
-		public void NeedRenderUpdate(long time) {
-			RenderRequest request = new RenderRequest(this, time);
-			request.Subscribe(this);
-			Renderer.AddRequest(request);
-		}
 
 		I_RenderResult _rendered;
 		public I_RenderResult RenderResult {
@@ -123,7 +114,6 @@
 
 		public bool ReceiveEvent(RenderEvent e) {
 			_rendered = e.Result;
-			_needUpdate = false;
 			return true;
 		}
 
@@ -148,22 +138,6 @@
 		public void SetRenderResult(I_RenderResult result) {
 			_rendered = result;
 		}
-
-
-		public abstract GameRenderer.RenderMethod RenderMethod {
-			get;
-		}
-
-		public abstract System.Type RenderPresetType {
-			get;
-		}
-
-		public virtual I_MonoShape AsMonoShape() {
-			throw new GameError("UIElement is not castable as Shape!", this);
-		}
-
-		public abstract ShapeBuffer ShapeBuffer { get; }
-		public abstract bool IsPolygon { get; }
 	
 	}
 

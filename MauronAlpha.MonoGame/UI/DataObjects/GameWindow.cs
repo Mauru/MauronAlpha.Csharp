@@ -7,6 +7,7 @@
 	using MauronAlpha.MonoGame;
 
 	using MauronAlpha.MonoGame.Rendering;
+	using MauronAlpha.MonoGame.Rendering.DataObjects;
 	using MauronAlpha.MonoGame.Rendering.Interfaces;
 	using MauronAlpha.MonoGame.Rendering.Collections;
 
@@ -33,37 +34,8 @@
 			get { return Game.Engine.GameWindow.Bounds; }
 		}
 
-		public override bool IsPolygon { get { return false; } }
-		public override ShapeBuffer ShapeBuffer { get { return ShapeBuffer.Empty; } }
 
 
-		public override GameRenderer.RenderMethod RenderMethod
-		{
-			get { return Render; }
-		}
-
-		I_RenderResult Render(RenderStage stage, I_Renderable target, long time) {
-
-			if(target.LastRendered == time)
-				return target.RenderResult;
-
-			TextureBatch batch = stage.Caller;
-			batch.Begin();
-			foreach(I_Renderable r in Children)
-				batch.Draw(r.RenderResult,r);
-
-
-			batch.End();
-
-			RenderResult result = new RenderResult(time, this, stage.AsTexture2D);
-			return result;
-
-		}
-
-		public override System.Type RenderPresetType
-		{
-			get { return typeof(GameWindow); }
-		}
 	}
 
 }

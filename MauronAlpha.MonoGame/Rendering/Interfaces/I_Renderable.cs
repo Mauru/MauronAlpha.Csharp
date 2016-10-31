@@ -33,8 +33,6 @@
 		GameManager Game { get; }
 
 
-		I_MonoShape AsMonoShape();
-
 	}
 
 }

@@ -26,6 +26,17 @@
 			}
 			batch.End();
 		}
+
+		public static void Render(GameRenderer renderer, SpriteBuffer buffer, Color color) {
+			SpriteBatch batch = renderer.DefaultSpriteBatch;
+			batch.Begin();
+			Texture2D texture;
+			foreach (SpriteData data in buffer) {
+				texture = data.Texture.AsTexture2d;
+				batch.Draw(texture, texture.Bounds, color);
+			}
+			batch.End();
+		}
 	}
 
 }

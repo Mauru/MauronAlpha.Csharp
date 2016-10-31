@@ -62,6 +62,15 @@
 			_lines = buffer;
 		}
 
+		RenderOrders _renderOrders;
+		public virtual RenderOrders RenderOrders {
+			get {
+				if (_renderOrders == null)
+					_renderOrders = RenderOrders.Empty;
+				return _renderOrders;
+			}
+		}
+
 		public GameScene(GameManager game) : base() {
 			_game = game;
 		}

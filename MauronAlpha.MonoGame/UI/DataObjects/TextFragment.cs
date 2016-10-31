@@ -18,15 +18,15 @@
 
 	using MauronAlpha.MonoGame.Assets.DataObjects;
 
-	public class TextFragment :UIElement,I_Renderable {
+	public class TextFragment :UIElement {
 
 		public TextFragment(GameManager game, GameFont font) : base(game) {
 			_text = new GameText(font);
 		}
-		public TextFragment(GameManager game, string text, GameFont font) : base(game) {
+		public TextFragment(GameManager game, GameFont font, string text) : base(game) {
 			_text = new GameText(font, new Text(text));
 		}
-		public TextFragment(GameManager game, Text text, GameFont font) : base(game) {
+		public TextFragment(GameManager game, GameFont font, Text text) : base(game) {
 			_text = new GameText(font, text);
 		}
 
@@ -68,8 +68,6 @@
 					return Vector2d.Zero;
 				if(!_text.Font.HasDefinition)
 					return Vector2d.Zero;
-				if(!NeedsRenderUpdate)
-					_sizeAsVector2d = RenderResult.ActualObjectSize;
 				else
 					_sizeAsVector2d = MeasureText(this);
 				
@@ -83,16 +81,6 @@
 				return new Vector2d(0, LineHeight + TextFormat.ParagraphSpacing);
 			}
 		}
-
-		public override bool IsPolygon {
-			get { return false; }
-		}
-		public override ShapeBuffer ShapeBuffer {
-			get {
-				return ShapeBuffer.Empty;
-			}
-		}
-
 		public double LineHeight {
 			get {
 				return Font.LineHeight;
@@ -110,13 +98,6 @@
 
 		VisualStyle _style = new VisualStyle();
 		public VisualStyle Style { get { return _style; } }
-
-		public override GameRenderer.RenderMethod RenderMethod {
-			get { return TextRenderer.RenderMethod; }
-		}
-		public override System.Type RenderPresetType {
-			get {	return typeof(TextFragment); }
-		}
 
 		SpriteBuffer _buffer;
 		public SpriteBuffer SpriteBuffer {
@@ -136,15 +117,12 @@
 
 			Vector2d result = Vector2d.Zero;
 
-
-
 			int index = 0;
 			int count = ll.Count;
 
 			Vector2d size;
 
 			foreach (Line l in ll) {
-
 				size = MeasureLine(l, display);
 				result.Add(0, size.Y);
 
@@ -227,6 +205,7 @@
 			return TextFormat.Default;
 		}
 
+		/// <summary Regenerate the sprite-buffer on content-change</summary>
 		public SpriteBuffer RegenerateSpriteBuffer(long time) {
 			SpriteBuffer buffer = GenerateSpriteBuffer(this);
 			return buffer;

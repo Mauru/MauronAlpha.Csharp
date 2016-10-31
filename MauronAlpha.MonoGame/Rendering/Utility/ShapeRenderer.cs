@@ -26,14 +26,16 @@
 
 			shader.Apply();
 
-			string debugInfo = TriangulationData.DebugVertexPositionColor(renderer.TestTriangle);
-
-			foreach (TriangulationData data in buffer.TriangulatedObjects)
+			foreach (TriangulationData data in buffer)
 				device.DrawUserPrimitives<VertexPositionColor>(PrimitiveType.TriangleList, data.Vertices, 0, data.TriangleCount);
-
-
-
 		}
 		
+		//blind instanced render
+		public static void Render(GameRenderer renderer, I_Shader shader, ShapeBuffer buffer) {
+			GraphicsDevice device = renderer.GraphicsDevice;
+			shader.Apply();
+			foreach (TriangulationData data in buffer)
+				device.DrawUserPrimitives<VertexPositionColor>(PrimitiveType.TriangleList, data.Vertices, 0, data.TriangleCount);
+		}
 	}
 }

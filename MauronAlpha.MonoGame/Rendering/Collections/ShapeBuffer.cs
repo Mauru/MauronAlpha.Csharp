@@ -14,48 +14,23 @@
 
 	using Microsoft.Xna.Framework;
 	using Microsoft.Xna.Framework.Graphics;
+
+	using MauronAlpha.Geometry.Geometry2d.Transformation;
 	
-	public class ShapeBuffer:List<I_polygonShape2d>{
-		List<TriangulationData> _triangulationData;
-		public List<TriangulationData> TriangulatedObjects {
-			get {
-				if (_triangulationData == null)
-					_triangulationData = new List<TriangulationData>();
-				return _triangulationData;
-			}
-		}
-		public bool IsTriangulated {
-			get {
-				if (_triangulationData == null)
-					return false;
-				return true;
-			}
-		}
+	public class ShapeBuffer:List<TriangulationData>{
 
-		/// <summary> Triangulation Process - Call this during the Initialization Phase since there is currently no "update" call if new elements are added afterwards.</summary>
-		public int Triangulate(GameRenderer renderer, Color[] colors, Vector2d offset) {
-
-			if (_triangulationData == null)
-				_triangulationData = new List<TriangulationData>();
-
-			int count = 0;
-
-			//Triangulation Process
-			foreach (I_polygonShape2d shape in this) {
-				TriangulationData data = TriangulationData.CreateFromShape(renderer,shape,colors,offset);
-				_triangulationData.Add(data);
-				count++;
-			}
-
-			return count;
-		}
-		public int Triangulate(GameRenderer renderer, Color color) {
-			Color[] colors = new Color[3] { color, color, color };
-			return Triangulate(renderer, colors, Vector2d.Zero);
-		}
 
 		public static ShapeBuffer Empty { get { return new ShapeBuffer(); } }
 
+		
+		Matrix2d _matrix;
+		public Matrix2d Matrix {
+			get {
+				if (_matrix == null)
+					_matrix = Matrix2d.Identity;
+				return _matrix;
+			}
+		}
 	}
 
 }

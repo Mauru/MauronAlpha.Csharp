@@ -24,7 +24,7 @@
 
 			I_Shader shader = renderer.CurrentShader;
 			shader.Apply();
-			foreach (TriangulationData data in shapes.TriangulatedObjects)
+			foreach (TriangulationData data in shapes)
 				device.DrawUserPrimitives<VertexPositionColor>(PrimitiveType.TriangleList, data.Vertices, 0, data.TriangleCount);
 
 			SpriteBatch batch = renderer.DefaultSpriteBatch;

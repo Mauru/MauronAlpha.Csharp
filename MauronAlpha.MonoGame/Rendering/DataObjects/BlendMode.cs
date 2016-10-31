@@ -1,4 +1,4 @@
-﻿namespace MauronAlpha.MonoGame.DataObjects {
+﻿namespace MauronAlpha.MonoGame.Rendering.DataObjects {
 	
 
 	public abstract class BlendMode:MonoGameComponent {
@@ -48,7 +48,7 @@
 
 		public static BlendMode_Alpha Instance {
 			get {
-			return new BlendMode_Alpha();
+				return new BlendMode_Alpha();
 			}
 		}
 	}

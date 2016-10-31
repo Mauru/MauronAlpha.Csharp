@@ -12,13 +12,6 @@
 	public class LineRenderer:MonoGameComponent {
 
 		public static void DrawLines(GameRenderer renderer, long time) {
-
-			Matrix m = Matrix.Identity;
-			m.Translation = new Vector3(1, 1, 1);
-			Vector3 test = new Vector3(0, 0, 0);
-
-
-
 			I_GameScene scene = renderer.CurrentScene;
 			SpriteBatch batch = renderer.DefaultSpriteBatch;
 			GraphicsDevice device = renderer.GraphicsDevice;
@@ -46,15 +39,23 @@
 
 		public static List<VertexPositionColor> Pixel(Color color) {
 			List<VertexPositionColor> result = new List<VertexPositionColor>() {
-				LineRenderer.VertexPositionColor(0,0,color),
-				LineRenderer.VertexPositionColor(1,0,color),
-				LineRenderer.VertexPositionColor(1,1,color),
-				LineRenderer.VertexPositionColor(0,0,color),
-				LineRenderer.VertexPositionColor(1,1,color),
-				LineRenderer.VertexPositionColor(0,1,color)
+				VertexPositionColor(0,0,color),
+				VertexPositionColor(1,0,color),
+				VertexPositionColor(1,1,color),
+				VertexPositionColor(0,0,color),
+				VertexPositionColor(1,1,color),
+				VertexPositionColor(0,1,color)
 			};
 			return result;
 		}
 
-}
+		public static void Render(GameRenderer renderer, LineBuffer lines, Color color) {
+			SpriteBatch batch = renderer.DefaultSpriteBatch;
+			batch.Begin();
+			Texture2D pixel = renderer.PixelTexture;
+			foreach (MonoGameLine line in lines)
+				batch.Draw(pixel, line.Rectangle, null, color, (float)line.AngleAsRad, Vector2.Zero, SpriteEffects.None, 1f);
+			batch.End();
+		}
+	}
 }

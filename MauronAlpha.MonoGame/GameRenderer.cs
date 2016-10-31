@@ -16,6 +16,7 @@
 	using MauronAlpha.MonoGame.Rendering;
 	using MauronAlpha.MonoGame.Rendering.Collections;
 	using MauronAlpha.MonoGame.Rendering.Interfaces;
+	using MauronAlpha.MonoGame.Rendering.DataObjects;
 
 	using MauronAlpha.MonoGame.Assets.DataObjects;
 
@@ -115,14 +116,8 @@
 
 		void CreateRenderTargets() {
 			GraphicsDevice device = Engine.GraphicsDevice;
-			_renderStages.SetValue(ScreenSize, new RenderStage(device, ScreenSize));
-			_renderStages.SetValue(new Vector2d(1024, 1024), new RenderStage(device, 1024, 1024));
-			_renderStages.SetValue(new Vector2d(512, 512), new RenderStage(device, 512, 512));
-			_renderStages.SetValue(new Vector2d(256, 256), new RenderStage(device, 256, 256));
-			_renderStages.SetValue(new Vector2d(128, 128), new RenderStage(device, 128, 128));
-			_renderStages.SetValue(new Vector2d(64, 64), new RenderStage(device, 64, 64));
-			_renderStages.SetValue(new Vector2d(32, 32), new RenderStage(device, 32, 32));
-			_renderStages.SetValue(new Vector2d(16, 16), new RenderStage(device, 16, 16));
+			_defaultRenderTarget = new RenderStage(Game, ScreenSize);
+			_queue = new RenderQueue(Game);
 		}
 
 		I_GameScene _currentScene;
@@ -214,58 +209,42 @@
 
 		//Drawing
 		public void Draw(long time) {
-
 			DrawMethod method = _currentDrawMethod;
 			method(this, time);
-
 		}
-		
-		//RenderRequests
-		void CycleRenderRequests(long time) {
-			if (B_isPreRendering) {
-				return;
-			}
-			if (_requestCount < 1) {
-				return;
-			}
-			B_isPreRendering = true;
-			RenderRequest next = Requests.Pop;
-			I_Renderable target = next.Target;
 
+		RenderQueue _queue;
+		public RenderQueue Queue { get {
+			return _queue;
+		} }
 
-			RenderStage stage = GetRenderStage(next.RenderTargetSize);
-			/*RenderMethod method = next.Target.RenderMethod;
-
-			I_RenderResult result = method(stage, target, time);
-			target.SetRenderResult(result);
-			*/
-			_requestCount--;
-			if (_requestCount > 0 && !B_isPreRendering)
-				CycleRenderRequests(time);
-			else if (_requestCount <= 0) {
-				B_isPreRendering = false;
-				return;
-			}
-		}
-		public void SolveRenderRequests(long time) {
-			if (_requestCount < 1)
-				return;
-			if (B_isPreRendering)
-				return;
-
-			CycleRenderRequests(time);
-
+		RenderStage _defaultRenderTarget;
+		public RenderStage DefaultRenderTarget {
+			get { return _defaultRenderTarget; }
 		}
 
 		public delegate I_RenderResult RenderMethod(RenderStage stage, I_Renderable target, long time);
-
-		Assign<Vector2d, RenderStage> _renderStages = new Assign<Vector2d, RenderStage>();
-		public RenderStage GetRenderStage(Vector2d size) {
-			foreach (RenderStage stage in _renderStages.Values)
-				if (stage.Size.CompareTo(size) >= 0)
-					return stage;
-			throw new GameError("No valid RenderStage found for object (too large!)!", this);
+	
+		//PreRendering
+		public delegate void PreRenderEventHandler(GameRenderer renderer, SpriteBuffer result, long time);
+		PreRenderEventHandler _preRenderEventHandler = NoPreRenderEvent;
+		public PreRenderEventHandler HandlePreRenderEvent {
+			get { return _preRenderEventHandler; }
 		}
+		public void SetPreRenderHandler(PreRenderEventHandler handler) {
+			_preRenderEventHandler = handler;
+		}
+		public static void NoPreRenderEvent(GameRenderer renderer, SpriteBuffer buffer, long time) { }
+
+		//Render-time
+		long DATA_renderTime = 0;
+		public long Time {
+			get {
+				return DATA_renderTime;
+			}
+		}
+
+
 
 		public void ClearScreen(Color color) {
 			GraphicsDevice.Clear(color);
@@ -288,33 +267,7 @@
 			}
 		}
 
-		List<Vector2d> TotalSize(List<I_Drawable> ss) {
 
-			Vector2d min = new Vector2d();
-			Vector2d max = new Vector2d();
-			foreach (I_Drawable s in ss) {
-				Polygon2dBounds b = s.Bounds;
-				Vector2d mi = b.Min;
-				Vector2d mx = b.Max;
-				if (mi.X < min.X)
-					min.SetX(mi.X);
-				if (mi.Y < min.Y)
-					min.SetY(mi.Y);
-				if (mx.X > max.X)
-					max.SetX(mx.X);
-				if (mx.Y > max.Y)
-					max.SetY(mx.Y);
-			}
-			return new List<Vector2d>() { min, max };
-
-		}
-
-		long DATA_renderTime = 0;
-		public long Time {
-			get {
-				return DATA_renderTime;
-			}
-		}
 
 		//Events
 		Subscriptions<ReadyEvent> S_Ready = new Subscriptions<ReadyEvent>();
@@ -340,12 +293,6 @@
 			_requestCount++;
 			return;
 		}
-
-		public VertexPositionColor[] TestTriangle = new VertexPositionColor[3] {
-			new VertexPositionColor(new Vector3(0,0,0),Color.Red),
-			new VertexPositionColor(new Vector3(0,100,0),Color.Blue),
-			new VertexPositionColor(new Vector3(100,100,0),Color.Green),
-		};
 
 		/* some circle drawing logic...
 		 public void Circle(Texture2D tex, int cx, int cy, int r, Color col) {
@@ -378,7 +325,6 @@
 		static void ShowEngineStateAsSolidColor(GameRenderer renderer, long time) {
 			renderer.ClearScreen(renderer.Engine.StateColor);
 		}
-
 
 		//Useful proxies
 		public MonoGameWindow GameWindow {

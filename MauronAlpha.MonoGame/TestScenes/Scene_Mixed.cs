@@ -41,10 +41,7 @@
 			SetLineBuffer(new LineBuffer() { new MonoGameLine(1, 1, 301, -299, 1) });
 
 			//Segment2dList segments = hex.Segments;
-			ShapeBuffer.Add(hex);
-			ShapeBuffer.Triangulate(Game.Renderer, Color.Red);
-
-
+			ShapeBuffer.Add(TriangulationData.CreateFromShape(hex,TriangulationData.WhiteVertexColors));
 
 			//shader
 			Vector2d size = new Vector2d(

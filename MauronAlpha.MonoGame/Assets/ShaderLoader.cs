@@ -1,6 +1,6 @@
 ﻿namespace MauronAlpha.MonoGame.Assets {
 	using MauronAlpha.FileSystem.Units;
-	using MauronAlpha.MonoGame.Rendering;
+	using MauronAlpha.MonoGame.Rendering.DataObjects;
 
 	using MauronAlpha.Events.Interfaces;
 	using MauronAlpha.Events.Collections;

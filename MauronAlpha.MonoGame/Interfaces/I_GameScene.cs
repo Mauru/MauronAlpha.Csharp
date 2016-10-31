@@ -11,7 +11,6 @@
 
 		GameManager Game { get; }
 
-
 		void Initialize();
 
 		bool IsInitialized { get; }
@@ -21,6 +20,8 @@
 		ShapeBuffer ShapeBuffer { get; }
 		SpriteBuffer SpriteBuffer { get; }
 		LineBuffer LineBuffer { get; }
+
+		RenderOrders RenderOrders { get; }
 
 		void SetSpriteBuffer(SpriteBuffer buffer);
 
