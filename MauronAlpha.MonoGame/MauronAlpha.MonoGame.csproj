@@ -14,6 +14,8 @@
     <MonoGamePlatform>WindowsGL</MonoGamePlatform>
     <MonoGameContentBuilderExe>
     </MonoGameContentBuilderExe>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <PlatformTarget>x86</PlatformTarget>
@@ -24,6 +26,7 @@
     <DefineConstants>DEBUG;TRACE;WINDOWS</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <PlatformTarget>x86</PlatformTarget>
@@ -33,15 +36,18 @@
     <DefineConstants>TRACE;WINDOWS</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>Icon.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'MonoGame Engine Testing|x86'">
     <OutputPath>bin\x86\MonoGame Engine Testing\</OutputPath>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Assets\AssetGroup.cs" />
+    <Compile Include="Assets\DataObjects\AssetError.cs" />
     <Compile Include="Assets\DataObjects\TextFormat.cs" />
     <Compile Include="Assets\FontLoader.cs" />
     <Compile Include="Assets\AssetType.cs" />
@@ -52,6 +58,7 @@
     <Compile Include="Assets\MonoGameAsset.cs" />
     <Compile Include="Assets\ShaderLoader.cs" />
     <Compile Include="Assets\TextureLoader.cs" />
+    <Compile Include="DataObjects\MonoColor.cs" />
     <Compile Include="Rendering\Collections\RenderTypes.cs" />
     <Compile Include="DataObjects\LogFile.cs" />
     <Compile Include="Debug\DebugException.cs" />
@@ -158,11 +165,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\4px.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\PixelShader.fx" />
     <Content Include="Content\robotoLight.unaliased.16_0.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\robotoLight.unaliased.16_1.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\TestImage.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Icon.ico" />
@@ -174,7 +187,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Code.thirdParty\MonoGame\GitHub.Mirror\MonoGame.Framework\MonoGame.Framework.WindowsGL.csproj">
-      <Project>{7de47032-a904-4c29-bd22-2d235e8d91ba}</Project>
+      <Project>{6d75e618-19ca-4c51-9546-f10965fbc0b8}</Project>
       <Name>MonoGame.Framework.WindowsGL</Name>
     </ProjectReference>
     <ProjectReference Include="..\MauronAlpha.Events\MauronAlpha.Events.csproj">
@@ -207,6 +220,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="Content\Default.fnt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

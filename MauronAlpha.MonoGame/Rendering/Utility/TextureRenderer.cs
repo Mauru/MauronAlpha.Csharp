@@ -22,18 +22,18 @@
 			batch.Begin();
 			foreach (SpriteData data in buffer) {
 				Texture2D d = data.Texture.AsTexture2d;
-				batch.Draw(d,d.Bounds,Color.Red);
+				batch.Draw(d,d.Bounds,data.Color);
 			}
 			batch.End();
 		}
 
 		public static void Render(GameRenderer renderer, SpriteBuffer buffer, Color color) {
 			SpriteBatch batch = renderer.DefaultSpriteBatch;
-			batch.Begin();
 			Texture2D texture;
+			batch.Begin();
 			foreach (SpriteData data in buffer) {
 				texture = data.Texture.AsTexture2d;
-				batch.Draw(texture, texture.Bounds, color);
+				batch.Draw(texture, texture.Bounds, Color.White);
 			}
 			batch.End();
 		}

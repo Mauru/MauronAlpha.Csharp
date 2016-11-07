@@ -62,7 +62,7 @@
 			GameFont font = assets.DefaultFont;
 			Text txt = new Text("Some Sample-Text");
 
-			TextFragment text = new TextFragment(Game, txt, font);
+			TextFragment text = new TextFragment(Game, font, txt);
 
 			SpriteBuffer sprites = text.SpriteBuffer;
 			base.SetSpriteBuffer(sprites);

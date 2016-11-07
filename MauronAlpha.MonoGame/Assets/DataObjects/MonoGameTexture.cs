@@ -27,13 +27,15 @@
 			_name = name;
 		}
 
+		public bool IsEmpty {
+			get {
+				return _texture == null;
+			}
+		}
+
 		//constructor
 		public MonoGameTexture(GameManager game, Texture2D texture): base() {
 			_texture = texture;
-		}
-
-		public static Polygon2dBounds BoundsOfTexture(Texture2D t) {
-			return new Polygon2dBounds(t.Width, t.Height);
 		}
 
 		public double Width {
@@ -62,6 +64,23 @@
 			return _texture.Bounds;
 		} }
 
+
+
+		//static utility function
+		public static Polygon2dBounds GenerateBounds(Texture2D t) {
+			return new Polygon2dBounds(t.Width, t.Height);
+		}
+		public static Polygon2dBounds GenerateBounds(MonoGameTexture t) {
+			if (t.IsEmpty)
+				return Polygon2dBounds.Empty;
+			Texture2D tt = t.AsTexture2d;
+			return new Polygon2dBounds(0, 0, t.Width, t.Height);
+		}
+		public static Color[] GetColorData(MonoGameTexture t) {
+			Color[] result = new Color[(int) (t.Width * t.Height) ];
+			t.AsTexture2d.GetData<Color>(result);
+			return result;
+		}
 	}
 
 }

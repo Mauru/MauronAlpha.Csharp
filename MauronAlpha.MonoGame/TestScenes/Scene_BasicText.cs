@@ -13,6 +13,8 @@
 	using MauronAlpha.TextProcessing.Collections;
 	using MauronAlpha.TextProcessing.DataObjects;
 
+	using MauronAlpha.Geometry.Geometry2d.Units;
+
 	public class Scene_BasicText:GameScene {
 		public Scene_BasicText(GameManager game) : base(game) { }
 
@@ -24,11 +26,12 @@
 			GameFont font = assets.DefaultFont;
 			Text txt = new Text("GameCycle : 0");
 			
-			TextFragment text = new TextFragment(Game,txt,font);
+			TextFragment text = new TextFragment(Game,font,txt);
 
 			SpriteBuffer _sprites = text.SpriteBuffer;
 			_sprites = SpriteBuffer.OffsetPosition(ref _sprites, Game.Renderer.CenterOfScreen);
 			SetSpriteBuffer(_sprites);
+
 			_text = text;
 			Game.Renderer.SetCurrentScene(this);
 			Game.Renderer.SetDrawMethod(TextRenderer.DrawMethod);

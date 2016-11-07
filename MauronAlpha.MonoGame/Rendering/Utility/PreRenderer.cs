@@ -25,6 +25,8 @@
 			Texture2D texture;
 			SpriteBuffer result = new SpriteBuffer();
 			MonoGameTexture sprite;
+			SpriteBatch batch = renderer.DefaultSpriteBatch;
+
 			while (!renderer.Queue.IsEmpty) {
 				obj = renderer.Queue.Pop;
 				orders = obj.RenderOrders;
@@ -50,20 +52,21 @@
 			return ExtractTexture(stage, (int)bounds.X, (int)bounds.Y, (int)bounds.Width, (int)bounds.Height);
 		}
 		public static Texture2D ExtractTexture(RenderStage stage, Rectangle bounds) {
-			return ExtractTexture(stage, bounds.X, bounds.Y, bounds.Width, bounds.Height);
-		}
-		public static Texture2D ExtractTexture(RenderStage stage, int x, int y, int width, int height) {
-			Rectangle t = stage.RenderTarget.Bounds;
-			Color[] temp = new Color[t.Width * t.Height];
-			stage.RenderTarget.GetData<Color>(temp);
 
-			Color[] result = new Color[width * height];
-			for (int px = 0; px < width; px++)
-				for (int py = 0; py < height; py++)
-					result[px + py * width] = temp[px + x + (y + py) * width];
-			Texture2D extracted = new Texture2D(stage.Game.Engine.GraphicsDevice, width, height);
-			extracted.SetData<Color>(result);
-			return extracted;
+			int size = bounds.Width * bounds.Height;
+
+			Color[] data = new Color[size];
+
+			stage.RenderTarget.GetData<Color>(0, bounds, data, 0, size);
+
+			Texture2D result = new Texture2D(stage.Game.Renderer.GraphicsDevice, bounds.Width, bounds.Height);
+			result.SetData<Color>(data);
+			return result;
+		}
+
+		public static Texture2D ExtractTexture(RenderStage stage, int x, int y, int width, int height) {
+			Rectangle bounds = new Rectangle(x, y, width, height);
+			return ExtractTexture(stage, bounds);
 		}
 	}
 }

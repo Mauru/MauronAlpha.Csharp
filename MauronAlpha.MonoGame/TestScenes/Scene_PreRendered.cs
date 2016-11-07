@@ -23,12 +23,29 @@
 		public Scene_PreRendered(GameManager game) : base(game) { }
 
 		public override void Initialize() {
-			PreRenderable_TextFragment = new PreRenderable_TextFragment(Game, Game.Assets.DefaultFont, "Some Text.");
+			Initialize_TestTexture();
 
 			base.Initialize();
 		}
 
-		void Initialize_TestText() { }
+		void Initialize_TestTexture() {
+			PreRenderable_Texture test = new PreRenderable_Texture(Game, "Default", "TestImage");
+			GameRenderer renderer = Game.Renderer;
+			renderer.SetCurrentScene(this);
+			renderer.SetDrawMethod(PreRenderer.DrawMethod);
+			renderer.SetPreRenderHandler(PreRenderHandler);
+			renderer.Queue.Add(test);
+		}
+
+		void Initialize_TestText() {
+			PreRenderable_TextFragment test = new PreRenderable_TextFragment(Game, Game.Assets.DefaultFont, "Some Text.", Color.White);
+
+			GameRenderer renderer = Game.Renderer;
+			renderer.SetCurrentScene(this);
+			renderer.SetDrawMethod(PreRenderer.DrawMethod);
+			renderer.SetPreRenderHandler(PreRenderHandler);
+			renderer.Queue.Add(test);
+		}
 
 		void Initialize_TestShape() {
 			GameRenderer renderer = Game.Renderer;
@@ -85,8 +102,6 @@ namespace MauronAlpha.MonoGame.Rendering.DataObjects {
 
 		I_polygonShape2d _shape;
 
-		Vector2d _offsetToCenter;
-
 		public PreRenderable_Shape(GameManager game, I_polygonShape2d shape, I_Shader shader, Color color) : base(game) {
 			_shape = shape;
 			ShapeBuffer buffer = new ShapeBuffer() {
@@ -120,17 +135,22 @@ namespace MauronAlpha.MonoGame.Rendering.DataObjects {
 
 	using MauronAlpha.MonoGame.UI.DataObjects;
 
+	using Microsoft.Xna.Framework;
+
 	public class PreRenderable_TextFragment : PreRenderable {
 
-		GameFont _font;
 		TextFragment _text;
 
 		//constructor
-		public PreRenderable_TextFragment(GameManager game, GameFont font, string text) : base(game) {
+		public PreRenderable_TextFragment(GameManager game, GameFont font, string text, Color color) : base(game) {
 			_text = new TextFragment(game, font, text);
 
 			SpriteBuffer buffer = TextFragment.GenerateSpriteBuffer(_text);
 			_bounds = buffer.GenerateBounds();
+
+			_orders = new RenderOrders() {
+				new PreRenderOrder(buffer,color)
+			};
 		}
 
 
@@ -146,5 +166,45 @@ namespace MauronAlpha.MonoGame.Rendering.DataObjects {
 			get { return _bounds; }
 		}
 	
+	}
+}
+
+namespace MauronAlpha.MonoGame.Rendering.DataObjects {
+	using MauronAlpha.Geometry.Geometry2d.Units;
+
+	using MauronAlpha.MonoGame.Rendering.Collections;
+
+	using MauronAlpha.MonoGame.Assets.DataObjects;
+
+	public class PreRenderable_Texture : PreRenderable {
+
+		MonoGameTexture _texture;
+
+		public PreRenderable_Texture(GameManager game, string assetGroup, string name) : base(game) {
+			AssetManager assets = game.Assets;
+
+			MonoGameTexture _texture = null;
+
+			if (!assets.TryTexture(assetGroup, name, ref _texture))
+				throw new AssetError("Unnown texture {" + assetGroup + "," + name + "}!",this);
+
+			_bounds = MonoGameTexture.GenerateBounds(_texture);
+
+			_orders = new RenderOrders() {
+				new PreRenderOrder(_texture,_bounds)
+			};
+		}
+
+		RenderOrders _orders;
+		public override RenderOrders RenderOrders {
+			get {
+				return _orders;
+			}
+		}
+
+		Polygon2dBounds _bounds;
+		public override Polygon2dBounds Bounds {
+			get { return _bounds; }
+		}
 	}
 }

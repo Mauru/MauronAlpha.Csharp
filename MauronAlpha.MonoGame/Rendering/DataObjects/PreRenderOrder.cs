@@ -3,6 +3,8 @@
 
 	using MauronAlpha.MonoGame.Rendering.Collections;
 
+	using MauronAlpha.MonoGame.Assets.DataObjects;
+
 	using Microsoft.Xna.Framework;
 
 	public class PreRenderOrder:MonoGameComponent {
@@ -12,6 +14,17 @@
 			_color = color;
 			_type = RenderTypes.Shape;
 			_shader = shader;
+		}
+		public PreRenderOrder(SpriteBuffer buffer, Color color):base() {
+			_sprites = buffer;
+			_color = color;
+			_type = RenderTypes.Sprite;
+		}
+		public PreRenderOrder(MonoGameTexture t, Polygon2dBounds mask):base() {
+			_sprites = new SpriteBuffer() {
+				new SpriteData(t,mask)
+			};
+			_type = RenderTypes.Sprite;
 		}
 
 		string _type;

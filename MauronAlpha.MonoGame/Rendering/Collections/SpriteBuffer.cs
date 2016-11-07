@@ -3,6 +3,8 @@
 	using MauronAlpha.MonoGame.Rendering.DataObjects;
 	using MauronAlpha.Geometry.Geometry2d.Units;
 
+	using Microsoft.Xna.Framework;
+
 	/// <summary> Holds render-information for sprites (textures)</summary>
 	public class SpriteBuffer:List<SpriteData> {
 
@@ -34,6 +36,36 @@
 		public Polygon2dBounds GenerateBounds() {
 			if (IsEmpty)
 				return Polygon2dBounds.Empty;
+
+			Vector2d min = null, max = null, t;
+
+			Polygon2dBounds bounds;
+
+			foreach (SpriteData data in this) {
+				bounds = SpriteData.GenerateBounds(data);
+				if (min == null)
+					min = bounds.Min.Copy;
+				else  {
+					t = bounds.Min;
+					if(t.X<min.X)
+						min.SetX(t.X);
+					if(t.Y<min.Y)
+						min.SetY(t.Y);
+				}
+
+				if (max == null)
+					max = bounds.Max.Copy;
+				else {
+					t = bounds.Max;
+					if (t.X > max.X)
+						max.SetX(t.X);
+					if (t.Y < min.Y)
+						max.SetY(t.Y);
+				}
+			}
+
+			return new Polygon2dBounds(min, max);
+
 		}
 	}
 }

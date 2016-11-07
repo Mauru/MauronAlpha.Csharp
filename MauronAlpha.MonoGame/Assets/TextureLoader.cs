@@ -30,10 +30,10 @@
 		string _name;
 		public string Name { get { return _name; } }
 
-		public TextureLoader(GameManager game, string name)	: base() {
+		public TextureLoader(GameManager game, string assetName, string fileName): base() {
 			_game = game;
-			_file = new File(game.Assets.TextureDirectory, name);
-			_name = name;
+			_file = new File(game.Assets.TextureDirectory, fileName);
+			_name = assetName;
 		}
 
 		public void Start() {

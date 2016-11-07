@@ -57,7 +57,7 @@
 			LoadRequest request = _queue.Pop;
 			if (request.IsFont) {
 
-				FontLoader font = new FontLoader(_game, request.Name);
+				FontLoader font = new FontLoader(_game, request.Name, request.FileName);
 				font.Subscribe(this);
 				font.Start();
 				return;
@@ -65,7 +65,7 @@
 			}
 			else if (request.IsTexture) {
 
-				TextureLoader texture = new TextureLoader(_game, request.Name);
+				TextureLoader texture = new TextureLoader(_game, request.Name, request.FileName);
 				texture.Subscribe(this);
 				texture.Start();
 				return;

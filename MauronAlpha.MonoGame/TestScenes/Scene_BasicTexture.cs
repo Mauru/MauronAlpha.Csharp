@@ -9,14 +9,17 @@
 
 	using MauronAlpha.MonoGame.Collections;
 
+	using Microsoft.Xna.Framework;
+
 	public class Scene_BasicTexture:GameScene {
 
 		public Scene_BasicTexture(GameManager game) : base(game) { }
 
 		public override void Initialize() {
 
-			GameFont font = Game.Assets.DefaultFont;
-			MonoGameTexture t = font.TextureByPageIndex(0);
+			MonoGameTexture t=null;
+			if (!Game.Assets.TryTexture("Default", "TestImage", ref t))
+				throw new AssetError("Texture does not exist!", this);
 
 			SpriteBuffer b = new SpriteBuffer();
 			SpriteData d = new SpriteData(

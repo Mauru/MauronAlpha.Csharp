@@ -19,6 +19,11 @@
 		//Constructor
 		public GameEngine(ref GameManager o):base() {
 			GraphicsDeviceManager = new GraphicsDeviceManager(this);
+
+			GraphicsDeviceManager.IsFullScreen = false;
+			GraphicsDeviceManager.PreferredBackBufferHeight = 600;
+			GraphicsDeviceManager.PreferredBackBufferWidth = 600;
+
 			Content.RootDirectory = "Content";
 			Set(o);
 		}

@@ -44,7 +44,7 @@
 		public virtual GameSetup Setup {
 			get {
 				if(DATA_setup == null)
-					DATA_setup = new GameSetup();
+					DATA_setup = new GameSetup(DATA_Manager);
 				return DATA_setup;
 			}
 		}

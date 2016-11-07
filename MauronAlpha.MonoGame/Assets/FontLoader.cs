@@ -27,10 +27,10 @@
 		bool B_isBusy = false;
 		public bool IsBusy { get { return B_isBusy; } }
 
-		public FontLoader(GameManager game, string name)	: base() {
+		public FontLoader(GameManager game, string assetName, string fileName)	: base() {
 			_game = game;
-			_name = name;
-			File file = new File(game.Assets.ContentDirectory, name,"fnt");
+			_name = assetName;
+			File file = new File(game.Assets.ContentDirectory, fileName);
 			_font = new FontDefinition(file);
 		}
 
@@ -52,7 +52,7 @@
 			_result = new GameFont(_game, _name, def);
 			TextureLoader loader;
 			foreach(FontPage p in def.FontPages) {
-				loader = new TextureLoader(_game, p.FileName);
+				loader = new TextureLoader(_game, p.FileName, p.FileName);
 				_textures.Add(loader);
 			}
 			CycleTextures();

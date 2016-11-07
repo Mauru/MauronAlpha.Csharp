@@ -11,9 +11,15 @@
 			}
 		}
 
-		public LoadRequest(string name, AssetType type) : base() {
-			_name = name;
+		string _fileName;
+		public string FileName {
+			get { return _fileName; }
+		}
+
+		public LoadRequest(string assetName, string fileName, AssetType type) : base() {
+			_name = assetName;
 			_type = type;
+			_fileName = fileName;
 		}
 
 		public bool IsFont {

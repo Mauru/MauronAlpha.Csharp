@@ -15,6 +15,10 @@
 			_texture = texture;
 			_mask = Rectangle2dToRectangle(mask);
 		}
+		public SpriteData(I_MonoGameTexture texture, Polygon2dBounds mask): base() {
+			_texture = texture;
+			_mask = Bounds2Rectangle(mask);
+		}
 		public SpriteData(I_MonoGameTexture texture, Rectangle mask): base() {
 			_mask = mask;
 			_texture = texture;
@@ -28,6 +32,13 @@
 		public I_MonoGameTexture Texture {
 			get { return _texture; }
 		}
+		public bool TryTexture(ref I_MonoGameTexture result) {
+			if (_texture == null)
+				return false;
+			result = _texture;
+			return true;
+		}
+
 
 		public double Width {
 			get {
@@ -60,7 +71,7 @@
 			_position = new Vector2d(x, y);
 			return this;
 		}
-		
+
 		System.Nullable<Rectangle> _posAsRect = null;
 		public Rectangle PositionAsRectangle {
 			get {
@@ -82,12 +93,21 @@
 				return _mask.Value;
 			}
 		}
+		public bool HasMask {
+			get {
+				return _mask.HasValue;
+			}
+		}
+		public bool TryMask(ref Rectangle result) {
+			if (_mask == null)
+				return false;
+			result = _mask.Value;
+			return true;
+		}
 
-		Color _color;
+		Color _color = Color.White;
 		public Color Color {
 			get {
-				if (_color == null)
-					return Color.White;
 				return _color;
 			}
 		}
@@ -100,7 +120,24 @@
 				(int)r.Height
 			);
 		}
-
+		public static Polygon2dBounds Rectangle2Bounds(Rectangle r) {
+			return new Polygon2dBounds(r.X, r.Y, r.Width, r.Height);
+		}
+		public static Rectangle Bounds2Rectangle(Polygon2dBounds b) {
+			return new Rectangle((int) b.X, (int) b.Y, (int) b.Width, (int) b.Height);
+		}
+		public static Polygon2dBounds GenerateBounds(SpriteData data) {
+			Rectangle tmp = new Rectangle();
+			if (data.TryMask(ref tmp))
+				return new Polygon2dBounds(tmp.X, tmp.Y, tmp.Width, tmp.Height);
+			I_MonoGameTexture t = null; 
+			if(data.TryTexture(ref t)) {
+				Vector2d p = data.Position;
+				return new Polygon2dBounds(p.X, p.Y, t.Width, t.Height);
+			}
+			return Polygon2dBounds.Empty;
+		}
+	
 	}
 
 }

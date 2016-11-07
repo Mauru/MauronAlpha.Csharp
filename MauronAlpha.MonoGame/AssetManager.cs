@@ -75,7 +75,6 @@
 			S_Ready.Remove(s);
 		}
 
-
 		//Generic paths
 		Directory DIR_saveGames;
 		public Directory SaveDirectory {
@@ -95,7 +94,6 @@
 				return ContentDirectory;
 			}
 		}
-
 
 		//Fonts
 		public bool HasDefaultFont {
@@ -127,7 +125,6 @@
 			}
 		}
 
-
 		//Textures
 		public List<string> ListOfTextureNames(bool includeGroupName) {
 			List<string> result = new List<string>();
@@ -140,6 +137,12 @@
 			get {
 				return ContentDirectory;
 			}
+		}
+		public bool TryTexture(string assetGroup, string name, ref MonoGameTexture result) {
+			AssetGroup g = null;
+			if (!DATA_AssetGroups.TryGet(assetGroup, ref g))
+				return false;
+			return g.TryTexture(name, ref result);
 		}
 
 
@@ -156,8 +159,6 @@
 				return ContentDirectory;
 			}
 		}
-
 	
 	}
-
 }
