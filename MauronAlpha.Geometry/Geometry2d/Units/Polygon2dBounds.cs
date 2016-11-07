@@ -13,38 +13,30 @@ namespace MauronAlpha.Geometry.Geometry2d.Units {
 
 		Vector2d _min;
 		Vector2d _max;
-		Vector2d _center;
 
 		//Constructors
 		public Polygon2dBounds(Vector2d min, Vector2d max): base() {
 			_min = min;
 			_max = max;
-			_center = _min.Difference(_max);
 		}
 		public Polygon2dBounds( I_polygonShape2d parentShape ): base() {
 			Vector2dList pp = parentShape.Points.MinMax;
 			_min = pp[0];
 			_max = pp[1];
-			_center = Min.Difference(_max);
 		}
 		public Polygon2dBounds( Vector2dList points )	: base() {
-
 			Vector2dList minmax = points.MinMax;
 			_min = minmax[0];
 			_max = minmax[1];
-			_center = _min.Difference(_max);
-
 		}
 		public Polygon2dBounds(double width, double height)	: base() {
 			_min = new Vector2d(0, 0);
 			_max = new Vector2d(width, height);
-			_center = _min.Difference( _max );
 		}
 		public Polygon2dBounds(Vector2d size) : this(size.X, size.Y) { }
-		private Polygon2dBounds(Vector2d min, Vector2d max, Vector2d center): base() {
-			_min = min;
-			_max = max;
-			_center = center;
+		public Polygon2dBounds(double x, double y, double width, double height): base() {
+			_min = new Vector2d(x, y);
+			_max = new Vector2d(x + width, y + height);
 		}
 
 		public Vector2d Position {
@@ -65,7 +57,7 @@ namespace MauronAlpha.Geometry.Geometry2d.Units {
 		}
 		public Vector2d Center {
 			get {
-				return _center;
+				return _min.Copy.Add(Size.Divide(2));
 			}
 		}
 		public Vector2d Size {
@@ -82,7 +74,7 @@ namespace MauronAlpha.Geometry.Geometry2d.Units {
 		}
 		public Polygon2dBounds Copy {
 			get {
-				return new Polygon2dBounds(_min, _max, _center);
+				return new Polygon2dBounds(_min, _max);
 			}
 		}
 		I_polygonShape2d I_polygonShape2d.Copy {
@@ -154,11 +146,11 @@ namespace MauronAlpha.Geometry.Geometry2d.Units {
 		//Static accessors
 		public static Polygon2dBounds Empty {
 			get {
-				return new Polygon2dBounds(Vector2d.Zero, Vector2d.Zero, Vector2d.Zero);
+				return new Polygon2dBounds(Vector2d.Zero, Vector2d.Zero);
 			}
 		}
 		public static Polygon2dBounds FromMinMax(Vector2d min, Vector2d max) {
-			return new Polygon2dBounds(min.Difference(max), min, max);
+			return new Polygon2dBounds(min, max);
 		}
 	}
 
