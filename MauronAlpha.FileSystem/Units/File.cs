@@ -15,9 +15,11 @@ namespace MauronAlpha.FileSystem.Units {
 
 		public File(Directory d, string name): this() {
 			if(name == null)
-				throw new FileSystemError("Invalid filename {" + name + "}",this);
+				throw new FileSystemError("Invalid FileName {" + name + "}",this);
 			DATA_directory = d;
 			int index = name.LastIndexOf('.');
+			if (index < 0)
+				throw new FileSystemError("Invalid FileName {" + name + "}", this);
 			STR_name = name.Substring(0, index);
 			STR_extension = name.Substring(index + 1);			
 		}
