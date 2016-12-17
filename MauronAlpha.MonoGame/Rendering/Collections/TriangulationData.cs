@@ -8,6 +8,7 @@
 	using MauronAlpha.Geometry.Geometry2d.Units;
 	using MauronAlpha.Geometry.Geometry2d.Interfaces;
 	using MauronAlpha.Geometry.Geometry2d.Utility;
+	using MauronAlpha.Geometry.Geometry2d.Transformation;
 
 	using Microsoft.Xna.Framework;
 	using Microsoft.Xna.Framework.Graphics;
@@ -67,12 +68,28 @@
 
 		public static TriangulationData CreateFromShape(I_polygonShape2d shape, Color[] colors) {
 			Triangulator2d tool = new Triangulator2d();
+			Vector2dList points = shape.Points;
+
 			//TODO: still have to make triangle thing static
-			MauronCode_dataList<Polygon2d> triangles = tool.Triangulate(shape.Points);
+			MauronCode_dataList<Polygon2d> triangles = tool.Triangulate(points);
 			int triangleCount = triangles.Count;
 			int vertexCount = triangleCount * 3;
 			VertexPositionColor[] vtp = TriangulationData.CreateVertexPositionColor(vertexCount, triangles, colors);
 			TriangulationData data = new TriangulationData(vtp,vertexCount);
+			return data;
+		}
+		public static TriangulationData CreateFromShape(I_polygonShape2d shape, Color[] colors, Matrix2d matrix) {
+			Triangulator2d tool = new Triangulator2d();
+			Vector2dList points = shape.Points;
+
+			points = matrix.ApplyToCopy(points);
+
+			//TODO: still have to make triangle thing static
+			MauronCode_dataList<Polygon2d> triangles = tool.Triangulate(points);
+			int triangleCount = triangles.Count;
+			int vertexCount = triangleCount * 3;
+			VertexPositionColor[] vtp = TriangulationData.CreateVertexPositionColor(vertexCount, triangles, colors);
+			TriangulationData data = new TriangulationData(vtp, vertexCount);
 			return data;
 		}
 

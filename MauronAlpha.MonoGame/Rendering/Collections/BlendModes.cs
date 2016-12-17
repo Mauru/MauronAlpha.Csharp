@@ -22,6 +22,12 @@
 			}
 		}
 
+		public static BlendMode_Subtract Subtract {
+			get {
+				return BlendMode_Subtract.Instance;
+			}
+		}
+
 	}
 
 }

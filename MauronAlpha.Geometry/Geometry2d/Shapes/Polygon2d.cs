@@ -83,27 +83,33 @@ namespace MauronAlpha.Geometry.Geometry2d.Shapes {
 			return _points.Equals(other.Points);
 		}
 
-		Segment2dList _segments;
 		public Segment2dList Segments {
 			get {
-				if (_segments != null)
-					return _segments;
-				if (Count < 2)
+				Vector2dList points = Points;
+				int count = points.Count;
+
+				if (count < 2)
 					return Segment2dList.Empty;
 
 				Segment2dList result = new Segment2dList();
-				Vector2dList points = Points;
-				Vector2d buffer = Vector2d.Zero;
-				int count = points.Count;
 
+				Vector2d buffer = null;
+
+				Segment2d s;
 				foreach (Vector2d p in points) {
-					Segment2d s = new Segment2d(buffer, p);
-					System.Diagnostics.Debug.Print("new Segment {"+count+"} : " + s.AsString);
-					result.Add(s);
-					buffer = p;
+					if (buffer == null)
+						buffer = p;
+					else { 
+						s = new Segment2d(buffer, p);
+						result.Add(s);
+						buffer = p;
+					}
 				}
-				_segments = result;
-				return _segments;
+
+				s = new Segment2d(buffer, points[0]);
+				result.Add(s);
+
+				return result;
 			}
 		}
 

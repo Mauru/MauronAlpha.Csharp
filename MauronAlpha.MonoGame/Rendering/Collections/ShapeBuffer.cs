@@ -19,10 +19,24 @@
 	
 	public class ShapeBuffer:List<TriangulationData>{
 
-
+		public ShapeBuffer(): base() {}
+		public ShapeBuffer(I_polygonShape2d shape): base() {
+			Add(shape);
+		}
+		public ShapeBuffer(Matrix2d matrix): base() {
+			_matrix = matrix;
+		}
 		public static ShapeBuffer Empty { get { return new ShapeBuffer(); } }
 
-		
+		public void Add(I_polygonShape2d shape) {
+			TriangulationData data;
+			if(_matrix!=null)
+				 data = TriangulationData.CreateFromShape(shape, TriangulationData.WhiteVertexColors, _matrix);
+			else
+				data = TriangulationData.CreateFromShape(shape, TriangulationData.WhiteVertexColors);
+			Add(data);
+		}
+
 		Matrix2d _matrix;
 		public Matrix2d Matrix {
 			get {

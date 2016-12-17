@@ -7,16 +7,11 @@
 		double c;
 
 		public Line2d (Segment2d s) {
-			a=s.B.Y-s.A.Y; //if 0, a & b are on the same vertical plane
+			a=s.End.Y-s.Start.Y; //if 0, a & b are on the same vertical plane
 
-			b=s.A.X-s.B.X; //if 0, a&b are on the same horizontal plane
+			b=s.Start.X-s.End.X; //if 0, a&b are on the same horizontal plane
 
-			c = (s.B.X * s.A.Y) - (s.A.X * s.B.Y);
+			c = (s.End.X * s.Start.Y) - (s.Start.X * s.End.Y);
 		}
-
-
-
-
-
 	}
 }

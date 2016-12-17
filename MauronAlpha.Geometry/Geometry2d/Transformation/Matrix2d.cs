@@ -1,5 +1,6 @@
 ﻿namespace MauronAlpha.Geometry.Geometry2d.Transformation {
 	using MauronAlpha.Geometry.Geometry2d.Units;
+	using MauronAlpha.Geometry.Geometry2d.Collections;
 	using MauronAlpha.HandlingErrors;
 
 	//Keeps track of all applied transforms to a series of geometrical data
@@ -63,6 +64,15 @@
 
 		}
 
+		public Vector2dList ApplyToCopy(Vector2dList list) {
+			Vector2dList result = new Vector2dList();
+			foreach (Vector2d v in list)
+				result.Add(ApplyToCopyVector2d(v));
+			return result;
+		}
+		public Vector2d ApplyToCopyVector2d(Vector2d v) {
+			return ApplyTo(v.X, v.Y);			
+		}
 
 		public Matrix2d SetValue(int index, double value) {
 			switch (index) {
@@ -166,6 +176,16 @@
 			return this;
 		}
 
+		public static Matrix2d CreateTranslation(double x, double y) {
+			return new Matrix2d(
+				1, 0, x,
+				0, 1, y,
+				0, 0, 1
+			);
+		}
+		public static Matrix2d CreateTranslation(Vector2d v) {
+			return CreateTranslation(v.X, v.Y);
+		}
 	}
 
 }

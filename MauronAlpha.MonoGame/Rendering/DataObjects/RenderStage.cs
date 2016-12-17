@@ -19,6 +19,14 @@
 				return _target;
 			} 
 		}
+		public double Width {
+			get { return _size.X; }
+		}
+		public double Height {
+			get {
+				return _size.Y;
+			}
+		}
 
 		//Constructors
 		public RenderStage(GameManager game, Vector2d size): base() {

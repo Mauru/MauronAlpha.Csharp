@@ -70,8 +70,8 @@
 				pc = new Vector2d(pb.X,0);
 					
 				//we use a-tan in this case
-				a = Segment2d.CalculateLength(pa,pc);
-				o = Segment2d.CalculateLength(pb,pc);
+				a = Segment2d.CalculateMagnitude(pa,pc);
+				o = Segment2d.CalculateMagnitude(pb, pc);
 
 				result.SetX(System.Math.Atan(System.Math.Tan(o/a)));
 
@@ -79,16 +79,16 @@
 				pc = end.AsVecor2dXZ; //our right angle is pb in this case
 				pb = new Vector2d(0,pc.Y);
 
-				a = Segment2d.CalculateLength(pa,pb);
-				o = Segment2d.CalculateLength(pb,pc);
+				a = Segment2d.CalculateMagnitude(pa, pb);
+				o = Segment2d.CalculateMagnitude(pb, pc);
 				result.SetY(System.Math.Atan(System.Math.Tan(o/a)));
 
 				// 2 : Calculate roll (xy)
 				pb = end.AsVector2dXY;
 				pc = new Vector2d(pb.X,0);
-					
-				a = Segment2d.CalculateLength(pa,pc);
-				o = Segment2d.CalculateLength(pb,pc);
+
+				a = Segment2d.CalculateMagnitude(pa, pc);
+				o = Segment2d.CalculateMagnitude(pb, pc);
 				result.SetZ(System.Math.Atan(System.Math.Tan(o/a)));
 				
 				_angles = result;

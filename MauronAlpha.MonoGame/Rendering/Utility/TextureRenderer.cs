@@ -33,7 +33,10 @@
 			batch.Begin();
 			foreach (SpriteData data in buffer) {
 				texture = data.Texture.AsTexture2d;
-				batch.Draw(texture, texture.Bounds, Color.White);
+				if(data.HasMask)
+					batch.Draw(texture, data.PositionAsRectangle, data.Mask, data.Color);
+				else
+					batch.Draw(texture, texture.Bounds, data.Color);
 			}
 			batch.End();
 		}

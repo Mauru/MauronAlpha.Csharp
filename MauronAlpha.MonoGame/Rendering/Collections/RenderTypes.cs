@@ -8,6 +8,8 @@
 
 		public static string Lines { get { return "Lines"; } }
 
+		public static string Error { get { return "Error"; } }
+
 	}
 
 }

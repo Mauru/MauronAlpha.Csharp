@@ -310,9 +310,9 @@
 		}
 		public static Matrix3d FromSegment(Segment2d segment) {
 
-			Matrix3d stretch = Matrix3d.Scale(segment.Distance_AB,1,1);
+			Matrix3d stretch = Matrix3d.Scale(segment.Magnitude,1,1);
 			Matrix3d rotation = Matrix3d.RotationZDegree(segment.AngleDegree);
-			Matrix3d translation = Matrix3d.FromVector2d(segment.A);
+			Matrix3d translation = Matrix3d.FromVector2d(segment.Start);
 
 			return stretch.Combine(rotation).Combine(translation);
 

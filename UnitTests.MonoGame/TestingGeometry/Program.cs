@@ -4,8 +4,18 @@
 	using MauronAlpha.Geometry.Geometry2d.Utility;
 	using MauronAlpha.Geometry.Geometry3d.Transformation;
 	using MauronAlpha.Geometry.Geometry3d.Units;
+
 	class Program {
+
 		static void Main(string[] args) {
+
+			Segment2d s = new Segment2d(0, 0, 20, -20);
+			Print(s.AngleDegree);
+			Pause();
+
+		}
+
+		static void Main_old(string[] args) {
 			Print(3 % 1);
 			Matrix3d m = Matrix3d.RotationZDegree(360);
 			Vector2d v = new Vector2d(2, 4);

@@ -23,14 +23,16 @@
 
 			batch.Begin();
 
+			float angle;
+			int c = 0;
+			Color[] colors = new Color[4] { Color.Red, Color.Green, Color.Yellow, Color.Black };
 			foreach (MonoGameLine line in buffer) {
 				Rectangle r = line.Rectangle;
-				batch.Draw(pixel, line.Rectangle, null, line.Color, (float)line.AngleAsRad, Vector2.Zero, SpriteEffects.None, 1f);
+				angle = (float) line.AngleAsRad;
+				batch.Draw(pixel, line.Rectangle, line.Rectangle, Color.White, angle, Vector2.Zero, SpriteEffects.None, 1f);
+				c++;
 			}
 			batch.End();
-
-
-
 		}
 
 		public static VertexPositionColor VertexPositionColor(double x, double y, Color color) {
@@ -56,6 +58,16 @@
 			foreach (MonoGameLine line in lines)
 				batch.Draw(pixel, line.Rectangle, null, color, (float)line.AngleAsRad, Vector2.Zero, SpriteEffects.None, 1f);
 			batch.End();
+		}
+
+		public static void Print(long val) {
+			Print("" + val);
+		}
+		public static void Print(string val) {
+			System.Diagnostics.Debug.Print(val);
+		}
+		public static void Print(Rectangle r) {
+			Print("{[x:" + r.X + ",y:" + r.Y + ",w:" + r.Width + ",h:" + r.Height + "]}");
 		}
 	}
 }

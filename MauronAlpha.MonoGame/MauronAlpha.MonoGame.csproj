@@ -59,6 +59,9 @@
     <Compile Include="Assets\ShaderLoader.cs" />
     <Compile Include="Assets\TextureLoader.cs" />
     <Compile Include="DataObjects\MonoColor.cs" />
+    <Compile Include="Rendering\Collections\PreRenderChain.cs" />
+    <Compile Include="Rendering\Collections\PreRenderStack.cs" />
+    <Compile Include="Rendering\Collections\RenderComposite.cs" />
     <Compile Include="Rendering\Collections\RenderTypes.cs" />
     <Compile Include="DataObjects\LogFile.cs" />
     <Compile Include="Debug\DebugException.cs" />
@@ -72,6 +75,11 @@
     <Compile Include="Rendering\Collections\SpriteBuffer.cs" />
     <Compile Include="Rendering\DataObjects\DefaultShader.cs" />
     <Compile Include="Rendering\DataObjects\PreRenderable.cs" />
+    <Compile Include="Rendering\DataObjects\PreRenderable_Outline.cs" />
+    <Compile Include="Rendering\DataObjects\PreRenderable_Shape.cs" />
+    <Compile Include="Rendering\DataObjects\PreRenderable_Texture.cs" />
+    <Compile Include="Rendering\DataObjects\PreRenderCall.cs" />
+    <Compile Include="Rendering\DataObjects\PreRenderProcess.cs" />
     <Compile Include="Rendering\DataObjects\RenderStage.cs" />
     <Compile Include="Rendering\DataObjects\SpriteData.cs" />
     <Compile Include="Rendering\DataObjects\BackBuffer.cs" />
@@ -80,6 +88,8 @@
     <Compile Include="Rendering\DataObjects\CustomShader.cs" />
     <Compile Include="Assets\Interfaces\I_MonoGameTexture.cs" />
     <Compile Include="Rendering\Interfaces\I_PreRenderable.cs" />
+    <Compile Include="Rendering\DataObjects\PreRenderable_TextFragment.cs" />
+    <Compile Include="Rendering\Utility\CompositeRenderer.cs" />
     <Compile Include="Rendering\Utility\LineRenderer.cs" />
     <Compile Include="Rendering\Utility\MatrixHelper.cs" />
     <Compile Include="Rendering\Interfaces\I_Renderer.cs" />
@@ -99,6 +109,7 @@
     <Compile Include="Rendering\Utility\MixedRenderer.cs" />
     <Compile Include="Rendering\Utility\PreRenderer.cs" />
     <Compile Include="Rendering\Utility\TextureRenderer.cs" />
+    <Compile Include="TestScenes\Scene_BasicAlpha.cs" />
     <Compile Include="TestScenes\Scene_BasicLine.cs" />
     <Compile Include="TestScenes\Scene_BasicText.cs" />
     <Compile Include="TestScenes\Scene_BasicTexture.cs" />

@@ -25,49 +25,74 @@
 		ShapeBuffer _shapes;
 		public virtual ShapeBuffer ShapeBuffer {
 			get {
-				if (_shapes != null)
-					return _shapes;
-
-				_shapes = new ShapeBuffer();
 				return _shapes;
 			}
 		}
 		public virtual void SetShapeBuffer(ShapeBuffer buffer) {
 			_shapes = buffer;
 		}
+		public bool HasShapeBuffer {
+			get {
+				return _shapes != null;
+			}
+		}
 
 		SpriteBuffer _sprites;
 		public virtual SpriteBuffer SpriteBuffer {
 			get {
-				if (_sprites != null)
-					return _sprites;
-				_sprites = new SpriteBuffer();
 				return _sprites;
 			}
 		}
 		public virtual void SetSpriteBuffer(SpriteBuffer buffer) {
 			_sprites = buffer;
 		}
+		public virtual bool HasSpriteBuffer {
+			get {
+				return _sprites != null;
+			}
+		}
+
+		CompositeBuffer _composites;
+		public virtual CompositeBuffer CompositeBuffer {
+			get { return _composites; }
+		}
+		public virtual void SetCompositeBuffer(CompositeBuffer buffer) {
+			_composites = buffer;
+		}
+		public virtual bool HasCompositeBuffer {
+			get {
+				return _composites != null;
+			}
+		}
 
 		LineBuffer _lines;
 		public virtual LineBuffer LineBuffer {
 			get {
-				if (_lines != null)
-					return _lines;
-				_lines = new LineBuffer();
 				return _lines;
 			}
 		}
 		public virtual void SetLineBuffer(LineBuffer buffer) {
 			_lines = buffer;
 		}
+		public virtual bool HasLineBuffer {
+			get {
+				return _lines != null;
+			}
+		}
 
-		RenderOrders _renderOrders;
+
+		RenderOrders _orders;
 		public virtual RenderOrders RenderOrders {
 			get {
-				if (_renderOrders == null)
-					_renderOrders = RenderOrders.Empty;
-				return _renderOrders;
+				return _orders;
+			}
+		}
+		public virtual void SetRenderOrders(RenderOrders orders) {
+			_orders = orders;
+		}
+		public virtual bool HasRenderOrders {
+			get {
+				return _orders != null;
 			}
 		}
 

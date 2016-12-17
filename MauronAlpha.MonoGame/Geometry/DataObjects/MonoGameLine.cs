@@ -16,6 +16,8 @@
 		public Segment2d Segment {
 			get { return _segment; }
 		}
+		
+		//constructors
 		public MonoGameLine(Vector2d start, Vector2d end) : base() {
 			_segment = new Segment2d(start, end);
 		}
@@ -29,15 +31,10 @@
 			_thickness = thickness;
 		}
 		public MonoGameLine(double x, double y, double degree, double magnitude, double thickness, bool isMagnitude):base() {
-
 			Vector2d start = new Vector2d(x, y);
-
 			Vector2d end = start.Project(degree, magnitude);
-
 			_segment = new Segment2d(start, end);
-
 			_thickness = thickness;
-
 		}
 		public MonoGameLine(Vector2d start, double degree, double magnitude, double thickness): base() {
 			Matrix3d scale = Matrix3d.Scale(magnitude, magnitude, magnitude);
@@ -45,6 +42,16 @@
 			_magnitude = magnitude;
 			double rad = GeometryHelper.Deg2Rad(degree);
 			Matrix3d rotation = Matrix3d.RotationZDegree(degree);
+			_angle = rad;
+			Vector2d transformedUnitVector = rotation.ApplyTo(scaledUnitVector);
+			Vector2d end = transformedUnitVector.Add(start);
+			_segment = new Segment2d(start, end);
+			_thickness = thickness;
+		}
+		public MonoGameLine(Vector2d start, double rad, double magnitude, double thickness, bool isRad): base() {
+			Matrix3d scale = Matrix3d.Scale(magnitude, magnitude, magnitude);
+			Vector2d scaledUnitVector = scale.ApplyTo(0, 1);
+			Matrix3d rotation = Matrix3d.RotationZRad(rad);
 			_angle = rad;
 			Vector2d transformedUnitVector = rotation.ApplyTo(scaledUnitVector);
 			Vector2d end = transformedUnitVector.Add(start);
@@ -60,7 +67,7 @@
 		public Rectangle Rectangle {
 			get {
 				if (_rect == null) {
-					Vector2d start = _segment.A;
+					Vector2d start = _segment.Start;
 					_rect = new Rectangle(start.IntX, start.IntY, (int)Magnitude, (int)Thickness);
 				}
 				return _rect.Value;
@@ -70,14 +77,18 @@
 		System.Nullable<double> _angle;
 		public double AngleAsRad {
 			get {
-				if (_angle == null)
-					_angle = _segment.Angle_ABRad;
+				if (_angle == null) { 
+					_angle = _segment.AngleRad*-1;
+				}
 				return _angle.Value;
 			}
 		}
 
 		double _thickness = 1;
 		public double Thickness { get { return _thickness; } }
+		public void SetThickness(double n) {
+			_thickness = n;
+		}
 
 		System.Nullable<double> _magnitude;
 		public double Magnitude {
@@ -97,11 +108,16 @@
 			}
 		}
 
+		public void Offset(Vector2d v) {
+			_rect = null;
+			_segment.Add(v);
+		}
+
 		public static Matrix ToMonoMatrix(Matrix3d matrix) {
 			return new Matrix(
-				(float)matrix.Value(1, 1), (float)matrix.Value(1, 2), (float)matrix.Value(1, 3), (float) matrix.Value(1, 4),
-				(float)matrix.Value(2, 1), (float)matrix.Value(2, 2), (float)matrix.Value(2, 3), (float) matrix.Value(2, 4),
-				(float)matrix.Value(3, 1), (float)matrix.Value(3, 2), (float)matrix.Value(3, 3), (float) matrix.Value(3, 4),
+				(float)matrix.Value(1, 1), (float)matrix.Value(1, 2), (float)matrix.Value(1, 3), (float)matrix.Value(1, 4),
+				(float)matrix.Value(2, 1), (float)matrix.Value(2, 2), (float)matrix.Value(2, 3), (float)matrix.Value(2, 4),
+				(float)matrix.Value(3, 1), (float)matrix.Value(3, 2), (float)matrix.Value(3, 3), (float)matrix.Value(3, 4),
 				(float)matrix.Value(4, 1), (float)matrix.Value(4, 2), (float)matrix.Value(4, 3), (float)matrix.Value(4, 4)
 			);
 		}

@@ -226,6 +226,7 @@
 			foreach (Line l in ll) {
 				SpriteBuffer sprite = GenerateSpriteBufferOfLine(l, text);
 				SpriteBuffer.OffsetPosition(ref sprite, offset);
+				System.Diagnostics.Debug.Print("TextFragment.Line: " + SpriteBuffer.GenerateBounds(sprite).AsString);
 				result.AddValuesFrom(sprite);
 
 				if (!sprite.IsEmpty)
@@ -255,7 +256,7 @@
 				Vector2d wordStart = offset.Copy;
 				SpriteBuffer sprite = GenerateSpriteBufferOfWord(w, text);
 				SpriteBuffer.OffsetPosition(ref sprite, offset);
-
+				System.Diagnostics.Debug.Print("TextFragment.Word: " + SpriteBuffer.GenerateBounds(sprite).AsString);
 				width = SpriteBuffer.WidthByLastMemberAndOffset(sprite, wordStart);
 
 				offset.Add(width,0);
@@ -310,9 +311,8 @@
 
 				result.Add(sprite);
 				index++;
-
 			}
-
+			System.Diagnostics.Debug.Print("TextFragment.Word.Generate: " + SpriteBuffer.GenerateBounds(result).AsString);
 			return result;
 		}
 

@@ -9,7 +9,7 @@ namespace MauronAlpha.Geometry.Geometry2d.Shapes {
 			Vector2dList points = new Vector2dList();
 			for (int index = 0; index < sides; index++) {
 				double factor = 2 * Math.PI * index / sides;
-				Vector2d point = new Vector2d(radius * Math.Cos(factor), radius * Math.Sin(factor)).Add(radius);
+				Vector2d point = new Vector2d(radius * Math.Cos(factor), radius * Math.Sin(factor));
 				points.Add(point);
 			}
 			SetPoints(points);

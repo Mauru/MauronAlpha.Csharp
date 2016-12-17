@@ -210,7 +210,8 @@
 		//Drawing
 		public void Draw(long time) {
 			DrawMethod method = _currentDrawMethod;
-			method(this, time);
+			method(this, DATA_renderTime);
+			DATA_renderTime++;
 		}
 
 		RenderQueue _queue;
@@ -244,8 +245,6 @@
 			}
 		}
 
-
-
 		public void ClearScreen(Color color) {
 			GraphicsDevice.Clear(color);
 		}
@@ -266,8 +265,6 @@
 				return Game.Assets;
 			}
 		}
-
-
 
 		//Events
 		Subscriptions<ReadyEvent> S_Ready = new Subscriptions<ReadyEvent>();

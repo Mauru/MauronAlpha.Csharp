@@ -26,6 +26,11 @@
 			};
 			_type = RenderTypes.Sprite;
 		}
+		public PreRenderOrder(LineBuffer lines, Color color): base() {
+			_lines = lines;
+			_type = RenderTypes.Lines;
+			_color = color;
+		}
 
 		string _type;
 		public string RenderType { get { return _type; } }

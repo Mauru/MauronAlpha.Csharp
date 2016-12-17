@@ -25,7 +25,7 @@
 		}
 	}
 
-	/// <summary> Subtracts from the object behind it </summary>
+	/// <summary> Masks one object with another </summary>
 	public class BlendMode_Mask :BlendMode {
 
 		public override string Name {
@@ -49,6 +49,20 @@
 		public static BlendMode_Alpha Instance {
 			get {
 				return new BlendMode_Alpha();
+			}
+		}
+	}
+
+	/// <summary> Subtract shape2 from shape1 </summary>
+	public class BlendMode_Subtract : BlendMode {
+
+		public override string Name {
+			get { return "Subtract"; }
+		}
+
+		public static BlendMode_Subtract Instance {
+			get {
+				return new BlendMode_Subtract();
 			}
 		}
 	}

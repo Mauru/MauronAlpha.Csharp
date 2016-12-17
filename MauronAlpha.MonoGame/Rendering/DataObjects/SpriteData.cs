@@ -39,7 +39,6 @@
 			return true;
 		}
 
-
 		public double Width {
 			get {
 				if (_texture == null)
@@ -61,7 +60,7 @@
 			}
 		}
 
-		Vector2d _position = new Vector2d();
+		Vector2d _position = Vector2d.Zero;
 		public Vector2d Position { get { return _position; } }
 		public SpriteData SetPosition(Vector2d v) {
 			_position = v;
@@ -81,10 +80,6 @@
 				}
 				return _posAsRect.Value;
 			}
-		}
-		public Rectangle GeneratePositionRectangle(SpriteData data) {
-			Rectangle result = new Rectangle(data.Position.IntX, data.Position.IntY, (int)data.Width, (int)data.Height);
-			return result;
 		}
 
 		System.Nullable<Rectangle> _mask;
@@ -120,24 +115,31 @@
 				(int)r.Height
 			);
 		}
-		public static Polygon2dBounds Rectangle2Bounds(Rectangle r) {
-			return new Polygon2dBounds(r.X, r.Y, r.Width, r.Height);
-		}
 		public static Rectangle Bounds2Rectangle(Polygon2dBounds b) {
 			return new Rectangle((int) b.X, (int) b.Y, (int) b.Width, (int) b.Height);
 		}
+		public static Rectangle GeneratePositionRectangle(SpriteData data) {
+			Rectangle result = new Rectangle(data.Position.IntX, data.Position.IntY, (int)data.Width, (int)data.Height);
+			System.Diagnostics.Debug.Print("SpriteData.GeneratePositionRectangle: " + result.ToString());
+			return result;
+		}
+
+		/// <summary> Generate Poly2dBounds from SpriteData </summary>
 		public static Polygon2dBounds GenerateBounds(SpriteData data) {
 			Rectangle tmp = new Rectangle();
+			Vector2d p = data.Position;
 			if (data.TryMask(ref tmp))
-				return new Polygon2dBounds(tmp.X, tmp.Y, tmp.Width, tmp.Height);
+				return new Polygon2dBounds(p.X, p.Y, tmp.Width, tmp.Height);
 			I_MonoGameTexture t = null; 
-			if(data.TryTexture(ref t)) {
-				Vector2d p = data.Position;
+			if(data.TryTexture(ref t))
 				return new Polygon2dBounds(p.X, p.Y, t.Width, t.Height);
-			}
 			return Polygon2dBounds.Empty;
 		}
-	
+		public static Polygon2dBounds Rectangle2Bounds(Rectangle r) {
+			return new Polygon2dBounds(r.X, r.Y, r.Width, r.Height);
+		}
+
+
 	}
 
 }

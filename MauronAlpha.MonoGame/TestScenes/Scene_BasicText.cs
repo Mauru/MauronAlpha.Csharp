@@ -16,20 +16,27 @@
 	using MauronAlpha.Geometry.Geometry2d.Units;
 
 	public class Scene_BasicText:GameScene {
-		public Scene_BasicText(GameManager game) : base(game) { }
+		public Scene_BasicText(GameManager game) : base(game) {
+			_txt = new Text("GameCycle : 0");
+		}
+		public Scene_BasicText(GameManager game, string text, bool isAnimated):base(game) {
+			_txt = new Text(text);
+			_isAnimated = isAnimated;
+		}
 
+		Text _txt;
 		TextFragment _text;
 
-		public override void Initialize() {
+		bool _isAnimated = true;
 
+		public override void Initialize() {
 			AssetManager assets = Game.Assets;
 			GameFont font = assets.DefaultFont;
-			Text txt = new Text("GameCycle : 0");
 			
-			TextFragment text = new TextFragment(Game,font,txt);
+			TextFragment text = new TextFragment(Game,font,_txt);
 
 			SpriteBuffer _sprites = text.SpriteBuffer;
-			_sprites = SpriteBuffer.OffsetPosition(ref _sprites, Game.Renderer.CenterOfScreen);
+			//_sprites = SpriteBuffer.OffsetPosition(ref _sprites, Game.Renderer.CenterOfScreen);
 			SetSpriteBuffer(_sprites);
 
 			_text = text;
@@ -46,6 +53,9 @@
 		long _lastCycle = -10;
 		long _sleepTime  = 100000;
 		public override void RunLogicCycle(long time) {
+
+			if (!_isAnimated)
+				return;
 
 			long current = _time;
 

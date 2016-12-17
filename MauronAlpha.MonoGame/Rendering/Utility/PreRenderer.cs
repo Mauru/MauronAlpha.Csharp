@@ -52,6 +52,7 @@
 			return ExtractTexture(stage, (int)bounds.X, (int)bounds.Y, (int)bounds.Width, (int)bounds.Height);
 		}
 		public static Texture2D ExtractTexture(RenderStage stage, Rectangle bounds) {
+			bounds = OffsetToZero(bounds, stage);
 
 			int size = bounds.Width * bounds.Height;
 
@@ -59,14 +60,26 @@
 
 			stage.RenderTarget.GetData<Color>(0, bounds, data, 0, size);
 
-			Texture2D result = new Texture2D(stage.Game.Renderer.GraphicsDevice, bounds.Width, bounds.Height);
+			Texture2D result = new Texture2D(stage.Game.Renderer.GraphicsDevice, bounds.Width, bounds.Height,false,SurfaceFormat.Color);
 			result.SetData<Color>(data);
 			return result;
 		}
-
 		public static Texture2D ExtractTexture(RenderStage stage, int x, int y, int width, int height) {
 			Rectangle bounds = new Rectangle(x, y, width, height);
 			return ExtractTexture(stage, bounds);
 		}
+
+		public static Rectangle OffsetToZero(Rectangle bounds, RenderStage stage) {
+			if (bounds.X < 0)
+				bounds.X = 0;
+			if (bounds.Y < 0)
+				bounds.Y = 0;
+			if (bounds.X + bounds.Width > stage.Width)
+				bounds.Width = (int) (stage.Width-bounds.X);
+			if (bounds.Y + bounds.Height > stage.Height)
+				bounds.Height = (int) (stage.Height-bounds.Y);
+			return bounds;
+		}
+
 	}
 }

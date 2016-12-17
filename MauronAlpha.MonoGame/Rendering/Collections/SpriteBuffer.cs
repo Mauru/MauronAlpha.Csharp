@@ -33,16 +33,17 @@
 		}
 		public static SpriteBuffer Empty { get { return new SpriteBuffer(); } }
 
-		public Polygon2dBounds GenerateBounds() {
-			if (IsEmpty)
+		public static Polygon2dBounds GenerateBounds(SpriteBuffer buffer) {
+			if (buffer.IsEmpty)
 				return Polygon2dBounds.Empty;
 
 			Vector2d min = null, max = null, t;
 
 			Polygon2dBounds bounds;
 
-			foreach (SpriteData data in this) {
+			foreach (SpriteData data in buffer) {
 				bounds = SpriteData.GenerateBounds(data);
+				System.Diagnostics.Debug.Print("SpriteData.GenerateBounds: "+bounds.AsString);
 				if (min == null)
 					min = bounds.Min.Copy;
 				else  {
@@ -63,9 +64,9 @@
 						max.SetY(t.Y);
 				}
 			}
-
-			return new Polygon2dBounds(min, max);
-
+			Polygon2dBounds result = new Polygon2dBounds(min, max);
+			System.Diagnostics.Debug.Print("SpriteBuffer.GenerateBounds: "+result.AsString);
+			return result;
 		}
 	}
 }

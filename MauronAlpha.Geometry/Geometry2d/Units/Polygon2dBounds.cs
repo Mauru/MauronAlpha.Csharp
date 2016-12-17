@@ -114,6 +114,11 @@ namespace MauronAlpha.Geometry.Geometry2d.Units {
 			get { return Size.Y; }
 		}
 
+		Segment2dList I_polygonShape2d.Segments {
+			get {
+				return GenerateSegments(this);
+			}
+		}
 		Polygon2dBounds I_polygonShape2d.Bounds {
 			get {
 				return this;
@@ -123,24 +128,8 @@ namespace MauronAlpha.Geometry.Geometry2d.Units {
 			return;
 		}
 
-		public Segment2dList Segments {
-			get {
-				Segment2dList result = new Segment2dList();
-				Vector2dList points = Points;
-				Vector2d buffer = Points.LastElement;
-				int count = points.Count;
-
-				foreach (Vector2d p in points) {
-					Segment2d s = new Segment2d(buffer, p);
-					result.Add(s);
-					buffer = p;
-				}
-				return result;
-			}
-		}
-
 		public string AsString {
-			get { return _min.AsString + "|" + _max.AsString; }
+			get { return "{ X: " + _min.X + ", Y: " + _min.Y + ", Width: " + Width + ", Height:"  + Height + " }"; }
 		}
 
 		//Static accessors
@@ -151,6 +140,19 @@ namespace MauronAlpha.Geometry.Geometry2d.Units {
 		}
 		public static Polygon2dBounds FromMinMax(Vector2d min, Vector2d max) {
 			return new Polygon2dBounds(min, max);
+		}
+		public static Segment2dList GenerateSegments(I_polygonShape2d shape) {
+			Segment2dList result = new Segment2dList();
+			Vector2dList points = shape.Points;
+			Vector2d buffer = points.LastElement;
+			int count = points.Count;
+
+			foreach (Vector2d p in points) {
+				Segment2d s = new Segment2d(buffer, p);
+				result.Add(s);
+				buffer = p;
+			}
+			return result;
 		}
 	}
 

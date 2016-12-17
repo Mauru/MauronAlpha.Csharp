@@ -42,6 +42,7 @@ public static class Program {
 
 namespace MauronAlpha.MonoGame.Actuals {
 	using MauronAlpha.MonoGame.DataObjects;
+	using MauronAlpha.MonoGame.Interfaces;
 
 	public class SampleGameLogic :GameLogic {
 
@@ -51,12 +52,13 @@ namespace MauronAlpha.MonoGame.Actuals {
 			if(!Game.Assets.HasDefaultFont)
 				throw new GameError("No default font loaded!", this);
 
-			Scene_PreRendered scene = new Scene_PreRendered(Game);
+			I_GameScene scene = new Scene_PreRendered(Game);
 			scene.Initialize();
 		}
 
 		public override void Cycle(long time) {
-			Game.Renderer.CurrentScene.RunLogicCycle(time);
+			I_GameScene scene = Game.Renderer.CurrentScene;
+			scene.RunLogicCycle(time);
 		}
 
 	}
