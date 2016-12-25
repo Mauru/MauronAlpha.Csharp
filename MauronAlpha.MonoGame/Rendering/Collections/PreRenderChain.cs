@@ -7,6 +7,8 @@
 	using MauronAlpha.Events.Units;
 	using MauronAlpha.Events.Collections;
 
+	using MauronAlpha.Geometry.Geometry2d.Interfaces;
+
 	public class PreRenderChain:List<PreRenderProcess>, I_sender<PreRenderChainComplete> {
 
 		GameManager _game;
@@ -41,6 +43,13 @@
 			return true;
 		}
 
+		public void PrepareShapeBuffers() {
+			foreach (PreRenderProcess process in this)
+				process.PrepareShapeBuffer();
+		}
+
+
+
 		//events
 		Subscriptions<PreRenderChainComplete> _subscriptions;
 		public void Subscribe(I_subscriber<PreRenderChainComplete> s) {
@@ -53,6 +62,7 @@
 				return;
 			_subscriptions.Remove(s);
 		}
+
 	}
 
 	public class PreRenderChainComplete : EventUnit_event {

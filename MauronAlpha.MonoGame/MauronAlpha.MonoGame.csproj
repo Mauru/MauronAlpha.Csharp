@@ -59,6 +59,7 @@
     <Compile Include="Assets\ShaderLoader.cs" />
     <Compile Include="Assets\TextureLoader.cs" />
     <Compile Include="DataObjects\MonoColor.cs" />
+    <Compile Include="Rendering\Collections\CompositeBuffer.cs" />
     <Compile Include="Rendering\Collections\PreRenderChain.cs" />
     <Compile Include="Rendering\Collections\PreRenderStack.cs" />
     <Compile Include="Rendering\Collections\RenderComposite.cs" />

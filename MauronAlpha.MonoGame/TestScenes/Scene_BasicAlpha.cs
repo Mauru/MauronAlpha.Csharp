@@ -1,5 +1,4 @@
-﻿
-namespace MauronAlpha.MonoGame {
+﻿namespace MauronAlpha.MonoGame {
 	using MauronAlpha.MonoGame.UI.DataObjects;
 	using MauronAlpha.MonoGame.Rendering.Utility;
 	using MauronAlpha.MonoGame.Rendering.Collections;
@@ -27,9 +26,10 @@ namespace MauronAlpha.MonoGame {
 					Game, "mask", Rectangle2d.CreateAlignCenter(180,180), new Vector2d(10,10)
 				)
 			};
+			chain.PrepareShapeBuffers();
 
-			RenderComposite composite = new RenderComposite(Game, chain, BlendModes.Subtract);
-			CompositeBuffer buffer = new Rendering.Collections.CompositeBuffer() {
+			RenderComposite composite = new RenderComposite(Game, chain, BlendModes.Solid);
+			CompositeBuffer buffer = new CompositeBuffer() {
 				composite
 			};
 			SetCompositeBuffer(buffer);
@@ -39,9 +39,6 @@ namespace MauronAlpha.MonoGame {
 
 			base.Initialize();
 		}
-
-
-
 
 	}
 }

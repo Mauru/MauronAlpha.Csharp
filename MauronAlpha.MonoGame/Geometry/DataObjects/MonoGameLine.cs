@@ -59,8 +59,12 @@
 			_thickness = thickness;
 		}
 
-		public MonoGameLine(Segment2d s) {
+		public MonoGameLine(Segment2d s):base() {
 			_segment = s;
+		}
+		public MonoGameLine(Segment2d s, int thickness):base() {
+			_segment = s;
+			_thickness = thickness;
 		}
 
 		System.Nullable<Rectangle> _rect;
@@ -113,6 +117,7 @@
 			_segment.Add(v);
 		}
 
+		// Utility functions
 		public static Matrix ToMonoMatrix(Matrix3d matrix) {
 			return new Matrix(
 				(float)matrix.Value(1, 1), (float)matrix.Value(1, 2), (float)matrix.Value(1, 3), (float)matrix.Value(1, 4),
@@ -127,7 +132,6 @@
 		public static Vector2 AsVector2(double x, double y) {
 			return new Vector2((float)x, (float)y);
 		}
-
 	}
 
 }

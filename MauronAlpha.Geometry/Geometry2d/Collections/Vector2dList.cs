@@ -131,6 +131,14 @@ namespace MauronAlpha.Geometry.Geometry2d.Collections {
 		}
 
 
+		//Return as copy with Offset v
+		public Vector2dList CopyWithOffset(Vector2d offset) {
+			Vector2dList result = new Vector2dList();
+			foreach (Vector2d v in this)
+				result.Add(new Vector2d(v.X + offset.X, v.Y + offset.Y));
+			return result;
+		}
+
 		/// <summary>Same as TryFind[index%count]</summary>
 		public bool ByModulo(int index, ref Vector2d result) {
 			int count = Count;

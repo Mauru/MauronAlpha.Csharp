@@ -141,6 +141,27 @@ namespace MauronAlpha.Geometry.Geometry2d.Units {
 		public static Polygon2dBounds FromMinMax(Vector2d min, Vector2d max) {
 			return new Polygon2dBounds(min, max);
 		}
+		public static Polygon2dBounds FromPoints(Vector2dList points) {
+			Vector2d min = null;
+			Vector2d max = null;
+			foreach (Vector2d p in points) {
+				if (min == null) {
+					min = new Vector2d(p.X, p.Y);
+					max = new Vector2d(p.X, p.Y);
+				}
+				else {
+					if (min.X > p.X)
+						min.SetX(p.X);
+					if (min.Y > p.Y)
+						min.SetY(p.Y);
+					if (max.X < p.X)
+						max.SetX(p.X);
+					if (max.Y < p.Y)
+						max.SetY(p.Y);
+				}
+			}
+			return Polygon2dBounds.FromMinMax(min, max);
+		}
 		public static Segment2dList GenerateSegments(I_polygonShape2d shape) {
 			Segment2dList result = new Segment2dList();
 			Vector2dList points = shape.Points;

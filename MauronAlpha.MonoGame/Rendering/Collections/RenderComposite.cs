@@ -8,6 +8,7 @@
 	public class RenderComposite:MonoGameComponent, I_subscriber<PreRenderChainComplete>, I_sender<RenderCompositeComplete> {
 
 		PreRenderChain _composites;
+		/// <summary>A chain of renderables which interact with each other</summary>
 		public PreRenderChain Chain { get { return _composites; } }
 
 		BlendMode _blendMode;
@@ -24,13 +25,22 @@
 
 		bool _usesEvents = true;
 
+		// Render-Results
 		I_RenderResult _result;
-		public I_RenderResult Rsult { get { return _result; } }
+		public I_RenderResult Result { get { return _result; } }
 		void SetResult(I_RenderResult result) {
 			_result = result;
 			if (_usesEvents && _subscriptions != null)
 				_subscriptions.ReceiveEvent(new RenderCompositeComplete(this));
 		}
+		public bool HasResult {
+			get {
+				if (_result == null)
+					return false;
+				return _result.HasResult;
+			}
+		}
+
 
 		// Events
 		public bool ReceiveEvent(PreRenderChainComplete e) {

@@ -7,6 +7,17 @@
 
 	/// <summary> Holds render-information for sprites (textures)</summary>
 	public class SpriteBuffer:List<SpriteData> {
+		Polygon2dBounds _bounds;
+		public Polygon2dBounds Bounds {
+			get {
+				if (_bounds == null)
+					_bounds = GenerateBounds(this);
+				return _bounds;
+			}
+		}
+		public void SetBounds(Polygon2dBounds bounds) {
+			_bounds = bounds;
+		}
 
 		public static SpriteBuffer OffsetPosition(ref SpriteBuffer buffer, Vector2d v) {
 			foreach (SpriteData data in buffer)
@@ -32,6 +43,7 @@
 			return member.Width;
 		}
 		public static SpriteBuffer Empty { get { return new SpriteBuffer(); } }
+
 
 		public static Polygon2dBounds GenerateBounds(SpriteBuffer buffer) {
 			if (buffer.IsEmpty)

@@ -34,6 +34,18 @@
 		public int VertexCount { get { return _vertexCount; } }
 
 
+		Polygon2dBounds _bounds;
+		public Polygon2dBounds Bounds {
+			get {
+				if (_bounds == null)
+					_bounds = CalculateBounds(this);
+				return _bounds;
+			}
+		}
+		public void SetBounds(Polygon2dBounds bounds) {
+			_bounds = bounds;
+		}
+
 		//Utility methods
 		public static VertexBuffer CreateVertexBuffer(GraphicsDevice device, VertexPositionColor[] data, int count) {
 			VertexBuffer buffer = new VertexBuffer(device, typeof(VertexPositionColor), count, BufferUsage.WriteOnly);
@@ -76,6 +88,7 @@
 			int vertexCount = triangleCount * 3;
 			VertexPositionColor[] vtp = TriangulationData.CreateVertexPositionColor(vertexCount, triangles, colors);
 			TriangulationData data = new TriangulationData(vtp,vertexCount);
+			data.SetBounds(Polygon2dBounds.FromPoints(points));
 			return data;
 		}
 		public static TriangulationData CreateFromShape(I_polygonShape2d shape, Color[] colors, Matrix2d matrix) {
@@ -90,7 +103,46 @@
 			int vertexCount = triangleCount * 3;
 			VertexPositionColor[] vtp = TriangulationData.CreateVertexPositionColor(vertexCount, triangles, colors);
 			TriangulationData data = new TriangulationData(vtp, vertexCount);
+			data.SetBounds(Polygon2dBounds.FromPoints(points));
 			return data;
+		}
+		public static TriangulationData CreateFromVector2dList(Vector2dList points, Color[] colors) {
+			Triangulator2d tool = new Triangulator2d();
+
+			//TODO: still have to make triangle thing static
+			MauronCode_dataList<Polygon2d> triangles = tool.Triangulate(points);
+			int triangleCount = triangles.Count;
+			int vertexCount = triangleCount * 3;
+			VertexPositionColor[] vtp = TriangulationData.CreateVertexPositionColor(vertexCount, triangles, colors);
+			TriangulationData data = new TriangulationData(vtp, vertexCount);
+			data.SetBounds(Polygon2dBounds.FromPoints(points));
+			return data;
+		}
+		public static TriangulationData CreateFromVector2dList(Vector2dList points, Color color) {
+			return CreateFromVector2dList(points, new Color[3] { color, color, color });
+		}
+		public static Polygon2dBounds CalculateBounds(TriangulationData data) {
+			Vector2d min = null;
+			Vector2d max = null;
+			Vector3 p;
+			foreach (VertexPositionColor v in data.Vertices) {
+				p = v.Position;
+				if (min == null) {
+					min = new Vector2d(p.X, p.Y);
+					max = new Vector2d(p.X,p.Y);
+				}
+				else {
+					if (min.X > p.X)
+						min.SetX(p.X);
+					if (min.Y > p.Y)
+						min.SetY(p.Y);
+					if (max.X < p.X)
+						max.SetX(p.X);
+					if (max.Y < p.Y)
+						max.SetY(p.Y);
+				}
+			}
+			return Polygon2dBounds.FromMinMax(min, max);
 		}
 
 		//Debug functions
