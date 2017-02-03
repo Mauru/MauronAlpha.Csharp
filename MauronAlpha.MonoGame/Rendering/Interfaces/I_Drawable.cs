@@ -5,7 +5,7 @@
 	using MauronAlpha.MonoGame.Collections;
 	using MauronAlpha.MonoGame.DataObjects;
 
-	using MauronAlpha.MonoGame.Rendering;
+	using MauronAlpha.MonoGame.Rendering.Interfaces;
 
 	using MauronAlpha.MonoGame.Assets.DataObjects;
 

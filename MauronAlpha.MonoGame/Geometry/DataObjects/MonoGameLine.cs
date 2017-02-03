@@ -10,6 +10,7 @@
 
 	using MauronAlpha.MonoGame.Collections;
 
+	/// <summary> Represenation f a line </summary>
 	public class MonoGameLine : MonoGameComponent {
 
 		Segment2d _segment;
@@ -65,6 +66,11 @@
 		public MonoGameLine(Segment2d s, int thickness):base() {
 			_segment = s;
 			_thickness = thickness;
+		}
+		public MonoGameLine(Segment2d s, int thickness, Color color): base() {
+			_segment = s;
+			_thickness = thickness;
+			_color = color;
 		}
 
 		System.Nullable<Rectangle> _rect;

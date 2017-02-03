@@ -9,67 +9,27 @@
 
 	using MauronAlpha.Geometry.Geometry2d.Interfaces;
 
-	public class PreRenderChain:List<PreRenderProcess>, I_sender<PreRenderChainComplete> {
+	/// <summary> A combination of PreRenderProcesses </summary>
+	public class PreRenderChain:List<PreRenderProcess> {
+
+		I_subscriber<PreRenderProcessComplete> _eventRelay;
 
 		GameManager _game;
+		public GameManager Game { get { return _game; } }
+
 		public PreRenderChain(GameManager game):base() {
 			_game = game;
 		}
-
-		bool _isBusy = false;
-		public bool IsBusy { get { return _isBusy; } }
-		public void SetIsBusy(bool state) {
-			_isBusy = state;
-		}
-		
-		int _index = -1;
-		PreRenderProcess _current;
-		public bool TryAdvanceQueue(ref PreRenderProcess composite) {
-			if (_isBusy)
-				return false;
-			//start queue
-			if (_current == null) {
-				_index++;
-				if (!TryIndex(_index, ref composite))
-					return false;
-				_current = composite;
-				return true;
-			}
-			//advance queue
-			_index++;
-			if (!TryIndex(_index, ref composite))
-				return false;
-			_current = composite;
-			return true;
+		public PreRenderChain(GameManager game, I_subscriber<PreRenderProcessComplete> listener):base() {
+			_game = game;
+			_eventRelay = listener;
 		}
 
-		public void PrepareShapeBuffers() {
-			foreach (PreRenderProcess process in this)
-				process.PrepareShapeBuffer();
-		}
-
-
-
-		//events
-		Subscriptions<PreRenderChainComplete> _subscriptions;
-		public void Subscribe(I_subscriber<PreRenderChainComplete> s) {
-			if (_subscriptions == null)
-				_subscriptions = new Subscriptions<PreRenderChainComplete>();
-			_subscriptions.Add(s);
-		}
-		public void UnSubscribe(I_subscriber<PreRenderChainComplete> s) {
-			if (_subscriptions == null)
-				return;
-			_subscriptions.Remove(s);
-		}
-
-	}
-
-	public class PreRenderChainComplete : EventUnit_event {
-		PreRenderChain _target;
-		public PreRenderChain Target { get { return _target; } }
-		public PreRenderChainComplete(PreRenderChain target): base("Complete") {
-			_target = target;
+		public override HandlingData.MauronCode_dataList<PreRenderProcess> Add(PreRenderProcess obj) {
+			obj.Prepare();
+			if (_eventRelay != null)
+				obj.Subscribe(_eventRelay);
+			return base.Add(obj);
 		}
 	}
 }

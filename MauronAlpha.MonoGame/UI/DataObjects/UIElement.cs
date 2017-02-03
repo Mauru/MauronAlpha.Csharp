@@ -7,9 +7,10 @@
 	using MauronAlpha.MonoGame.DataObjects;
 	using MauronAlpha.MonoGame;
 
-	using MauronAlpha.MonoGame.Rendering;
+	using MauronAlpha.MonoGame.Rendering.Events;
 	using MauronAlpha.MonoGame.Rendering.Interfaces;
 	using MauronAlpha.MonoGame.Rendering.Collections;
+	using MauronAlpha.MonoGame.Rendering.DataObjects;
 
 	using MauronAlpha.Geometry.Geometry2d.Units;
 	using MauronAlpha.Geometry.Geometry2d.Shapes;
@@ -128,7 +129,7 @@
 		}
 
 		public virtual I_RenderResult Outline {
-			get { return new RenderResult(); }
+			get { return MauronAlpha.MonoGame.Rendering.DataObjects.RenderResult.Empty; }
 		}
 
 		public virtual RenderOrders Orders {

@@ -1,4 +1,7 @@
-﻿namespace MauronAlpha.MonoGame.Rendering {
+﻿namespace MauronAlpha.MonoGame.Rendering.Events {
+
+	using MauronAlpha.MonoGame.Rendering.Interfaces;
+
 	using MauronAlpha.Events.Units;
 
 	using MauronAlpha.MonoGame.DataObjects;

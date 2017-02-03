@@ -64,8 +64,6 @@
 			return _texture.Bounds;
 		} }
 
-
-
 		//static utility function
 		public static Polygon2dBounds GenerateBounds(Texture2D t) {
 			return new Polygon2dBounds(t.Width, t.Height);

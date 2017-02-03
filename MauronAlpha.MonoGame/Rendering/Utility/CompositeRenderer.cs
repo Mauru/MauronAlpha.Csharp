@@ -1,73 +1,105 @@
 ﻿namespace MauronAlpha.MonoGame.Rendering.Utility {
+
 	using MauronAlpha.MonoGame.Interfaces;
+	using MauronAlpha.MonoGame.Collections;
 
-	using MauronAlpha.MonoGame.Rendering.DataObjects;
 	using MauronAlpha.MonoGame.Rendering.Collections;
+	using MauronAlpha.MonoGame.Rendering.DataObjects;
+	using MauronAlpha.MonoGame.Rendering.Events;
 
-	using MauronAlpha.MonoGame.Assets.DataObjects;
-
-	using Microsoft.Xna.Framework.Graphics;
-
+	/// <summary> Utility class for combining RenderCompostes </summary>
 	public class CompositeRenderer:MonoGameComponent {
 
-		public static GameRenderer.DrawMethod RenderMethod {
+		public static GameRenderer.DrawMethod DrawMethod {
 			get {
-				return Draw;
+				return DrawCycle;
 			}
 		}
 
-		public static void Draw(GameRenderer renderer, long time) {
+		public static void SolveRenderChain(GameRenderer renderer, long time) { }
+
+		/// <summary> Cycle method for handling renderComposites </summary>
+		public static void DrawCycle(GameRenderer renderer, long time) {
+
 			I_GameScene scene = renderer.CurrentScene;
 
-			//Get the composite buffer
-			CompositeBuffer buffer = scene.CompositeBuffer;
-			if (buffer.IsBusy)
-				return;
+			//Clear the screen
+			renderer.ClearScreen(renderer.StatusColor);
 
-			//Get the currently handled RenderComposite
-			RenderComposite composite = null;
-			if (!buffer.TryAdvanceQueue(ref composite))
-				return;
+			PreRenderRequests requests = scene.PreRenderRequests;
+			Stack<PreRenderChain> chains = null;
+			if (requests.TryChains(ref chains)) {
+				PreRenderChain chain=null;
+				while (chains.TryPop(ref chain))
+					HandlePreRenderChain(renderer, time, scene, chain);
+			}
+		
+			//Get the Combiner-Stack
+			Stack<CompositeBuffer> composites = null;
+			if (requests.TryComposites(ref composites)) {
+				CompositeBuffer buffer = null;
+				while (composites.TryPop(ref buffer))
+					GenerateSpriteBufferFromComposites(renderer, time, scene, buffer);
+			}
 
-			buffer.SetIsBusy(true);
-			PreRenderChain chain = composite.Chain;
 
-			if (chain.IsBusy)
-				return;
 
-			PreRenderProcess process = null;
-			if (!chain.TryAdvanceQueue(ref process))
-				return;
+		}
+		public static void HandlePreRenderChain(GameRenderer renderer, long time, I_GameScene scene, PreRenderChain chain) {
+			foreach (PreRenderProcess process in chain)
+				PreRenderer.ExecutePreRenderProcess(renderer, process, time);
+		}
+		public static void GenerateSpriteBufferFromComposites(GameRenderer renderer, long time, I_GameScene scene, CompositeBuffer buffer) {
+			SpriteBuffer result = new SpriteBuffer();
+			foreach (RenderComposite composite in buffer) {
 
-			chain.SetIsBusy(true);
+				PreRenderChain chain = composite.Chain;
 
-			ExecuteProcess(renderer,process,time);
+				foreach (PreRenderProcess process in chain) {
+					PreRenderedTexture texture = PreRenderedTexture.FromPreRenderProcess(renderer, process);
 
-			chain.SetIsBusy(false);
-			buffer.SetIsBusy(false);
+				}
+
+			}
 		}
 
-		//Dealing with PreRenderProcesses
-		public static void ExecuteProcess(GameRenderer renderer, PreRenderProcess process, long time) {
-			RenderStage stage = renderer.DefaultRenderTarget;
-			GraphicsDevice device = renderer.GraphicsDevice;
-			device.SetRenderTarget(stage.RenderTarget);
+		public static void FinalizeComposites(GameRenderer renderer, long time) { }
 
-			I_Shader shader = renderer.CurrentShader;
-
-			Texture2D texture;
-			string type = process.RenderType;
-			if (type.Equals(RenderTypes.Shape))
-				ShapeRenderer.Render(renderer, shader, process.Shapes);
-			else if (type.Equals(RenderTypes.Lines))
-				LineRenderer.Render(renderer, process.Lines, process.Color);
-			else if (type.Equals(RenderTypes.Sprite))
-				TextureRenderer.Render(renderer, process.Sprites, process.Color);
-
-			texture = PreRenderer.ExtractTexture(stage, process.Bounds);
-			process.SetRenderResult(texture, time);
+		public static void Print(long val) {
+			Print("" + val);
 		}
-
+		public static void Print(string val) {
+			System.Diagnostics.Debug.Print(val);
+		}
 	}
+
+
 }
 
+namespace MauronAlpha.MonoGame.Rendering.Events {
+
+	using MauronAlpha.Events.Interfaces;
+	using MauronAlpha.MonoGame.Rendering.DataObjects;
+	using MauronAlpha.MonoGame.Rendering.Collections;
+
+	public class PreRenderChainCompleteHandler : MonoGameComponent, I_subscriber<PreRenderProcessComplete> {
+
+		public PreRenderChainCompleteHandler(PreRenderChain chain):base() {
+
+			_length = chain.Count;
+		}
+
+		int _length = 0;
+		int _index = 0;
+
+		public bool ReceiveEvent(PreRenderProcessComplete e) {
+			_index++;
+			return true;
+		}
+
+		public bool Equals(I_subscriber<PreRenderProcessComplete> other) {
+			return Id.Equals(other.Id);
+		}
+	}
+
+}

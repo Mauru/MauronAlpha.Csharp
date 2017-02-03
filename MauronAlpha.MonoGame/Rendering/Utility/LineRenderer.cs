@@ -1,11 +1,15 @@
 ﻿namespace MauronAlpha.MonoGame.Rendering.Utility {
 	using Microsoft.Xna.Framework.Graphics;
 	using Microsoft.Xna.Framework;
+
 	using MauronAlpha.MonoGame.Interfaces;
+
+	using MauronAlpha.MonoGame.Geometry;
 	using MauronAlpha.MonoGame.Geometry.DataObjects;
 
 	using MauronAlpha.MonoGame.Rendering.Collections;
-	using MauronAlpha.MonoGame.Geometry;
+	using MauronAlpha.MonoGame.Rendering.DataObjects;
+
 
 	using MauronAlpha.MonoGame.Collections;
 
@@ -13,7 +17,7 @@
 
 		public static void DrawLines(GameRenderer renderer, long time) {
 			I_GameScene scene = renderer.CurrentScene;
-			SpriteBatch batch = renderer.DefaultSpriteBatch;
+			SpriteDrawManager batch = renderer.SpriteDrawManager;
 			GraphicsDevice device = renderer.GraphicsDevice;
 
 			device.Clear(Color.DarkBlue);
@@ -52,13 +56,29 @@
 		}
 
 		public static void Render(GameRenderer renderer, LineBuffer lines, Color color) {
-			SpriteBatch batch = renderer.DefaultSpriteBatch;
+			SpriteDrawManager batch = renderer.SpriteDrawManager;
 			batch.Begin();
 			Texture2D pixel = renderer.PixelTexture;
 			foreach (MonoGameLine line in lines)
 				batch.Draw(pixel, line.Rectangle, null, color, (float)line.AngleAsRad, Vector2.Zero, SpriteEffects.None, 1f);
 			batch.End();
 		}
+
+		public static void HandlePreRenderProcess(GameRenderer renderer, long time, PreRenderProcess process) { 
+			LineBuffer lines = null;
+			if(!process.TryLines(ref lines))
+				return;
+			Color color = process.Color;
+
+			SpriteDrawManager batch = renderer.SpriteDrawManager;
+			batch.Begin();
+			Texture2D pixel = renderer.PixelTexture;
+			foreach (MonoGameLine line in lines)
+				batch.Draw(pixel, line.Rectangle, null, color, (float)line.AngleAsRad, Vector2.Zero, SpriteEffects.None, 1f);
+			batch.End();
+		}
+
+
 
 		public static void Print(long val) {
 			Print("" + val);

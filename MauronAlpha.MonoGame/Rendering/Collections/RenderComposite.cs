@@ -1,37 +1,62 @@
 ﻿namespace MauronAlpha.MonoGame.Rendering.DataObjects {
+	using MauronAlpha.MonoGame.Interfaces;
+
 	using MauronAlpha.MonoGame.Rendering.Collections;
+	using MauronAlpha.MonoGame.Rendering.Interfaces;
+	using MauronAlpha.MonoGame.Rendering.Events;
 
 	using MauronAlpha.Events.Units;
 	using MauronAlpha.Events.Interfaces;
 	using MauronAlpha.Events.Collections;
-	
-	public class RenderComposite:MonoGameComponent, I_subscriber<PreRenderChainComplete>, I_sender<RenderCompositeComplete> {
 
-		PreRenderChain _composites;
+	using MauronAlpha.Geometry.Geometry2d.Units;
+
+	/// <summary>A cmbination of several preRenderables combines with a blendMode</summary>
+	public class RenderComposite:MonoGameComponent, I_PreRenderable {
+
+		PreRenderChain _chain;
 		/// <summary>A chain of renderables which interact with each other</summary>
-		public PreRenderChain Chain { get { return _composites; } }
+		public PreRenderChain Chain { get { return _chain; } }
+
+		SpriteBuffer _buffer;
+		public SpriteBuffer SpriteBuffer {
+			get {
+				return _buffer;
+			}
+		}
 
 		BlendMode _blendMode;
+		public BlendMode BlendMode {
+			get { return _blendMode; }
+		}
 
 		GameManager _game;
 		public GameManager Game { get { return _game; } }
 
-
 		public RenderComposite(GameManager game, PreRenderChain chain, BlendMode mode) : base() {
-			_composites = chain;
+			_chain = chain;
 			_blendMode = mode;
 			_game = game;
 		}
 
-		bool _usesEvents = true;
+		public void SynchToSpriteBuffer(PreRenderProcess process) {
+
+			PreRenderedTexture texture = PreRenderedTexture.FromPreRenderProcess(Game.Renderer,process);
+			SpriteData data = new SpriteData(texture);
+
+		}
 
 		// Render-Results
 		I_RenderResult _result;
-		public I_RenderResult Result { get { return _result; } }
-		void SetResult(I_RenderResult result) {
+		public I_RenderResult RenderResult { get { return _result; } }
+		public void SetRenderResult(I_RenderResult result) {
 			_result = result;
-			if (_usesEvents && _subscriptions != null)
-				_subscriptions.ReceiveEvent(new RenderCompositeComplete(this));
+		}
+		public bool TryRenderResult(ref I_RenderResult result) {
+			if (_result == null)
+				return false;
+			result = _result;
+			return true;
 		}
 		public bool HasResult {
 			get {
@@ -41,36 +66,30 @@
 			}
 		}
 
+		public RenderOrders RenderOrders {
+			get { throw new System.NotImplementedException(); }
+		}
 
-		// Events
-		public bool ReceiveEvent(PreRenderChainComplete e) {
-			PreRenderChain chain = e.Target;
-			I_RenderResult result;
-			foreach(PreRenderProcess process in chain)
-				result = process.Result;
-			return true;			
+		Polygon2dBounds _bounds;
+		public Polygon2dBounds Bounds {
+			get {
+				if (_bounds == null)
+					_bounds = RenderComposite.GenerateBounds(this);
+				return _bounds;
+			}
 		}
-		public bool Equals(I_subscriber<PreRenderChainComplete> other) {
-			return Id.Equals(other.Id);
-		}
-		Subscriptions<RenderCompositeComplete> _subscriptions;
-		public void Subscribe(I_subscriber<RenderCompositeComplete> s) {
-			if (_subscriptions == null)
-				_subscriptions = new Subscriptions<RenderCompositeComplete>();
-			_subscriptions.Add(s);
-		}
-		public void UnSubscribe(I_subscriber<RenderCompositeComplete> s) {
-			if (_subscriptions == null)
-				return;
-			_subscriptions.Remove(s);
-		}
-	}
 
-	public class RenderCompositeComplete : EventUnit_event {
-		RenderComposite _target;
-		RenderComposite Target { get { return _target; } }
-		public RenderCompositeComplete(RenderComposite target): base("Complete") {
-			_target = target;
+		public static Polygon2dBounds GenerateBounds(RenderComposite obj) {
+			Polygon2dBounds result = null;
+			foreach (PreRenderProcess p in obj.Chain) {
+				if (result == null)
+					result = p.Bounds.Copy;
+				else
+					result = Polygon2dBounds.Combine(p.Bounds, result);
+			}
+			return result;
 		}
+
+
 	}
 }

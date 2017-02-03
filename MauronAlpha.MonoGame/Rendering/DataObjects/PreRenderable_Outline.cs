@@ -9,17 +9,9 @@
 	using MauronAlpha.MonoGame.Rendering.Collections;
 
 	public class PreRenderable_Outline:PreRenderable {
-
-		Color _color;
-		LineBuffer _lines;
-
 		public PreRenderable_Outline(GameManager game, I_polygonShape2d shape, Color color)	: base(game) {
-			Segment2dList segments = shape.Segments;
-			_lines = new LineBuffer(segments);
-			_color = color;
-
 			_orders = new RenderOrders() {
-				new PreRenderOrder(_lines, color),
+				new PreRenderProcess(game,"Lines"+Id, shape, color, RenderTypes.Lines),
 			};
 			_bounds = shape.Bounds;
 		}

@@ -95,8 +95,8 @@
 			GameEngine engine = DATA_Manager.Engine;
 			
 			GraphicsDevice device = engine.GraphicsDevice;
-			
-			_spriteBatch = new SpriteBatch(device);
+
+			_spriteDrawManager = new SpriteDrawManager(device);
 			Texture2D pixel = new Texture2D(engine.GraphicsDevice, 1, 1, false, SurfaceFormat.Color);
 			System.Int32[] pixelData = { 0xFFFFFF };
 			pixel.SetData<System.Int32>(pixelData, 0, 1);
@@ -114,11 +114,7 @@
 			}
 		}
 
-		void CreateRenderTargets() {
-			GraphicsDevice device = Engine.GraphicsDevice;
-			_defaultRenderTarget = new RenderStage(Game, ScreenSize);
-			_queue = new RenderQueue(Game);
-		}
+
 
 		I_GameScene _currentScene;
 		public void SetCurrentScene(I_GameScene scene) {
@@ -152,8 +148,8 @@
 			}
 		}
 
-		SpriteBatch _spriteBatch;
-		public SpriteBatch DefaultSpriteBatch { get { return _spriteBatch; } }
+		SpriteDrawManager _spriteDrawManager;
+		public SpriteDrawManager SpriteDrawManager { get { return _spriteDrawManager; } }
 
 		Texture2D _pixelTexture;
 		public Texture2D PixelTexture {
@@ -214,19 +210,32 @@
 			DATA_renderTime++;
 		}
 
-		RenderQueue _queue;
-		public RenderQueue Queue { get {
-			return _queue;
-		} }
-
+		//RenderTarget
 		RenderStage _defaultRenderTarget;
 		public RenderStage DefaultRenderTarget {
 			get { return _defaultRenderTarget; }
+		}
+		RenderStage _activeStage;
+		public void SetActiveStage(RenderStage obj) {
+			_activeStage = obj;
+			GraphicsDevice.SetRenderTarget(obj.RenderTarget);
+		}
+		void CreateRenderTargets() {
+			GraphicsDevice device = Engine.GraphicsDevice;
+			_defaultRenderTarget = new RenderStage(Game, ScreenSize);
+			_queue = new PreRenderQueue(Game);
 		}
 
 		public delegate I_RenderResult RenderMethod(RenderStage stage, I_Renderable target, long time);
 	
 		//PreRendering
+		PreRenderQueue _queue;
+		public PreRenderQueue Queue {
+			get {
+				return _queue;
+			}
+		}
+
 		public delegate void PreRenderEventHandler(GameRenderer renderer, SpriteBuffer result, long time);
 		PreRenderEventHandler _preRenderEventHandler = NoPreRenderEvent;
 		public PreRenderEventHandler HandlePreRenderEvent {
@@ -244,6 +253,7 @@
 				return DATA_renderTime;
 			}
 		}
+
 
 		public void ClearScreen(Color color) {
 			GraphicsDevice.Clear(color);
@@ -312,6 +322,14 @@
                  }
              }    
          }*/
+
+
+		//Get the current renderStage as Color representation
+		public Color StatusColor {
+			get {
+				return RenderStatusColors.Undefined;
+			}
+		}
 
 		//Static utility functions
 		public static Vector2 AsVector2(Vector2d v) {

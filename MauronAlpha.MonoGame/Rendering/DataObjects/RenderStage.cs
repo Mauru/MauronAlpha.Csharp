@@ -6,6 +6,7 @@
 
 	using MauronAlpha.MonoGame.Assets.DataObjects;
 
+	/// <summary> Represents a wrapper for a RenderTarget2d </summary>
 	public class RenderStage : MonoGameComponent {
 
 		GameManager _game;

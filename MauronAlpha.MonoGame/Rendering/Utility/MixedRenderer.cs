@@ -7,8 +7,6 @@
 	using Microsoft.Xna.Framework;
 	public class MixedRenderer : MonoGameComponent {
 
-
-
 		public static void DrawMethod(GameRenderer renderer, long time) {
 			GraphicsDevice device = renderer.GraphicsDevice;
 
@@ -24,10 +22,14 @@
 
 			I_Shader shader = renderer.CurrentShader;
 			shader.Apply();
-			foreach (TriangulationData data in shapes)
-				device.DrawUserPrimitives<VertexPositionColor>(PrimitiveType.TriangleList, data.Vertices, 0, data.TriangleCount);
+			foreach (TriangulationData data in shapes) {
+				if (data.VertexShaderMode == VertexShaderMode.VertexPosition2d)
+					device.DrawUserPrimitives<VertexPosition>(PrimitiveType.TriangleList, data.VertexPosition, 0, data.TriangleCount);
+				else
+					device.DrawUserPrimitives<VertexPositionColor>(PrimitiveType.TriangleList, data.VertexPositionColor, 0, data.TriangleCount);
+			}	
 
-			SpriteBatch batch = renderer.DefaultSpriteBatch;
+			SpriteDrawManager batch = renderer.SpriteDrawManager;
 			batch.Begin();
 			foreach(MonoGameLine line in lines)
 				batch.Draw(renderer.PixelTexture, line.Rectangle, null, Color.White, (float) line.AngleAsRad, Vector2.Zero, SpriteEffects.None, 1f);

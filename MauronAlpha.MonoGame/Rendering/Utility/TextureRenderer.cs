@@ -15,7 +15,7 @@
 
 			SpriteBuffer buffer = scene.SpriteBuffer;
 
-			SpriteBatch batch = renderer.DefaultSpriteBatch;
+			SpriteDrawManager batch = renderer.SpriteDrawManager;
 
 			renderer.GraphicsDevice.Clear(Color.Purple);
 
@@ -28,12 +28,29 @@
 		}
 
 		public static void Render(GameRenderer renderer, SpriteBuffer buffer, Color color) {
-			SpriteBatch batch = renderer.DefaultSpriteBatch;
+			SpriteDrawManager batch = renderer.SpriteDrawManager;
 			Texture2D texture;
 			batch.Begin();
 			foreach (SpriteData data in buffer) {
 				texture = data.Texture.AsTexture2d;
 				if(data.HasMask)
+					batch.Draw(texture, data.PositionAsRectangle, data.Mask, data.Color);
+				else
+					batch.Draw(texture, texture.Bounds, data.Color);
+			}
+			batch.End();
+		}
+
+		public static void HandlePreRenderProcess(GameRenderer renderer, long time, PreRenderProcess process) {
+			SpriteBuffer buffer = null;
+			if (!process.TrySprites(ref buffer))
+				return;
+			SpriteDrawManager batch = renderer.SpriteDrawManager;
+			Texture2D texture;
+			batch.Begin();
+			foreach (SpriteData data in buffer) {
+				texture = data.Texture.AsTexture2d;
+				if (data.HasMask)
 					batch.Draw(texture, data.PositionAsRectangle, data.Mask, data.Color);
 				else
 					batch.Draw(texture, texture.Bounds, data.Color);

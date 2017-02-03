@@ -184,7 +184,7 @@ namespace MauronAlpha.HandlingData {
 		}
 
 		//Modifiers: Add
-		public MauronCode_dataList<T> Add (T obj) {
+		public virtual MauronCode_dataList<T> Add (T obj) {
 			return AddValue(obj);
 		}
 		public MauronCode_dataList<T> AddValue (T obj) {
@@ -549,7 +549,7 @@ namespace MauronAlpha.HandlingData {
 		}
 		//Add
 		void ICollection<T>.Add (T item) {
-			AddValue(item);
+			Add(item);
 		}
 		void ICollection<T>.Clear ( ) {
 			Clear();

@@ -1,12 +1,25 @@
 ﻿namespace MauronAlpha.MonoGame.Rendering.Collections {
 	using MauronAlpha.MonoGame.Collections;
+
+	using MauronAlpha.MonoGame.Assets.DataObjects;
+
 	using MauronAlpha.MonoGame.Rendering.DataObjects;
+	using MauronAlpha.MonoGame.Rendering.Interfaces;
 	using MauronAlpha.Geometry.Geometry2d.Units;
 
 	using Microsoft.Xna.Framework;
 
 	/// <summary> Holds render-information for sprites (textures)</summary>
-	public class SpriteBuffer:List<SpriteData> {
+	public class SpriteBuffer : List<SpriteData>, I_PreRenderableCollection {
+
+		public SpriteBuffer() : base() { }
+		public SpriteBuffer(MonoGameTexture texture, Polygon2dBounds bounds): base() {
+			SpriteData data = new SpriteData(texture);
+			Add(data);
+			_bounds = bounds;
+		}
+
+		//Bounds
 		Polygon2dBounds _bounds;
 		public Polygon2dBounds Bounds {
 			get {
@@ -17,6 +30,11 @@
 		}
 		public void SetBounds(Polygon2dBounds bounds) {
 			_bounds = bounds;
+		}
+		public bool HasBounds {
+			get {
+				return _bounds == null;
+			}
 		}
 
 		public static SpriteBuffer OffsetPosition(ref SpriteBuffer buffer, Vector2d v) {
@@ -42,9 +60,7 @@
 				return 0;
 			return member.Width;
 		}
-		public static SpriteBuffer Empty { get { return new SpriteBuffer(); } }
-
-
+		
 		public static Polygon2dBounds GenerateBounds(SpriteBuffer buffer) {
 			if (buffer.IsEmpty)
 				return Polygon2dBounds.Empty;
@@ -80,5 +96,7 @@
 			System.Diagnostics.Debug.Print("SpriteBuffer.GenerateBounds: "+result.AsString);
 			return result;
 		}
+
+		public static SpriteBuffer Empty { get { return new SpriteBuffer(); } }
 	}
 }

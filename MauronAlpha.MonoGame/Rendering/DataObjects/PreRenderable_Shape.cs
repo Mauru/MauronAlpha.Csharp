@@ -12,11 +12,8 @@
 
 		public PreRenderable_Shape(GameManager game, I_polygonShape2d shape, I_Shader shader, Color color): base(game) {
 			_shape = shape;
-			ShapeBuffer buffer = new ShapeBuffer() {
-				TriangulationData.CreateFromShape(shape,TriangulationData.WhiteVertexColors)
-			};
 			_orders = new RenderOrders() {
-				new PreRenderOrder(buffer,shader,color),
+				new PreRenderProcess(game,"Shape"+Id,shape,shader,color),
 			};
 		}
 

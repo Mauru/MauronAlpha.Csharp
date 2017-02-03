@@ -1,4 +1,4 @@
-﻿namespace MauronAlpha.MonoGame.Rendering {
+﻿namespace MauronAlpha.MonoGame.Rendering.Interfaces {
 
 	using Microsoft.Xna.Framework.Graphics;
 

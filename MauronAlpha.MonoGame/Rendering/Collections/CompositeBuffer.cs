@@ -1,43 +1,36 @@
 ﻿namespace MauronAlpha.MonoGame.Rendering.Collections {
 	using MauronAlpha.MonoGame.Collections;
 	using MauronAlpha.MonoGame.Rendering.DataObjects;
+	using MauronAlpha.MonoGame.Rendering.Interfaces;
 
-	/// <summary> Holds Composite (combined) Renderables </summary>
-	public class CompositeBuffer : List<RenderComposite> {
+	using MauronAlpha.Events.Interfaces;
 
-		bool _isBusy = false;
-		public bool IsBusy { get { return _isBusy; } }
-		public void SetIsBusy(bool state) {
-			_isBusy = state;
-		}
+	using MauronAlpha.Geometry.Geometry2d.Units;
 
-		int _index = -1;
-		public int Index { get { return _index; } }
-		RenderComposite _current;
-		
-		/// <summary>Sets the current active element of a compositeBuffer</summary>
-		public bool TryAdvanceQueue(ref RenderComposite composite) {
-			if (_isBusy)
-				return false;
+	/// <summary> Holds Composite (combined) Renderables and information on their renderstate </summary>
+	public class CompositeBuffer : List<RenderComposite>, I_PreRenderableCollection {
 
-			//start queue
-			if (_current == null) {
-				_index++;
-				if (!TryIndex(_index, ref composite))
-					return false;
-
-				_current = composite;
-				return true;
+		Polygon2dBounds _bounds;
+		public Polygon2dBounds Bounds {
+			get {
+				if (_bounds == null)
+					_bounds = GenerateBounds(this);
+				return _bounds;
 			}
-
-			//advance queue
-			_index++;
-			if (!TryIndex(_index, ref composite))
-				return false;
-			_current = composite;
-
-			return true;
 		}
-	
+		public void SetBounds(Polygon2dBounds _bounds) {
+			_bounds = Bounds;
+		}
+		public static Polygon2dBounds GenerateBounds(CompositeBuffer buffer) {
+			Polygon2dBounds result = null;
+			foreach (RenderComposite obj in buffer) {
+				if (result == null)
+					result = obj.Bounds;
+				else
+					result = Polygon2dBounds.Combine(result, obj.Bounds);
+			}
+			return result;
+		}
+
 	}
 }

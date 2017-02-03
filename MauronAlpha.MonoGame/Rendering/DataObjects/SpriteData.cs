@@ -1,14 +1,19 @@
 ﻿namespace MauronAlpha.MonoGame.Rendering.DataObjects {
 	using MauronAlpha.MonoGame.Assets.Interfaces;
+
+	using MauronAlpha.MonoGame.Rendering.Interfaces;
+	using MauronAlpha.MonoGame.Rendering.Collections;
 	
 	using MauronAlpha.Geometry.Geometry2d.Units;
 	using MauronAlpha.Geometry.Geometry2d.Shapes;
+
 	using MauronAlpha.FontParser.DataObjects;
 
 	using Microsoft.Xna.Framework;
+	using Microsoft.Xna.Framework.Graphics;
 
 	/// <summary> Drawcall for a sprite </summary>
-	public class SpriteData:MonoGameComponent {
+	public class SpriteData:MonoGameComponent, I_SpriteDrawInfo {
 
 		//constructor
 		public SpriteData(I_MonoGameTexture texture, Rectangle2d mask) : base() {
@@ -26,6 +31,23 @@
 		public SpriteData(I_MonoGameTexture texture):base() {
 			_texture = texture;
 			_mask = texture.SizeAsRectangle;
+		}
+		public SpriteData(I_MonoGameTexture texture, Vector2d position):base() {
+			_texture = texture;
+			_position = position;
+			_mask = texture.SizeAsRectangle;
+		}
+		public SpriteData(I_MonoGameTexture texture, Vector2d position, Color color): base() {
+			_texture = texture;
+			_position = position;
+			_color = color;
+			_mask = texture.SizeAsRectangle;
+		}
+
+		public BlendMode BlendMode {
+			get {
+				return BlendModes.Alpha;
+			}
 		}
 
 		I_MonoGameTexture _texture;
@@ -106,6 +128,9 @@
 				return _color;
 			}
 		}
+		public void SetColor(Color color) {
+			_color = color;
+		}
 
 		public static Rectangle Rectangle2dToRectangle(Rectangle2d r) {
 			return new Rectangle(
@@ -138,7 +163,6 @@
 		public static Polygon2dBounds Rectangle2Bounds(Rectangle r) {
 			return new Polygon2dBounds(r.X, r.Y, r.Width, r.Height);
 		}
-
 
 	}
 

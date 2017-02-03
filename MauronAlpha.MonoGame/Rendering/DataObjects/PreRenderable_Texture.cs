@@ -9,8 +9,7 @@
 
 		MonoGameTexture _texture;
 
-		public PreRenderable_Texture(GameManager game, string assetGroup, string name)
-			: base(game) {
+		public PreRenderable_Texture(GameManager game, string assetGroup, string name): base(game) {
 			AssetManager assets = game.Assets;
 
 			_texture = null;
@@ -21,7 +20,7 @@
 			_bounds = MonoGameTexture.GenerateBounds(_texture);
 
 			_orders = new RenderOrders() {
-				new PreRenderOrder(_texture,_bounds)
+				new PreRenderProcess(Game, name, _texture,_bounds)
 			};
 		}
 

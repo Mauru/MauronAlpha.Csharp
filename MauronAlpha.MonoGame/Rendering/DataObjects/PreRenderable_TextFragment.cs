@@ -20,10 +20,8 @@
 			SpriteBuffer buffer = TextFragment.GenerateSpriteBuffer(_text);
 			_bounds = SpriteBuffer.GenerateBounds(buffer);
 
-			System.Diagnostics.Debug.Print("Final bounds: "+_bounds.AsString);
-
 			_orders = new RenderOrders() {
-				new PreRenderOrder(buffer,color)
+				new PreRenderProcess(game, "Text"+Id, buffer, color)
 			};
 		}
 

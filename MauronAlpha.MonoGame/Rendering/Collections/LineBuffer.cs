@@ -1,13 +1,18 @@
 ﻿namespace MauronAlpha.MonoGame.Rendering.Collections {
 	using MauronAlpha.MonoGame.Collections;
 
+	using MauronAlpha.MonoGame.Rendering.Interfaces;
+
 	using MauronAlpha.Geometry.Geometry2d.Collections;
 	using MauronAlpha.Geometry.Geometry2d.Units;
 	using MauronAlpha.Geometry.Geometry2d.Interfaces;
 
 	using MauronAlpha.MonoGame.Geometry.DataObjects;
 
-	public class LineBuffer:List<MonoGameLine> {
+	using Microsoft.Xna.Framework;
+
+	/// <summary> Holds a series of lines </summary>
+	public class LineBuffer : List<MonoGameLine>, I_PreRenderableCollection {
 		public LineBuffer() : base() { }
 		public LineBuffer(I_polygonShape2d shape) : this() {
 			Segment2dList segments = shape.Segments;
@@ -19,12 +24,15 @@
 			foreach (Segment2d s in segments)
 				Add(new MonoGameLine(s));
 		}
-		public LineBuffer(Segment2dList segments, int thickness)	: base() {
+		public LineBuffer(Segment2dList segments, int thickness): base() {
 			foreach (Segment2d s in segments)
 				Add(new MonoGameLine(s,thickness));
 		}
-
-
+		public LineBuffer(Segment2dList segments, int thickness, Color color): base() {
+			foreach (Segment2d s in segments)
+				Add(new MonoGameLine(s, thickness,color));
+		}
+	
 		public void Add(Segment2d segment) {
 			MonoGameLine line = new MonoGameLine(segment);
 			_bounds = null;
@@ -51,14 +59,18 @@
 		public void SetBounds(Polygon2dBounds bounds) {
 			_bounds = bounds;
 		}
+		public bool HasBounds {
+			get { return (_bounds != null); }
+		}
+
 		public static Polygon2dBounds GenerateBounds(LineBuffer lines) {
 			Vector2d min = null;
 			Vector2d max = null;
 			Vector2dList s;
-			foreach (MonoGameLine line in lines) { 
+			foreach (MonoGameLine line in lines) {
 				s = line.Segment.Points;
 				foreach (Vector2d p in s) {
-					if(min==null) {
+					if (min == null) {
 						min = p;
 						max = p;
 					}
@@ -77,7 +89,6 @@
 
 			return Polygon2dBounds.FromMinMax(min, max);
 		}
-
 	}
 
 }

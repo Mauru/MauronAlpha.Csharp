@@ -147,34 +147,38 @@
 		}
 
 		//constructors
-		public MauronCode_dataList<Polygon2d> Triangulate(Polygon2d poly) {
+		public TriangleList2d Triangulate(Polygon2d poly) {
 			//Create a scrap copy
 			Vector2dList points = poly.Points.Copy;
 			Polygon2d tool = new Polygon2d(points);
 			//Make sure it is oriented clockwise
 			OrientClockWise(tool);
 			//list to collect triangles
-			MauronCode_dataList<Polygon2d> triangles = new MauronCode_dataList<Polygon2d>();
+			TriangleList2d triangles = new TriangleList2d();
 
 			//Remove ears until 3 points are left
 			while (tool.Points.Count > 3)
 				triangles = CycleEars(tool, triangles);
-			
-			return triangles.Add(tool);
+			points = tool.Points;
+
+			triangles.Add(new Triangle2d(points.Value(0),points.Value(1),points.Value(2)));
+			return triangles;
 		}
-		public MauronCode_dataList<Polygon2d> Triangulate(Vector2dList points) {
+		public TriangleList2d Triangulate(Vector2dList points) {
 			//Create a scrap copy
 			Polygon2d tool = new Polygon2d(points);
 			//Make sure it is oriented clockwise
 			OrientClockWise(tool);
 			//list to collect triangles
-			MauronCode_dataList<Polygon2d> triangles = new MauronCode_dataList<Polygon2d>();
+			TriangleList2d triangles = new TriangleList2d();
 
 			//Remove ears until 3 points are left
 			while (tool.Points.Count > 3)
 				triangles = CycleEars(tool, triangles);
+			Vector2dList pp = tool.Points;
 
-			return triangles.Add(tool);
+			triangles.Add(new Triangle2d(pp.Value(0),pp.Value(1),pp.Value(2)));
+			return triangles;
 		}
 
 
@@ -193,14 +197,14 @@
 			//no ear found (shouldnt happen)
 			return;
 		}
-		public MauronCode_dataList<Polygon2d> CycleEars(Polygon2d source, MauronCode_dataList<Polygon2d> collector) {
+		public TriangleList2d CycleEars(Polygon2d source, TriangleList2d collector) {
 			int a = 0, b = 0, c = 0;
 			FindEar(ref source, ref a, ref b, ref c);
-			Polygon2d newEar = new Polygon2d(new Vector2dList(){
+			Triangle2d newEar = new Triangle2d(
 				FindPoint(source,a),
 				FindPoint(source,b),
 				FindPoint(source,c)
-			});
+			);
 
 			collector.Add(newEar);
 			RemovePoint(source, b);
@@ -251,11 +255,11 @@
 				return false;
 
 			//Form Triangle
-			Polygon2d tri = new Polygon2d(new Vector2dList() { 
+			Triangle2d tri = new Triangle2d(
 				points[a], 
 				points[b],
 				points[c]
-			});
+			);
 
 			//If the point lies in the triangle it is not an ear
 			for (int i = 0; i < points.Count; i++) {
@@ -282,6 +286,14 @@
 		}
 
 		public Polygon2d OrientClockWise(Polygon2d poly) {
+			if (!IsOrientedClockWise(poly)) {
+				Vector2dList points = poly.Points;
+				points.SetIsReadOnly(false).Reverse();
+				poly.SetPoints(points);
+			}
+			return poly;
+		}
+		public Triangle2d OrientClockWise(Triangle2d poly) {
 			if (!IsOrientedClockWise(poly)) {
 				Vector2dList points = poly.Points;
 				points.SetIsReadOnly(false).Reverse();

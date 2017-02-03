@@ -5,7 +5,7 @@ using MauronAlpha.HandlingErrors;
 
 namespace MauronAlpha.HandlingData {
 
-	//A data array that maps a string to a generic
+	/// <summary>A data array that maps a string to a generic</summary>
 	public class MauronCode_dataMap<TValue> : MauronCode_dataObject,IEnumerable<TValue> {
 
 		//constructor
@@ -13,8 +13,7 @@ namespace MauronAlpha.HandlingData {
 			DATA_keys = new string[]{};
 			DATA_values = new MauronCode_dataTree<long,TValue>();
 		}
-		public MauronCode_dataMap (ICollection<string> keys, ICollection<TValue> values)
-			: this() {
+		public MauronCode_dataMap (ICollection<string> keys, ICollection<TValue> values): this() {
 			if( keys.Count!=values.Count ) {
 				throw Error("Keys/Values have different length!", this, ErrorType_constructor.Instance);
 			}
@@ -102,7 +101,6 @@ namespace MauronAlpha.HandlingData {
 			long index = IndexOfKey(key);
 			return DATA_values.ContainsIndex(index);
 		}
-		
 		#endregion
 
         #region Working with Values
@@ -142,7 +140,7 @@ namespace MauronAlpha.HandlingData {
 			return DATA_values.Value(index);
 		}
 
-		public bool TryGet(string key, ref TValue result) {
+		public bool Try(string key, ref TValue result) {
 			int n = IndexOfKey(key);
 			if (n < 0)
 				return false;

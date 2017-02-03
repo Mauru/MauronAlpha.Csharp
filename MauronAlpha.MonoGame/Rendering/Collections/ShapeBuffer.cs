@@ -10,21 +10,26 @@
 	using MauronAlpha.MonoGame.Collections;
 
 	using MauronAlpha.MonoGame.Rendering.Interfaces;
-	using MauronAlpha.MonoGame.Rendering;
+	using MauronAlpha.MonoGame.Rendering.DataObjects;
 
 	using Microsoft.Xna.Framework;
 	using Microsoft.Xna.Framework.Graphics;
 
 	using MauronAlpha.Geometry.Geometry2d.Transformation;
 	
-	public class ShapeBuffer:List<TriangulationData>{
+	public class ShapeBuffer:List<TriangulationData>, I_PreRenderableCollection {
 
 		public ShapeBuffer(): base() {}
 		public ShapeBuffer(I_polygonShape2d shape): base() {
 			Add(shape);
+			SetBounds(shape.Bounds);
 		}
 		public ShapeBuffer(Matrix2d matrix): base() {
 			_matrix = matrix;
+		}
+		public ShapeBuffer(TriangulationData data, Polygon2dBounds bounds): base() {
+			base.Add(data);
+			SetBounds(bounds);
 		}
 		public static ShapeBuffer Empty { get { return new ShapeBuffer(); } }
 
@@ -35,6 +40,7 @@
 			else
 				data = TriangulationData.CreateFromShape(shape, TriangulationData.WhiteVertexColors);
 			Add(data);
+			_bounds = null;
 		}
 
 		Polygon2dBounds _bounds;

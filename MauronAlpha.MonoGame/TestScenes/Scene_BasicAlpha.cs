@@ -1,43 +1,72 @@
 ﻿namespace MauronAlpha.MonoGame {
 	using MauronAlpha.MonoGame.UI.DataObjects;
+
 	using MauronAlpha.MonoGame.Rendering.Utility;
 	using MauronAlpha.MonoGame.Rendering.Collections;
 	using MauronAlpha.MonoGame.Rendering.DataObjects;
 
+	using MauronAlpha.MonoGame.Rendering.Interfaces;
+
+	using MauronAlpha.MonoGame.Rendering.Events;
+
 	using MauronAlpha.Geometry.Geometry2d.Shapes;
 	using MauronAlpha.Geometry.Geometry2d.Units;
 
-	public class Scene_BasicAlpha:GameScene {
+	using MauronAlpha.Events.Interfaces;
+
+	public class Scene_BasicAlpha : GameScene, I_subscriber<CompositeRenderRequestComplete> {
 
 		public Scene_BasicAlpha(GameManager game) : base(game) { }
 
 		public override GameRenderer.DrawMethod DrawMethod {
-			get { return CompositeRenderer.RenderMethod; }
+			get { return CompositeRenderer.DrawMethod; }
 		}
 
 		public override void Initialize() {
 			GameRenderer renderer = Game.Renderer;
 
-			PreRenderChain chain = new PreRenderChain(Game) {
-				new PreRenderProcess(
-					Game, "base", Rectangle2d.CreateAlignCenter(200, 200)
-				),
-				new PreRenderProcess(
-					Game, "mask", Rectangle2d.CreateAlignCenter(180,180), new Vector2d(10,10)
-				)
-			};
-			chain.PrepareShapeBuffers();
+			//Set up shader
+			DefaultShader shader = DefaultShader.Create2DTopLeft(Game);
+			renderer.SetCurrentShader(shader);
 
-			RenderComposite composite = new RenderComposite(Game, chain, BlendModes.Solid);
-			CompositeBuffer buffer = new CompositeBuffer() {
-				composite
-			};
-			SetCompositeBuffer(buffer);
+			FormObjectBuffer();
 
 			renderer.SetCurrentScene(this);
-			renderer.SetDrawMethod(CompositeRenderer.RenderMethod);
+			renderer.SetDrawMethod(CompositeRenderer.DrawMethod);
 
 			base.Initialize();
+		}
+
+		public void FormObjectBuffer() {
+			RenderComposite composite = new RenderComposite(Game);
+			//Create RenderChain
+			PreRenderChain chain = new PreRenderChain(Game) {
+				PreRenderProcess.FromShape(new Hexagon2d())
+			};
+
+			CompositeBuffer buffer = new CompositeBuffer() { composite };
+			PreRenderRequests.Add(chain);
+			PreRenderRequests.Add(buffer);
+		}
+
+		public override void ReceiveStatus(Rendering.Interfaces.I_RenderStatus status) {
+			System.Diagnostics.Debug.Print(status.Message);
+		}
+
+		public bool ReceiveEvent(CompositeRenderRequestComplete e) {
+			e.Target.UnSubscribe(this);
+			Game.Renderer.SetDrawMethod(CompositeRenderer.FinalizeComposites);
+			return true;
+		}
+		public bool Equals(I_subscriber<CompositeRenderRequestComplete> other) {
+			return Id.Equals(other.Id);
+		}
+
+		public static void Print(long val) {
+			Print("" + val);
+		}
+		public static void Print(string val) {
+			System.Diagnostics.Debug.Print(val);
 		}
 
 	}

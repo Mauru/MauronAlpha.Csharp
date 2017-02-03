@@ -28,6 +28,18 @@
 			}
 		}
 
+		public static BlendMode_SubtractNonAlpha SubtractNonAlpha {
+			get {
+				return BlendMode_SubtractNonAlpha.Instance;
+			}
+		}
+
+		public static BlendMode_Opaque Opaque {
+			get {
+				return BlendMode_Opaque.Instance;
+			}
+		}
+
 	}
 
 }

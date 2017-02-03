@@ -33,6 +33,16 @@ namespace MauronAlpha.HandlingData {
 				return Data.Count;
 			}
 		}
+		public bool TryPop(ref T obj) {
+			try {
+				T d = Data.Pop();
+				obj = d;
+				return true;
+			}
+			catch (InvalidOperationException e) { 
+				return false;
+			}
+		}
 		public bool IsEmpty {
 			get {
 				return Data.Count == 0;

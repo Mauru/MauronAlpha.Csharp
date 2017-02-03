@@ -11,12 +11,11 @@
 		RenderOrders RenderOrders { get; }
 
 		Polygon2dBounds Bounds { get; }
-
-		void SetRenderResult(Texture2D texture, long time);
-
 		GameManager Game { get; }
 
+		void SetRenderResult(I_RenderResult result);
 		I_RenderResult RenderResult { get; }
+		bool TryRenderResult(ref I_RenderResult result);
 	
 	}
 }

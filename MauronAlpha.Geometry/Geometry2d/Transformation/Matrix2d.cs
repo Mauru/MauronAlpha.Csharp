@@ -3,6 +3,8 @@
 	using MauronAlpha.Geometry.Geometry2d.Collections;
 	using MauronAlpha.HandlingErrors;
 
+	using MauronAlpha.Geometry.Geometry2d.Utility;
+
 	//Keeps track of all applied transforms to a series of geometrical data
 	public class Matrix2d : GeometryComponent2d {
 		double	m11, m12, m13,
@@ -20,6 +22,7 @@
 			m31 = d31; m32 = d32; m33 = d33;
 		}
 
+		/// <summary> Applies multiplications to each field (ColRow) and RETURNS self. </summary>
 		public Matrix2d Multiply(
 			double d11, double d12, double d13,
 			double d21, double d22, double d23,
@@ -49,9 +52,27 @@
 			m31 = r31; m32 = r32; m33 = r33;
 
 			return this;
+		}
+
+		public Matrix2d Copy {
+			get {
+				return new Matrix2d(m11, m12, m13, m21, m22, m23, m31, m32, m33);
+			}
+		}
+
+		/// <summary> Multiplies Copy of Self. RETURNS SELF.Copy * OTHER.Values . </summary>
+		public Matrix2d MultipliedCopy(Matrix2d other) {
+
+			Matrix2d result = Copy;
+			return result.Multiply(
+				other[0, 0], other[0, 1], other[0, 2],
+				other[1, 0], other[1, 1], other[1, 2],
+				other[2, 0], other[2, 1], other[2, 2]
+			);
 
 		}
 
+		/// <summary> Return a new Vector2d with the matrix applied. </summary>
 		public Vector2d ApplyTo(double x, double y) {
 
 			double newx = x * m11 + y * m12+m13;
@@ -63,53 +84,37 @@
 			);
 
 		}
+		/// <summary> Modify each vector2d in a vector2dlist. </summary>
+		public void ApplyTo(ref Vector2dList vv) {
+			foreach (Vector2d v in vv) {
+				double newx = v.X * m11 + v.Y * m12 + m13;
+				double newy = v.X * m21 + v.Y * m22 + m23;
 
+				v.Set(newx, newy);
+			}
+		}
+		/// <summary> Modify a vector2d. </summary>
+		public void ApplyTo(ref Vector2d v) {
+
+			double newx = v.X * m11 + v.Y * m12 + m13;
+			double newy = v.X * m21 + v.Y * m22 + m23;
+
+			v.Set(newx, newy);
+		}
+		
+		/// <summary> Returns a new Vector2dList with the matrix applied. Input remains untouched. </summary>
 		public Vector2dList ApplyToCopy(Vector2dList list) {
 			Vector2dList result = new Vector2dList();
 			foreach (Vector2d v in list)
-				result.Add(ApplyToCopyVector2d(v));
+				result.Add(ApplyToCopy(v));
 			return result;
 		}
-		public Vector2d ApplyToCopyVector2d(Vector2d v) {
+		/// <summary> returns a copy of the input with the matrix applied. </summary>
+		public Vector2d ApplyToCopy(Vector2d v) {
 			return ApplyTo(v.X, v.Y);			
 		}
 
-		public Matrix2d SetValue(int index, double value) {
-			switch (index) {
-				case 0: m11 = value; return this;
-				case 1: m12 = value; return this;
-				case 2: m13 = value; return this;
-
-				case 3: m21 = value; return this;
-				case 4: m22 = value; return this;
-				case 5: m23 = value; return this;
-
-				case 6: m31 = value; return this;
-				case 7: m32 = value; return this;
-				case 8: m33 = value; return this;
-
-				default: throw new MauronCode_error("Invalid index!", this, ErrorType_index.Instance);
-			}
-		}
-		public Matrix2d SetValue(int row, int column, double value) {
-			return SetValue((row * 3) + column, value);
-		}
-
-		public static Matrix2d Identity {
-			get {
-				return new Matrix2d(
-					1,0,0,
-					0,1,0,
-					0,0,1
-				);
-			}
-		}
-		public Matrix2d Copy {
-			get {
-				return new Matrix2d(m11, m12, m13, m21, m22, m23, m31, m32, m33);
-			}
-		}
-
+		//Field accessors and setters
 		public double this[int index] {
 			get {
 				return Value(index);
@@ -146,6 +151,26 @@
 		public double Value(int row, int column) {
 			return this[row, column];
 		}
+		public Matrix2d SetValue(int index, double value) {
+			switch (index) {
+				case 0: m11 = value; return this;
+				case 1: m12 = value; return this;
+				case 2: m13 = value; return this;
+
+				case 3: m21 = value; return this;
+				case 4: m22 = value; return this;
+				case 5: m23 = value; return this;
+
+				case 6: m31 = value; return this;
+				case 7: m32 = value; return this;
+				case 8: m33 = value; return this;
+
+				default: throw new MauronCode_error("Invalid index!", this, ErrorType_index.Instance);
+			}
+		}
+		public Matrix2d SetValue(int row, int column, double value) {
+			return SetValue((row * 3) + column, value);
+		}
 
 		//BOOL Equals
 		public bool Equals( Matrix2d o ) {
@@ -157,11 +182,7 @@
 			return true;
 		}
 
-		public Matrix2d AddToTranslation(double x, double y) {
-			m13 += x;
-			m23 += y;
-			return this;
-		}
+		//Modify Translation
 		public Vector2d Translation {
 			get {
 				return new Vector2d(m13, m23);
@@ -175,6 +196,22 @@
 			m23 = y;
 			return this;
 		}
+		public Matrix2d AddToTranslation(double x, double y) {
+			m13 += x;
+			m23 += y;
+			return this;
+		}
+
+		//STATIC constructors
+		public static Matrix2d Identity {
+			get {
+				return new Matrix2d(
+					1, 0, 0,
+					0, 1, 0,
+					0, 0, 1
+				);
+			}
+		}
 
 		public static Matrix2d CreateTranslation(double x, double y) {
 			return new Matrix2d(
@@ -186,6 +223,28 @@
 		public static Matrix2d CreateTranslation(Vector2d v) {
 			return CreateTranslation(v.X, v.Y);
 		}
+
+		public static Matrix2d CreateScale(double x, double y) {
+			return new Matrix2d(
+				x, 0 , 0,
+				0, y , 0,
+				0, 0, 1
+			);
+		}
+		
+		public static Matrix2d CreateRotationRad(double rad) {
+			return new Matrix2d(
+				 GeometryHelper2d.Cos(rad), -1 * GeometryHelper2d.Sin(rad), 0,
+				 GeometryHelper2d.Sin(rad), GeometryHelper2d.Cos(rad), 0,
+				 0, 0, 1
+			);
+		}
+		public static Matrix2d CreateRotationDeg(double deg) {
+			double rad = GeometryHelper2d.Deg2Rad(deg);
+			return CreateRotationRad(rad);			 
+		}
+	
+	
 	}
 
 }

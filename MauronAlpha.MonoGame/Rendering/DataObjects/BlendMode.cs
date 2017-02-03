@@ -67,4 +67,18 @@
 		}
 	}
 
+	/// <summary> The object is rendered as opaque </summary>
+	public class BlendMode_Opaque : BlendMode {
+
+		public override string Name {
+			get { return "Opaque"; }
+		}
+
+		public static BlendMode_Opaque Instance {
+			get {
+				return new BlendMode_Opaque();
+			}
+		}
+	}
+
 }

@@ -27,8 +27,11 @@
 		void SetSpriteBuffer(SpriteBuffer buffer);
 
 		GameRenderer.DrawMethod DrawMethod { get; }
+
+		PreRenderRequests PreRenderRequests { get; }
+
+		void ReceiveStatus(I_RenderStatus status);
+
 	}
-
-
 
 }

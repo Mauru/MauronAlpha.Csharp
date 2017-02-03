@@ -1,7 +1,7 @@
 ﻿namespace MauronAlpha.MonoGame {
 	using MauronAlpha.MonoGame.UI.DataObjects;
 
-	using MauronAlpha.MonoGame.Rendering;
+	using MauronAlpha.MonoGame.Rendering.Interfaces;
 	using MauronAlpha.MonoGame.Rendering.Utility;
 	using MauronAlpha.MonoGame.Rendering.DataObjects;
 	using MauronAlpha.MonoGame.Rendering.Collections;

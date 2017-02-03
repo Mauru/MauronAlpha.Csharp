@@ -4,7 +4,7 @@
 	
 	using MauronAlpha.MonoGame.Rendering.DataObjects;
 
-	public class RenderOrders:List<PreRenderOrder> {
+	public class RenderOrders:List<PreRenderProcess> {
 
 		public static RenderOrders Empty { get { return new RenderOrders(); } }
 

@@ -10,14 +10,14 @@ namespace MauronAlpha.HandlingData {
 
 		public void Add(string key, T value) {
 			MauronCode_dataList<T> map = new MauronCode_dataList<T>();
-			bool result = this.TryGet(key, ref map);
+			bool result = this.Try(key, ref map);
 			if (!result)
 				return;
 			map.Add(value);
 		}
 		public MauronCode_dataList<T> Get(string key) {
 			MauronCode_dataList<T> map = new MauronCode_dataList<T>();
-			bool result = this.TryGet(key, ref map);
+			bool result = this.Try(key, ref map);
 			return map;
 		}
 
@@ -25,7 +25,7 @@ namespace MauronAlpha.HandlingData {
 				MauronCode_dataList<T> result = new MauronCode_dataList<T>();
 				MauronCode_dataList<T> map = new MauronCode_dataList<T>();
 				foreach (string key in keys) {
-					bool found = TryGet(key, ref map);
+					bool found = Try(key, ref map);
 					if(found)
 						result.AddValuesFrom(map);
 				}

@@ -8,6 +8,7 @@
 
 	using Microsoft.Xna.Framework.Graphics;
 
+	/// <summary> Abstract baseClass for preRenderable items </summary>
 	public abstract class PreRenderable : MonoGameComponent, I_PreRenderable {
 
 		GameManager _game;
@@ -19,14 +20,19 @@
 
 		Matrix2d _matrix;
 
-		public PreRenderable(GameManager game)
-			: base() {
+		public PreRenderable(GameManager game)	: base() {
 			_game = game;
 		}
 
-		RenderResult _result;
+		I_RenderResult _result;
 		public I_RenderResult RenderResult { get { return _result; } }
-		public void SetRenderResult(RenderResult result) {
+		public bool TryRenderResult(ref I_RenderResult result) {
+			if (_result == null)
+				return false;
+			result = _result;
+			return true;
+		}
+		public void SetRenderResult(I_RenderResult result) {
 			_result = result;
 		}
 		public void SetRenderResult(Texture2D texture, long time) {
@@ -43,6 +49,9 @@
 		}
 
 		public abstract Polygon2dBounds Bounds { get; }
+
+
+
 
 	}
 }

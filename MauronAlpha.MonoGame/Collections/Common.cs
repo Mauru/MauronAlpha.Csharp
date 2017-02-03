@@ -2,7 +2,7 @@
 
 namespace MauronAlpha.MonoGame.Collections {
 
-	public class List<T> :MauronCode_dataList<T> { } //ordered collection >> object
+	public class List<T> :MauronCode_dataList<T> {} //ordered collection >> object
 	public class Registry<T> :MauronCode_dataMap<T> {
 		public bool TryIndex(long index, ref T result) {
 			if (base.Values.Count < 1)

@@ -22,6 +22,21 @@
 			get { return _game; }
 		}
 
+		public GameScene(GameManager game): base() {
+			_game = game;
+		}
+
+		bool _initialized = false;
+		public bool IsInitialized {
+			get { return _initialized; }
+		}
+
+		public virtual void Initialize() {
+			_initialized = true;
+		}
+		public virtual void RunLogicCycle(long time) { }
+
+
 		ShapeBuffer _shapes;
 		public virtual ShapeBuffer ShapeBuffer {
 			get {
@@ -35,6 +50,12 @@
 			get {
 				return _shapes != null;
 			}
+		}
+		public virtual bool TryShapeBuffer(ref ShapeBuffer result) { 
+			if(_shapes==null)
+				return false;
+			result = _shapes;
+			return true;
 		}
 
 		SpriteBuffer _sprites;
@@ -51,6 +72,13 @@
 				return _sprites != null;
 			}
 		}
+		public virtual bool TrySpriteBuffer(ref SpriteBuffer result) {
+			if (_sprites == null)
+				return false;
+			result = _sprites;
+			return true;
+		}
+
 
 		CompositeBuffer _composites;
 		public virtual CompositeBuffer CompositeBuffer {
@@ -64,6 +92,13 @@
 				return _composites != null;
 			}
 		}
+		public virtual bool TryCompositeBuffer(ref CompositeBuffer result) {
+			if (_composites == null)
+				return false;
+			result = _composites;
+			return true;
+		}
+
 
 		LineBuffer _lines;
 		public virtual LineBuffer LineBuffer {
@@ -78,6 +113,28 @@
 			get {
 				return _lines != null;
 			}
+		}
+		public virtual bool TryLineBuffer(ref LineBuffer result) {
+			if (_lines == null)
+				return false;
+			result = _lines;
+			return true;
+		}
+
+
+		PreRenderRequests _requests;
+		public virtual PreRenderRequests PreRenderRequests {
+			get {
+				if (_requests == null)
+					_requests = new PreRenderRequests();
+				return _requests;
+			}
+		}
+		public virtual bool TryPreRenderRequests(ref PreRenderRequests result) {
+			if (_requests == null)
+				return false;
+			result = _requests;
+			return true;
 		}
 
 
@@ -95,23 +152,17 @@
 				return _orders != null;
 			}
 		}
-
-		public GameScene(GameManager game) : base() {
-			_game = game;
+		public virtual bool TryRenderOrders(ref RenderOrders result) {
+			if (_orders == null)
+				return false;
+			result = _orders;
+			return true;
 		}
-
-		bool _initialized = false;
-		public bool IsInitialized {
-			get { return _initialized; }
-		}
-
-		public virtual void Initialize() {
-			_initialized = true;
-		}
-
-		public virtual void RunLogicCycle(long time) { }
 
 		public abstract GameRenderer.DrawMethod DrawMethod { get; }
+
+		/// <summary> Mostly for debugging and error reports. </summary>
+		public virtual void ReceiveStatus(I_RenderStatus status) { }
 
 	}
 

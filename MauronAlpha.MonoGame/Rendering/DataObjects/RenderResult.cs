@@ -1,4 +1,4 @@
-﻿namespace MauronAlpha.MonoGame.Rendering {
+﻿namespace MauronAlpha.MonoGame.Rendering.DataObjects {
 	using MauronAlpha.MonoGame.Interfaces;
 	using MauronAlpha.Geometry.Geometry2d.Units;
 	using Microsoft.Xna.Framework.Graphics;

@@ -51,6 +51,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Geometry2d\Collections\Matrix2dChain.cs" />
     <Compile Include="Geometry2d\Collections\TriangleList2d.cs" />
     <Compile Include="Geometry2d\Interfaces\I_polygon2d.cs" />
     <Compile Include="Geometry2d\Shapes\Ngon2d.cs" />

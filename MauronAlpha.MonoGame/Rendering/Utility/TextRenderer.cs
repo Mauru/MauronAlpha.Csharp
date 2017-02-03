@@ -27,7 +27,7 @@
 			I_GameScene scene = renderer.CurrentScene;
 
 			GraphicsDevice device = renderer.GraphicsDevice;
-			SpriteBatch batch = renderer.DefaultSpriteBatch;
+			SpriteDrawManager batch = renderer.SpriteDrawManager;
 
 			SpriteBuffer buffer = scene.SpriteBuffer;
 

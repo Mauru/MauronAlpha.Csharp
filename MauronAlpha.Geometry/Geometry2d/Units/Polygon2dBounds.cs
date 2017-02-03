@@ -114,6 +114,11 @@ namespace MauronAlpha.Geometry.Geometry2d.Units {
 			get { return Size.Y; }
 		}
 
+		public void Offset(Vector2d v) {
+			_min.Add(v);
+			_max.Add(v);
+		}
+
 		Segment2dList I_polygonShape2d.Segments {
 			get {
 				return GenerateSegments(this);
@@ -174,6 +179,22 @@ namespace MauronAlpha.Geometry.Geometry2d.Units {
 				buffer = p;
 			}
 			return result;
+		}
+		/// <summary> Returns a new merged Polygon2dBounds </summary>
+		public static Polygon2dBounds Combine(Polygon2dBounds a, Polygon2dBounds b) {
+			Vector2d minB=b.Min, maxB=b.Max, aa = a.Min.Copy, bb = a.Max.Copy;
+
+			if (minB.X < aa.X)
+				aa.SetX(minB.X);
+			if (minB.Y < aa.Y)
+				aa.SetY(minB.Y);
+
+			if (maxB.X > bb.X)
+				bb.SetX(maxB.X);
+			if (maxB.Y > bb.Y)
+				bb.SetY(maxB.Y);
+
+			return Polygon2dBounds.FromMinMax(aa, bb);			
 		}
 	}
 
