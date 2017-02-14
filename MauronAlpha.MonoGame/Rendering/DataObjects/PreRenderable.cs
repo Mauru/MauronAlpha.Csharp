@@ -11,18 +11,9 @@
 	/// <summary> Abstract baseClass for preRenderable items </summary>
 	public abstract class PreRenderable : MonoGameComponent, I_PreRenderable {
 
-		GameManager _game;
-		public GameManager Game {
-			get {
-				return _game;
-			}
-		}
+		public abstract PreRenderOrders PreRenderOrders { get; }
 
-		Matrix2d _matrix;
-
-		public PreRenderable(GameManager game)	: base() {
-			_game = game;
-		}
+		public PreRenderable()	: base() {}
 
 		I_RenderResult _result;
 		public I_RenderResult RenderResult { get { return _result; } }
@@ -42,16 +33,8 @@
 				_result.SetResult(texture, time);
 		}
 
-		public virtual RenderOrders RenderOrders {
-			get {
-				return RenderOrders.Empty;
-			}
-		}
 
 		public abstract Polygon2dBounds Bounds { get; }
-
-
-
 
 	}
 }

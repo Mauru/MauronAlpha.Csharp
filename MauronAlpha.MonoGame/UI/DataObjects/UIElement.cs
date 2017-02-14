@@ -22,6 +22,7 @@
 
 	using Microsoft.Xna.Framework;
 
+	/// <summary> Describes an interactable element of the User-Interface. </summary>
 	public abstract class UIElement :UIComponent, I_UIHierarchyObject, I_subscriber<RenderEvent> {
 
 		//constructor
@@ -56,8 +57,6 @@
 				return _bounds;
 			}
 		}
-
-
 
 		I_RenderResult _rendered;
 		public I_RenderResult RenderResult {
@@ -130,10 +129,6 @@
 
 		public virtual I_RenderResult Outline {
 			get { return MauronAlpha.MonoGame.Rendering.DataObjects.RenderResult.Empty; }
-		}
-
-		public virtual RenderOrders Orders {
-			get { return new RenderOrders(); }
 		}
 
 		public void SetRenderResult(I_RenderResult result) {

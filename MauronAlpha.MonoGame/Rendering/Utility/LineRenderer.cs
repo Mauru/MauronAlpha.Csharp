@@ -68,13 +68,12 @@
 			LineBuffer lines = null;
 			if(!process.TryLines(ref lines))
 				return;
-			Color color = process.Color;
 
 			SpriteDrawManager batch = renderer.SpriteDrawManager;
 			batch.Begin();
 			Texture2D pixel = renderer.PixelTexture;
 			foreach (MonoGameLine line in lines)
-				batch.Draw(pixel, line.Rectangle, null, color, (float)line.AngleAsRad, Vector2.Zero, SpriteEffects.None, 1f);
+				batch.Draw(pixel, line.Rectangle, null, line.Color, (float)line.AngleAsRad, Vector2.Zero, SpriteEffects.None, 1f);
 			batch.End();
 		}
 

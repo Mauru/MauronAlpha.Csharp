@@ -15,16 +15,16 @@
 
 	using MauronAlpha.HandlingData;
 
-	/// <summary> Holds the result of a polygon-triangulation </summary>
-	public class TriangulationData : MonoGameComponent {
+	/// <summary> Instructions for drawing a triangulated 2dPolygon. </summary>
+	public class ShapeDrawCall : MonoGameComponent {
 
-		public TriangulationData(VertexPositionColor[] vertices, int vertexCount): base() {
+		public ShapeDrawCall(VertexPositionColor[] vertices, int vertexCount): base() {
 			_vertexPositionColor = vertices;
 			_triangleCount = vertexCount / 3;
 			_vertexCount = vertexCount;
 			_mode = VertexShaderMode.VertexPositionColor2d;
 		}
-		public TriangulationData(VertexPosition[] vertices, int vertexCount): base() {
+		public ShapeDrawCall(VertexPosition[] vertices, int vertexCount): base() {
 			_vertexPosition = vertices;
 			_triangleCount = vertexCount / 3;
 			_vertexCount = vertexCount;
@@ -93,11 +93,12 @@
 			return result;
 		}
 
+
 		public static Color[] WhiteVertexColors {
 			get { return new Color[3] { Color.White, Color.White, Color.White }; }
 		}
 
-		public static TriangulationData CreateFromShape(I_polygonShape2d shape, Color[] colors) {
+		public static ShapeDrawCall CreateFromShape(I_polygonShape2d shape, Color[] colors) {
 			Triangulator2d tool = new Triangulator2d();
 			Vector2dList points = shape.Points;
 
@@ -105,12 +106,12 @@
 			TriangleList2d triangles = tool.Triangulate(points);
 			int triangleCount = triangles.Count;
 			int vertexCount = triangleCount * 3;
-			VertexPositionColor[] vtp = TriangulationData.CreateVertexPositionColor(vertexCount, triangles, colors);
-			TriangulationData data = new TriangulationData(vtp, vertexCount);
+			VertexPositionColor[] vtp = ShapeDrawCall.CreateVertexPositionColor(vertexCount, triangles, colors);
+			ShapeDrawCall data = new ShapeDrawCall(vtp, vertexCount);
 			data.SetBounds(Polygon2dBounds.FromPoints(points));
 			return data;
 		}
-		public static TriangulationData CreateFromShape(I_polygonShape2d shape, Color[] colors, Matrix2d matrix) {
+		public static ShapeDrawCall CreateFromShape(I_polygonShape2d shape, Color[] colors, Matrix2d matrix) {
 			Triangulator2d tool = new Triangulator2d();
 			Vector2dList points = shape.Points;
 
@@ -120,37 +121,38 @@
 			TriangleList2d triangles = tool.Triangulate(points);
 			int triangleCount = triangles.Count;
 			int vertexCount = triangleCount * 3;
-			VertexPositionColor[] vtp = TriangulationData.CreateVertexPositionColor(vertexCount, triangles, colors);
-			TriangulationData data = new TriangulationData(vtp, vertexCount);
+			VertexPositionColor[] vtp = ShapeDrawCall.CreateVertexPositionColor(vertexCount, triangles, colors);
+			ShapeDrawCall data = new ShapeDrawCall(vtp, vertexCount);
 			data.SetBounds(Polygon2dBounds.FromPoints(points));
 			return data;
 		}
-		public static TriangulationData CreateFromVector2dList(Vector2dList points, Color[] colors) {
+		public static ShapeDrawCall CreateFromVector2dList(Vector2dList points, Color[] colors) {
 			Triangulator2d tool = new Triangulator2d();
 
 			//TODO: still have to make triangle thing static
 			TriangleList2d triangles = tool.Triangulate(points);
 			int triangleCount = triangles.Count;
 			int vertexCount = triangleCount * 3;
-			VertexPositionColor[] vtp = TriangulationData.CreateVertexPositionColor(vertexCount, triangles, colors);
-			TriangulationData data = new TriangulationData(vtp, vertexCount);
+			VertexPositionColor[] vtp = ShapeDrawCall.CreateVertexPositionColor(vertexCount, triangles, colors);
+			ShapeDrawCall data = new ShapeDrawCall(vtp, vertexCount);
 			data.SetBounds(Polygon2dBounds.FromPoints(points));
 			return data;
 		}
-		public static TriangulationData CreateFromVector2dList(Vector2dList points, Color color) {
+		public static ShapeDrawCall CreateFromVector2dList(Vector2dList points, Color color) {
 			return CreateFromVector2dList(points, new Color[3] { color, color, color });
 		}
-		public static TriangulationData CreateFromVector2dList(Vector2dList points, System.Nullable<Color> color, Polygon2dBounds bounds) {
-			TriangulationData result;
+		public static ShapeDrawCall CreateFromVector2dList(Vector2dList points, System.Nullable<Color> color, Polygon2dBounds bounds) {
+			ShapeDrawCall result;
 			if (color == null)
-				result = CreateFromVector2dList(points, TriangulationData.WhiteVertexColors);
+				result = CreateFromVector2dList(points, ShapeDrawCall.WhiteVertexColors);
 			else
 				result = CreateFromVector2dList(points, color.Value);
 
 			result.SetBounds(bounds);
 			return result;
 		}
-		public static Polygon2dBounds CalculateBounds(TriangulationData data) {
+
+		public static Polygon2dBounds CalculateBounds(ShapeDrawCall data) {
 			if (data.VertexShaderMode.Equals(VertexShaderMode.VertexPosition2d))
 				return CalculateBounds(data.VertexPosition);
 			else
@@ -207,7 +209,7 @@
 			Triangulator2d tool = new Triangulator2d();
 			TriangleList2d list = tool.Triangulate(points);
 			vertexCount = list.Count * 3;
-			VertexPosition[] result = TriangulationData.CreateVertexPositionData(list, vertexCount);
+			VertexPosition[] result = ShapeDrawCall.CreateVertexPositionData(list, vertexCount);
 			return result;
 		}
 		public static VertexPosition[] CreateVertexPositionData(TriangleList2d list, int vertexCount) {
@@ -237,7 +239,7 @@
 		public static string DebugTriangleList(MauronCode_dataList<Polygon2d> a) {
 			string result = "";
 			foreach (Polygon2d p in a)
-				result += TriangulationData.DebugPolygonShape(p);
+				result += ShapeDrawCall.DebugPolygonShape(p);
 			return result;
 		}
 		public static string DebugPolygonShape(I_polygonShape2d p) {

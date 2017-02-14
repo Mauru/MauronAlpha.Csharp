@@ -114,7 +114,7 @@
 		Registry<MonoGameTexture> _textures = new Registry<MonoGameTexture>();
 		public Registry<MonoGameTexture> Textures { get { return _textures; } }
 		public bool TryTexture(string name, ref MonoGameTexture texture) {
-			return _textures.TryGet(name, ref texture);
+			return _textures.Try(name, ref texture);
 		}
 		public List<string> ListOfTextureNames() {
 			List<string> result = new List<string>();
@@ -153,7 +153,7 @@
 			return _fonts.Value(font);
 		}
 		public bool TryFont(string name, ref GameFont font) {
-			return _fonts.TryGet(name, ref font);
+			return _fonts.Try(name, ref font);
 		}
 		public List<string> ListOfFontNames() {
 			List<string> result = new List<string>();
@@ -203,7 +203,7 @@
 		Registry<CustomShader> _shaders = new Registry<CustomShader>();
 		public Registry<CustomShader> Shaders { get { return _shaders; } }
 		public bool TryShader(string name, ref CustomShader shader) {
-			return _shaders.TryGet(name, ref shader);
+			return _shaders.Try(name, ref shader);
 		}
 		public List<string> ListOfShaderNames() {
 			List<string> result = new List<string>();

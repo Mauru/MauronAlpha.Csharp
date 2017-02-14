@@ -54,7 +54,7 @@
 		Registry<AssetGroup> DATA_AssetGroups = new Registry<AssetGroup>();
 		AssetGroup FetchAssetGroup(string str) {
 			AssetGroup g = null;
-			if (DATA_AssetGroups.TryGet(str, ref g))
+			if (DATA_AssetGroups.Try(str, ref g))
 				return g;
 			g = new AssetGroup(DATA_Manager, str);
 			DATA_AssetGroups.SetValue(str, g);
@@ -140,7 +140,7 @@
 		}
 		public bool TryTexture(string assetGroup, string name, ref MonoGameTexture result) {
 			AssetGroup g = null;
-			if (!DATA_AssetGroups.TryGet(assetGroup, ref g))
+			if (!DATA_AssetGroups.Try(assetGroup, ref g))
 				return false;
 			return g.TryTexture(name, ref result);
 		}

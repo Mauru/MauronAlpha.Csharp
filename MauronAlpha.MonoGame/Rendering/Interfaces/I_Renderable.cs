@@ -24,7 +24,6 @@
 		I_RenderResult Outline { get; }
 		bool HasRenderResult { get; }
 
-		RenderOrders Orders { get; }
 		void SetRenderResult(I_RenderResult result);
 
 		ShapeBuffer ShapeBuffer { get; }

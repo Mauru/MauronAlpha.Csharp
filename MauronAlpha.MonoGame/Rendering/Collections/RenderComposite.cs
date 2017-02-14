@@ -11,39 +11,31 @@
 
 	using MauronAlpha.Geometry.Geometry2d.Units;
 
-	/// <summary>A cmbination of several preRenderables combines with a blendMode</summary>
-	public class RenderComposite:MonoGameComponent, I_PreRenderable {
+	/// <summary>A combination of several preRenderables combined with a blendMode</summary>
+	public class RenderComposite:MonoGameComponent, I_RenderComposite {
 
-		PreRenderChain _chain;
-		/// <summary>A chain of renderables which interact with each other</summary>
-		public PreRenderChain Chain { get { return _chain; } }
-
-		SpriteBuffer _buffer;
-		public SpriteBuffer SpriteBuffer {
+		PreRenderedTextures _textures;
+		/// <summary> The different components to be combined </summary>
+		public PreRenderedTextures Textures {
 			get {
-				return _buffer;
+				return _textures;
 			}
 		}
 
-		BlendMode _blendMode;
-		public BlendMode BlendMode {
-			get { return _blendMode; }
+		CompositePreRenderProcess _instructions;
+
+		string _name;
+		string Name {
+			get { return _name; }
 		}
 
-		GameManager _game;
-		public GameManager Game { get { return _game; } }
+		PreRenderOrders _preRequisites;
 
-		public RenderComposite(GameManager game, PreRenderChain chain, BlendMode mode) : base() {
-			_chain = chain;
-			_blendMode = mode;
-			_game = game;
-		}
-
-		public void SynchToSpriteBuffer(PreRenderProcess process) {
-
-			PreRenderedTexture texture = PreRenderedTexture.FromPreRenderProcess(Game.Renderer,process);
-			SpriteData data = new SpriteData(texture);
-
+		public RenderComposite(string name, PreRenderOrders preRequisites, CompositePreRenderProcess instructions, Polygon2dBounds bounds) : base() {
+			_name = name;
+			_instructions = instructions;
+			_preRequisites = preRequisites;
+			_bounds = bounds;
 		}
 
 		// Render-Results
@@ -66,30 +58,11 @@
 			}
 		}
 
-		public RenderOrders RenderOrders {
-			get { throw new System.NotImplementedException(); }
-		}
-
 		Polygon2dBounds _bounds;
 		public Polygon2dBounds Bounds {
 			get {
-				if (_bounds == null)
-					_bounds = RenderComposite.GenerateBounds(this);
 				return _bounds;
 			}
 		}
-
-		public static Polygon2dBounds GenerateBounds(RenderComposite obj) {
-			Polygon2dBounds result = null;
-			foreach (PreRenderProcess p in obj.Chain) {
-				if (result == null)
-					result = p.Bounds.Copy;
-				else
-					result = Polygon2dBounds.Combine(p.Bounds, result);
-			}
-			return result;
-		}
-
-
 	}
 }

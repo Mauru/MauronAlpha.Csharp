@@ -44,7 +44,7 @@
 		public Polygon2d AsPolygon {
 			get { 
 				Rectangle bounds = _window.ClientBounds;
-				return new Rectangle2d(0,0,bounds.Width,bounds.Height); 
+				return Rectangle2d.CreateAlignTopLeft(bounds.Width,bounds.Height); 
 			}
 		}
 

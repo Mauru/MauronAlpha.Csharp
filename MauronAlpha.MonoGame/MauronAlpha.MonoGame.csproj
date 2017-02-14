@@ -61,11 +61,10 @@
     <Compile Include="DataObjects\MonoColor.cs" />
     <Compile Include="Rendering\Collections\ColorPalette.cs" />
     <Compile Include="Rendering\Collections\CompositeBuffer.cs" />
-    <Compile Include="Rendering\Collections\PreRenderChain.cs" />
+    <Compile Include="Rendering\Collections\PreRenderedTextures.cs" />
     <Compile Include="Rendering\Collections\PreRenderQueue.cs" />
     <Compile Include="Rendering\Collections\PreRenderRequests.cs" />
-    <Compile Include="Rendering\DataObjects\CompositeRenderRequest.cs" />
-    <Compile Include="Rendering\Collections\PreRenderStack.cs" />
+    <Compile Include="Rendering\Collections\RenderOrders.cs" />
     <Compile Include="Rendering\Collections\RenderComposite.cs" />
     <Compile Include="Rendering\Collections\RenderStatusColors.cs" />
     <Compile Include="Rendering\Collections\RenderTypes.cs" />
@@ -78,19 +77,18 @@
     <Compile Include="Rendering\Collections\LineBuffer.cs" />
     <Compile Include="Rendering\Collections\Shadertypes.cs" />
     <Compile Include="Rendering\Collections\SpriteBuffer.cs" />
+    <Compile Include="Rendering\DataObjects\CompositePreRenderComponent.cs" />
+    <Compile Include="Rendering\DataObjects\CompositePreRenderProcess.cs" />
     <Compile Include="Rendering\DataObjects\DefaultShader.cs" />
     <Compile Include="Rendering\DataObjects\PreRenderable.cs" />
-    <Compile Include="Rendering\DataObjects\PreRenderable_Outline.cs" />
-    <Compile Include="Rendering\DataObjects\PreRenderable_Shape.cs" />
-    <Compile Include="Rendering\DataObjects\PreRenderable_Texture.cs" />
-    <Compile Include="Rendering\DataObjects\PreRenderCall.cs" />
     <Compile Include="Rendering\DataObjects\PreRenderedTexture.cs" />
     <Compile Include="Rendering\DataObjects\PreRenderError.cs" />
     <Compile Include="Rendering\DataObjects\PreRenderProcess.cs" />
     <Compile Include="Rendering\DataObjects\PreRenderShape.cs" />
     <Compile Include="Rendering\DataObjects\RenderStage.cs" />
     <Compile Include="Rendering\DataObjects\RenderStatus.cs" />
-    <Compile Include="Rendering\DataObjects\SpriteData.cs" />
+    <Compile Include="Rendering\DataObjects\RenderType.cs" />
+    <Compile Include="Rendering\DataObjects\SpriteDrawCall.cs" />
     <Compile Include="Rendering\DataObjects\BackBuffer.cs" />
     <Compile Include="Rendering\Collections\BlendModes.cs" />
     <Compile Include="Collections\Common.cs" />
@@ -100,17 +98,18 @@
     <Compile Include="Rendering\DataObjects\TransformationData2d.cs" />
     <Compile Include="Rendering\DataObjects\VertexShaderMode.cs" />
     <Compile Include="Rendering\Interfaces\I_PreRenderable.cs" />
-    <Compile Include="Rendering\DataObjects\PreRenderable_TextFragment.cs" />
     <Compile Include="Rendering\Interfaces\I_PreRenderableCollection.cs" />
+    <Compile Include="Rendering\Interfaces\I_RenderComposite.cs" />
     <Compile Include="Rendering\Interfaces\I_RenderStatus.cs" />
-    <Compile Include="Rendering\Interfaces\I_SpriteDrawInfo.cs" />
+    <Compile Include="Rendering\Interfaces\I_SpriteDrawCall.cs" />
+    <Compile Include="Rendering\Interfaces\I_SpriteObject.cs" />
     <Compile Include="Rendering\Utility\CompositeRenderer.cs" />
     <Compile Include="Rendering\Utility\LineRenderer.cs" />
     <Compile Include="Rendering\Utility\MatrixHelper.cs" />
     <Compile Include="Rendering\Interfaces\I_Renderer.cs" />
     <Compile Include="Rendering\Interfaces\I_RenderProcess.cs" />
     <Compile Include="Rendering\Events\RenderEvent.cs" />
-    <Compile Include="Rendering\Collections\RenderOrders.cs" />
+    <Compile Include="Rendering\Collections\PreRenderOrders.cs" />
     <Compile Include="Rendering\DataObjects\RenderResult.cs" />
     <Compile Include="Rendering\Interfaces\I_Shader.cs" />
     <Compile Include="Rendering\Collections\ShapeBuffer.cs" />
@@ -125,13 +124,10 @@
     <Compile Include="Rendering\Utility\SceneRenderer.cs" />
     <Compile Include="Rendering\Utility\TextureRenderer.cs" />
     <Compile Include="TestScenes\Scene_2dMatrixTests.cs" />
-    <Compile Include="TestScenes\Scene_BasicAlpha.cs" />
     <Compile Include="TestScenes\Scene_BasicLine.cs" />
     <Compile Include="TestScenes\Scene_BasicText.cs" />
     <Compile Include="TestScenes\Scene_BasicTexture.cs" />
-    <Compile Include="TestScenes\Scene_Mixed.cs" />
-    <Compile Include="TestScenes\Scene_PreRendered.cs" />
-    <Compile Include="UI\DataObjects\GameShape.cs" />
+    <Compile Include="UI\DataObjects\CompositeHexagonShape.cs" />
     <Compile Include="UI\DataObjects\GameText.cs" />
     <Compile Include="Rendering\MonoGameLines.cs" />
     <Compile Include="Rendering\MonoGameShape.cs" />
@@ -140,7 +136,7 @@
     <Compile Include="Rendering\DataObjects\RenderRequest.cs" />
     <Compile Include="DataObjects\ScreenSize.cs" />
     <Compile Include="DataObjects\StatusInfo.cs" />
-    <Compile Include="Rendering\Collections\TriangulationData.cs" />
+    <Compile Include="Rendering\Collections\ShapeDrawData.cs" />
     <Compile Include="AssetManager.cs" />
     <Compile Include="GameEngine.cs" />
     <Compile Include="GameLogic.cs" />
@@ -258,6 +254,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Geometry\Collections\" />
+    <Folder Include="NeedsRefactoring\" />
     <Folder Include="Rendering\Shaders\" />
   </ItemGroup>
   <!-- Specify the search path explicitly so the ResolveAssemblyReferences task picks the right ones -->

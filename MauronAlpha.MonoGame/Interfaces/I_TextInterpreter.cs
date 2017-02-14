@@ -10,7 +10,6 @@
 
 	public interface I_TextInterpreter: I_Renderable {
 
-		RenderOrders RenderOrders { get; }
 		List<MonoGameTexture> Textures { get; }
 
 	}

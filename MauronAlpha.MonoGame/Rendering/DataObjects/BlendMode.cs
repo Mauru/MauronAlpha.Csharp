@@ -67,6 +67,20 @@
 		}
 	}
 
+	/// <summary> Subtract shape2 from shape1 using shape2's alpha channel.</summary>
+	public class BlendMode_SubtractNonAlpha : BlendMode {
+
+		public override string Name {
+			get { return "SubtractNonAlpha"; }
+		}
+
+		public static BlendMode_SubtractNonAlpha Instance {
+			get {
+				return new BlendMode_SubtractNonAlpha();
+			}
+		}
+	}
+
 	/// <summary> The object is rendered as opaque </summary>
 	public class BlendMode_Opaque : BlendMode {
 

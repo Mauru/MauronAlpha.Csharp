@@ -22,7 +22,7 @@
 				throw new AssetError("Texture does not exist!", this);
 
 			SpriteBuffer b = new SpriteBuffer();
-			SpriteData d = new SpriteData(
+			SpriteDrawCall d = new SpriteDrawCall(
 				t,
 				t.SizeAsRectangle
 			);

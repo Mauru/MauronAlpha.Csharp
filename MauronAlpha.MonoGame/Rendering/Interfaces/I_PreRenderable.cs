@@ -8,10 +8,9 @@
 	/// <summary> Interface for an object that can be preRendered </summary>
 	public interface I_PreRenderable {
 
-		RenderOrders RenderOrders { get; }
-
 		Polygon2dBounds Bounds { get; }
-		GameManager Game { get; }
+
+		PreRenderOrders PreRenderOrders { get; }
 
 		void SetRenderResult(I_RenderResult result);
 		I_RenderResult RenderResult { get; }

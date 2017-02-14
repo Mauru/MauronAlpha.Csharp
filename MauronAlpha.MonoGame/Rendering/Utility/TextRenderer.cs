@@ -34,7 +34,7 @@
 			int index = 0;
 			device.Clear(Color.Purple);
 			batch.Begin();
-			foreach (SpriteData data in buffer) {
+			foreach (SpriteDrawCall data in buffer) {
 				Rectangle position = data.PositionAsRectangle;
 				Rectangle mask = data.Mask;
 				batch.Draw(data.Texture.AsTexture2d, position, mask, Color.White);
@@ -44,7 +44,7 @@
 			batch.End();
 		}
 
-		///<summary> Generates SpriteData.Mask using GameFont.PositionData</summary>
+		///<summary> Generates SpriteDrawCall.Mask using GameFont.PositionData</summary>
 		public static Rectangle GenerateMaskFromPositionData(PositionData data) {
 			return new Rectangle(data.X, data.Y, data.Width, data.Height);
 		}

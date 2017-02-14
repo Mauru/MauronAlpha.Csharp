@@ -14,7 +14,7 @@
 		Registry<I_GameScene> _scenes = new Registry<I_GameScene>();
 
 		public bool Try(string name, ref I_GameScene scene) {
-			return _scenes.TryGet(name, ref scene);
+			return _scenes.Try(name, ref scene);
 		}
 
 		public void RegisterAndInitialize(string name, I_GameScene scene) {

@@ -15,6 +15,7 @@
 	/// <summary> RenderUtility that PreRenders to a texture </summary>
 	public class PreRenderer:MonoGameComponent {
 
+		/* #RETIRED#
 		public static void DrawMethod(GameRenderer renderer, long time) {
 			I_GameScene scene = renderer.CurrentScene;
 			RenderStage stage = renderer.DefaultRenderTarget;
@@ -35,7 +36,7 @@
 				foreach (PreRenderProcess cycle in orders)
 					if (cycle.RenderType.Equals(RenderTypes.Shape))
 						ShapeRenderer.Render(renderer, renderer.CurrentShader , cycle.Shapes);
-					else if (cycle.RenderType.Equals(RenderTypes.Lines))
+					else if (cycle.RenderType.Equals(RenderTypes.Line))
 						LineRenderer.Render(renderer, cycle.Lines, cycle.Color);
 					else if (cycle.RenderType.Equals(RenderTypes.Sprite))
 						TextureRenderer.Render(renderer, cycle.Sprites, cycle.Color);
@@ -43,11 +44,11 @@
 				texture = ExtractTexture(stage, obj.Bounds);
 				obj.SetRenderResult(new RenderResult(time,texture));
 				sprite = new MonoGameTexture(renderer.Game,texture);
-				result.Add(new SpriteData(sprite));
+				result.Add(new SpriteDrawCall(sprite));
 			}
 			device.SetRenderTarget(null);
 			renderer.HandlePreRenderEvent(renderer, result, time);
-		}
+		}*/
 
 		public static void ExecutePreRenderProcess(GameRenderer renderer, PreRenderProcess process, long time) {
 			RenderStage stage = renderer.DefaultRenderTarget;
@@ -55,10 +56,10 @@
 			device.SetRenderTarget(stage.RenderTarget);
 
 			Texture2D texture;
-			string type = process.RenderType;
+			RenderType type = process.RenderType;
 			if (type.Equals(RenderTypes.Shape))
 				ShapeRenderer.HandlePreRenderProcess(renderer, time, process);
-			else if (type.Equals(RenderTypes.Lines))
+			else if (type.Equals(RenderTypes.Line))
 				LineRenderer.HandlePreRenderProcess(renderer, time, process);
 			else if (type.Equals(RenderTypes.Sprite))
 				TextureRenderer.HandlePreRenderProcess(renderer, time, process);
@@ -72,10 +73,10 @@
 			renderer.SetActiveStage(stage);
 
 			Texture2D texture;
-			string type = process.RenderType;
+			RenderType type = process.RenderType;
 			if (type.Equals(RenderTypes.Shape))
 				shapes(renderer, time, process);
-			else if (type.Equals(RenderTypes.Lines))
+			else if (type.Equals(RenderTypes.Line))
 				lines(renderer, time, process);
 			else if (type.Equals(RenderTypes.Sprite))
 				lines(renderer, time, process);

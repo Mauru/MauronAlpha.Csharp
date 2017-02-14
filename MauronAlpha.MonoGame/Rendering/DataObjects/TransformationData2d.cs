@@ -22,8 +22,6 @@
 			return new TransformationData2D(distanceToCenter);
 		}
 
-
-		
 		// Defines if the shape has been offset from its center
 		Vector2d _topLeftToCenter;
 
@@ -197,6 +195,24 @@
 
 			return result;
 
+
+		}
+
+		//Creates a transformation-object with just basic scale applied
+		public static TransformationData2D CreateScale(Vector2d scale) {
+
+			TransformationData2D result = new TransformationData2D();
+			result.Transform(TransformationShortCuts.Scale, scale);
+
+			return result;
+
+		}
+		public static TransformationData2D CreateScale(long factor) {
+
+			TransformationData2D result = new TransformationData2D();
+			result.Transform(TransformationShortCuts.Scale, factor);
+
+			return result;
 
 		}
 	}

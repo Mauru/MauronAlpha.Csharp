@@ -20,7 +20,7 @@
 			renderer.GraphicsDevice.Clear(Color.Purple);
 
 			batch.Begin();
-			foreach (SpriteData data in buffer) {
+			foreach (SpriteDrawCall data in buffer) {
 				Texture2D d = data.Texture.AsTexture2d;
 				batch.Draw(d,d.Bounds,data.Color);
 			}
@@ -31,7 +31,7 @@
 			SpriteDrawManager batch = renderer.SpriteDrawManager;
 			Texture2D texture;
 			batch.Begin();
-			foreach (SpriteData data in buffer) {
+			foreach (SpriteDrawCall data in buffer) {
 				texture = data.Texture.AsTexture2d;
 				if(data.HasMask)
 					batch.Draw(texture, data.PositionAsRectangle, data.Mask, data.Color);
@@ -48,7 +48,7 @@
 			SpriteDrawManager batch = renderer.SpriteDrawManager;
 			Texture2D texture;
 			batch.Begin();
-			foreach (SpriteData data in buffer) {
+			foreach (SpriteDrawCall data in buffer) {
 				texture = data.Texture.AsTexture2d;
 				if (data.HasMask)
 					batch.Draw(texture, data.PositionAsRectangle, data.Mask, data.Color);

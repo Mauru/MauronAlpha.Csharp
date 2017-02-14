@@ -226,7 +226,7 @@
 			foreach (Line l in ll) {
 				SpriteBuffer sprite = GenerateSpriteBufferOfLine(l, text);
 				SpriteBuffer.OffsetPosition(ref sprite, offset);
-				System.Diagnostics.Debug.Print("TextFragment.Line: " + SpriteBuffer.GenerateBounds(sprite).AsString);
+
 				result.AddValuesFrom(sprite);
 
 				if (!sprite.IsEmpty)
@@ -284,7 +284,7 @@
 
 			Vector2d offset = Vector2d.Zero;
 			PositionData data = null;
-			SpriteData sprite;
+			SpriteDrawCall sprite;
 
 			GameFont font = text.Font;
 
@@ -292,7 +292,7 @@
 				if (!text.Font.TryPositionData(c, ref data))
 					data = font.PositionData(GameFont.UnknownCharacter);
 
-				sprite = new SpriteData(
+				sprite = new SpriteDrawCall(
 					font.TextureByPageIndex(data.FontPage),
 					TextRenderer.GenerateMaskFromPositionData(data)
 				);

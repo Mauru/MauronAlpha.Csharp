@@ -118,6 +118,10 @@ namespace MauronAlpha.Geometry.Geometry2d.Units {
 			_min.Add(v);
 			_max.Add(v);
 		}
+		public void Offset(double x, double y) {
+			_min.Add(x, y);
+			_max.Add(x, y);
+		}
 
 		Segment2dList I_polygonShape2d.Segments {
 			get {

@@ -17,7 +17,7 @@
 
 	using MauronAlpha.Geometry.Geometry2d.Transformation;
 	
-	public class ShapeBuffer:List<TriangulationData>, I_PreRenderableCollection {
+	public class ShapeBuffer:List<ShapeDrawCall>, I_PreRenderableCollection {
 
 		public ShapeBuffer(): base() {}
 		public ShapeBuffer(I_polygonShape2d shape): base() {
@@ -27,18 +27,18 @@
 		public ShapeBuffer(Matrix2d matrix): base() {
 			_matrix = matrix;
 		}
-		public ShapeBuffer(TriangulationData data, Polygon2dBounds bounds): base() {
+		public ShapeBuffer(ShapeDrawCall data, Polygon2dBounds bounds): base() {
 			base.Add(data);
 			SetBounds(bounds);
 		}
 		public static ShapeBuffer Empty { get { return new ShapeBuffer(); } }
 
 		public void Add(I_polygonShape2d shape) {
-			TriangulationData data;
+			ShapeDrawCall data;
 			if(_matrix!=null)
-				 data = TriangulationData.CreateFromShape(shape, TriangulationData.WhiteVertexColors, _matrix);
+				 data = ShapeDrawCall.CreateFromShape(shape, ShapeDrawCall.WhiteVertexColors, _matrix);
 			else
-				data = TriangulationData.CreateFromShape(shape, TriangulationData.WhiteVertexColors);
+				data = ShapeDrawCall.CreateFromShape(shape, ShapeDrawCall.WhiteVertexColors);
 			Add(data);
 			_bounds = null;
 		}
@@ -72,7 +72,7 @@
 			Vector2d min = null;
 			Vector2d max= null;
 			Vector2d m1; Vector2d m2;
-			foreach (TriangulationData data in buffer) { 
+			foreach (ShapeDrawCall data in buffer) { 
 				bounds = data.Bounds;
 				m1 = bounds.Min;
 				m2 = bounds.Max;

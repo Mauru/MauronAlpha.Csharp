@@ -27,7 +27,7 @@
 
 			shader.Apply();
 
-			foreach (TriangulationData data in buffer) {
+			foreach (ShapeDrawCall data in buffer) {
 				if(data.VertexShaderMode==VertexShaderMode.VertexPosition2d)
 					device.DrawUserPrimitives<VertexPosition>(PrimitiveType.TriangleList, data.VertexPosition, 0, data.TriangleCount);
 				else
@@ -44,13 +44,10 @@
 
 			GraphicsDevice device = renderer.GraphicsDevice;
 
-			I_Shader shader = null;
-			if (!process.TryShader(ref shader))
-				shader = renderer.CurrentShader;
-
+			I_Shader shader = shader = renderer.CurrentShader;
 			shader.Apply();
 
-			foreach (TriangulationData data in buffer) {
+			foreach (ShapeDrawCall data in buffer) {
 				if (data.VertexShaderMode == VertexShaderMode.VertexPosition2d)
 					device.DrawUserPrimitives<VertexPosition>(PrimitiveType.TriangleList, data.VertexPosition, 0, data.TriangleCount);
 				else
@@ -63,7 +60,7 @@
 			GraphicsDevice device = renderer.GraphicsDevice;
 
 			shader.Apply();
-			foreach (TriangulationData data in buffer) {
+			foreach (ShapeDrawCall data in buffer) {
 				if (data.VertexShaderMode == VertexShaderMode.VertexPosition2d)
 					device.DrawUserPrimitives<VertexPosition>(PrimitiveType.TriangleList, data.VertexPosition, 0, data.TriangleCount);
 				else

@@ -1,13 +1,13 @@
 ﻿namespace MauronAlpha.MonoGame.Rendering.Collections {
-	using MauronAlpha.MonoGame.DataObjects;
+
 	using MauronAlpha.MonoGame.Collections;
-	
-	using MauronAlpha.MonoGame.Rendering.DataObjects;
 
-	public class RenderOrders:List<PreRenderProcess> {
+	/// <summary> Defines what gets drawn live on Screen. </summary>
+	public class RenderOrders:MonoGameComponent {
 
-		public static RenderOrders Empty { get { return new RenderOrders(); } }
+		List<ShapeBuffer> _shapes;
+
+		List<SpriteBuffer> _sprites;
 
 	}
-
 }

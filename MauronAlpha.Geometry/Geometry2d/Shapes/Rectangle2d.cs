@@ -11,9 +11,9 @@ namespace MauronAlpha.Geometry.Geometry2d.Shapes {
 		public Rectangle2d():base(){}
         
         //creators
-		public Rectangle2d ( Vector2d size ):this(0 ,0 ,size.X ,size.Y) {}
-		public Rectangle2d(Vector2d start, double width, double height)	: this(start.X,start.Y,width,height) {}
-		public Rectangle2d(double x, double y, double width, double height): base() {
+		private Rectangle2d ( Vector2d size ):this(0 ,0 ,size.X ,size.Y) {}
+		private Rectangle2d(Vector2d start, double width, double height)	: this(start.X,start.Y,width,height) {}
+		private Rectangle2d(double x, double y, double width, double height): base() {
 			Vector2dList points = new Vector2dList() {
                new Vector2d(x, y),
                new Vector2d(x + width, y),
@@ -29,6 +29,7 @@ namespace MauronAlpha.Geometry.Geometry2d.Shapes {
 		private Rectangle2d(Vector2d a, Vector2d b, Vector2d c, Vector2d d) {
 			SetPoints(new Vector2dList() {a,b,c,d});
 		}
+
 		public static Rectangle2d FromBounds( Polygon2dBounds bounds ) {
 			Rectangle2d result = new Rectangle2d( bounds.Points );
 			return result;
@@ -42,6 +43,10 @@ namespace MauronAlpha.Geometry.Geometry2d.Shapes {
 				new Vector2d(x, y),
 				new Vector2d(-x, y)
 			);
+		}
+
+		public static Rectangle2d CreateAlignTopLeft(double width, double height) {
+			return new Rectangle2d(0, 0, width, height);
 		}
 
 		I_polygonShape2d I_polygonShape2d.Copy {

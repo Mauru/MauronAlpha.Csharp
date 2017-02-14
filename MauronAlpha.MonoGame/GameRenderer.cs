@@ -126,7 +126,7 @@
 		Registry<I_Shader> _shaders = new Registry<I_Shader>();
 		public I_Shader GetShader(string name) {
 			I_Shader result = null;
-			if (!_shaders.TryGet(name, ref result))
+			if (!_shaders.Try(name, ref result))
 				throw new GameError("Unknown shader {" + name + "}!", this);
 			return result;
 		}
@@ -182,20 +182,6 @@
 				return new Vector2d(fov.Width, fov.Height);
 			}
 		}
-
-		//Camera
-		Registry<Camera> _cameras = new Registry<Camera>();
-		public Camera GetCamera(string name) {
-			Camera result = null;
-			if (!_cameras.TryGet(name, ref result))
-				throw new GameError("Unknown Camera {" + name + "}!", this);
-			return result;
-		}
-		Camera _currentCamera;
-		public void SetCurrentCamera(Camera camera) {
-			_currentCamera = camera;
-		}
-		public Camera CurrentCamera { get { return _currentCamera; } }
 
 		DrawMethod _currentDrawMethod = GameRenderer.ShowEngineStateAsSolidColor;
 		public delegate void DrawMethod(GameRenderer renderer, long time);

@@ -7,15 +7,6 @@ namespace MauronAlpha.MonoGame.Rendering.Collections {
 
 	public class PreRenderRequests : MonoGameComponent {
 
-		Stack<PreRenderChain> _chains;
-		public Stack<PreRenderChain> Chains { get { return _chains; } }
-		public bool TryChains(ref Stack<PreRenderChain> result) {
-			if (_chains == null)
-				return false;
-			result = _chains;
-			return true;
-		}
-		 
 		Stack<ShapeBuffer> _shapes;
 		public Stack<ShapeBuffer> Shapes { get { return _shapes; } }
 		public bool TryShapes(ref Stack<ShapeBuffer> result) {
@@ -60,11 +51,7 @@ namespace MauronAlpha.MonoGame.Rendering.Collections {
 				_composites = new Stack<CompositeBuffer>();
 			_composites.Add(obj);
 		}
-		public void Add(PreRenderChain obj) {
-			if (_chains == null)
-				_chains = new Stack<PreRenderChain>();
-			_chains.Add(obj);				
-		}
+
 
 	}
 

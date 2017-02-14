@@ -20,7 +20,7 @@
 			}
 
 			int count = 0;
-			_vertices = TriangulationData.CreateVertexPostionData(_baseShape, ref count);
+			_vertices = ShapeDrawCall.CreateVertexPostionData(_baseShape, ref count);
 
 			_mode = VertexShaderMode.VertexPosition2d;
 			_transform = TransformationData2D.AlignedTopLeft(_baseBounds.Center);

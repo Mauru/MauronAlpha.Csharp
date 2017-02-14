@@ -22,7 +22,7 @@
 
 			I_Shader shader = renderer.CurrentShader;
 			shader.Apply();
-			foreach (TriangulationData data in shapes) {
+			foreach (ShapeDrawCall data in shapes) {
 				if (data.VertexShaderMode == VertexShaderMode.VertexPosition2d)
 					device.DrawUserPrimitives<VertexPosition>(PrimitiveType.TriangleList, data.VertexPosition, 0, data.TriangleCount);
 				else
@@ -35,7 +35,7 @@
 				batch.Draw(renderer.PixelTexture, line.Rectangle, null, Color.White, (float) line.AngleAsRad, Vector2.Zero, SpriteEffects.None, 1f);
 			batch.End();
 			batch.Begin();
-			foreach (SpriteData data in sprites) {
+			foreach (SpriteDrawCall data in sprites) {
 				Rectangle position = data.PositionAsRectangle;
 				Rectangle mask = data.Mask;
 				batch.Draw(data.Texture.AsTexture2d, position, mask, Color.White);
